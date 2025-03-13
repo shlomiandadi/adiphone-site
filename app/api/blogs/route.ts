@@ -18,8 +18,24 @@ export async function GET(request: NextRequest) {
       },
       take: limit
     });
+
+    // Format the posts to match the expected structure
+    const formattedPosts = posts.map(post => ({
+      _id: post.id,
+      title: post.title,
+      description: post.content,
+      image: post.image || '/images/blog-placeholder.jpg',
+      category: post.category || 'כללי',
+      date: new Date(post.createdAt).toLocaleDateString('he-IL'),
+      keywords: post.keywords || [],
+      relatedPosts: post.relatedPosts || [],
+      slug: post.slug,
+      status: post.published ? 'published' : 'draft',
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString()
+    }));
       
-    return new Response(JSON.stringify(posts), {
+    return new Response(JSON.stringify(formattedPosts), {
       headers: {
         'Content-Type': 'application/json',
       },

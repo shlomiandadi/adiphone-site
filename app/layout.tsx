@@ -7,6 +7,7 @@ import Breadcrumbs from './components/Breadcrumbs';
 import BreadcrumbSchema from './components/BreadcrumbSchema';
 import FloatingButtons from './components/FloatingButtons';
 import AccessibilityBar from './components/AccessibilityBar';
+import Script from 'next/script';
 
 const heebo = Heebo({ 
   subsets: ['hebrew', 'latin'],
@@ -38,6 +39,19 @@ export default function RootLayout({
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
       <head>
         <BreadcrumbSchema />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-QMC63HG6SD"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-QMC63HG6SD');
+          `}
+        </Script>
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>
         <a href="#main-content" className="skip-to-main">

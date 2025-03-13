@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import prisma from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
@@ -7,26 +8,18 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
     
-    const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
-    
-    const response = await fetch(url);
-    const data = await response.json();
-    
-    if (!Array.isArray(data)) {
-      throw new Error('Invalid data format received from API');
-    }
-    
-    // Sort posts by date in descending order (newest first)
-    const sortedData = data.sort((a: any, b: any) => {
-      const dateA = new Date(a.createdAt);
-      const dateB = new Date(b.createdAt);
-      return dateB.getTime() - dateA.getTime();
+    // Get posts directly from the database using Prisma
+    const posts = await prisma.post.findMany({
+      where: {
+        status: 'published'
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      take: limit
     });
-    
-    // Apply limit if specified
-    const limitedData = limit ? sortedData.slice(0, limit) : sortedData;
       
-    return new Response(JSON.stringify(limitedData), {
+    return new Response(JSON.stringify(posts), {
       headers: {
         'Content-Type': 'application/json',
       },

@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     // Get posts directly from the database using Prisma
     const posts = await prisma.post.findMany({
       where: {
-        status: 'published'
+        published: true
       },
       orderBy: {
         createdAt: 'desc'

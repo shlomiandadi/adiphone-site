@@ -7,10 +7,14 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
     
-    const url = new URL('http://localhost:8000/api/posts');
+    const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
     
     const response = await fetch(url);
     const data = await response.json();
+    
+    if (!Array.isArray(data)) {
+      throw new Error('Invalid data format received from API');
+    }
     
     // Sort posts by date in descending order (newest first)
     const sortedData = data.sort((a: any, b: any) => {
@@ -29,7 +33,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error fetching blogs:', error);
-    return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
+    return new Response(JSON.stringify({ error: 'Internal Server Error', details: error.message }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',

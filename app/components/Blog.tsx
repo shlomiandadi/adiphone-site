@@ -22,15 +22,22 @@ interface BlogPost {
 export default function Blog() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchLatestBlogs() {
       try {
         const response = await fetch('/api/blogs?limit=3');
+        if (!response.ok) {
+          throw new Error('Failed to fetch blogs');
+        }
         const data = await response.json();
-        setPosts(data);
+        setPosts(Array.isArray(data) ? data : []);
+        setError(null);
       } catch (error) {
         console.error('Error fetching blogs:', error);
+        setError('אירעה שגיאה בטעינת הבלוגים');
+        setPosts([]);
       } finally {
         setLoading(false);
       }
@@ -56,6 +63,19 @@ export default function Blog() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">הבלוג שלנו</h2>
+          <div className="text-center text-red-600">
+            {error}
           </div>
         </div>
       </section>

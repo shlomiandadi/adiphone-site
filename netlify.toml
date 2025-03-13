@@ -1,0 +1,34 @@
+[build]
+  command = "npx prisma generate && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+  NODE_VERSION = "20"
+  NEXT_PUBLIC_API_URL = "https://adi-phone.co.il/api"
+  MONGODB_URI = "mongodb+srv://shlomiandadi:R0HXEWhMuWn0IbBc@clustertest.tz78h.mongodb.net/blog-db?retryWrites=true&w=majority&appName=Clustertest"
+  SMTP_HOST = "smtp.gmail.com"
+  SMTP_PORT = "587"
+  SMTP_USER = "shlomiandadi@gmail.com"
+  SMTP_PASSWORD = "vqzf pcsn fpxl qiwa"
+  SMTP_FROM = "shlomiandadi@gmail.com"
+  SMTP_TO = "shlomiandadi@gmail.com"
+  ADMIN_EMAIL = "shlomiandadi@gmail.com"
+  ADMIN_PASSWORD = "adi112211"
+  NEXT_PUBLIC_SITE_URL = "https://adi-phone.co.il"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200 

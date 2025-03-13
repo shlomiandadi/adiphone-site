@@ -1,56 +1,61 @@
-import { NextResponse } from 'next/server';
-import connectDB from '../../../lib/mongodb';
-import Contact from '../../../models/Contact';
-import { sendContactEmail, sendThankYouEmail } from '../../../lib/emailService';
+import { NextRequest } from 'next/server';
+import prisma from '@/lib/prisma';
+import { sendEmail } from '@/lib/email';
 
-// Add GET endpoint to fetch contacts
-export async function GET() {
+export const dynamic = 'force-dynamic';
+
+export async function POST(request: NextRequest) {
   try {
-    await connectDB();
-    const contacts = await Contact.find().sort({ createdAt: -1 }).exec();
-    return NextResponse.json({ contacts });
-  } catch (error) {
-    console.error('GET Error:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch contacts', details: error.message },
-      { status: 500 }
-    );
-  }
-}
+    const body = await request.json();
+    const { name, email, phone, message } = body;
 
-export async function POST(req: Request) {
-  try {
-    const data = await req.json();
-    console.log('Received data:', data);
-
-    console.log('Connecting to DB...');
-    await connectDB();
-    console.log('DB connected');
-
-    // Create contact record
-    console.log('Creating contact...');
-    const contact = await Contact.create(data);
-    console.log('Contact created:', contact);
-
-    // Try to send emails but don't fail if it doesn't work
-    try {
-      console.log('Sending emails...');
-      await Promise.all([
-        sendContactEmail(data),
-        sendThankYouEmail(data.email, data.name)
-      ]);
-      console.log('Emails sent');
-    } catch (emailError) {
-      console.error('Error sending emails:', emailError);
-      // Continue without failing the request
+    // Validate required fields
+    if (!name || !email || !message) {
+      return new Response(JSON.stringify({ error: 'Missing required fields' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
     }
 
-    return NextResponse.json({ success: true, contact });
+    // Save to database
+    const contact = await prisma.contact.create({
+      data: {
+        name,
+        email,
+        phone: phone || '',
+        message,
+        status: 'NEW'
+      }
+    });
+
+    // Send email notification
+    await sendEmail({
+      to: process.env.ADMIN_EMAIL!,
+      subject: 'הודעה חדשה מהאתר',
+      html: `
+        <h2>הודעה חדשה מהאתר</h2>
+        <p><strong>שם:</strong> ${name}</p>
+        <p><strong>אימייל:</strong> ${email}</p>
+        <p><strong>טלפון:</strong> ${phone || 'לא צוין'}</p>
+        <p><strong>הודעה:</strong></p>
+        <p>${message}</p>
+      `
+    });
+
+    return new Response(JSON.stringify({ success: true, contact }), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   } catch (error) {
-    console.error('POST Error:', error);
-    return NextResponse.json(
-      { error: 'Failed to submit contact form', details: error.message },
-      { status: 500 }
-    );
+    console.error('Error in contact form:', error);
+    return new Response(JSON.stringify({ error: 'Internal Server Error', details: error.message }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 } 

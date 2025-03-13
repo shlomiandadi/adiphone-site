@@ -6,7 +6,7 @@
   NEXT_TELEMETRY_DISABLED = "1"
   NODE_VERSION = "20"
   NEXT_PUBLIC_API_URL = "https://adi-phone.co.il/api"
-  MONGODB_URI = "mongodb+srv://shlomiandadi:R0HXEWhMuWn0IbBc@clustertest.tz78h.mongodb.net/blog-db?retryWrites=true&w=majority&appName=Clustertest"
+  DATABASE_URL = "mongodb+srv://shlomiandadi:R0HXEWhMuWn0IbBc@clustertest.tz78h.mongodb.net/blog-db?retryWrites=true&w=majority&appName=Clustertest"
   SMTP_HOST = "smtp.gmail.com"
   SMTP_PORT = "587"
   SMTP_USER = "shlomiandadi@gmail.com"

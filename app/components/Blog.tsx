@@ -28,9 +28,10 @@ export default function Blog() {
       try {
         const response = await fetch('/api/blogs?limit=3');
         const data = await response.json();
-        setPosts(data);
+        setPosts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Error fetching blogs:', error);
+        setPosts([]);
       } finally {
         setLoading(false);
       }

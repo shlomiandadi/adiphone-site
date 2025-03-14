@@ -38,30 +38,35 @@ export async function GET(request: NextRequest) {
     });
 
     // Format the posts to match the expected structure
-    const formattedPosts = posts.map(post => ({
-      _id: post.id,
-      title: post.title,
-      description: post.excerpt,
-      image: post.mainImage || '/images/blog-placeholder.jpg',
-      category: post.category,
-      date: new Date(post.createdAt).toLocaleDateString('he-IL', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      }),
-      keywords: post.tags,
-      relatedPosts: [],
-      slug: post.slug,
-      published: post.published,
-      authorName: post.authorName || 'Admin',
-      authorEmail: post.authorEmail,
-      views: post.views,
-      likes: post.likes,
-      metaTitle: post.metaTitle,
-      metaDesc: post.metaDesc,
-      createdAt: post.createdAt instanceof Date ? post.createdAt.toISOString() : new Date(post.createdAt).toISOString(),
-      updatedAt: post.updatedAt instanceof Date ? post.updatedAt.toISOString() : new Date(post.updatedAt).toISOString()
-    }));
+    const formattedPosts = posts.map(post => {
+      const createdDate = new Date(post.createdAt);
+      const updatedDate = new Date(post.updatedAt);
+
+      return {
+        _id: post.id,
+        title: post.title,
+        description: post.excerpt,
+        image: post.mainImage || '/images/blog-placeholder.jpg',
+        category: post.category,
+        date: createdDate.toLocaleDateString('he-IL', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+        keywords: post.tags,
+        relatedPosts: [],
+        slug: post.slug,
+        published: post.published,
+        authorName: post.authorName || 'Admin',
+        authorEmail: post.authorEmail,
+        views: post.views,
+        likes: post.likes,
+        metaTitle: post.metaTitle,
+        metaDesc: post.metaDesc,
+        createdAt: createdDate.toISOString(),
+        updatedAt: updatedDate.toISOString()
+      };
+    });
       
     return new Response(JSON.stringify(formattedPosts), {
       headers: {

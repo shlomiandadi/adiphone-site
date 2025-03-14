@@ -5,33 +5,22 @@ declare global {
 }
 
 const prismaClientSingleton = () => {
-  return new PrismaClient({
+  const client = new PrismaClient({
     log: ['error', 'warn'],
     errorFormat: 'minimal',
-  }).$extends({
-    result: {
-      post: {
-        createdAt: {
-          needs: { createdAt: true },
-          compute(post) {
-            return new Date(post.createdAt);
-          }
-        },
-        updatedAt: {
-          needs: { updatedAt: true },
-          compute(post) {
-            return new Date(post.updatedAt);
-          }
-        }
-      }
-    }
   });
+
+  return client;
 };
 
-const prisma = global.prisma ?? prismaClientSingleton();
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
 if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma;
+  globalForPrisma.prisma = prisma;
 }
 
 export default prisma; 

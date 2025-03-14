@@ -19,6 +19,18 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Map service value to ContactService enum
+    let mappedService = service;
+    if (service === 'web-development') {
+      mappedService = 'WEB_DEVELOPMENT';
+    } else if (service === 'seo') {
+      mappedService = 'SEO';
+    } else if (service === 'ppc') {
+      mappedService = 'PPC';
+    } else {
+      mappedService = 'OTHER';
+    }
+
     // Save to database
     const contact = await prisma.contact.create({
       data: {
@@ -26,7 +38,7 @@ export async function POST(request: NextRequest) {
         email,
         phone: phone || '',
         message,
-        service: service || 'OTHER',
+        service: mappedService,
         status: 'NEW'
       }
     });

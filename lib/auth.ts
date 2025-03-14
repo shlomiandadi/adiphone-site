@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth';
+import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-export const { auth, handlers: { GET, POST } } = NextAuth({
+const config: NextAuthConfig = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -45,4 +46,6 @@ export const { auth, handlers: { GET, POST } } = NextAuth({
       return session;
     }
   }
-}); 
+};
+
+export const { auth, handlers: { GET, POST }, signIn, signOut } = NextAuth(config); 

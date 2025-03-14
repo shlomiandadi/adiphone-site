@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { sendEmail } from '@/lib/email';
+import { ContactService } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,13 +32,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Map service value to ContactService enum
-    let mappedService = 'OTHER';
+    let mappedService: ContactService = ContactService.OTHER;
     if (service === 'web-development') {
-      mappedService = 'WEB_DEVELOPMENT';
+      mappedService = ContactService.WEB_DEVELOPMENT;
     } else if (service === 'seo') {
-      mappedService = 'SEO';
+      mappedService = ContactService.SEO;
     } else if (service === 'ppc') {
-      mappedService = 'PPC';
+      mappedService = ContactService.PPC;
     }
 
     try {

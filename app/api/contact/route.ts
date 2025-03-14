@@ -19,53 +19,77 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new Response(JSON.stringify({ error: 'Invalid email format' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+
     // Map service value to ContactService enum
-    let mappedService = service;
+    let mappedService = 'OTHER';
     if (service === 'web-development') {
       mappedService = 'WEB_DEVELOPMENT';
     } else if (service === 'seo') {
       mappedService = 'SEO';
     } else if (service === 'ppc') {
       mappedService = 'PPC';
-    } else {
-      mappedService = 'OTHER';
     }
 
-    // Save to database
-    const contact = await prisma.contact.create({
-      data: {
-        name,
-        email,
-        phone: phone || '',
-        message,
-        service: mappedService,
-        status: 'NEW'
+    try {
+      // Save to database
+      const contact = await prisma.contact.create({
+        data: {
+          name,
+          email,
+          phone: phone || '',
+          message,
+          service: mappedService,
+          status: 'NEW'
+        }
+      });
+
+      // Send email notification
+      if (process.env.ADMIN_EMAIL) {
+        try {
+          await sendEmail({
+            to: process.env.ADMIN_EMAIL,
+            subject: 'הודעה חדשה מהאתר',
+            html: `
+              <h2>הודעה חדשה מהאתר</h2>
+              <p><strong>שם:</strong> ${name}</p>
+              <p><strong>אימייל:</strong> ${email}</p>
+              <p><strong>טלפון:</strong> ${phone || 'לא צוין'}</p>
+              <p><strong>שירות:</strong> ${service || 'אחר'}</p>
+              <p><strong>הודעה:</strong></p>
+              <p>${message}</p>
+            `
+          });
+        } catch (emailError) {
+          console.error('Error sending email:', emailError);
+          // Continue execution even if email fails
+        }
       }
-    });
 
-    // Send email notification
-    await sendEmail({
-      to: process.env.ADMIN_EMAIL!,
-      subject: 'הודעה חדשה מהאתר',
-      html: `
-        <h2>הודעה חדשה מהאתר</h2>
-        <p><strong>שם:</strong> ${name}</p>
-        <p><strong>אימייל:</strong> ${email}</p>
-        <p><strong>טלפון:</strong> ${phone || 'לא צוין'}</p>
-        <p><strong>שירות:</strong> ${service || 'אחר'}</p>
-        <p><strong>הודעה:</strong></p>
-        <p>${message}</p>
-      `
-    });
-
-    return new Response(JSON.stringify({ success: true, contact }), {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+      return new Response(JSON.stringify({ success: true, contact }), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (dbError) {
+      console.error('Database error:', dbError);
+      throw new Error('Failed to save contact form');
+    }
   } catch (error) {
     console.error('Error in contact form:', error);
-    return new Response(JSON.stringify({ error: 'Internal Server Error', details: error.message }), {
+    return new Response(JSON.stringify({ 
+      error: 'Internal Server Error', 
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined 
+    }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',

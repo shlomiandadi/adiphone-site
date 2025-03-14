@@ -1,7 +1,7 @@
-import { AuthOptions } from 'next-auth';
+import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-export const authOptions: AuthOptions = {
+export const { auth, handlers: { GET, POST } } = NextAuth({
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -28,9 +28,6 @@ export const authOptions: AuthOptions = {
       }
     })
   ],
-  session: {
-    strategy: "jwt",
-  },
   pages: {
     signIn: '/admin/login',
   },
@@ -48,4 +45,4 @@ export const authOptions: AuthOptions = {
       return session;
     }
   }
-}; 
+}); 

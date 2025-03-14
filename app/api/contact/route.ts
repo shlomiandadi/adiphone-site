@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, phone, message } = body;
+    const { name, email, phone, message, service } = body;
 
     // Validate required fields
     if (!name || !email || !message) {
@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
         email,
         phone: phone || '',
         message,
+        service: service || 'OTHER',
         status: 'NEW'
       }
     });
@@ -39,6 +40,7 @@ export async function POST(request: NextRequest) {
         <p><strong>שם:</strong> ${name}</p>
         <p><strong>אימייל:</strong> ${email}</p>
         <p><strong>טלפון:</strong> ${phone || 'לא צוין'}</p>
+        <p><strong>שירות:</strong> ${service || 'אחר'}</p>
         <p><strong>הודעה:</strong></p>
         <p>${message}</p>
       `

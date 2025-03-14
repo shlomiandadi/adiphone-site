@@ -30,7 +30,13 @@ export async function GET(request: NextRequest) {
       keywords: post.tags,
       relatedPosts: [],
       slug: post.slug,
-      status: post.published ? 'published' : 'draft',
+      published: post.published,
+      authorName: post.authorName,
+      authorEmail: post.authorEmail,
+      views: post.views,
+      likes: post.likes,
+      metaTitle: post.metaTitle,
+      metaDesc: post.metaDesc,
       createdAt: post.createdAt.toISOString(),
       updatedAt: post.updatedAt.toISOString()
     }));

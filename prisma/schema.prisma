@@ -27,6 +27,20 @@ enum Category {
   ECOMMERCE
 }
 
+enum ContactStatus {
+  NEW
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+enum ContactService {
+  WEB_DEVELOPMENT
+  SEO
+  PPC
+  OTHER
+}
+
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String   @unique
@@ -56,4 +70,16 @@ model Post {
   metaDesc    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Contact {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  phone     String
+  message   String
+  service   ContactService @default(OTHER)
+  status    ContactStatus  @default(NEW)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 }

@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ContactService } from '../types';
 
 interface Blog {
   _id: string;
@@ -29,7 +30,7 @@ export default function Blog() {
     email: '',
     phone: '',
     message: 'מתעניין/ת בניוזלטר',
-    service: 'other'
+    service: ContactService.OTHER
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState('');
@@ -84,7 +85,7 @@ export default function Blog() {
         email: '',
         phone: '',
         message: 'מתעניין/ת בניוזלטר',
-        service: 'other'
+        service: ContactService.OTHER
       });
     } catch (error) {
       console.error('Error submitting form:', error);

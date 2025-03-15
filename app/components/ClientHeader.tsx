@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { FaTimes, FaSearch, FaTag, FaHome, FaCode, FaMobile, FaGlobe, FaChartLine, FaEnvelope, FaArrowLeft, FaBars, FaUsers, FaBlog, FaShoppingCart, FaPaintBrush } from 'react-icons/fa';
+import { FaTimes, FaSearch, FaTag, FaHome, FaCode, FaMobileAlt, FaGlobe, FaChartLine, FaEnvelope, FaArrowLeft, FaBars, FaUsers, FaBlog, FaShoppingCart, FaPaintBrush } from 'react-icons/fa';
 import React from 'react';
 import SearchResult from './SearchResult';
 import { navigation, promotions } from './navigation-data';
@@ -44,7 +44,7 @@ interface MenuItem {
 const iconMap: { [key: string]: any } = {
   'home': FaHome,
   'globe': FaGlobe,
-  'mobile': FaMobile,
+  'mobile': FaMobileAlt,
   'chart-line': FaChartLine,
   'shopping-cart': FaShoppingCart,
   'paint-brush': FaPaintBrush,
@@ -59,7 +59,7 @@ function getIconComponent(iconName?: string) {
   const iconMap = {
     'home': FaHome,
     'globe': FaGlobe,
-    'mobile': FaMobile,
+    'mobile': FaMobileAlt,
     'chart-line': FaChartLine,
     'shopping-cart': FaShoppingCart,
     'paint-brush': FaPaintBrush,

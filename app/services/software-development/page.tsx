@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
-import { FaCode, FaMobile, FaShield } from 'react-icons/fa';
+import { FaCode, FaMobileAlt, FaShieldAlt } from 'react-icons/fa';
 
 export const metadata: Metadata = {
   title: 'פיתוח תוכנה - WebStudio',
@@ -60,12 +60,12 @@ export default function SoftwareDevelopmentPage() {
           description: 'שימוש בטכנולוגיות חדישות'
         },
         {
-          icon: FaMobile,
+          icon: FaMobileAlt,
           title: 'חווית משתמש',
           description: 'ממשק נוח ואינטואיטיבי'
         },
         {
-          icon: FaShield,
+          icon: FaShieldAlt,
           title: 'אבטחת מידע',
           description: 'הגנה מקסימלית על המידע'
         }

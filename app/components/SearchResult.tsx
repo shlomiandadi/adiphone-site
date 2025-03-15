@@ -1,6 +1,6 @@
 'use client';
 
-import { FaHome, FaCode, FaMobile, FaGlobe, FaChartLine, FaShoppingCart, FaPaintBrush, FaUsers, FaBlog, FaEnvelope } from 'react-icons/fa';
+import { FaHome, FaCode, FaMobileAlt, FaGlobe, FaChartLine, FaShoppingCart, FaPaintBrush, FaUsers, FaBlog, FaEnvelope } from 'react-icons/fa';
 
 interface SearchResultProps {
   suggestion: {
@@ -15,7 +15,7 @@ interface SearchResultProps {
 const iconMap: { [key: string]: any } = {
   'home': FaHome,
   'globe': FaGlobe,
-  'mobile': FaMobile,
+  'mobile': FaMobileAlt,
   'chart-line': FaChartLine,
   'shopping-cart': FaShoppingCart,
   'paint-brush': FaPaintBrush,

@@ -30,7 +30,8 @@ export default function Blog() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        },
+          'Accept': 'application/json'
+        }
       });
 
       if (!response.ok) {
@@ -39,6 +40,9 @@ export default function Blog() {
       }
 
       const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid response format');
+      }
       setPosts(data);
     } catch (error) {
       console.error('Error fetching blogs:', error);

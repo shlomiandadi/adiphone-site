@@ -26,7 +26,7 @@ export default function Blog() {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(`/api/posts`, {
+      const response = await fetch(`/.netlify/functions/next/api/posts`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +34,8 @@ export default function Blog() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch blogs');
+        const errorData = await response.json().catch(() => ({ error: 'Failed to fetch blogs' }));
+        throw new Error(errorData.error || 'Failed to fetch blogs');
       }
 
       const data = await response.json();

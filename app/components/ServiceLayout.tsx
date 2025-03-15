@@ -3,28 +3,28 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart } from 'react-icons/fa';
+import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobile, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 interface ServiceLayoutProps {
   title: string;
   subtitle: string;
-  description: string;
+  description: React.ReactNode;
   heroImage: string;
-  features: {
+  features: Array<{
     title: string;
     description: string;
     icon: string;
-  }[];
+  }>;
   benefits: string[];
-  process: {
+  process: Array<{
     title: string;
     description: string;
-  }[];
-  faq: {
+  }>;
+  faq: Array<{
     question: string;
     answer: string;
-  }[];
+  }>;
   portfolio: string[];
 }
 
@@ -60,19 +60,19 @@ const iconAnimation = {
   }
 };
 
-const getIconComponent = (iconName: string) => {
-  const icons: { [key: string]: React.ReactNode } = {
-    'box': <FaBox />,
-    'credit-card': <FaCreditCard />,
-    'robot': <FaRobot />,
-    'chart-line': <FaChartLine />,
-    'lightbulb': <FaLightbulb />,
-    'rocket': <FaRocket />,
-    'users': <FaUsers />,
-    'cog': <FaCog />,
-    'heart': <FaHeart />
-  };
-  return icons[iconName] || <FaCog />;
+const iconMap: { [key: string]: React.ComponentType } = {
+  search: FaSearch,
+  cog: FaCog,
+  link: FaLink,
+  'file-text': FaFileAlt,
+  google: FaGoogle,
+  share: FaShareAlt,
+  target: FaBullseye,
+  chart: FaChartLine,
+  mobile: FaMobile,
+  'paint-brush': FaPaintBrush,
+  bolt: FaBolt,
+  shield: FaShieldAlt
 };
 
 export default function ServiceLayout({
@@ -130,9 +130,9 @@ export default function ServiceLayout({
             variants={fadeInUp}
             className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800"
           >
-            <p className="whitespace-pre-line text-lg leading-relaxed text-gray-700 dark:text-gray-200">
+            <div className="prose prose-lg mx-auto max-w-4xl dark:prose-invert">
               {description}
-            </p>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -140,6 +140,15 @@ export default function ServiceLayout({
       {/* Features Section */}
       <section className="bg-white px-4 py-16 dark:bg-gray-900">
         <div className="container mx-auto max-w-6xl">
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+            className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white"
+          >
+            היתרונות שלנו
+          </motion.h2>
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -147,29 +156,32 @@ export default function ServiceLayout({
             variants={staggerChildren}
             className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
           >
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="group rounded-xl bg-gradient-to-br from-gray-50 to-white p-6 shadow-lg transition-all hover:shadow-2xl dark:from-gray-800 dark:to-gray-700 dark:hover:from-blue-900 dark:hover:to-purple-900"
-              >
+            {features.map((feature, index) => {
+              const Icon = iconMap[feature.icon];
+              return (
                 <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  whileHover="hover"
-                  variants={iconAnimation}
-                  className="mb-4 text-3xl text-blue-600 dark:text-blue-400"
+                  key={index}
+                  variants={fadeInUp}
+                  className="group rounded-xl bg-gradient-to-br from-gray-50 to-white p-6 shadow-lg transition-all hover:shadow-2xl dark:from-gray-800 dark:to-gray-700 dark:hover:from-blue-900 dark:hover:to-purple-900"
                 >
-                  {getIconComponent(feature.icon)}
+                  <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    whileHover="hover"
+                    variants={iconAnimation}
+                    className="mb-4 text-3xl text-blue-600 dark:text-blue-400"
+                  >
+                    {Icon && <Icon className="h-12 w-12 text-blue-600 dark:text-blue-400" />}
+                  </motion.div>
+                  <h3 className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {feature.description}
+                  </p>
                 </motion.div>
-                <h3 className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
+              );
+            })}
           </motion.div>
         </div>
       </section>

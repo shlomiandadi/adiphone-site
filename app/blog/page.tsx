@@ -39,8 +39,7 @@ export default function Blog() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch blogs');
+          throw new Error('Failed to fetch blogs');
         }
         const data = await response.json();
         setArticles(Array.isArray(data) ? data : []);

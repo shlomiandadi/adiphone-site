@@ -3,7 +3,7 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
-    const response = await fetch(`http://localhost:8000/api/posts/${params.slug}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${params.slug}`);
     const data = await response.json();
     
     if (!data) {

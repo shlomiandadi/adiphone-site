@@ -26,7 +26,7 @@ export default function Blog() {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(`/.netlify/functions/next/api/posts`, {
+      const response = await fetch(`/api/posts`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -40,6 +40,7 @@ const ContactForm: React.FC = () => {
         email: '',
         phone: '',
         message: '',
+        service: 'other'
       });
     } catch (error) {
       console.error('Error submitting form:', error);

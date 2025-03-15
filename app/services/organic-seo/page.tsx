@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
+import { FaChartLine, FaLightbulb, FaRobot } from 'react-icons/fa';
 
 export const metadata: Metadata = {
   title: 'קידום אורגני - WebStudio',
@@ -21,17 +22,17 @@ export default function OrganicSeoPage() {
       heroImage="/images/services/organic-seo-hero.jpg"
       features={[
         {
-          icon: 'chart-line',
+          icon: FaChartLine,
           title: 'תוצאות מוכחות',
           description: 'שיפור דירוג בתוצאות החיפוש'
         },
         {
-          icon: 'lightbulb',
+          icon: FaLightbulb,
           title: 'אסטרטגיה חכמה',
           description: 'תכנון וביצוע מותאם אישית'
         },
         {
-          icon: 'robot',
+          icon: FaRobot,
           title: 'כלים מתקדמים',
           description: 'שימוש בכלי SEO מובילים'
         }

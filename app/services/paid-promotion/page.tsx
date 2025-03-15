@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
+import { FaChartLine, FaUsers, FaLightbulb } from 'react-icons/fa';
 
 export const metadata: Metadata = {
   title: 'קידום ממומן - WebStudio',
@@ -21,17 +22,17 @@ export default function PaidPromotionPage() {
       heroImage="/images/services/paid-promotion-hero.jpg"
       features={[
         {
-          icon: 'chart-line',
+          icon: FaChartLine,
           title: 'ROI מקסימלי',
           description: 'מיקסום החזר ההשקעה בפרסום'
         },
         {
-          icon: 'users',
+          icon: FaUsers,
           title: 'קהל יעד ממוקד',
           description: 'פילוח מדויק של קהל המטרה'
         },
         {
-          icon: 'lightbulb',
+          icon: FaLightbulb,
           title: 'אסטרטגיה חכמה',
           description: 'תכנון וביצוע מותאם אישית'
         }

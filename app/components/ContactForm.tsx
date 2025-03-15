@@ -46,7 +46,7 @@ const ContactForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/.netlify/functions/next/api/contact/submit`, {
+      const response = await fetch(`/api/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

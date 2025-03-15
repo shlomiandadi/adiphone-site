@@ -19,16 +19,68 @@ interface CreatePostInput {
 export async function GET(request: Request) {
   try {
     const posts = await prisma.post.findMany({
-      orderBy: {
-        createdAt: 'desc',
+      where: {
+        published: true
       },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      select: {
+        id: true,
+        title: true,
+        excerpt: true,
+        mainImage: true,
+        category: true,
+        createdAt: true,
+        tags: true,
+        slug: true,
+        published: true,
+        authorName: true,
+        authorEmail: true,
+        views: true,
+        likes: true,
+        metaTitle: true,
+        metaDesc: true,
+        updatedAt: true
+      }
     });
 
-    return NextResponse.json({ success: true, data: posts });
+    // Format the posts to match the expected structure
+    const formattedPosts = posts.map(post => {
+      const createdDate = new Date(post.createdAt);
+      const updatedDate = new Date(post.updatedAt);
+
+      return {
+        _id: post.id,
+        title: post.title,
+        description: post.excerpt,
+        image: post.mainImage || '/images/blog-placeholder.jpg',
+        category: post.category,
+        date: createdDate.toLocaleDateString('he-IL', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+        keywords: post.tags,
+        relatedPosts: [],
+        slug: post.slug,
+        published: post.published,
+        authorName: post.authorName || 'Admin',
+        authorEmail: post.authorEmail,
+        views: post.views,
+        likes: post.likes,
+        metaTitle: post.metaTitle,
+        metaDesc: post.metaDesc,
+        createdAt: createdDate.toISOString(),
+        updatedAt: updatedDate.toISOString()
+      };
+    });
+
+    return NextResponse.json(formattedPosts);
   } catch (error) {
     console.error('Error fetching posts:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch posts' },
+      { error: 'Failed to fetch posts' },
       { status: 500 }
     );
   }

@@ -2,6 +2,7 @@
 
 import ServiceLayout from '../../components/ServiceLayout';
 import Link from 'next/link';
+import { FaGoogle, FaShareAlt, FaBullseye, FaChartLine } from 'react-icons/fa';
 
 export default function PPCService() {
   const serviceData = {
@@ -33,22 +34,22 @@ export default function PPCService() {
       {
         title: "Google Ads",
         description: "קמפיינים ממומנים ברשת החיפוש והתצוגה של גוגל",
-        icon: "google"
+        icon: FaGoogle
       },
       {
         title: "מדיה חברתית",
         description: "קמפיינים בפייסבוק, אינסטגרם ולינקדאין",
-        icon: "share"
+        icon: FaShareAlt
       },
       {
         title: "רימרקטינג",
         description: "קמפיינים ממוקדים לקהל שכבר מכיר אותך",
-        icon: "target"
+        icon: FaBullseye
       },
       {
         title: "אופטימיזציה",
         description: "שיפור מתמיד של הביצועים והתוצאות",
-        icon: "chart"
+        icon: FaChartLine
       }
     ],
     benefits: [

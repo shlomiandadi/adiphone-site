@@ -2,6 +2,7 @@
 
 import ServiceLayout from '../../components/ServiceLayout';
 import Link from 'next/link';
+import { FaMobile, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
 
 export default function MobileAppService() {
   const serviceData = {
@@ -43,22 +44,22 @@ export default function MobileAppService() {
       {
         title: "פיתוח Cross-Platform",
         description: "אפליקציה אחת שרצה על iOS ו-Android עם קוד משותף",
-        icon: "mobile"
+        icon: FaMobile
       },
       {
         title: "עיצוב UX/UI מתקדם",
         description: "ממשק משתמש אינטואיטיבי ועיצוב מודרני",
-        icon: "paint-brush"
+        icon: FaPaintBrush
       },
       {
         title: "ביצועים מהירים",
         description: "אופטימיזציה לביצועים מקסימליים וחוויה חלקה",
-        icon: "bolt"
+        icon: FaBolt
       },
       {
         title: "אבטחה מתקדמת",
         description: "הגנה על מידע רגיש ופרטיות המשתמשים",
-        icon: "shield"
+        icon: FaShieldAlt
       }
     ],
     benefits: [

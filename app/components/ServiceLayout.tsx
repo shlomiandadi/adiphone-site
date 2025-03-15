@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobile, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { IconType } from 'react-icons';
 
 interface ServiceLayoutProps {
   title: string;
@@ -14,7 +15,7 @@ interface ServiceLayoutProps {
   features: Array<{
     title: string;
     description: string;
-    icon: string;
+    icon: IconType;
   }>;
   benefits: string[];
   process: Array<{
@@ -60,7 +61,7 @@ const iconAnimation = {
   }
 };
 
-const iconMap: { [key: string]: React.ComponentType } = {
+const iconMap: { [key: string]: IconType } = {
   search: FaSearch,
   cog: FaCog,
   link: FaLink,
@@ -157,7 +158,7 @@ export default function ServiceLayout({
             className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
           >
             {features.map((feature, index) => {
-              const Icon = iconMap[feature.icon];
+              const Icon = feature.icon;
               return (
                 <motion.div
                   key={index}
@@ -171,7 +172,7 @@ export default function ServiceLayout({
                     variants={iconAnimation}
                     className="mb-4 text-3xl text-blue-600 dark:text-blue-400"
                   >
-                    {Icon && <Icon className="h-12 w-12 text-blue-600 dark:text-blue-400" />}
+                    <Icon className="h-12 w-12 text-blue-600 dark:text-blue-400" />
                   </motion.div>
                   <h3 className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
                     {feature.title}

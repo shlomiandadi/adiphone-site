@@ -1,41 +1,7 @@
 'use client';
 
-import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import { FaLaptopCode, FaMobileAlt, FaTachometerAlt } from 'react-icons/fa';
-
-export const metadata: Metadata = {
-  title: 'פיתוח אתרים - WebStudio',
-  description: 'פיתוח אתרים מקצועי ומותאם אישית',
-};
-
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: '#2563eb',
-};
-
-const webDevContent = `
-<h2>בניית אתרים מקצועית ומותאמת אישית</h2>
-<p>אנחנו מתמחים בבניית אתרים מודרניים, מהירים ומותאמים לכל המכשירים. הצוות המקצועי שלנו משלב טכנולוגיות מתקדמות עם עיצוב חדשני כדי ליצור חווית משתמש מושלמת.</p>
-
-<h3>למה לבחור בנו?</h3>
-<ul>
-  <li>טכנולוגיות מתקדמות ועדכניות</li>
-  <li>עיצוב מותאם אישית לצרכי העסק שלך</li>
-  <li>ביצועים מהירים ואופטימיזציה מקסימלית</li>
-  <li>תמיכה טכנית מקצועית</li>
-  <li>אבטחה מתקדמת</li>
-</ul>
-
-<h3>הטכנולוגיות שלנו</h3>
-<p>אנחנו עובדים עם הטכנולוגיות המובילות בתעשייה:</p>
-<ul>
-  <li>React ו-Next.js לפיתוח מודרני וביצועים מעולים</li>
-  <li>Node.js ו-Python לצד השרת</li>
-  <li>MongoDB ו-PostgreSQL למסדי נתונים</li>
-  <li>AWS ו-Vercel לאחסון ופריסה</li>
-</ul>`;
 
 export default function WebDevelopmentPage() {
   return (

@@ -17,6 +17,7 @@ interface CreatePostInput {
 }
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
   let client;
@@ -85,15 +86,29 @@ export async function GET(request: Request) {
       };
     });
 
-    return NextResponse.json(formattedPosts);
+    return new NextResponse(JSON.stringify(formattedPosts), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+      }
+    });
   } catch (error) {
     console.error('Error fetching posts:', error);
-    return NextResponse.json({ 
+    return new NextResponse(JSON.stringify({ 
       error: 'Failed to fetch posts',
       details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-    }, {
-      status: 500
+    }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+      }
     });
   } finally {
     if (client) {
@@ -125,18 +140,32 @@ export async function POST(request: Request) {
 
     for (const field of requiredFields) {
       if (!data[field]) {
-        return NextResponse.json(
-          { error: `Missing required field: ${field}` },
-          { status: 400 }
-        );
+        return new NextResponse(JSON.stringify({ 
+          error: `Missing required field: ${field}` 
+        }), {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+          }
+        });
       }
     }
 
     if (!Object.values(Category).includes(data.category)) {
-      return NextResponse.json(
-        { error: 'Invalid category' },
-        { status: 400 }
-      );
+      return new NextResponse(JSON.stringify({ 
+        error: 'Invalid category' 
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+        }
+      });
     }
 
     const postInput: CreatePostInput = {
@@ -160,30 +189,50 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ 
+    return new NextResponse(JSON.stringify({ 
       success: true, 
       data: post,
       message: 'Post created successfully'
+    }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+      }
     });
   } catch (error) {
     console.error('Error creating post:', error);
     
     if (error instanceof Error) {
       if (error.message.includes('Unique constraint')) {
-        return NextResponse.json(
-          { error: 'A post with this title already exists' },
-          { status: 409 }
-        );
+        return new NextResponse(JSON.stringify({ 
+          error: 'A post with this title already exists' 
+        }), {
+          status: 409,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+          }
+        });
       }
     }
 
-    return NextResponse.json(
-      { 
-        error: 'Failed to create post',
-        details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
-      },
-      { status: 500 }
-    );
+    return new NextResponse(JSON.stringify({ 
+      error: 'Failed to create post',
+      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+    }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+      }
+    });
   } finally {
     if (client) {
       await prisma.$disconnect();
@@ -192,5 +241,12 @@ export async function POST(request: Request) {
 }
 
 export async function OPTIONS(request: Request) {
-  return NextResponse.json({}, { status: 200 });
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+    }
+  });
 }

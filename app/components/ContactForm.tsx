@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ContactService } from '../types';
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -6,7 +7,7 @@ const ContactForm: React.FC = () => {
     email: '',
     phone: '',
     message: '',
-    service: 'OTHER' as ContactService
+    service: ContactService.OTHER
   });
   const [status, setStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,10 +52,7 @@ const ContactForm: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          service: formData.service as ContactService
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -68,7 +66,7 @@ const ContactForm: React.FC = () => {
         email: '',
         phone: '',
         message: '',
-        service: 'OTHER'
+        service: ContactService.OTHER
       });
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -79,10 +77,11 @@ const ContactForm: React.FC = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const value = e.target.name === 'service' ? e.target.value as ContactService : e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: value
+    }));
   };
 
   return (
@@ -144,10 +143,10 @@ const ContactForm: React.FC = () => {
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:text-white"
           required
         >
-          <option value="WEB_DEVELOPMENT">פיתוח אתרים</option>
-          <option value="SEO">קידום אורגני</option>
-          <option value="PPC">שיווק ממומן</option>
-          <option value="OTHER">אחר</option>
+          <option value={ContactService.WEB_DEVELOPMENT}>פיתוח אתרים</option>
+          <option value={ContactService.SEO}>קידום אתרים</option>
+          <option value={ContactService.PPC}>פרסום ממומן</option>
+          <option value={ContactService.OTHER}>אחר</option>
         </select>
       </div>
 

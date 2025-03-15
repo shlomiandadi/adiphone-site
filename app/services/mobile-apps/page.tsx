@@ -2,64 +2,40 @@
 
 import ServiceLayout from '../../components/ServiceLayout';
 import Link from 'next/link';
-import { FaMobile, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
+import { FaMobile, FaRocket, FaCode, FaTools, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
 
 export default function MobileAppService() {
   const serviceData = {
     title: "פיתוח אפליקציות",
-    subtitle: "פיתוח אפליקציות חדשניות שמשנות את כללי המשחק",
-    description: (
-      <>
-        <p>
-          פיתוח אפליקציות מודרניות הוא הרבה יותר מסתם כתיבת קוד - זו אומנות של יצירת חוויות דיגיטליות מרהיבות שמשנות את האופן בו אנשים חיים, עובדים ומתקשרים.
-        </p>
-        <p>
-          הצוות שלנו מתמחה בפיתוח אפליקציות Cross-Platform עבור iOS ו-Android, תוך שימוש בטכנולוגיות המתקדמות ביותר כמו React Native, Flutter ו-Native Development. אנו מקפידים על סטנדרטים גבוהים של קוד נקי, ביצועים מהירים, ואבטחה מתקדמת.
-        </p>
-        <p>
-          בכל פרויקט, אנו שמים דגש על{' '}
-          <Link href="/services/ui-design" className="text-blue-600 hover:underline">
-            חווית משתמש מעולה ועיצוב מודרני
-          </Link>
-          , וארכיטקטורה מדרגית שמאפשרת צמיחה והתפתחות. אנו מלווים אתכם בכל שלב - מהרעיון הראשוני ועד להשקה בחנויות האפליקציות ומעבר לכך.
-        </p>
-        <p>
-          בשילוב עם{' '}
-          <Link href="/services/cloud" className="text-blue-600 hover:underline">
-            שירותי ענן
-          </Link>
-          {' '}מתקדמים ו{' '}
-          <Link href="/services/ai" className="text-blue-600 hover:underline">
-            פתרונות בינה מלאכותית
-          </Link>
-          , אנחנו יכולים ליצור אפליקציות חכמות ומתקדמות שיתנו לכם יתרון תחרותי משמעותי.
-        </p>
-        <p>
-          הניסיון העשיר שלנו בפיתוח אפליקציות עבור מגוון תעשיות - מסטארטאפים ועד לחברות אנטרפרייז - מאפשר לנו להביא תובנות וניסיון מעשי שיעזרו להפוך את החזון שלכם למציאות.
-        </p>
-      </>
-    ),
-    heroImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&auto=format&fit=crop&q=60",
+    subtitle: "אפליקציות מובייל חדשניות ומותאמות אישית",
+    description: `אנחנו מתמחים בפיתוח אפליקציות מובייל מתקדמות לעסקים וארגונים. הצוות שלנו משלב מומחיות טכנית עם הבנה עסקית עמוקה כדי ליצור אפליקציות שמביאות ערך אמיתי ללקוחות שלכם.
+
+    אנחנו מפתחים אפליקציות native ל-iOS ו-Android, וכן אפליקציות היברידיות באמצעות טכנולוגיות כמו React Native ו-Flutter. הגישה שלנו מבטיחה ביצועים מעולים, חווית משתמש מצוינת, ותאימות מלאה לכל הפלטפורמות.
+    
+    הפיתוח כולל תכנון UI/UX מדויק, אינטגרציה עם מערכות קיימות, אבטחת מידע ברמה הגבוהה ביותר, ותמיכה טכנית מתמשכת. אנחנו מלווים אתכם משלב הרעיון ועד להשקה ומעבר לה.
+    
+    בנוסף לפיתוח האפליקציה עצמה, אנחנו מציעים שירותי תחזוקה, עדכונים, ואופטימיזציה מתמשכת כדי להבטיח שהאפליקציה שלכם תישאר רלוונטית ויעילה לאורך זמן.`,
+    heroImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200",
     features: [
       {
-        title: "פיתוח Cross-Platform",
-        description: "אפליקציה אחת שרצה על iOS ו-Android עם קוד משותף",
+        title: "פיתוח מותאם",
+        description: "פיתוח אפליקציות מותאמות אישית לצרכים שלכם",
         icon: FaMobile
       },
       {
-        title: "עיצוב UX/UI מתקדם",
-        description: "ממשק משתמש אינטואיטיבי ועיצוב מודרני",
-        icon: FaPaintBrush
+        title: "ביצועים מעולים",
+        description: "אפליקציות מהירות עם חווית משתמש מעולה",
+        icon: FaRocket
       },
       {
-        title: "ביצועים מהירים",
-        description: "אופטימיזציה לביצועים מקסימליים וחוויה חלקה",
-        icon: FaBolt
+        title: "קוד איכותי",
+        description: "פיתוח בסטנדרטים הגבוהים ביותר",
+        icon: FaCode
       },
       {
-        title: "אבטחה מתקדמת",
-        description: "הגנה על מידע רגיש ופרטיות המשתמשים",
-        icon: FaShieldAlt
+        title: "תחזוקה ותמיכה",
+        description: "תמיכה טכנית ועדכונים שוטפים",
+        icon: FaTools
       }
     ],
     benefits: [

@@ -1,6 +1,7 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import { FaCode, FaLaptopCode, FaShieldAlt, FaCogs } from 'react-icons/fa';
 
 export default function SoftwareService() {
   const serviceData = {
@@ -16,24 +17,24 @@ export default function SoftwareService() {
     heroImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200",
     features: [
       {
-        title: "פיתוח מותאם אישית",
-        description: "פתרונות תוכנה המותאמים במדויק לצרכים שלכם",
-        icon: "code"
+        title: "פיתוח מותאם",
+        description: "פיתוח תוכנה מותאם אישית לצרכים שלכם",
+        icon: FaCode
       },
       {
-        title: "ארכיטקטורה מתקדמת",
-        description: "תכנון מערכות מודרני וסקלבילי",
-        icon: "sitemap"
+        title: "פתרונות מתקדמים",
+        description: "שימוש בטכנולוגיות החדשניות ביותר",
+        icon: FaLaptopCode
       },
       {
         title: "אבטחת מידע",
-        description: "אבטחה מובנית בכל שלבי הפיתוח",
-        icon: "shield"
+        description: "אבטחה מתקדמת והגנה על המידע העסקי",
+        icon: FaShieldAlt
       },
       {
         title: "תחזוקה ותמיכה",
-        description: "ליווי מתמשך ותמיכה טכנית מקצועית",
-        icon: "wrench"
+        description: "תמיכה טכנית ועדכונים שוטפים",
+        icon: FaCogs
       }
     ],
     benefits: [

@@ -5,18 +5,10 @@ import { ContactService, ContactStatus } from '@prisma/client';
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
+  let client;
   try {
-    // Test database connection
-    try {
-      await prisma.$connect();
-      console.log('Database connection successful');
-    } catch (dbError) {
-      console.error('Database connection failed:', dbError);
-      return NextResponse.json(
-        { error: 'Database connection failed' },
-        { status: 500 }
-      );
-    }
+    client = await prisma.$connect();
+    console.log('Database connection successful');
 
     const data = await request.json();
 
@@ -92,12 +84,14 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { 
         error: 'Failed to submit contact form',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
       },
       { status: 500 }
     );
   } finally {
-    await prisma.$disconnect();
+    if (client) {
+      await prisma.$disconnect();
+    }
   }
 }
 

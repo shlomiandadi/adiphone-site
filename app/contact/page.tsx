@@ -63,7 +63,7 @@ export default function Contact() {
         <div className="absolute inset-0 flex items-center justify-center text-center">
           <div className="container mx-auto px-4">
             <h1 className="mb-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
-              צור קשר
+              צור קשר עם עדי פון תקשורת
             </h1>
             <p className="mx-auto max-w-2xl text-xl text-white/90 md:text-2xl">
               נשמח לשמוע על הפרויקט שלך ולעזור לך להפוך את החזון למציאות

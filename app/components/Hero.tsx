@@ -28,12 +28,12 @@ export default function Hero() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              פתרונות דיגיטליים
+              עדי פון תקשורת
               <br />
-              <span className="text-primary">מותאמים אישית</span>
+              <span className="text-primary">פתרונות דיגיטליים מתקדמים</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto lg:mr-0">
-              אנחנו מתמחים בבניית אתרים, אפליקציות ופתרונות דיגיטליים מתקדמים שיעזרו לעסק שלך לצמוח ולהתפתח
+              אנחנו מתמחים בבניית אתרים, קידום אתרים ופתרונות דיגיטליים מתקדמים שיעזרו לעסק שלך לצמוח ולהתפתח
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-end gap-4">
               <Link

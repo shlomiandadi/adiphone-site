@@ -23,8 +23,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'עדי פון - קידום ובנית אתרים',
-  description: 'שירותי קידום אתרים מקצועיים, פיתוח אתרים, שיווק דיגיטלי ועוד',
+  title: 'עדי פון תקשורת - קידום ובניית אתרים',
+  description: 'עדי פון תקשורת - שירותי קידום אתרים מקצועיים, פיתוח אתרים, שיווק דיגיטלי ועוד',
   icons: {
     icon: '/favicon.ico',
   },

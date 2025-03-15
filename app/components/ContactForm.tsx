@@ -35,14 +35,13 @@ const ContactForm: React.FC = () => {
     return true;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
+    setIsSubmitting(true);
     setError('');
-    setSuccess('');
 
     if (!validateForm()) {
-      setLoading(false);
+      setIsSubmitting(false);
       return;
     }
 
@@ -57,9 +56,10 @@ const ContactForm: React.FC = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'שגיאה בשליחת הטופס');
+        throw new Error(errorData.error || 'Failed to submit form');
       }
 
+      const data = await response.json();
       setSuccess('הטופס נשלח בהצלחה!');
       setFormData({
         name: '',
@@ -70,9 +70,9 @@ const ContactForm: React.FC = () => {
       });
     } catch (error) {
       console.error('Error submitting form:', error);
-      setError('שגיאה בשליחת הטופס. אנא נסה שוב.');
+      setError(error instanceof Error ? error.message : 'Failed to submit form');
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 

@@ -26,7 +26,10 @@ export async function GET(request: Request) {
       console.log('Database connection successful');
     } catch (dbError) {
       console.error('Database connection failed:', dbError);
-      throw new Error('Database connection failed');
+      return NextResponse.json(
+        { error: 'Database connection failed' },
+        { status: 500 }
+      );
     }
 
     const posts = await prisma.post.findMany({
@@ -56,6 +59,10 @@ export async function GET(request: Request) {
       }
     });
 
+    if (!posts || posts.length === 0) {
+      return NextResponse.json([]);
+    }
+
     // Format the posts to match the expected structure
     const formattedPosts = posts.map(post => {
       const createdDate = new Date(post.createdAt);
@@ -72,7 +79,7 @@ export async function GET(request: Request) {
           month: 'long',
           day: 'numeric'
         }),
-        keywords: post.tags,
+        keywords: post.tags || [],
         relatedPosts: [],
         slug: post.slug,
         published: post.published,
@@ -90,9 +97,8 @@ export async function GET(request: Request) {
     return NextResponse.json(formattedPosts);
   } catch (error) {
     console.error('Error fetching posts:', error);
-    console.error('Error stack:', error.stack);
     return NextResponse.json({ 
-      error: 'Internal Server Error', 
+      error: 'Failed to fetch posts',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined,
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     }, {
@@ -104,14 +110,19 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (request.method !== 'POST') {
-    return NextResponse.json(
-      { success: false, error: 'Method not allowed' },
-      { status: 405 }
-    );
-  }
-
   try {
+    // Test database connection
+    try {
+      await prisma.$connect();
+      console.log('Database connection successful');
+    } catch (dbError) {
+      console.error('Database connection failed:', dbError);
+      return NextResponse.json(
+        { error: 'Database connection failed' },
+        { status: 500 }
+      );
+    }
+
     const data = await request.json();
     
     // Validate required fields
@@ -131,10 +142,18 @@ export async function POST(request: Request) {
     for (const field of requiredFields) {
       if (!data[field]) {
         return NextResponse.json(
-          { success: false, error: `Missing required field: ${field}` },
+          { error: `Missing required field: ${field}` },
           { status: 400 }
         );
       }
+    }
+
+    // Validate category
+    if (!Object.values(Category).includes(data.category)) {
+      return NextResponse.json(
+        { error: 'Invalid category' },
+        { status: 400 }
+      );
     }
 
     const postInput: CreatePostInput = {
@@ -158,7 +177,11 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ success: true, data: post });
+    return NextResponse.json({ 
+      success: true, 
+      data: post,
+      message: 'Post created successfully'
+    });
   } catch (error) {
     console.error('Error creating post:', error);
     
@@ -166,15 +189,25 @@ export async function POST(request: Request) {
       // Check for unique constraint violation
       if (error.message.includes('Unique constraint')) {
         return NextResponse.json(
-          { success: false, error: 'A post with this title already exists' },
+          { error: 'A post with this title already exists' },
           { status: 409 }
         );
       }
     }
 
     return NextResponse.json(
-      { success: false, error: 'Failed to create post' },
+      { 
+        error: 'Failed to create post',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      },
       { status: 500 }
     );
+  } finally {
+    await prisma.$disconnect();
   }
+}
+
+// Handle OPTIONS request for CORS
+export async function OPTIONS(request: Request) {
+  return NextResponse.json({}, { status: 200 });
 }

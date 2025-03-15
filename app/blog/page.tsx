@@ -143,35 +143,57 @@ export default function Blog() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {articles.map((article) => (
-                <article
-                  key={article._id}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="relative h-48">
-                    <Image
-                      src={article.image}
-                      alt={article.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">
-                        {article.category}
-                      </span>
-                      <span className="text-gray-500 text-sm">{article.date}</span>
+                <div key={article._id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                  <Link href={`/blog/${article.slug}`}>
+                    <div className="relative h-48">
+                      <Image
+                        src={article.image}
+                        alt={article.title}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
-                    <h3 className="text-xl font-bold mb-2">{article.title}</h3>
+                  </Link>
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 mb-4">
+                      <span className="text-sm text-gray-500">{article.date}</span>
+                      <span className="text-sm text-blue-600">{article.category}</span>
+                    </div>
+                    <Link href={`/blog/${article.slug}`}>
+                      <h2 className="text-xl font-bold mb-2 hover:text-blue-600 transition-colors">{article.title}</h2>
+                    </Link>
                     <p className="text-gray-600 mb-4">{article.description}</p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {article.keywords?.map((keyword, index) => (
+                        <span key={index} className="text-sm bg-gray-100 px-3 py-1 rounded-full">
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
+                    {article.relatedPosts && article.relatedPosts.length > 0 && (
+                      <div className="mt-4">
+                        <h3 className="text-sm font-semibold mb-2">מאמרים קשורים:</h3>
+                        <div className="space-y-1">
+                          {article.relatedPosts.map((related, index) => (
+                            <Link
+                              key={index}
+                              href={`/blog/${related.slug}`}
+                              className="block text-sm text-blue-600 hover:underline"
+                            >
+                              {related.title}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                     <Link
                       href={`/blog/${article.slug}`}
-                      className="text-blue-600 hover:text-blue-700 font-semibold"
+                      className="inline-block mt-4 text-blue-600 hover:text-blue-700 font-medium"
                     >
                       קרא עוד →
                     </Link>
                   </div>
-                </article>
+                </div>
               ))}
             </div>
           )}

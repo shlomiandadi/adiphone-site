@@ -1,6 +1,7 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import Link from 'next/link';
 
 export default function MobileAppService() {
   const serviceData = {
@@ -10,7 +11,9 @@ export default function MobileAppService() {
 
     הצוות שלנו מתמחה בפיתוח אפליקציות Cross-Platform עבור iOS ו-Android, תוך שימוש בטכנולוגיות המתקדמות ביותר כמו React Native, Flutter ו-Native Development. אנו מקפידים על סטנדרטים גבוהים של קוד נקי, ביצועים מהירים, ואבטחה מתקדמת.
     
-    בכל פרויקט, אנו שמים דגש על חווית משתמש מעולה, עיצוב מודרני, וארכיטקטורה מדרגית שמאפשרת צמיחה והתפתחות. אנו מלווים אתכם בכל שלב - מהרעיון הראשוני ועד להשקה בחנויות האפליקציות ומעבר לכך.
+    בכל פרויקט, אנו שמים דגש על <Link href="/services/ui-design" className="text-blue-600 hover:underline">חווית משתמש מעולה ועיצוב מודרני</Link>, וארכיטקטורה מדרגית שמאפשרת צמיחה והתפתחות. אנו מלווים אתכם בכל שלב - מהרעיון הראשוני ועד להשקה בחנויות האפליקציות ומעבר לכך.
+    
+    בשילוב עם <Link href="/services/cloud" className="text-blue-600 hover:underline">שירותי ענן</Link> מתקדמים ו<Link href="/services/ai" className="text-blue-600 hover:underline">פתרונות בינה מלאכותית</Link>, אנחנו יכולים ליצור אפליקציות חכמות ומתקדמות שיתנו לכם יתרון תחרותי משמעותי.
     
     הניסיון העשיר שלנו בפיתוח אפליקציות עבור מגוון תעשיות - מסטארטאפים ועד לחברות אנטרפרייז - מאפשר לנו להביא תובנות וניסיון מעשי שיעזרו להפוך את החזון שלכם למציאות.`,
     heroImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&auto=format&fit=crop&q=60",

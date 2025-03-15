@@ -1,6 +1,7 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import Link from 'next/link';
 
 export default function PPCService() {
   const serviceData = {
@@ -9,6 +10,8 @@ export default function PPCService() {
     description: `קמפיינים ממומנים הם אחד הכלים האפקטיביים ביותר להשגת תוצאות מהירות ומדידות בעולם הדיגיטלי. אנחנו מתמחים בניהול קמפיינים ממומנים בכל הפלטפורמות המובילות - Google Ads, Facebook, Instagram, LinkedIn ועוד.
 
     הצוות המקצועי שלנו מביא ניסיון עשיר בתכנון, הקמה וניהול של קמפיינים ממומנים מוצלחים. אנחנו משתמשים בכלים מתקדמים ובאסטרטגיות מוכחות כדי למקסם את התוצאות ולהשיג את היעדים העסקיים שלכם.
+    
+    בשילוב עם <Link href="/services/seo" className="text-blue-600 hover:underline">קידום אורגני</Link> ו<Link href="/services/analytics" className="text-blue-600 hover:underline">מערכות אנליטיקס</Link> מתקדמות, אנחנו יכולים ליצור אסטרטגיית שיווק דיגיטלי מקיפה שתביא לכם תוצאות מדידות.
     
     אנחנו מציעים ניהול קמפיינים מקיף הכולל מחקר מילות מפתח, כתיבת מודעות אפקטיביות, אופטימיזציה מתמדת, מעקב אחר ביצועים ודיווח שוטף. כל קמפיין מלווה במעקב צמוד ושקיפות מלאה.
     

@@ -1,6 +1,7 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import Link from 'next/link';
 
 export default function SEOService() {
   const serviceData = {
@@ -12,7 +13,9 @@ export default function SEOService() {
     
     הצוות המקצועי שלנו משתמש בכלים המתקדמים ביותר בתעשייה ועוקב אחר כל העדכונים והשינויים באלגוריתמים של גוגל. אנו מתאימים את האסטרטגיה שלנו באופן מתמיד כדי להבטיח תוצאות מיטביות עבור העסק שלכם.
     
-    אנו מאמינים בשקיפות מלאה ומספקים דוחות מפורטים המראים את התקדמות הקידום שלכם בזמן אמת.`,
+    אנו מאמינים בשקיפות מלאה ומספקים דוחות מפורטים המראים את התקדמות הקידום שלכם בזמן אמת.
+    
+    לצד <Link href="/services/ppc" className="text-blue-600 hover:underline">קמפיינים ממומנים</Link>, קידום אורגני הוא אחד הכלים החשובים ביותר לשיווק דיגיטלי. בשילוב עם <Link href="/services/wordpress" className="text-blue-600 hover:underline">בניית אתר וורדפרס</Link> מותאם ו<Link href="/services/analytics" className="text-blue-600 hover:underline">מערכות אנליטיקס</Link> מתקדמות, נוכל לבנות עבורכם אסטרטגיית שיווק דיגיטלי מקיפה.`,
     heroImage: "https://images.unsplash.com/photo-1571078732297-5db94f2dba4c?w=1200&auto=format&fit=crop&q=60",
     features: [
       {

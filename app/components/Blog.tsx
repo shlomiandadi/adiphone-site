@@ -24,27 +24,32 @@ export default function Blog() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchLatestBlogs() {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch blogs');
-        }
-        const data = await response.json();
-        setPosts(Array.isArray(data) ? data.slice(0, 3) : []);
-        setError(null);
-      } catch (error) {
-        console.error('Error fetching blogs:', error);
-        setError('אירעה שגיאה בטעינת הבלוגים');
-        setPosts([]);
-      } finally {
-        setLoading(false);
-      }
-    }
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    fetchLatestBlogs();
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch blogs');
+      }
+
+      const data = await response.json();
+      setPosts(data);
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+      setError(error instanceof Error ? error.message : 'Failed to fetch blogs');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
   }, []);
 
   if (loading) {

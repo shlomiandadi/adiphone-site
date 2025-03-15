@@ -13,8 +13,8 @@ interface BlogPost extends IBlog {
 
 async function getBlogPost(slug: string) {
   try {
-    const res = await fetch(`/api/posts/${slug}`, {
-      next: { revalidate: 60 },
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${slug}`, {
+      next: { revalidate: 60 } // Revalidate every minute
     });
     
     if (!res.ok) {
@@ -34,7 +34,7 @@ async function getRelatedPosts(relatedIds: string[]) {
   try {
     const posts = await Promise.all(
       relatedIds.map(async (slug) => {
-        const res = await fetch(`/api/blogs/${slug}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${slug}`, {
           next: { revalidate: 60 }
         });
         if (!res.ok) return null;
@@ -105,19 +105,17 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
     <main className="pt-24">
       {/* Hero Section */}
       <section className="relative h-[400px] flex items-center justify-center text-white">
-        {post.image && (
-          <div className="absolute inset-0 z-0">
-            <Image
-              src={post.image}
-              alt={post.title}
-              fill
-              className="object-cover"
-              priority
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-600/90" />
-          </div>
-        )}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={post.image || '/images/blog-placeholder.jpg'}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-600/90" />
+        </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center">
             <span className="inline-block bg-blue-500 text-white px-4 py-2 rounded-full text-sm mb-4">
@@ -159,7 +157,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                   <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-transform group-hover:scale-[1.02]">
                     <div className="relative h-48">
                       <Image
-                        src={relatedPost.image}
+                        src={relatedPost.image || '/images/blog-placeholder.jpg'}
                         alt={relatedPost.title}
                         fill
                         className="object-cover"

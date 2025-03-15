@@ -6,7 +6,7 @@ const ContactForm: React.FC = () => {
     email: '',
     phone: '',
     message: '',
-    service: 'other'
+    service: 'OTHER' as ContactService
   });
   const [status, setStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -14,11 +14,36 @@ const ContactForm: React.FC = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      setError('נא למלא שם');
+      return false;
+    }
+    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError('נא למלא כתובת אימייל תקינה');
+      return false;
+    }
+    if (!formData.phone.trim()) {
+      setError('נא למלא מספר טלפון');
+      return false;
+    }
+    if (!formData.message.trim()) {
+      setError('נא למלא הודעה');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setSuccess('');
+
+    if (!validateForm()) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact/submit`, {
@@ -26,7 +51,10 @@ const ContactForm: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          service: formData.service as ContactService
+        }),
       });
 
       if (!response.ok) {
@@ -40,7 +68,7 @@ const ContactForm: React.FC = () => {
         email: '',
         phone: '',
         message: '',
-        service: 'other'
+        service: 'OTHER'
       });
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -116,10 +144,10 @@ const ContactForm: React.FC = () => {
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:text-white"
           required
         >
-          <option value="web-development">פיתוח אתרים</option>
-          <option value="seo">קידום אורגני</option>
-          <option value="ppc">שיווק ממומן</option>
-          <option value="other">אחר</option>
+          <option value="WEB_DEVELOPMENT">פיתוח אתרים</option>
+          <option value="SEO">קידום אורגני</option>
+          <option value="PPC">שיווק ממומן</option>
+          <option value="OTHER">אחר</option>
         </select>
       </div>
 

@@ -20,7 +20,7 @@ export default function AdminContacts() {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const response = await fetch('/api/contact');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`);
         if (!response.ok) {
           throw new Error('Failed to fetch contacts');
         }

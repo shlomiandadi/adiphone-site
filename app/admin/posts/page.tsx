@@ -14,6 +14,7 @@ interface Post {
     firstName: string;
     lastName: string;
   };
+  slug: string;
 }
 
 export default function AdminPosts() {
@@ -31,7 +32,7 @@ export default function AdminPosts() {
           return;
         }
 
-        const res = await fetch('/api/posts', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -54,14 +55,14 @@ export default function AdminPosts() {
     fetchPosts();
   }, [router]);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (slug: string) => {
     if (!window.confirm('האם אתה בטוח שברצונך למחוק פוסט זה?')) {
       return;
     }
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/posts/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${slug}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`
@@ -72,7 +73,7 @@ export default function AdminPosts() {
         throw new Error('Failed to delete post');
       }
 
-      setPosts(posts.filter(post => post._id !== id));
+      setPosts(posts.filter(post => post.slug !== slug));
     } catch (error) {
       setError('שגיאה במחיקת הפוסט');
       console.error('Error:', error);
@@ -129,7 +130,7 @@ export default function AdminPosts() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {posts.map((post) => (
-                <tr key={post._id}>
+                <tr key={post.slug}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">{post.title}</div>
                   </td>
@@ -150,13 +151,13 @@ export default function AdminPosts() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <Link
-                      href={`/admin/posts/${post._id}/edit`}
+                      href={`/admin/posts/${post.slug}/edit`}
                       className="text-indigo-600 hover:text-indigo-900 ml-4"
                     >
                       עריכה
                     </Link>
                     <button
-                      onClick={() => handleDelete(post._id)}
+                      onClick={() => handleDelete(post.slug)}
                       className="text-red-600 hover:text-red-900"
                     >
                       מחיקה

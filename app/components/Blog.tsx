@@ -33,7 +33,7 @@ export default function Blog() {
           throw new Error(errorData.error || 'Failed to fetch blogs');
         }
         const data = await response.json();
-        setPosts(Array.isArray(data) ? data : []);
+        setPosts(Array.isArray(data) ? data.slice(0, 3) : []);
         setError(null);
       } catch (error) {
         console.error('Error fetching blogs:', error);
@@ -89,7 +89,7 @@ export default function Blog() {
         <h2 className="text-3xl font-bold text-center mb-12">הבלוג שלנו</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {posts.map((post) => (
-            <article key={post._id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+            <article key={post.slug} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
               <div className="relative h-48">
                 <Image
                   src={post.image}

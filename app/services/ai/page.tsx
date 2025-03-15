@@ -1,6 +1,7 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import { FaRobot, FaLanguage, FaBrain, FaCogs } from 'react-icons/fa';
 
 export default function AIService() {
   const serviceData = {
@@ -18,22 +19,22 @@ export default function AIService() {
       {
         title: "צ'אטבוטים חכמים",
         description: "פיתוח צ'אטבוטים מבוססי AI לשירות לקוחות 24/7",
-        icon: "robot"
+        icon: FaRobot
       },
       {
         title: "עיבוד שפה טבעית",
         description: "מערכות NLP מתקדמות לניתוח טקסט והבנת שפה",
-        icon: "language"
+        icon: FaLanguage
       },
       {
         title: "מערכות המלצה",
         description: "אלגוריתמים חכמים להתאמה אישית של תוכן ומוצרים",
-        icon: "brain"
+        icon: FaBrain
       },
       {
         title: "אוטומציה חכמה",
         description: "אוטומציה של תהליכים עסקיים באמצעות AI",
-        icon: "cogs"
+        icon: FaCogs
       }
     ],
     benefits: [

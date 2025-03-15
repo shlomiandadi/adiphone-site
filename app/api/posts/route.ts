@@ -19,18 +19,10 @@ interface CreatePostInput {
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
+  let client;
   try {
-    // Test database connection
-    try {
-      await prisma.$connect();
-      console.log('Database connection successful');
-    } catch (dbError) {
-      console.error('Database connection failed:', dbError);
-      return NextResponse.json(
-        { error: 'Database connection failed' },
-        { status: 500 }
-      );
-    }
+    client = await prisma.$connect();
+    console.log('Database connection successful');
 
     const posts = await prisma.post.findMany({
       where: {
@@ -63,7 +55,6 @@ export async function GET(request: Request) {
       return NextResponse.json([]);
     }
 
-    // Format the posts to match the expected structure
     const formattedPosts = posts.map(post => {
       const createdDate = new Date(post.createdAt);
       const updatedDate = new Date(post.updatedAt);
@@ -99,33 +90,26 @@ export async function GET(request: Request) {
     console.error('Error fetching posts:', error);
     return NextResponse.json({ 
       error: 'Failed to fetch posts',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     }, {
       status: 500
     });
   } finally {
-    await prisma.$disconnect();
+    if (client) {
+      await prisma.$disconnect();
+    }
   }
 }
 
 export async function POST(request: Request) {
+  let client;
   try {
-    // Test database connection
-    try {
-      await prisma.$connect();
-      console.log('Database connection successful');
-    } catch (dbError) {
-      console.error('Database connection failed:', dbError);
-      return NextResponse.json(
-        { error: 'Database connection failed' },
-        { status: 500 }
-      );
-    }
+    client = await prisma.$connect();
+    console.log('Database connection successful');
 
     const data = await request.json();
     
-    // Validate required fields
     const requiredFields: (keyof CreatePostInput)[] = [
       'title',
       'content',
@@ -148,7 +132,6 @@ export async function POST(request: Request) {
       }
     }
 
-    // Validate category
     if (!Object.values(Category).includes(data.category)) {
       return NextResponse.json(
         { error: 'Invalid category' },
@@ -186,7 +169,6 @@ export async function POST(request: Request) {
     console.error('Error creating post:', error);
     
     if (error instanceof Error) {
-      // Check for unique constraint violation
       if (error.message.includes('Unique constraint')) {
         return NextResponse.json(
           { error: 'A post with this title already exists' },
@@ -198,16 +180,17 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { 
         error: 'Failed to create post',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
       },
       { status: 500 }
     );
   } finally {
-    await prisma.$disconnect();
+    if (client) {
+      await prisma.$disconnect();
+    }
   }
 }
 
-// Handle OPTIONS request for CORS
 export async function OPTIONS(request: Request) {
   return NextResponse.json({}, { status: 200 });
 }

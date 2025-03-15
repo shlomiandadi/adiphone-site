@@ -1,3 +1,5 @@
+'use client';
+
 import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import { FaChartLine, FaLightbulb, FaRobot } from 'react-icons/fa';

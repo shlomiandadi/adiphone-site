@@ -11,7 +11,7 @@ const userRoutes = require('./routes/users');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(process.env.DATABASE_URL.replace('myapp', 'blog-db'))
+mongoose.connect(process.env.DATABASE_URL)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.error('MongoDB Connection Error:', err));
 

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
+import { FaLaptopCode, FaMobileAlt, FaTachometerAlt } from 'react-icons/fa';
 
 export const metadata: Metadata = {
   title: 'פיתוח אתרים - WebStudio',
@@ -43,17 +44,17 @@ export default function WebDevelopmentPage() {
       heroImage="/images/services/web-development-hero.jpg"
       features={[
         {
-          icon: 'laptop-code',
+          icon: FaLaptopCode,
           title: 'עיצוב מותאם',
           description: 'עיצוב מודרני ומרשים'
         },
         {
-          icon: 'mobile-screen',
+          icon: FaMobileAlt,
           title: 'רספונסיביות',
           description: 'התאמה לכל המכשירים'
         },
         {
-          icon: 'gauge-high',
+          icon: FaTachometerAlt,
           title: 'ביצועים',
           description: 'מהירות טעינה גבוהה'
         }

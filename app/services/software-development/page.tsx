@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
+import { FaCode, FaMobile, FaShield } from 'react-icons/fa';
 
 export const metadata: Metadata = {
   title: 'פיתוח תוכנה - WebStudio',
@@ -54,17 +55,17 @@ export default function SoftwareDevelopmentPage() {
       heroImage="/images/services/software-development-hero.jpg"
       features={[
         {
-          icon: 'code',
+          icon: FaCode,
           title: 'פיתוח מתקדם',
           description: 'שימוש בטכנולוגיות חדישות'
         },
         {
-          icon: 'mobile',
+          icon: FaMobile,
           title: 'חווית משתמש',
           description: 'ממשק נוח ואינטואיטיבי'
         },
         {
-          icon: 'shield',
+          icon: FaShield,
           title: 'אבטחת מידע',
           description: 'הגנה מקסימלית על המידע'
         }

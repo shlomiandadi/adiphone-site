@@ -1,6 +1,7 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import { FaBox, FaCreditCard, FaRobot, FaChartLine } from 'react-icons/fa';
 
 export default function EcommerceService() {
   const serviceData = {
@@ -20,22 +21,22 @@ export default function EcommerceService() {
       {
         title: "ניהול מוצרים חכם",
         description: "מערכת ניהול מתקדמת למוצרים ומלאי",
-        icon: "box"
+        icon: FaBox
       },
       {
         title: "תשלומים מאובטחים",
         description: "מגוון אמצעי תשלום ואבטחה מתקדמת",
-        icon: "credit-card"
+        icon: FaCreditCard
       },
       {
         title: "אוטומציה מלאה",
         description: "תהליכי מכירה והזמנות אוטומטיים",
-        icon: "robot"
+        icon: FaRobot
       },
       {
         title: "אנליטיקס מתקדם",
         description: "ניתוח נתונים וקבלת החלטות מבוססת מידע",
-        icon: "chart-line"
+        icon: FaChartLine
       }
     ],
     benefits: [

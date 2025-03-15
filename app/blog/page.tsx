@@ -144,7 +144,7 @@ export default function Blog() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {articles.map((article) => (
                 <div key={article._id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                  <Link href={`/blog/${article.slug}`}>
+                  <Link href={`/blog/${article.slug}`} className="block">
                     <div className="relative h-48">
                       <Image
                         src={article.image}
@@ -159,7 +159,7 @@ export default function Blog() {
                       <span className="text-sm text-gray-500">{article.date}</span>
                       <span className="text-sm text-blue-600">{article.category}</span>
                     </div>
-                    <Link href={`/blog/${article.slug}`}>
+                    <Link href={`/blog/${article.slug}`} className="block">
                       <h2 className="text-xl font-bold mb-2 hover:text-blue-600 transition-colors">{article.title}</h2>
                     </Link>
                     <p className="text-gray-600 mb-4">{article.description}</p>
@@ -174,15 +174,19 @@ export default function Blog() {
                       <div className="mt-4">
                         <h3 className="text-sm font-semibold mb-2">מאמרים קשורים:</h3>
                         <div className="space-y-1">
-                          {article.relatedPosts.map((relatedSlug, index) => (
-                            <Link
-                              key={index}
-                              href={`/blog/${relatedSlug}`}
-                              className="block text-sm text-blue-600 hover:underline"
-                            >
-                              {relatedSlug}
-                            </Link>
-                          ))}
+                          {article.relatedPosts.map((relatedSlug, index) => {
+                            // Find the related article to get its title
+                            const relatedArticle = articles.find(a => a.slug === relatedSlug);
+                            return (
+                              <Link
+                                key={index}
+                                href={`/blog/${relatedSlug}`}
+                                className="block text-sm text-blue-600 hover:underline"
+                              >
+                                {relatedArticle ? relatedArticle.title : relatedSlug}
+                              </Link>
+                            );
+                          })}
                         </div>
                       </div>
                     )}

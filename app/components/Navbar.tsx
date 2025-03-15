@@ -3,15 +3,19 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaGlobe, FaSearch, FaAd, FaCode, FaMobileAlt, FaRocket } from 'react-icons/fa';
+import { FaGlobe, FaSearch, FaAd, FaCode, FaMobileAlt, FaRocket, FaWordpress, FaShoppingCart, FaPaintBrush, FaChartLine, FaUsers, FaEnvelope } from 'react-icons/fa';
 
 const services = [
   { title: 'בניית אתרים', href: '/services/web-development', icon: FaGlobe },
   { title: 'קידום אתרים', href: '/services/seo', icon: FaSearch },
   { title: 'SEO אורגני', href: '/services/organic-seo', icon: FaRocket },
-  { title: 'קידום ממומן', href: '/services/paid-promotion', icon: FaAd },
+  { title: 'קידום ממומן', href: '/services/ppc', icon: FaAd },
   { title: 'פיתוח תוכנה', href: '/services/software-development', icon: FaCode },
-  { title: 'פיתוח אפליקציות', href: '/services/app-development', icon: FaMobileAlt }
+  { title: 'פיתוח אפליקציות', href: '/services/mobile-apps', icon: FaMobileAlt },
+  { title: 'אתרי וורדפרס', href: '/services/wordpress', icon: FaWordpress },
+  { title: 'חנויות אינטרנט', href: '/services/ecommerce', icon: FaShoppingCart },
+  { title: 'עיצוב ממשק', href: '/services/ui-design', icon: FaPaintBrush },
+  { title: 'אנליטיקס', href: '/services/analytics', icon: FaChartLine }
 ];
 
 export default function Navbar() {
@@ -92,47 +96,50 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-200"
+            className="md:hidden bg-white border-t border-gray-200 shadow-lg"
           >
-            <div className="px-4 py-2 space-y-1">
+            <div className="px-4 py-4 space-y-3">
               <Link 
                 href="/"
-                className="block px-4 py-2 text-base text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                className="flex items-center px-4 py-2.5 text-base text-gray-900 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
+                <FaGlobe className="w-5 h-5 ml-2 text-gray-400" />
                 ראשי
               </Link>
               
-              <div className="space-y-1">
-                <div className="px-4 py-2 text-base text-gray-700">שירותים</div>
-                {services.map((service) => (
-                  <Link
-                    key={service.href}
-                    href={service.href}
-                    className="block px-8 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <div className="flex items-center gap-2">
-                      <service.icon className="w-4 h-4" />
+              <div className="space-y-2">
+                <div className="px-4 py-2 text-base font-medium text-gray-900">שירותים</div>
+                <div className="space-y-1">
+                  {services.map((service) => (
+                    <Link
+                      key={service.href}
+                      href={service.href}
+                      className="flex items-center px-6 py-2.5 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <service.icon className="w-5 h-5 ml-2 text-gray-400" />
                       <span>{service.title}</span>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
+                </div>
               </div>
 
               <Link 
                 href="/about"
-                className="block px-4 py-2 text-base text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                className="flex items-center px-4 py-2.5 text-base text-gray-900 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
+                <FaUsers className="w-5 h-5 ml-2 text-gray-400" />
                 אודות
               </Link>
               
               <Link 
                 href="/contact"
-                className="block px-4 py-2 text-base text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                className="flex items-center px-4 py-2.5 text-base text-gray-900 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
+                <FaEnvelope className="w-5 h-5 ml-2 text-gray-400" />
                 צור קשר
               </Link>
             </div>

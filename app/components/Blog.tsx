@@ -26,7 +26,7 @@ export default function Blog() {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`, {
+      const response = await fetch(`/api/posts`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -34,8 +34,7 @@ export default function Blog() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to fetch blogs');
+        throw new Error('Failed to fetch blogs');
       }
 
       const data = await response.json();

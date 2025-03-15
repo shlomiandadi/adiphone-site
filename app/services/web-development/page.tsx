@@ -57,8 +57,8 @@ export default function WebDevelopmentPage() {
         },
         {
           icon: FaTachometerAlt,
-          title: 'אופטימיזציה',
-          description: 'אופטימיזציה מקסימלית'
+          title: 'ביצועים',
+          description: 'מהירות טעינה גבוהה'
         }
       ]}
       benefits={[

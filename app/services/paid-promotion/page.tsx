@@ -1,19 +1,7 @@
 'use client';
 
-import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import { FaChartLine, FaUsers, FaLightbulb } from 'react-icons/fa';
-
-export const metadata: Metadata = {
-  title: 'קידום ממומן - WebStudio',
-  description: 'קידום ממומן מקצועי לעסקים',
-};
-
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: '#2563eb',
-};
 
 export default function PaidPromotionPage() {
   return (

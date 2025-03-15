@@ -1,19 +1,7 @@
 'use client';
 
-import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import { FaChartLine, FaLightbulb, FaRobot } from 'react-icons/fa';
-
-export const metadata: Metadata = {
-  title: 'קידום אורגני - WebStudio',
-  description: 'קידום אורגני מקצועי לאתרי אינטרנט',
-};
-
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: '#2563eb',
-};
 
 export default function OrganicSeoPage() {
   return (

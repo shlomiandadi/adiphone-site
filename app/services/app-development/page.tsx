@@ -1,19 +1,7 @@
 'use client';
 
-import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import { FaRocket, FaCode, FaMobileAlt, FaShieldAlt } from 'react-icons/fa';
-
-export const metadata: Metadata = {
-  title: 'פיתוח אפליקציות - WebStudio',
-  description: 'פיתוח אפליקציות מובייל ווב מתקדמות',
-};
-
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: '#2563eb',
-};
 
 const appDevelopmentContent = `
 <h2>פיתוח אפליקציות מתקדם</h2>

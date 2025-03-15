@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { ContactService, ContactStatus } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
   let client;
@@ -16,37 +17,65 @@ export async function POST(request: Request) {
     const requiredFields = ['name', 'email', 'phone', 'message', 'service'];
     for (const field of requiredFields) {
       if (!data[field]) {
-        return NextResponse.json(
-          { error: `Missing required field: ${field}` },
-          { status: 400 }
-        );
+        return new NextResponse(JSON.stringify({ 
+          error: `Missing required field: ${field}` 
+        }), {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+          }
+        });
       }
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      );
+      return new NextResponse(JSON.stringify({ 
+        error: 'Invalid email format' 
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+        }
+      });
     }
 
     // Validate phone format (Israeli phone number)
     const phoneRegex = /^(\+972|0)([23489]|5[0248]|77)[1-9]\d{6}$/;
     if (!phoneRegex.test(data.phone)) {
-      return NextResponse.json(
-        { error: 'Invalid phone number format' },
-        { status: 400 }
-      );
+      return new NextResponse(JSON.stringify({ 
+        error: 'Invalid phone number format' 
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+        }
+      });
     }
 
     // Validate service type
     if (!Object.values(ContactService).includes(data.service)) {
-      return NextResponse.json(
-        { error: 'Invalid service type' },
-        { status: 400 }
-      );
+      return new NextResponse(JSON.stringify({ 
+        error: 'Invalid service type' 
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+        }
+      });
     }
 
     // Create contact in database
@@ -74,20 +103,33 @@ export async function POST(request: Request) {
     //   `
     // });
 
-    return NextResponse.json({ 
+    return new NextResponse(JSON.stringify({ 
       success: true, 
       data: contact,
       message: 'Contact form submitted successfully'
+    }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+      }
     });
   } catch (error) {
     console.error('Error submitting contact form:', error);
-    return NextResponse.json(
-      { 
-        error: 'Failed to submit contact form',
-        details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
-      },
-      { status: 500 }
-    );
+    return new NextResponse(JSON.stringify({ 
+      error: 'Failed to submit contact form',
+      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+    }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+      }
+    });
   } finally {
     if (client) {
       await prisma.$disconnect();
@@ -95,7 +137,13 @@ export async function POST(request: Request) {
   }
 }
 
-// Handle OPTIONS request for CORS
 export async function OPTIONS(request: Request) {
-  return NextResponse.json({}, { status: 200 });
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+    }
+  });
 } 

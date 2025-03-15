@@ -4,7 +4,7 @@
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
-  NODE_VERSION = "20"
+  NODE_VERSION = "18"
   NEXT_PUBLIC_API_URL = "https://adi-phone.co.il"
   DATABASE_URL = "mongodb+srv://shlomiandadi:R0HXEWhMuWn0IbBc@clustertest.tz78h.mongodb.net/adiphone-db?retryWrites=true&w=majority&appName=Clustertest"
   EMAIL_HOST = "smtp.gmail.com"
@@ -14,6 +14,7 @@
   ADMIN_EMAIL = "shlomiandadi@gmail.com"
   ADMIN_PASSWORD = "adi112211"
   NEXT_PUBLIC_SITE_URL = "https://adi-phone.co.il"
+  NPM_FLAGS = "--legacy-peer-deps"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -21,6 +22,7 @@
 [functions]
   node_bundler = "esbuild"
   external_node_modules = ["@prisma/client", "prisma"]
+  included_files = ["prisma/**", ".env"]
 
 [[headers]]
   for = "/*"
@@ -31,6 +33,9 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
     Content-Security-Policy = "upgrade-insecure-requests"
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "X-Requested-With, Content-Type, Authorization"
 
 [[redirects]]
   from = "http://*"
@@ -39,9 +44,19 @@
   force = true
 
 [[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/next/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
   conditions = {Not = [
-    {Path = ["/api/*", "/_next/*", "/static/*"]}
-  ]} 
+    {Path = ["/api/*", "/_next/*", "/static/*", "/.netlify/functions/*"]}
+  ]}
+
+[dev]
+  framework = "nextjs"
+  targetPort = 3000 

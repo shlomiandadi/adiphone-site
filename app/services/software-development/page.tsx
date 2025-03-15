@@ -1,3 +1,5 @@
+'use client';
+
 import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import { FaCode, FaMobileAlt, FaShieldAlt } from 'react-icons/fa';

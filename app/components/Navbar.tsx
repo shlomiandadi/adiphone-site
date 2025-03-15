@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaGlobe, FaSearch, FaAd, FaCode, FaMobileAlt, FaRocket, FaWordpress, FaShoppingCart, FaPaintBrush, FaChartLine, FaUsers, FaEnvelope } from 'react-icons/fa';
+import SearchBar from './SearchBar';
 
 const services = [
   { title: 'בניית אתרים', href: '/services/web-development', icon: FaGlobe },
@@ -33,6 +34,10 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center space-x-8 mr-8">
+            <div className="w-64">
+              <SearchBar />
+            </div>
+            
             <Link href="/" className="text-gray-700 hover:text-blue-600 transition-colors">
               ראשי
             </Link>
@@ -99,6 +104,10 @@ export default function Navbar() {
             className="md:hidden bg-white border-t border-gray-200 shadow-lg"
           >
             <div className="px-4 py-4 space-y-3">
+              <div className="px-4">
+                <SearchBar />
+              </div>
+
               <Link 
                 href="/"
                 className="flex items-center px-4 py-2.5 text-base text-gray-900 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"

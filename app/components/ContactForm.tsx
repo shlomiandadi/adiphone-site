@@ -10,11 +10,15 @@ const ContactForm: React.FC = () => {
   });
   const [status, setStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setStatus('שולח...');
+    setLoading(true);
+    setError('');
+    setSuccess('');
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact/submit`, {
@@ -25,19 +29,23 @@ const ContactForm: React.FC = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || 'שגיאה בשליחת הטופס');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'שגיאה בשליחת הטופס');
       }
 
-      setStatus('הטופס נשלח בהצלחה! נציג יצור איתך קשר בהקדם.');
-      setFormData({ name: '', email: '', phone: '', message: '', service: 'other' });
+      setSuccess('הטופס נשלח בהצלחה!');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+      });
     } catch (error) {
       console.error('Error submitting form:', error);
-      setStatus('אירעה שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר בטלפון.');
+      setError('שגיאה בשליחת הטופס. אנא נסה שוב.');
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 

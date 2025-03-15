@@ -7,7 +7,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
       return NextResponse.json({ error: 'אין הרשאה' }, { status: 401 });
     }
 
-    const res = await fetch(`http://localhost:8000/api/posts/${params.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${params.id}`, {
       headers: {
         Authorization: token
       }
@@ -32,7 +32,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 
     const body = await request.json();
-    const res = await fetch(`http://localhost:8000/api/posts/${params.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${params.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       return NextResponse.json({ error: 'אין הרשאה' }, { status: 401 });
     }
 
-    const res = await fetch(`http://localhost:8000/api/posts/${params.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${params.id}`, {
       method: 'DELETE',
       headers: {
         Authorization: token

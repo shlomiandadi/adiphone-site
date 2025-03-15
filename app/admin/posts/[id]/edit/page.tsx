@@ -48,7 +48,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
           return;
         }
 
-        const res = await fetch(`http://localhost:8000/api/posts/${params.id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${params.id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -87,7 +87,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
         return;
       }
 
-      const res = await fetch(`http://localhost:8000/api/posts/${params.id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

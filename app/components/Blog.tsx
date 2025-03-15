@@ -27,7 +27,7 @@ export default function Blog() {
   useEffect(() => {
     async function fetchLatestBlogs() {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts?limit=3`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.error || 'Failed to fetch blogs');

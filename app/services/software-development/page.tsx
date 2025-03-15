@@ -1,19 +1,7 @@
 'use client';
 
-import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import { FaCode, FaMobileAlt, FaShieldAlt } from 'react-icons/fa';
-
-export const metadata: Metadata = {
-  title: 'פיתוח תוכנה - WebStudio',
-  description: 'פיתוח תוכנה מותאם אישית לעסקים',
-};
-
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: '#2563eb',
-};
 
 const softwareDevelopmentContent = `
 <h2>פיתוח תוכנה מתקדם</h2>

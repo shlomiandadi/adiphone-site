@@ -1,6 +1,7 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import { FaChartLine, FaFileAlt, FaBullseye, FaChartBar } from 'react-icons/fa';
 
 export default function AnalyticsService() {
   const serviceData = {
@@ -18,22 +19,22 @@ export default function AnalyticsService() {
       {
         title: "הטמעת Google Analytics 4",
         description: "התקנה והגדרה מקצועית של GA4 עם מעקב מתקדם אחר אירועים והמרות",
-        icon: "chart-line"
+        icon: FaChartLine
       },
       {
         title: "דוחות מותאמים אישית",
         description: "בניית דוחות מתקדמים המותאמים לצרכים הספציפיים של העסק שלכם",
-        icon: "file-chart"
+        icon: FaFileAlt
       },
       {
         title: "מעקב המרות",
         description: "הגדרת מעקב מדויק אחר המרות ומטרות עסקיות",
-        icon: "bullseye"
+        icon: FaBullseye
       },
       {
         title: "אופטימיזציה מתמדת",
         description: "ניתוח מתמשך ושיפור ביצועים על בסיס נתונים",
-        icon: "chart-bar"
+        icon: FaChartBar
       }
     ],
     benefits: [

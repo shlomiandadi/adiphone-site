@@ -174,13 +174,13 @@ export default function Blog() {
                       <div className="mt-4">
                         <h3 className="text-sm font-semibold mb-2">מאמרים קשורים:</h3>
                         <div className="space-y-1">
-                          {article.relatedPosts.map((related, index) => (
+                          {article.relatedPosts.map((relatedSlug, index) => (
                             <Link
                               key={index}
-                              href={`/blog/${related.slug}`}
+                              href={`/blog/${relatedSlug}`}
                               className="block text-sm text-blue-600 hover:underline"
                             >
-                              {related.title}
+                              {relatedSlug}
                             </Link>
                           ))}
                         </div>

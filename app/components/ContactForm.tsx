@@ -46,7 +46,7 @@ const ContactForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact/submit`, {
+      const response = await fetch(`/api/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,8 +55,7 @@ const ContactForm: React.FC = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to submit form');
+        throw new Error('Failed to submit form');
       }
 
       const data = await response.json();

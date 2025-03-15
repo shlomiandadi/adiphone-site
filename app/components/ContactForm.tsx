@@ -46,7 +46,7 @@ const ContactForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/contact/submit`, {
+      const response = await fetch(`/.netlify/functions/next/api/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +55,8 @@ const ContactForm: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit form');
+        const errorData = await response.json().catch(() => ({ error: 'Failed to submit form' }));
+        throw new Error(errorData.error || 'Failed to submit form');
       }
 
       const data = await response.json();

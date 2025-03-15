@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaSearch, FaWordpress, FaShoppingCart, FaMobile, FaPaintBrush, FaBullhorn, FaChartLine, FaCode, FaBrain, FaCloud } from 'react-icons/fa';
+import { FaSearch, FaWordpress, FaShoppingCart, FaMobileAlt, FaPaintBrush, FaBullhorn, FaChartLine, FaCode, FaBrain, FaCloud } from 'react-icons/fa';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -55,7 +55,7 @@ export default function ServicesPage() {
     {
       title: "פיתוח אפליקציות",
       description: "אפליקציות מובייל חדשניות לכל הפלטפורמות",
-      icon: <FaMobile className="w-8 h-8 text-primary" />,
+      icon: <FaMobileAlt className="w-8 h-8 text-primary" />,
       image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800",
       link: "/services/mobile-apps",
       features: ["Cross-Platform", "UX/UI מתקדם", "ביצועים מהירים", "אבטחה מובנית"]

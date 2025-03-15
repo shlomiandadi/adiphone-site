@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobile, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
+import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobileAlt, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { IconType } from 'react-icons';
 
@@ -70,7 +70,7 @@ const iconMap: { [key: string]: IconType } = {
   share: FaShareAlt,
   target: FaBullseye,
   chart: FaChartLine,
-  mobile: FaMobile,
+  mobile: FaMobileAlt,
   'paint-brush': FaPaintBrush,
   bolt: FaBolt,
   shield: FaShieldAlt

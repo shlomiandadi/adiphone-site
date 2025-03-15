@@ -2,6 +2,7 @@
 
 import ServiceLayout from '../../components/ServiceLayout';
 import Link from 'next/link';
+import { FaSearch, FaCog, FaLink, FaFileAlt } from 'react-icons/fa';
 
 export default function SEOService() {
   const serviceData = {
@@ -35,22 +36,22 @@ export default function SEOService() {
       {
         title: "מחקר מילות מפתח מתקדם",
         description: "זיהוי הזדמנויות SEO וניתוח מתחרים מעמיק",
-        icon: "search"
+        icon: FaSearch
       },
       {
         title: "אופטימיזציה טכנית",
         description: "שיפור המבנה הטכני והביצועים של האתר",
-        icon: "cog"
+        icon: FaCog
       },
       {
         title: "בניית קישורים איכותית",
         description: "יצירת פרופיל קישורים טבעי וחזק",
-        icon: "link"
+        icon: FaLink
       },
       {
         title: "תוכן אופטימלי",
         description: "יצירת תוכן איכותי המותאם למנועי חיפוש",
-        icon: "file-text"
+        icon: FaFileAlt
       }
     ],
     benefits: [

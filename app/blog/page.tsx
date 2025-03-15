@@ -39,10 +39,11 @@ export default function Blog() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
         if (!response.ok) {
-          throw new Error('Failed to fetch blogs');
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to fetch blogs');
         }
         const data = await response.json();
-        setArticles(data);
+        setArticles(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Error fetching blogs:', error);
         setStatus('אירעה שגיאה בטעינת המאמרים. אנא רענן את הדף.');
@@ -68,19 +69,20 @@ export default function Blog() {
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        setStatus('תודה על ההרשמה לניוזלטר! נשלח לך עדכונים בקרוב.');
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          message: 'מתעניין/ת בניוזלטר',
-          service: 'other'
-        });
-      } else {
-        const data = await response.json();
-        throw new Error(data.error || 'אירעה שגיאה בשליחת הטופס');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'שגיאה בשליחת הטופס');
       }
+
+      setStatus('תודה על ההרשמה לניוזלטר! נשלח לך עדכונים בקרוב.');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: 'מתעניין/ת בניוזלטר',
+        service: 'other'
+      });
     } catch (error) {
       console.error('Error submitting form:', error);
       setStatus('אירעה שגיאה בהרשמה לניוזלטר. אנא נסה שוב.');

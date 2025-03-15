@@ -25,13 +25,16 @@ const ContactForm: React.FC = () => {
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        setStatus('הטופס נשלח בהצלחה! נציג יצור איתך קשר בהקדם.');
-        setFormData({ name: '', email: '', phone: '', message: '', service: 'other' });
-      } else {
-        setStatus('אירעה שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר בטלפון.');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'שגיאה בשליחת הטופס');
       }
+
+      setStatus('הטופס נשלח בהצלחה! נציג יצור איתך קשר בהקדם.');
+      setFormData({ name: '', email: '', phone: '', message: '', service: 'other' });
     } catch (error) {
+      console.error('Error submitting form:', error);
       setStatus('אירעה שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר בטלפון.');
     } finally {
       setIsSubmitting(false);

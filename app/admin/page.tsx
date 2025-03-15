@@ -25,9 +25,9 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       try {
         const [postsRes, pagesRes, usersRes] = await Promise.all([
-          fetch('/api/posts'),
-          fetch('/api/pages'),
-          fetch('/api/users')
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`)
         ]);
 
         const [posts, pages, users] = await Promise.all([

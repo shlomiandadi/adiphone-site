@@ -42,7 +42,11 @@ export default function Blog() {
           throw new Error('Failed to fetch blogs');
         }
         const data = await response.json();
-        setArticles(Array.isArray(data) ? data : []);
+        // Sort posts by date in descending order
+        const sortedData = Array.isArray(data) ? 
+          data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) : 
+          [];
+        setArticles(sortedData);
       } catch (error) {
         console.error('Error fetching blogs:', error);
         setStatus('אירעה שגיאה בטעינת המאמרים. אנא רענן את הדף.');
@@ -148,7 +152,7 @@ export default function Blog() {
                   <Link href={`/blog/${article.slug}`} className="block">
                     <div className="relative h-48">
                       <Image
-                        src={article.image}
+                        src={article.image || '/images/blog-placeholder.jpg'}
                         alt={article.title}
                         fill
                         className="object-cover"

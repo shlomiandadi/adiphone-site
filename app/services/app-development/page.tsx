@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
+import { FaRocket, FaCode, FaMobileAlt, FaShieldAlt } from 'react-icons/fa';
 
 export const metadata: Metadata = {
   title: 'פיתוח אפליקציות - WebStudio',
@@ -54,19 +55,24 @@ export default function AppDevelopmentPage() {
       heroImage="/images/services/app-development-hero.jpg"
       features={[
         {
-          icon: 'rocket',
           title: 'פיתוח מהיר',
-          description: 'זמני פיתוח קצרים ויעילים'
+          description: 'זמני פיתוח קצרים ויעילים',
+          icon: FaRocket
         },
         {
-          icon: 'cog',
-          title: 'טכנולוגיה מתקדמת',
-          description: 'שימוש בטכנולוגיות החדשניות ביותר'
+          title: 'קוד איכותי',
+          description: 'פיתוח בסטנדרטים הגבוהים ביותר',
+          icon: FaCode
         },
         {
-          icon: 'users',
-          title: 'ממשק משתמש מעולה',
-          description: 'חווית משתמש אינטואיטיבית ונוחה'
+          title: 'Cross-Platform',
+          description: 'פיתוח לכל הפלטפורמות',
+          icon: FaMobileAlt
+        },
+        {
+          title: 'אבטחה מתקדמת',
+          description: 'אבטחת מידע ברמה הגבוהה ביותר',
+          icon: FaShieldAlt
         }
       ]}
       benefits={[

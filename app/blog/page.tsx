@@ -37,7 +37,7 @@ export default function Blog() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('/api/blogs');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
         if (!response.ok) {
           throw new Error('Failed to fetch blogs');
         }
@@ -60,7 +60,7 @@ export default function Blog() {
     setStatus('שולח...');
 
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

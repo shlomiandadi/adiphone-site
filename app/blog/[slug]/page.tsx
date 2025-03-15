@@ -13,7 +13,7 @@ interface BlogPost extends IBlog {
 
 async function getBlogPost(slug: string) {
   try {
-    const res = await fetch(`/api/blogs/${slug}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${slug}`, {
       next: { revalidate: 60 } // Revalidate every minute
     });
     

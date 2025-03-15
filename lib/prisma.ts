@@ -1,61 +1,17 @@
 import { PrismaClient } from '@prisma/client';
 
+const prismaClientSingleton = () => {
+  return new PrismaClient();
+};
+
 declare global {
-  var prisma: PrismaClient | undefined;
+  var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
 }
 
-const prismaClientSingleton = () => {
-  const client = new PrismaClient({
-    log: [
-      {
-        emit: 'event',
-        level: 'query',
-      },
-      {
-        emit: 'stdout',
-        level: 'error',
-      },
-      {
-        emit: 'stdout',
-        level: 'info',
-      },
-      {
-        emit: 'stdout',
-        level: 'warn',
-      },
-    ],
-  });
+const prisma = globalThis.prisma ?? prismaClientSingleton();
 
-  // Log all queries in development
-  if (process.env.NODE_ENV !== 'production') {
-    client.$on('query', (e) => {
-      console.log('Query: ' + e.query);
-      console.log('Params: ' + e.params);
-      console.log('Duration: ' + e.duration + 'ms');
-    });
-  }
-
-  // Test database connection
-  client.$connect()
-    .then(() => {
-      console.log('Successfully connected to database');
-    })
-    .catch((error) => {
-      console.error('Failed to connect to database:', error);
-      process.exit(1);
-    });
-
-  return client;
-};
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+export default prisma;
 
 if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
-}
-
-export default prisma; 
+  globalThis.prisma = prisma;
+} 

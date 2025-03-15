@@ -1,3 +1,5 @@
+'use client';
+
 import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import { FaLaptopCode, FaMobileAlt, FaTachometerAlt } from 'react-icons/fa';
@@ -55,8 +57,8 @@ export default function WebDevelopmentPage() {
         },
         {
           icon: FaTachometerAlt,
-          title: 'ביצועים',
-          description: 'מהירות טעינה גבוהה'
+          title: 'אופטימיזציה',
+          description: 'אופטימיזציה מקסימלית'
         }
       ]}
       benefits={[

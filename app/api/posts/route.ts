@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Category } from '@prisma/client';
-import prisma from '../../../lib/prisma';
+import prisma from '@/lib/prisma';
 
 interface CreatePostInput {
   title: string;
@@ -16,8 +16,19 @@ interface CreatePostInput {
   metaDesc: string;
 }
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
+    // Test database connection
+    try {
+      await prisma.$connect();
+      console.log('Database connection successful');
+    } catch (dbError) {
+      console.error('Database connection failed:', dbError);
+      throw new Error('Database connection failed');
+    }
+
     const posts = await prisma.post.findMany({
       where: {
         published: true
@@ -79,10 +90,16 @@ export async function GET(request: Request) {
     return NextResponse.json(formattedPosts);
   } catch (error) {
     console.error('Error fetching posts:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch posts' },
-      { status: 500 }
-    );
+    console.error('Error stack:', error.stack);
+    return NextResponse.json({ 
+      error: 'Internal Server Error', 
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    }, {
+      status: 500
+    });
+  } finally {
+    await prisma.$disconnect();
   }
 }
 

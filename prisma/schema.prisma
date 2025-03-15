@@ -73,13 +73,12 @@ model Post {
 }
 
 model Contact {
-  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   email     String
   phone     String
   message   String
-  service   ContactService @default(OTHER)
-  status    ContactStatus  @default(NEW)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  service   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

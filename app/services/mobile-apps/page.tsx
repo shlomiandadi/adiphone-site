@@ -1,8 +1,9 @@
 'use client';
 
+import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import Link from 'next/link';
-import { FaMobile, FaRocket, FaCode, FaTools, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
+import { FaMobileAlt, FaRocket, FaCode, FaTools, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
 
 export default function MobileAppService() {
   const serviceData = {
@@ -20,7 +21,7 @@ export default function MobileAppService() {
       {
         title: "פיתוח מותאם",
         description: "פיתוח אפליקציות מותאמות אישית לצרכים שלכם",
-        icon: FaMobile
+        icon: FaMobileAlt
       },
       {
         title: "ביצועים מעולים",

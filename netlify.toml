@@ -37,19 +37,14 @@
     Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
     Access-Control-Allow-Headers = "X-Requested-With, Content-Type, Authorization"
 
-[[redirects]]
-  from = "/_next/static/*"
-  to = "/_next/static/:splat"
-  status = 200
+[[headers]]
+  for = "/_next/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[redirects]]
-  from = "/_next/image*"
-  to = "/_next/image:splat"
-  status = 200
-
-[[redirects]]
-  from = "/_next/data/*"
-  to = "/_next/data/:splat"
+  from = "/_next/*"
+  to = "/_next/:splat"
   status = 200
 
 [[redirects]]

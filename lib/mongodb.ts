@@ -1,24 +1,27 @@
-import mongoose from 'mongoose';
+import { MongoClient, MongoClientOptions } from 'mongodb';
 
-const DATABASE_URL = process.env.DATABASE_URL!;
-
-if (!DATABASE_URL) {
-  throw new Error('Please define the DATABASE_URL environment variable inside .env.local');
+if (!process.env.MONGODB_URI) {
+  throw new Error('Please add your Mongo URI to .env.local');
 }
 
-interface MongooseConnection {
-  conn: typeof mongoose | null;
-  promise: Promise<typeof mongoose> | null;
+const uri = process.env.MONGODB_URI;
+const options: MongoClientOptions = {};
+
+interface GlobalMongo {
+  conn: MongoClient | null;
+  promise: Promise<MongoClient> | null;
 }
 
-declare global {
-  var mongoose: MongooseConnection | undefined;
-}
+let cached: GlobalMongo = {
+  conn: null,
+  promise: null,
+};
 
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+if (process.env.NODE_ENV === 'development') {
+  if (!(global as any).mongo) {
+    (global as any).mongo = cached;
+  }
+  cached = (global as any).mongo;
 }
 
 async function connectDB() {
@@ -27,21 +30,9 @@ async function connectDB() {
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    cached.promise = mongoose.connect(DATABASE_URL, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = MongoClient.connect(uri, options);
   }
-
-  try {
-    cached.conn = await cached.promise;
-  } catch (e) {
-    cached.promise = null;
-    throw e;
-  }
+  cached.conn = await cached.promise;
 
   return cached.conn;
 }

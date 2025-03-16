@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { FaTimes, FaSearch, FaTag, FaHome, FaCode, FaMobileAlt, FaGlobe, FaChartLine, FaEnvelope, FaArrowLeft, FaBars, FaUsers, FaBlog, FaShoppingCart, FaPaintBrush } from 'react-icons/fa';
+import { FaTimes, FaSearch, FaTag, FaHome, FaCode, FaMobile, FaGlobe, FaChartLine, FaEnvelope, FaArrowLeft, FaBars, FaUsers, FaBlog, FaShoppingCart, FaPaintBrush } from 'react-icons/fa';
 import React from 'react';
 import SearchResult from './SearchResult';
 import { navigation, promotions } from './navigation-data';
@@ -26,6 +26,7 @@ import {
   ShoppingBagIcon,
   PaintBrushIcon,
 } from '@heroicons/react/24/outline';
+import { IconType } from 'react-icons';
 
 interface SubMenuItem {
   name: string;
@@ -44,7 +45,7 @@ interface MenuItem {
 const iconMap: { [key: string]: any } = {
   'home': FaHome,
   'globe': FaGlobe,
-  'mobile': FaMobileAlt,
+  'mobile': FaMobile,
   'chart-line': FaChartLine,
   'shopping-cart': FaShoppingCart,
   'paint-brush': FaPaintBrush,
@@ -55,18 +56,18 @@ const iconMap: { [key: string]: any } = {
   'search': FaSearch
 };
 
-function getIconComponent(iconName?: string) {
-  const iconMap = {
-    'home': FaHome,
-    'globe': FaGlobe,
-    'mobile': FaMobileAlt,
+function getIcon(iconName: string | undefined) {
+  const iconMap: { [key: string]: IconType } = {
+    home: FaHome,
+    globe: FaGlobe,
+    mobile: FaMobile,
     'chart-line': FaChartLine,
     'shopping-cart': FaShoppingCart,
     'paint-brush': FaPaintBrush,
-    'code': FaCode,
-    'users': FaUsers,
-    'envelope': FaEnvelope,
-    'blog': FaBlog,
+    code: FaCode,
+    users: FaUsers,
+    envelope: FaEnvelope,
+    blog: FaBlog,
   };
 
   return iconMap[iconName || ''] || FaCode;
@@ -311,7 +312,7 @@ export default function ClientHeader() {
                     <div className="absolute right-0 mt-2 w-[480px] bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50 backdrop-blur-sm bg-opacity-90">
                       <div className="p-4 grid grid-cols-2 gap-3">
                         {item.submenu.map((subItem) => {
-                          const Icon = getIconComponent(subItem.icon || 'code');
+                          const Icon = getIcon(subItem.icon);
                           return (
                             <Link
                               key={subItem.name}

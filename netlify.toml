@@ -38,8 +38,18 @@
     Access-Control-Allow-Headers = "X-Requested-With, Content-Type, Authorization"
 
 [[redirects]]
+  from = "/_next/*"
+  to = "/_next/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/next/api/:splat"
+  status = 200
+
+[[redirects]]
   from = "/*"
-  to = "/.netlify/functions/next/:splat"
+  to = "/.netlify/functions/next/index"
   status = 200
   force = true
 

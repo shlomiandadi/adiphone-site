@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
@@ -39,9 +39,8 @@
 
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/next/:splat"
+  to = "/index.html"
   status = 200
-  force = true
 
 [dev]
   framework = "nextjs"

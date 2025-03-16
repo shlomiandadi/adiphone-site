@@ -28,7 +28,7 @@ const nextConfig = {
     styledComponents: true,
   },
   reactStrictMode: true,
-  output: 'export',
+  output: 'standalone',
   typescript: {
     ignoreBuildErrors: false,
   },

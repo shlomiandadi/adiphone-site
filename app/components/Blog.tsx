@@ -26,21 +26,26 @@ export default function Blog() {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(`/.netlify/functions/next/api/posts`, {
+      const response = await fetch(`/api/posts`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
-        }
+        },
+        cache: 'no-store'
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Failed to fetch blogs' }));
-        throw new Error(errorData.error || 'Failed to fetch blogs');
+        console.error('Response status:', response.status);
+        console.error('Response status text:', response.statusText);
+        const errorData = await response.text();
+        console.error('Error response:', errorData);
+        throw new Error('Failed to fetch blogs');
       }
 
       const data = await response.json();
       if (!Array.isArray(data)) {
+        console.error('Invalid data format:', data);
         throw new Error('Invalid response format');
       }
       setPosts(data);

@@ -35,10 +35,11 @@ const ContactForm: React.FC = () => {
     return true;
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsSubmitting(true);
     setError('');
+    setSuccess('');
 
     if (!validateForm()) {
       setIsSubmitting(false);
@@ -46,7 +47,7 @@ const ContactForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/.netlify/functions/next/api/contact/submit`, {
+      const response = await fetch('/.netlify/functions/next/api/contact/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,11 +57,10 @@ const ContactForm: React.FC = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Failed to submit form' }));
+        const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to submit form');
       }
 
-      const data = await response.json();
       setSuccess('הטופס נשלח בהצלחה!');
       setFormData({
         name: '',

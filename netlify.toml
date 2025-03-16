@@ -48,34 +48,24 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[redirects]]
+  from = "http://*"
+  to = "https://:splat"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/next/api/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/_next/static/*"
-  to = "/_next/static/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/_next/image*"
-  to = "/_next/image:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/_next/data/*"
-  to = "/_next/data/:splat"
+  to = "/.netlify/functions/next/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/next"
+  to = "/index.html"
   status = 200
-  force = true
+  conditions = {Not = [
+    {Path = ["/api/", "/_next/", "/static/", "/.netlify/functions/"]}
+  ]}
 
 [dev]
   framework = "nextjs"

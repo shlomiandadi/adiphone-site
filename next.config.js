@@ -38,6 +38,10 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
   poweredByHeader: false,
+  staticPageGenerationTimeout: 120,
+  generateBuildId: async () => {
+    return 'build-' + Date.now()
+  }
 }
 
 module.exports = nextConfig 

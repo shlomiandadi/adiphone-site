@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import prisma from '../../../lib/prisma';
 import { ContactService, ContactStatus } from '@prisma/client';
-import { sendThankYouEmail } from '@/lib/emailService';
+import { sendThankYouEmail } from '../../../lib/emailService';
 
 export async function POST(req: Request) {
   try {
@@ -31,8 +31,19 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('Newsletter subscription error:', error);
     return NextResponse.json(
-      { error: 'Failed to subscribe to newsletter', details: error.message },
-      { status: 500 }
+      { 
+        error: 'Failed to subscribe to newsletter', 
+        details: error instanceof Error ? error.message : 'Internal server error'
+      },
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+        }
+      }
     );
   }
 } 

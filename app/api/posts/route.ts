@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { Category } from '@prisma/client';
-import prisma from '@/lib/prisma';
+import { Category, Post } from '@prisma/client';
+import prisma from '../../../lib/prisma';
 
 interface CreatePostInput {
   title: string;
@@ -20,9 +20,8 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
-  let client;
   try {
-    client = await prisma.$connect();
+    await prisma.$connect();
     console.log('Database connection successful');
 
     const posts = await prisma.post.findMany({
@@ -56,7 +55,7 @@ export async function GET(request: Request) {
       return NextResponse.json([]);
     }
 
-    const formattedPosts = posts.map(post => {
+    const formattedPosts = posts.map((post) => {
       const createdDate = new Date(post.createdAt);
       const updatedDate = new Date(post.updatedAt);
 
@@ -99,8 +98,8 @@ export async function GET(request: Request) {
     console.error('Error fetching posts:', error);
     return new NextResponse(JSON.stringify({ 
       error: 'Failed to fetch posts',
-      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      details: error instanceof Error ? error.message : 'Internal server error',
+      stack: error instanceof Error && process.env.NODE_ENV === 'development' ? error.stack : undefined
     }), {
       status: 500,
       headers: {
@@ -111,16 +110,13 @@ export async function GET(request: Request) {
       }
     });
   } finally {
-    if (client) {
-      await prisma.$disconnect();
-    }
+    await prisma.$disconnect();
   }
 }
 
 export async function POST(request: Request) {
-  let client;
   try {
-    client = await prisma.$connect();
+    await prisma.$connect();
     console.log('Database connection successful');
 
     const data = await request.json();
@@ -223,7 +219,7 @@ export async function POST(request: Request) {
 
     return new NextResponse(JSON.stringify({ 
       error: 'Failed to create post',
-      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+      details: error instanceof Error ? error.message : 'Internal server error'
     }), {
       status: 500,
       headers: {
@@ -234,9 +230,7 @@ export async function POST(request: Request) {
       }
     });
   } finally {
-    if (client) {
-      await prisma.$disconnect();
-    }
+    await prisma.$disconnect();
   }
 }
 

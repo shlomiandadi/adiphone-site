@@ -30,13 +30,13 @@ const nextConfig = {
   },
   reactStrictMode: true,
   output: 'standalone',
+  distDir: '.next',
   typescript: {
     ignoreBuildErrors: false,
   },
   eslint: {
     ignoreDuringBuilds: false,
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://adi-phone.co.il' : '',
   poweredByHeader: false,
 }
 

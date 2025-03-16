@@ -49,9 +49,8 @@
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/.netlify/functions/next/:splat"
   status = 200
-  force = true
 
 [dev]
   framework = "nextjs"

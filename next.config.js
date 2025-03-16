@@ -6,6 +6,7 @@ const nextConfig = {
       : 'http://localhost:8000'
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',

@@ -33,7 +33,7 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "4.41.3",
+    "@netlify/plugin-nextjs": "^4.41.3",
     "@types/node": "^20.17.24",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",

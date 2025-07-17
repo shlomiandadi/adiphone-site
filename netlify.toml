@@ -53,20 +53,6 @@
   status = 301
   force = true
 
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/next/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  conditions = {Not = [
-    {Path = ["/api/", "/_next/", "/static/", "/.netlify/functions/"]}
-  ]}
-
 [dev]
   framework = "nextjs"
   targetPort = 3000 

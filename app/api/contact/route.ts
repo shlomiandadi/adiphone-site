@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import prisma from '../../../lib/prisma';
-import { sendEmail } from '../../../lib/email';
+import { sendContactEmail } from '../../../lib/emailService';
 import { ContactService } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
@@ -109,30 +109,20 @@ export async function POST(request: NextRequest) {
       });
       console.log('Successfully saved to database:', contact.id);
 
-      // Send email notification
-      if (process.env.ADMIN_EMAIL) {
-        try {
-          console.log('Sending email notification...');
-          await sendEmail({
-            to: process.env.ADMIN_EMAIL,
-            subject: 'הודעה חדשה מהאתר',
-            html: `
-              <h2>הודעה חדשה מהאתר</h2>
-              <p><strong>שם:</strong> ${name}</p>
-              <p><strong>אימייל:</strong> ${email}</p>
-              <p><strong>טלפון:</strong> ${phone || 'לא צוין'}</p>
-              <p><strong>שירות:</strong> ${service || 'אחר'}</p>
-              <p><strong>הודעה:</strong></p>
-              <p>${message}</p>
-            `
-          });
-          console.log('Email sent successfully');
-        } catch (emailError) {
-          console.error('Error sending email:', emailError);
-          // Continue execution even if email fails
-        }
-      } else {
-        console.log('No admin email configured');
+      // Send email notification using emailService
+      try {
+        console.log('Sending email notification...');
+        await sendContactEmail({
+          name,
+          email,
+          phone: phone || '',
+          service: service || 'אחר',
+          message
+        });
+        console.log('Email sent successfully');
+      } catch (emailError) {
+        console.error('Error sending email:', emailError);
+        // Continue execution even if email fails
       }
 
       return new Response(JSON.stringify({ success: true, contact }), {

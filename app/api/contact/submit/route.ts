@@ -4,10 +4,15 @@ import { Resend } from 'resend';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Only create Resend instance if API key is available
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // פונקציה לשליחת מייל ללקוח
 const sendCustomerEmail = async (data: any) => {
+  if (!resend) {
+    throw new Error('Resend API key not configured');
+  }
+
   return resend.emails.send({
     from: 'AdiPhone <noreply@adi-phone.co.il>',
     to: data.email,
@@ -37,6 +42,10 @@ const sendCustomerEmail = async (data: any) => {
 
 // פונקציה לשליחת מייל למנהל
 const sendAdminEmail = async (data: any) => {
+  if (!resend) {
+    throw new Error('Resend API key not configured');
+  }
+
   return resend.emails.send({
     from: 'AdiPhone <noreply@adi-phone.co.il>',
     to: 'shlomiandadi@gmail.com',

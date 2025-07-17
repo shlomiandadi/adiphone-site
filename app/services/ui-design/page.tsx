@@ -82,9 +82,31 @@ export default function UIDesignService() {
       }
     ],
     portfolio: [
-      'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1545235617-9465d2a55698?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&auto=format&fit=crop&q=60'
+      {
+        image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800',
+        title: 'עיצוב אפליקציה',
+        description: 'UI/UX לאפליקציית מובייל',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1545235617-9465d2a55698?w=800',
+        title: 'עיצוב אתר תדמית',
+        description: 'עיצוב אתר תדמיתי לעסק',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800',
+        title: 'עיצוב מערכת ניהול',
+        description: 'UI/UX למערכת ניהול מתקדמת',
+        link: '#'
+      }
+    ],
+    testimonials: [
+      {
+        quote: "העיצוב החדש העלה את אחוזי ההמרה באתר שלנו בצורה משמעותית. תודה על עבודה מדויקת!",
+        author: "גלית בן דוד",
+        company: "חברת סטארטאפ בע\"מ"
+      }
     ]
   };
 

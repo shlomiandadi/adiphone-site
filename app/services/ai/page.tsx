@@ -82,9 +82,36 @@ export default function AIService() {
       }
     ],
     portfolio: [
-      'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
-      'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800',
-      'https://images.unsplash.com/photo-1488229297570-58520851e868?w=800'
+      {
+        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
+        title: 'מערכת המלצות AI',
+        description: 'פיתוח מערכת המלצות חכמה לאתר מסחר',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800',
+        title: 'צ׳אטבוט שירות לקוחות',
+        description: 'הטמעת צ׳אטבוט מבוסס בינה מלאכותית',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1488229297570-58520851e868?w=800',
+        title: 'אוטומציה עסקית',
+        description: 'אוטומציה של תהליכים עסקיים בארגון',
+        link: '#'
+      }
+    ],
+    testimonials: [
+      {
+        quote: "הטמענו מערכת AI עם עדי פון והשירות היה מקצועי, מהיר ויעיל. קיבלנו ערך מיידי!",
+        author: "דנה לוי",
+        company: "חברת סטארטאפ בע\"מ"
+      },
+      {
+        quote: "הצוות של עדי פון עזר לנו להטמיע אוטומציה חכמה שחסכה לנו שעות עבודה רבות.",
+        author: "יוסי כהן",
+        company: "י.ק פתרונות"
+      }
     ]
   };
 

@@ -106,9 +106,36 @@ export default function AppDevelopmentPage() {
         }
       ]}
       portfolio={[
-        '/images/portfolio/app1.jpg',
-        '/images/portfolio/app2.jpg',
-        '/images/portfolio/app3.jpg'
+        {
+          image: '/images/portfolio/app1.jpg',
+          title: 'אפליקציית מסחר',
+          description: 'אפליקציה לחנות אונליין',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/app2.jpg',
+          title: 'אפליקציית שירות',
+          description: 'אפליקציה לשירות לקוחות',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/app3.jpg',
+          title: 'אפליקציית ניהול',
+          description: 'אפליקציה לניהול עסקי',
+          link: '#'
+        }
+      ]}
+      testimonials={[
+        {
+          quote: "האפליקציה שפיתחתם לנו העלתה את רמת השירות ללקוחות והפכה את התהליך לאוטומטי ופשוט.",
+          author: "דנה ישראלי",
+          company: "חברת פתרונות דיגיטליים"
+        },
+        {
+          quote: "הצוות היה מקצועי, מהיר וזמין לכל שאלה. ממליץ בחום!",
+          author: "יוסי כהן",
+          company: "י.ק אפליקציות"
+        }
       ]}
     />
   );

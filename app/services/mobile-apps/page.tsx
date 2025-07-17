@@ -84,9 +84,31 @@ export default function MobileAppService() {
       }
     ],
     portfolio: [
-      'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1573867639040-6dd25fa5f597?w=800&auto=format&fit=crop&q=60'
+      {
+        image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800',
+        title: 'אפליקציית מסחר',
+        description: 'פיתוח אפליקציה לחנות אונליין',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800',
+        title: 'אפליקציית שירות',
+        description: 'אפליקציה לשירות לקוחות',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1573867639040-6dd25fa5f597?w=800',
+        title: 'אפליקציית ניהול',
+        description: 'פיתוח אפליקציה לניהול עסקי',
+        link: '#'
+      }
+    ],
+    testimonials: [
+      {
+        quote: "האפליקציה שפיתחתם לנו שינתה את כל חווית השירות ללקוחות. ממליץ בחום!",
+        author: "רועי לוי",
+        company: "לוי פתרונות מובייל"
+      }
     ]
   };
 

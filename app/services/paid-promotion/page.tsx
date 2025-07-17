@@ -68,9 +68,36 @@ export default function PaidPromotionPage() {
         }
       ]}
       portfolio={[
-        '/images/portfolio/ads1.jpg',
-        '/images/portfolio/ads2.jpg',
-        '/images/portfolio/ads3.jpg'
+        {
+          image: '/images/portfolio/ads1.jpg',
+          title: 'קמפיין ממומן בגוגל',
+          description: 'ניהול קמפיין Google Ads לעסק',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/ads2.jpg',
+          title: 'קמפיין פייסבוק',
+          description: 'קמפיין ממומן בפייסבוק להגדלת חשיפה',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/ads3.jpg',
+          title: 'קמפיין אינסטגרם',
+          description: 'קמפיין ממומן באינסטגרם להגדלת מעורבות',
+          link: '#'
+        }
+      ]}
+      testimonials={[
+        {
+          quote: "הקמפיינים הממומנים שלכם הביאו לנו לידים איכותיים והחזר השקעה גבוה.",
+          author: "שחר לוי",
+          company: "לוי שיווק דיגיטלי"
+        },
+        {
+          quote: "הפרסום הממומן שיפר משמעותית את החשיפה שלנו ברשת.",
+          author: "דנה ישראלי",
+          company: "חברת פתרונות דיגיטליים"
+        }
       ]}
     />
   );

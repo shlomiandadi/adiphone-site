@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobileAlt, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
+import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobileAlt, FaPaintBrush, FaBolt, FaShieldAlt, FaStar } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { IconType } from 'react-icons';
 
@@ -26,7 +26,17 @@ interface ServiceLayoutProps {
     question: string;
     answer: string;
   }>;
-  portfolio: string[];
+  portfolio: Array<{
+    image: string;
+    title: string;
+    description: string;
+    link: string;
+  }>;
+  testimonials: Array<{
+    quote: string;
+    author: string;
+    company: string;
+  }>;
 }
 
 const fadeInUp = {
@@ -85,7 +95,8 @@ export default function ServiceLayout({
   benefits,
   process,
   faq,
-  portfolio
+  portfolio,
+  testimonials
 }: ServiceLayoutProps) {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -284,29 +295,92 @@ export default function ServiceLayout({
             variants={fadeInUp}
             className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white"
           >
-            הפרויקטים שלנו
+            החנויות שבנינו מדברות בעד עצמן
           </motion.h2>
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerChildren}
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
           >
-            {portfolio.map((image, index) => (
+            {portfolio.map((item, index) => (
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                whileHover={{ scale: 1.02 }}
-                className="group relative aspect-video overflow-hidden rounded-xl shadow-lg transition-all hover:shadow-2xl"
+                className="group overflow-hidden rounded-xl bg-white shadow-lg transition-all hover:shadow-2xl dark:bg-gray-700"
               >
-                <Image
-                  src={image}
-                  alt={`Portfolio ${index + 1}`}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                <div className="relative h-48 w-full">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+                    {item.title}
+                  </h3>
+                  <p className="mb-4 text-gray-600 dark:text-gray-300">
+                    {item.description}
+                  </p>
+                  <Link
+                    href={item.link}
+                    className="inline-block rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+                  >
+                    לצפייה בחנות
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="bg-white px-4 py-16 dark:bg-gray-900">
+        <div className="container mx-auto max-w-4xl">
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+            className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white"
+          >
+            מה לקוחות חושבים עלינו?
+          </motion.h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerChildren}
+            className="space-y-8"
+          >
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="rounded-xl bg-gray-50 p-8 shadow-lg dark:bg-gray-800"
+              >
+                <blockquote className="mb-6 text-lg italic text-gray-700 dark:text-gray-300">
+                  "{testimonial.quote}"
+                </blockquote>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white">
+                      {testimonial.author}
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {testimonial.company}
+                    </p>
+                  </div>
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <FaStar key={i} className="h-5 w-5" />
+                    ))}
+                  </div>
+                </div>
               </motion.div>
             ))}
           </motion.div>

@@ -1,19 +1,11 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: parseInt(process.env.EMAIL_PORT || '587'),
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendContactEmail(data: any) {
   const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
+    from: 'AdiPhone <noreply@adi-phone.co.il>',
+    to: process.env.ADMIN_EMAIL || 'shlomiandadi@gmail.com',
     subject: 'טופס יצירת קשר חדש',
     html: `
       <div dir="rtl">
@@ -25,11 +17,12 @@ export async function sendContactEmail(data: any) {
         <p><strong>הודעה:</strong></p>
         <p>${data.message}</p>
       </div>
-    `
+    `,
+    replyTo: data.email
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send(mailOptions);
     console.log('Contact email sent successfully');
   } catch (error) {
     console.error('Error sending contact email:', error);
@@ -39,8 +32,9 @@ export async function sendContactEmail(data: any) {
 
 export async function sendThankYouEmail(email: string, name: string) {
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: 'AdiPhone <noreply@adi-phone.co.il>',
     to: email,
+    replyTo: 'shlomiandadi@gmail.com',
     subject: 'תודה על פנייתך',
     html: `
       <div dir="rtl">
@@ -52,7 +46,7 @@ export async function sendThankYouEmail(email: string, name: string) {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send(mailOptions);
     console.log('Thank you email sent successfully');
   } catch (error) {
     console.error('Error sending thank you email:', error);

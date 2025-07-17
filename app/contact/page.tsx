@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { ContactService } from '@prisma/client';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ export default function Contact() {
     email: '',
     phone: '',
     message: '',
-    service: 'other'
+    service: ContactService.OTHER
   });
   const [status, setStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,7 +21,7 @@ export default function Contact() {
     setStatus('שולח...');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact/submit`, {
+      const response = await fetch('/api/contact/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +36,7 @@ export default function Contact() {
       }
 
       setStatus('הטופס נשלח בהצלחה! נציג יצור איתך קשר בהקדם.');
-      setFormData({ name: '', email: '', phone: '', message: '', service: 'other' });
+      setFormData({ name: '', email: '', phone: '', message: '', service: ContactService.OTHER });
     } catch (error) {
       console.error('Error submitting form:', error);
       setStatus('אירעה שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר בטלפון.');
@@ -45,10 +46,11 @@ export default function Contact() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: name === 'service' ? value as ContactService : value
+    }));
   };
 
   return (
@@ -134,10 +136,10 @@ export default function Contact() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 >
-                  <option value="web-development">פיתוח אתרים</option>
-                  <option value="seo">קידום אורגני</option>
-                  <option value="ppc">שיווק ממומן</option>
-                  <option value="other">אחר</option>
+                  <option value={ContactService.WEB_DEVELOPMENT}>פיתוח אתרים</option>
+                  <option value={ContactService.SEO}>קידום אורגני</option>
+                  <option value={ContactService.PPC}>שיווק ממומן</option>
+                  <option value={ContactService.OTHER}>אחר</option>
                 </select>
               </div>
               <div>

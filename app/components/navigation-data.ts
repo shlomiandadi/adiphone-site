@@ -46,7 +46,7 @@ export const navigation: NavigationItem[] = [
         name: "חנויות אינטרנט",
         href: "/services/ecommerce",
         icon: "shopping-cart",
-        description: "הקמת חנויות אונליין מתקדמות"
+        description: "בניית חנויות אונליין מהירות, מעוצבות ומותאמות למובייל"
       },
       {
         name: "פיתוח אפליקציות",

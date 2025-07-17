@@ -15,7 +15,6 @@
   ADMIN_PASSWORD = "adi112211"
   NEXT_PUBLIC_SITE_URL = "https://adi-phone.co.il"
   NPM_FLAGS = "--legacy-peer-deps"
-  RESEND_API_KEY = "re_CTYMijDV_MptfAcF4MBWT5uTGpq18EMJt"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -58,6 +57,7 @@
   from = "/api/*"
   to = "/.netlify/functions/next/:splat"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/*"

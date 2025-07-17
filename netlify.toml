@@ -53,11 +53,6 @@
   status = 301
   force = true
 
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/___netlify-handler"
-  status = 200
-
 [dev]
   framework = "nextjs"
   targetPort = 3000 

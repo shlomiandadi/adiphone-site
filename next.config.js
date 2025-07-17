@@ -29,7 +29,6 @@ const nextConfig = {
     styledComponents: true,
   },
   reactStrictMode: true,
-  output: 'standalone',
   distDir: '.next',
   typescript: {
     ignoreBuildErrors: false,

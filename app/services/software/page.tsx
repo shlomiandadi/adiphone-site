@@ -82,9 +82,31 @@ export default function SoftwareService() {
       }
     ],
     portfolio: [
-      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
-      'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800',
-      'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800'
+      {
+        image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
+        title: 'מערכת ניהול לקוחות',
+        description: 'פיתוח מערכת CRM מותאמת אישית',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800',
+        title: 'מערכת אוטומציה',
+        description: 'אוטומציה של תהליכים עסקיים',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800',
+        title: 'פיתוח API',
+        description: 'פיתוח ממשקי API מתקדמים',
+        link: '#'
+      }
+    ],
+    testimonials: [
+      {
+        quote: "פיתוח התוכנה היה מקצועי, מהיר ומותאם בדיוק לצרכים שלנו. ממליץ בחום!",
+        author: "יוסי מזרחי",
+        company: "מזרחי מערכות"
+      }
     ]
   };
 

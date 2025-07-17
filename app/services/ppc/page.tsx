@@ -83,9 +83,31 @@ export default function PPCService() {
       }
     ],
     portfolio: [
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-      'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800',
-      'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800'
+      {
+        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+        title: 'קמפיין Google Ads',
+        description: 'ניהול קמפיין ממומן בגוגל',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800',
+        title: 'קמפיין Facebook',
+        description: 'קמפיין ממומן בפייסבוק',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800',
+        title: 'קמפיין Instagram',
+        description: 'קמפיין ממומן באינסטגרם',
+        link: '#'
+      }
+    ],
+    testimonials: [
+      {
+        quote: "הקמפיינים הממומנים שלכם הביאו לנו לידים איכותיים והחזר השקעה גבוה.",
+        author: "שחר לוי",
+        company: "לוי שיווק דיגיטלי"
+      }
     ]
   };
 

@@ -68,9 +68,36 @@ export default function OrganicSeoPage() {
         }
       ]}
       portfolio={[
-        '/images/portfolio/seo1.jpg',
-        '/images/portfolio/seo2.jpg',
-        '/images/portfolio/seo3.jpg'
+        {
+          image: '/images/portfolio/seo1.jpg',
+          title: 'קידום אתר תדמית',
+          description: 'העלאת אתר לעמוד הראשון בגוגל',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/seo2.jpg',
+          title: 'קידום חנות אונליין',
+          description: 'שיפור תנועת גולשים והמרות',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/seo3.jpg',
+          title: 'קידום לוקאלי',
+          description: 'קידום עסקים מקומיים בגוגל',
+          link: '#'
+        }
+      ]}
+      testimonials={[
+        {
+          quote: "הקידום האורגני העלה אותנו לעמוד הראשון בגוגל תוך חודשים ספורים! צוות מקצועי ושירות מעולה.",
+          author: "נועה כהן",
+          company: "סטודיו עיצוב גרפי"
+        },
+        {
+          quote: "הצלחנו להגדיל את כמות הפניות מהאתר פי 3 בזכות העבודה שלכם!",
+          author: "אורן ברק",
+          company: "ברק פתרונות דיגיטליים"
+        }
       ]}
     />
   );

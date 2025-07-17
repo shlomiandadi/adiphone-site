@@ -11,7 +11,7 @@ const sendCustomerEmail = async (data: any) => {
   return resend.emails.send({
     from: 'AdiPhone <noreply@adi-phone.co.il>',
     to: data.email,
-    reply_to: 'shlomiandadi@gmail.com',
+    replyTo: 'shlomiandadi@gmail.com',
     subject: 'תודה שפנית אלינו - עדי פון תקשורת',
     html: `
       <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
@@ -40,7 +40,7 @@ const sendAdminEmail = async (data: any) => {
   return resend.emails.send({
     from: 'AdiPhone <noreply@adi-phone.co.il>',
     to: 'shlomiandadi@gmail.com',
-    reply_to: data.email,
+    replyTo: data.email,
     subject: 'פנייה חדשה - טופס יצירת קשר',
     html: `
       <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">

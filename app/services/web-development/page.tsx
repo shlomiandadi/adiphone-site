@@ -68,9 +68,36 @@ export default function WebDevelopmentPage() {
         }
       ]}
       portfolio={[
-        '/images/portfolio/web1.jpg',
-        '/images/portfolio/web2.jpg',
-        '/images/portfolio/web3.jpg'
+        {
+          image: '/images/portfolio/web1.jpg',
+          title: 'אתר תדמית',
+          description: 'פיתוח אתר תדמית מודרני לעסק',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/web2.jpg',
+          title: 'אתר חנות',
+          description: 'בניית חנות אונליין עם מערכת ניהול',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/web3.jpg',
+          title: 'אתר קטלוג',
+          description: 'פיתוח אתר קטלוג להצגת מוצרים',
+          link: '#'
+        }
+      ]}
+      testimonials={[
+        {
+          quote: "האתר החדש שלנו נראה מדהים ומביא הרבה יותר פניות! תודה על שירות מקצועי.",
+          author: "אורית לוי",
+          company: "לוי פתרונות דיגיטליים"
+        },
+        {
+          quote: "הצוות היה זמין, מקצועי והפך את התהליך לפשוט ומהיר.",
+          author: "דני כהן",
+          company: "דיגיטל ביזנס"
+        }
       ]}
     />
   );

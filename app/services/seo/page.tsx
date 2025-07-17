@@ -99,9 +99,31 @@ export default function SEOService() {
       }
     ],
     portfolio: [
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60'
+      {
+        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+        title: 'קידום אתר תדמית',
+        description: 'העלאת אתר לעמוד הראשון בגוגל',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800',
+        title: 'קידום חנות אונליין',
+        description: 'שיפור תנועת גולשים והמרות',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
+        title: 'קידום לוקאלי',
+        description: 'קידום עסקים מקומיים בגוגל',
+        link: '#'
+      }
+    ],
+    testimonials: [
+      {
+        quote: "הקידום האורגני העלה אותנו לעמוד הראשון בגוגל תוך חודשים ספורים! צוות מקצועי ושירות מעולה.",
+        author: "נועה כהן",
+        company: "סטודיו עיצוב גרפי"
+      }
     ]
   };
 

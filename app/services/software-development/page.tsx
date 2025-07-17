@@ -101,9 +101,36 @@ export default function SoftwareDevelopmentPage() {
         }
       ]}
       portfolio={[
-        '/images/portfolio/software1.jpg',
-        '/images/portfolio/software2.jpg',
-        '/images/portfolio/software3.jpg'
+        {
+          image: '/images/portfolio/software1.jpg',
+          title: 'מערכת ניהול לקוחות',
+          description: 'פיתוח מערכת CRM מותאמת אישית',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/software2.jpg',
+          title: 'מערכת אוטומציה',
+          description: 'אוטומציה של תהליכים עסקיים',
+          link: '#'
+        },
+        {
+          image: '/images/portfolio/software3.jpg',
+          title: 'פיתוח API',
+          description: 'פיתוח ממשקי API מתקדמים',
+          link: '#'
+        }
+      ]}
+      testimonials={[
+        {
+          quote: "פיתוח התוכנה היה מקצועי, מהיר ומותאם בדיוק לצרכים שלנו. ממליץ בחום!",
+          author: "יוסי מזרחי",
+          company: "מזרחי מערכות"
+        },
+        {
+          quote: "הצוות היה זמין לכל שאלה והפיתוח היה ברמה גבוהה.",
+          author: "דנה כהן",
+          company: "דיגיטל פתרונות"
+        }
       ]}
     />
   );

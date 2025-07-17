@@ -82,9 +82,31 @@ export default function AnalyticsService() {
       }
     ],
     portfolio: [
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-      'https://images.unsplash.com/photo-1572177812156-58036aae439c?w=800'
+      {
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
+        title: 'דשבורד אנליטיקס',
+        description: 'פיתוח דשבורד נתונים מתקדם',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+        title: 'הטמעת Google Analytics',
+        description: 'הטמעת מערכת מדידה באתרי לקוחות',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1572177812156-58036aae439c?w=800',
+        title: 'ניתוח נתוני משתמשים',
+        description: 'ניתוח התנהגות משתמשים לשיפור חווית הלקוח',
+        link: '#'
+      }
+    ],
+    testimonials: [
+      {
+        quote: "האנליטיקס שלכם עזר לנו להבין את הלקוחות ולשפר את הביצועים העסקיים.",
+        author: "דנה ישראלי",
+        company: "חברת שיווק דיגיטלי"
+      }
     ]
   };
 

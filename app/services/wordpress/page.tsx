@@ -82,9 +82,31 @@ export default function WordPressService() {
       }
     ],
     portfolio: [
-      'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&auto=format&fit=crop&q=60'
+      {
+        image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800',
+        title: 'אתר תדמית וורדפרס',
+        description: 'פיתוח אתר תדמית מקצועי בוורדפרס',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+        title: 'חנות WooCommerce',
+        description: 'הקמת חנות אונליין על בסיס וורדפרס',
+        link: '#'
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800',
+        title: 'בלוג מקצועי',
+        description: 'פיתוח בלוג תוכן בוורדפרס',
+        link: '#'
+      }
+    ],
+    testimonials: [
+      {
+        quote: "האתר החדש שלנו בוורדפרס נראה מדהים ועובד מעולה. תודה על שירות מקצועי וזמינות מלאה!",
+        author: "אורן ברק",
+        company: "ברק פתרונות דיגיטליים"
+      }
     ]
   };
 

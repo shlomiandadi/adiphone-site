@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import AdminLayout from '../../components/admin/AdminLayout';
 
 interface Contact {
   _id: string;
@@ -9,7 +10,9 @@ interface Contact {
   phone: string;
   message: string;
   service: string;
+  status: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export default function AdminContacts() {
@@ -20,7 +23,7 @@ export default function AdminContacts() {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`);
+        const response = await fetch('/api/contact');
         if (!response.ok) {
           throw new Error('Failed to fetch contacts');
         }

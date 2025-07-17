@@ -47,7 +47,7 @@ const ContactForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact/submit`, {
+      const response = await fetch('/api/contact/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -166,15 +166,15 @@ const ContactForm: React.FC = () => {
         ></textarea>
       </div>
 
-      {status && (
-        <div className={`p-4 rounded-lg text-center text-lg font-medium ${
-          status.includes('הצלחה') 
-            ? 'bg-green-100 text-green-700 border border-green-500' 
-            : status === 'שולח...'
-            ? 'bg-blue-100 text-blue-700 border border-blue-500'
-            : 'bg-red-100 text-red-700 border border-red-500'
-        }`}>
-          {status}
+      {error && (
+        <div className="p-4 rounded-lg text-center text-lg font-medium bg-red-100 text-red-700 border border-red-500">
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="p-4 rounded-lg text-center text-lg font-medium bg-green-100 text-green-700 border border-green-500">
+          {success}
         </div>
       )}
 

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { ContactService } from '@prisma/client';
 
 export default function Contact() {
@@ -54,30 +53,17 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <div className="relative h-[60vh] min-h-[400px] w-full">
-        <Image
-          src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1200"
-          alt="Contact Us Hero"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/80 to-purple-600/80 dark:from-blue-900/90 dark:to-purple-900/90" />
-        <div className="absolute inset-0 flex items-center justify-center text-center">
-          <div className="container mx-auto px-4">
-            <h1 className="mb-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
-              צור קשר עם עדי פון תקשורת
-            </h1>
-            <p className="mx-auto max-w-2xl text-xl text-white/90 md:text-2xl">
-              נשמח לשמוע על הפרויקט שלך ולעזור לך להפוך את החזון למציאות
-            </p>
-          </div>
+      <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-5xl font-bold mb-6">צור קשר</h1>
+          <p className="text-xl max-w-2xl mx-auto">
+            מוכנים להתחיל את הפרויקט הבא שלכם? צרו איתנו קשר ונחזור אליכם בהקדם
+          </p>
         </div>
-      </div>
+      </section>
 
-      {/* Contact Form Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
@@ -137,8 +123,8 @@ export default function Contact() {
                   required
                 >
                   <option value={ContactService.WEB_DEVELOPMENT}>פיתוח אתרים</option>
-                  <option value={ContactService.SEO}>קידום אורגני</option>
-                  <option value={ContactService.PPC}>שיווק ממומן</option>
+                  <option value={ContactService.SEO}>קידום אתרים</option>
+                  <option value={ContactService.PPC}>פרסום ממומן</option>
                   <option value={ContactService.OTHER}>אחר</option>
                 </select>
               </div>
@@ -156,6 +142,7 @@ export default function Contact() {
                   required
                 ></textarea>
               </div>
+
               {status && (
                 <div className={`p-4 rounded-lg text-center text-lg font-medium ${
                   status.includes('הצלחה') 
@@ -167,6 +154,7 @@ export default function Contact() {
                   {status}
                 </div>
               )}
+
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -179,42 +167,6 @@ export default function Contact() {
                 {isSubmitting ? 'שולח...' : 'שליחה'}
               </button>
             </form>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Info Section */}
-      <section className="bg-gray-50 py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">טלפון</h3>
-              <p className="text-gray-600">0509159951</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">דוא"ל</h3>
-              <p className="text-gray-600">adiphoneseo@gmail.com</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">כתובת</h3>
-              <p className="text-gray-600">זמיר 95, פרדס חנה</p>
-            </div>
           </div>
         </div>
       </section>

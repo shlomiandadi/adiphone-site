@@ -21,7 +21,7 @@ export default function Contact() {
     setSubmitStatus('idle');
     
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact/submit`, {
+      const response = await fetch('/api/contact/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,87 +59,85 @@ export default function Contact() {
     }));
   };
 
-  const contactInfo = [
-    {
-      title: 'טלפון',
-      icon: FaPhone,
-      content: '0509159951',
-      href: 'tel:0509159951'
-    },
-    {
-      title: 'אימייל',
-      icon: FaEnvelope,
-      content: 'adiphoneseo@gmail.com',
-      href: 'mailto:adiphoneseo@gmail.com'
-    },
-    {
-      title: 'כתובת',
-      icon: FaMapMarkerAlt,
-      content: 'זמיר 95, פרדס חנה',
-      href: 'https://maps.google.com/?q=זמיר+95+פרדס+חנה'
-    },
-    {
-      icon: FaClock,
-      title: 'שעות פעילות',
-      content: 'א-ה 09:00-18:00',
-      href: null
-    }
-  ];
-
   return (
-    <section className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">צור קשר</h2>
-          <p className="text-gray-600 dark:text-gray-300">נשמח לעמוד לשירותך ולענות על כל שאלה</p>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            צור קשר
+          </h2>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            מוכנים להתחיל את הפרויקט הבא שלכם? צרו איתנו קשר ונחזור אליכם בהקדם
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Contact Info */}
-          <div className="lg:col-span-1 h-full">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 h-full flex flex-col justify-between">
-              <div>
-                <h3 className="text-xl font-bold mb-6 dark:text-white">פרטי התקשרות</h3>
-                <div className="space-y-6">
-                  {contactInfo.map((item, index) => (
-                    <div key={index} className="flex items-start">
-                      <div className="p-2 bg-blue-50 dark:bg-blue-900 rounded-lg">
-                        <item.icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <div className="mr-4">
-                        <h4 className="font-medium text-gray-900 dark:text-white">{item.title}</h4>
-                        {item.href ? (
-                          <a
-                            href={item.href}
-                            className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                            target={item.href.startsWith('http') ? '_blank' : undefined}
-                            rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          >
-                            {item.content}
-                          </a>
-                        ) : (
-                          <p className="text-gray-600 dark:text-gray-300">{item.content}</p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+        <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {/* Contact Information */}
+          <div className="space-y-8">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                פרטי קשר
+              </h3>
+              
+              <div className="space-y-6">
+                <div className="flex items-start space-x-4 rtl:space-x-reverse">
+                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                    <FaPhone className="text-blue-600 dark:text-blue-400 text-xl" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white">טלפון</h4>
+                    <p className="text-gray-600 dark:text-gray-300">050-123-4567</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4 rtl:space-x-reverse">
+                  <div className="flex-shrink-0 w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                    <FaEnvelope className="text-green-600 dark:text-green-400 text-xl" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white">אימייל</h4>
+                    <p className="text-gray-600 dark:text-gray-300">info@adi-phone.co.il</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4 rtl:space-x-reverse">
+                  <div className="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                    <FaMapMarkerAlt className="text-purple-600 dark:text-purple-400 text-xl" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white">כתובת</h4>
+                    <p className="text-gray-600 dark:text-gray-300">תל אביב, ישראל</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4 rtl:space-x-reverse">
+                  <div className="flex-shrink-0 w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+                    <FaClock className="text-orange-600 dark:text-orange-400 text-xl" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white">שעות פעילות</h4>
+                    <p className="text-gray-600 dark:text-gray-300">א-ה: 9:00-18:00</p>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              {/* Social Links */}
-              <div className="mt-8">
-                <h4 className="font-medium text-gray-900 dark:text-white mb-4">עקבו אחרינו</h4>
-                <div className="flex space-x-4">
-                  <a href="https://wa.me/972509159951" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-green-500 transition-colors">
-                    <FaWhatsapp className="w-6 h-6" />
-                  </a>
-                  <a href="https://www.facebook.com/profile.php?viewas=100000686899395&id=100090294429735&locale=he_IL" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    <FaFacebook className="w-6 h-6" />
-                  </a>
-                  <a href="https://www.linkedin.com/in/shlomi-malfuf-709961221/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700 transition-colors">
-                    <FaLinkedin className="w-6 h-6" />
-                  </a>
-                </div>
+            {/* Social Media */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                עקבו אחרינו
+              </h3>
+              
+              <div className="flex space-x-4 rtl:space-x-reverse">
+                <a href="#" className="w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-colors">
+                  <FaFacebook className="text-white text-xl" />
+                </a>
+                <a href="#" className="w-12 h-12 bg-green-600 hover:bg-green-700 rounded-lg flex items-center justify-center transition-colors">
+                  <FaWhatsapp className="text-white text-xl" />
+                </a>
+                <a href="#" className="w-12 h-12 bg-blue-700 hover:bg-blue-800 rounded-lg flex items-center justify-center transition-colors">
+                  <FaLinkedin className="text-white text-xl" />
+                </a>
               </div>
             </div>
           </div>
@@ -179,9 +177,10 @@ export default function Contact() {
                       />
                     </div>
                   </div>
+
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      אימייל
+                      דוא"ל
                     </label>
                     <input
                       type="email"
@@ -193,9 +192,10 @@ export default function Contact() {
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white"
                     />
                   </div>
+
                   <div>
                     <label htmlFor="service" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      שירות מבוקש
+                      שירות
                     </label>
                     <select
                       id="service"
@@ -206,11 +206,12 @@ export default function Contact() {
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white"
                     >
                       <option value="web-development">פיתוח אתרים</option>
-                      <option value="seo">קידום אורגני</option>
-                      <option value="ppc">שיווק ממומן</option>
+                      <option value="seo">קידום אתרים</option>
+                      <option value="ppc">פרסום ממומן</option>
                       <option value="other">אחר</option>
                     </select>
                   </div>
+
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       הודעה
@@ -257,28 +258,13 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`w-full py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 rtl:space-x-reverse ${
-                      isSubmitting 
-                        ? 'bg-gray-400 cursor-not-allowed' 
-                        : 'bg-blue-600 hover:bg-blue-700 hover:scale-[1.02] active:scale-[0.98]'
-                    } text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+                    className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 ${
+                      isSubmitting
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-blue-600 hover:bg-blue-700 transform hover:scale-105'
+                    } text-white shadow-lg`}
                   >
-                    {isSubmitting ? (
-                      <>
-                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span>שולח...</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
-                        <span>שליחה</span>
-                      </>
-                    )}
+                    {isSubmitting ? 'שולח...' : 'שלח הודעה'}
                   </button>
                 </div>
               </form>

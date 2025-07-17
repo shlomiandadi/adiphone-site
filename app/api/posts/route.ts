@@ -51,10 +51,6 @@ export async function GET(request: Request) {
       }
     });
 
-    if (!posts || posts.length === 0) {
-      return NextResponse.json([]);
-    }
-
     const formattedPosts = posts.map((post) => {
       const createdDate = new Date(post.createdAt);
       const updatedDate = new Date(post.updatedAt);
@@ -62,16 +58,11 @@ export async function GET(request: Request) {
       return {
         _id: post.id,
         title: post.title,
-        description: post.excerpt,
-        image: post.mainImage || '/images/blog-placeholder.jpg',
+        excerpt: post.excerpt,
+        mainImage: post.mainImage || '/images/blog/nextjs-guide.jpg',
         category: post.category,
-        date: createdDate.toLocaleDateString('he-IL', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        }),
-        keywords: post.tags || [],
-        relatedPosts: [],
+        createdAt: createdDate.toISOString(),
+        tags: post.tags || [],
         slug: post.slug,
         published: post.published,
         authorName: post.authorName || 'Admin',
@@ -80,12 +71,11 @@ export async function GET(request: Request) {
         likes: post.likes,
         metaTitle: post.metaTitle,
         metaDesc: post.metaDesc,
-        createdAt: createdDate.toISOString(),
         updatedAt: updatedDate.toISOString()
       };
     });
 
-    return new NextResponse(JSON.stringify(formattedPosts), {
+    return new NextResponse(JSON.stringify({ posts: formattedPosts }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',

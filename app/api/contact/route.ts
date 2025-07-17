@@ -5,6 +5,45 @@ import { ContactService } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
+export async function GET(request: NextRequest) {
+  try {
+    await prisma.$connect();
+    console.log('Database connection successful');
+
+    const contacts = await prisma.contact.findMany({
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+
+    return new Response(JSON.stringify({ contacts }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    return new Response(JSON.stringify({ 
+      error: 'Failed to fetch contacts',
+      details: error instanceof Error ? error.message : 'Internal server error'
+    }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+      }
+    });
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 export async function POST(request: NextRequest) {
   console.log('Processing contact form submission...');
   try {
@@ -126,4 +165,15 @@ export async function POST(request: NextRequest) {
   } finally {
     await prisma.$disconnect();
   }
+}
+
+export async function OPTIONS(request: NextRequest) {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+    }
+  });
 } 

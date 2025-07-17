@@ -100,12 +100,31 @@ const validateContactData = (data: any): { isValid: boolean; error?: string } =>
   return { isValid: true };
 };
 
+export async function GET() {
+  return new NextResponse(JSON.stringify({ 
+    message: 'Contact API is working',
+    timestamp: new Date().toISOString()
+  }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+    }
+  });
+}
+
 export async function POST(request: Request) {
   try {
+    console.log('POST request received to /api/contact/submit');
+    
     const data = await request.json();
+    console.log('Request data:', data);
 
     const validation = validateContactData(data);
     if (!validation.isValid) {
+      console.log('Validation failed:', validation.error);
       return new NextResponse(JSON.stringify({ error: validation.error }), {
         status: 400,
         headers: {
@@ -161,6 +180,7 @@ export async function POST(request: Request) {
       });
     }
 
+    console.log('Contact form submitted successfully');
     return new NextResponse(JSON.stringify({ 
       success: true,
       message: 'Contact form submitted successfully',

@@ -45,7 +45,7 @@ export async function GET(
     const updatedDate = new Date(post.updatedAt);
 
     const formattedPost = {
-      _id: post.id,
+      id: post.id,
       title: post.title,
       content: post.content,
       description: post.excerpt,
@@ -75,6 +75,44 @@ export async function GET(
     console.error('Error fetching post:', error);
     return NextResponse.json(
       { error: 'Failed to fetch post' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: { slug: string } }
+) {
+  try {
+    const data = await request.json();
+    
+    const updateData: any = {};
+    
+    if (data.published !== undefined) {
+      updateData.published = data.published;
+    }
+    
+    if (data.slug) {
+      updateData.slug = data.slug;
+    }
+    
+    const post = await prisma.post.update({
+      where: {
+        slug: params.slug
+      },
+      data: updateData
+    });
+
+    return NextResponse.json({ 
+      success: true, 
+      message: `Post updated successfully`,
+      data: post
+    });
+  } catch (error) {
+    console.error('Error updating post:', error);
+    return NextResponse.json(
+      { error: 'Failed to update post' },
       { status: 500 }
     );
   }

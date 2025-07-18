@@ -5,7 +5,7 @@ import { ContactService } from '@prisma/client';
 import BlogCard from '../components/BlogCard';
 
 interface BlogPost {
-  _id: string;
+  id: string;
   title: string;
   excerpt: string;
   mainImage: string;
@@ -155,7 +155,7 @@ export default function Blog() {
             ) : (
               <div className="grid md:grid-cols-2 gap-8">
                 {posts.map((post) => (
-                  <BlogCard key={post._id} post={post} />
+                  <BlogCard key={post.id} post={post} />
                 ))}
               </div>
             )}

@@ -5,17 +5,21 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface BlogPost {
-  _id: string;
+  id: string;
   title: string;
-  description: string;
-  image: string;
+  excerpt: string;
+  mainImage: string;
   category: string;
-  date: string;
-  keywords: string[];
-  relatedPosts: string[];
-  slug: string;
-  status: string;
   createdAt: string;
+  tags: string[];
+  slug: string;
+  published: boolean;
+  authorName: string;
+  authorEmail: string;
+  views: number;
+  likes: number;
+  metaTitle: string;
+  metaDesc: string;
   updatedAt: string;
 }
 
@@ -44,11 +48,11 @@ export default function Blog() {
       }
 
       const data = await response.json();
-      if (!Array.isArray(data)) {
+      if (!data.posts || !Array.isArray(data.posts)) {
         console.error('Invalid data format:', data);
         throw new Error('Invalid response format');
       }
-      setPosts(data);
+      setPosts(data.posts);
     } catch (error) {
       console.error('Error fetching blogs:', error);
       setError(error instanceof Error ? error.message : 'Failed to fetch blogs');
@@ -97,6 +101,15 @@ export default function Blog() {
     );
   }
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('he-IL', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -106,7 +119,7 @@ export default function Blog() {
             <article key={post.slug} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
               <div className="relative h-48">
                 <Image
-                  src={post.image}
+                  src={post.mainImage || '/images/blog/nextjs-guide.jpg'}
                   alt={post.title}
                   fill
                   className="object-cover"
@@ -117,10 +130,10 @@ export default function Blog() {
                   <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">
                     {post.category}
                   </span>
-                  <span className="text-gray-500 text-sm">{post.date}</span>
+                  <span className="text-gray-500 text-sm">{formatDate(post.createdAt)}</span>
                 </div>
                 <h3 className="text-xl font-bold mb-2">{post.title}</h3>
-                <p className="text-gray-600 mb-4">{post.description}</p>
+                <p className="text-gray-600 mb-4">{post.excerpt}</p>
                 <Link
                   href={`/blog/${post.slug}`}
                   className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center"

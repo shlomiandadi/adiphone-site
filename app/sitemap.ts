@@ -46,10 +46,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       throw new Error('Failed to fetch blog posts');
     }
 
-    const posts = await response.json();
+    const data = await response.json();
+    const posts = Array.isArray(data.posts) ? data.posts : [];
     const blogRoutes = posts.map((post: any) => ({
       url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: new Date(post.updatedAt),
+      lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.6,
     }));

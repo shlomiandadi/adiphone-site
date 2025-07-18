@@ -86,7 +86,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white">טלפון</h4>
-                    <p className="text-gray-600 dark:text-gray-300">050-123-4567</p>
+                    <p className="text-gray-600 dark:text-gray-300">0509159951</p>
                   </div>
                 </div>
 
@@ -96,7 +96,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white">אימייל</h4>
-                    <p className="text-gray-600 dark:text-gray-300">info@adi-phone.co.il</p>
+                    <p className="text-gray-600 dark:text-gray-300">adiphoneseo@gmail.com</p>
                   </div>
                 </div>
 
@@ -106,7 +106,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white">כתובת</h4>
-                    <p className="text-gray-600 dark:text-gray-300">תל אביב, ישראל</p>
+                    <p className="text-gray-600 dark:text-gray-300">זמיר 95, פרדס חנה</p>
                   </div>
                 </div>
 

@@ -6,7 +6,7 @@
   NEXT_TELEMETRY_DISABLED = "1"
   NODE_VERSION = "18"
   NEXT_PUBLIC_API_URL = "https://adi-phone.co.il"
-  DATABASE_URL = "mongodb+srv://shlomiandadi:R0HXEWhMuWn0IbBc@clustertest.tz78h.mongodb.net/adiphone-db?retryWrites=true&w=majority&appName=Clustertest"
+  # DATABASE_URL will be set in Netlify dashboard for Neon PostgreSQL
   EMAIL_HOST = "smtp.gmail.com"
   EMAIL_PORT = "587"
   EMAIL_USER = "shlomiandadi@gmail.com"

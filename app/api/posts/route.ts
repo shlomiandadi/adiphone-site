@@ -56,7 +56,7 @@ export async function GET(request: Request) {
       const updatedDate = new Date(post.updatedAt);
 
       return {
-        _id: post.id,
+        id: post.id,
         title: post.title,
         excerpt: post.excerpt,
         mainImage: post.mainImage || '/images/blog/nextjs-guide.jpg',

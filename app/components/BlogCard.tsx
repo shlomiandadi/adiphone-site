@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface BlogPost {
-  _id: string;
+  id: string;
   title: string;
   excerpt: string;
   mainImage: string;

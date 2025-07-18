@@ -1,4 +1,4 @@
-MONGODB_URI=mongodb+srv://shlomiandadi:EijVk1HLkSAKaxRT@clustertest.tz78h.mongodb.net/myapp
+DATABASE_URL="psql 'postgresql://neondb_owner:npg_JYqUsG4lAhw3@ep-proud-bread-aemtatp5-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require'"
 
 EMAIL_USER=shlomiandadi@gmail.com
 EMAIL_PASS=EijVk1HLkSAKaxRT
@@ -10,5 +10,3 @@ PORT=8000
 
 # Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
 # See the documentation for all the connection string options: https://pris.ly/d/connection-strings
-
-DATABASE_URL="mongodb://localhost:27017/adifon"

@@ -246,16 +246,8 @@ export default function ClientHeader() {
         <div className="max-w-7xl mx-auto">
           <div className="marquee-container">
             <div className="marquee-content">
-              {[...promotions, ...promotions].map((promo, index) => (
+              {promotions.map((promo, index) => (
                 <span key={index}>
-                  <FaTag />
-                  {promo}
-                </span>
-              ))}
-            </div>
-            <div className="marquee-content">
-              {[...promotions, ...promotions].map((promo, index) => (
-                <span key={`duplicate-${index}`}>
                   <FaTag />
                   {promo}
                 </span>

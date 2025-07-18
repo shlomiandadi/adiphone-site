@@ -1,17 +1,53 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String
+  content     String
+  mainImage   String
+  images      String[]
+  category    Category
+  tags        String[]
+  published   Boolean  @default(false)
+  authorName  String?
+  authorEmail String?
+  views       Int      @default(0)
+  likes       Int      @default(0)
+  metaTitle   String
+  metaDesc    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Contact {
+  id        String         @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  message   String
+  service   ContactService
+  status    ContactStatus  @default(NEW)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 }
 
 enum Role {
@@ -40,47 +76,4 @@ enum ContactService {
   SEO
   PPC
   OTHER
-}
-
-model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  name      String
-  password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Post {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  slug        String   @unique
-  title       String
-  excerpt     String
-  content     String
-  mainImage   String
-  images      String[]
-  category    Category
-  tags        String[]
-  published   Boolean  @default(false)
-  authorName  String?
-  authorEmail String?
-  views       Int      @default(0)
-  likes       Int      @default(0)
-  metaTitle   String
-  metaDesc    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Contact {
-  id        String         @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  email     String
-  phone     String
-  message   String
-  service   ContactService
-  status    ContactStatus  @default(NEW)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
 }

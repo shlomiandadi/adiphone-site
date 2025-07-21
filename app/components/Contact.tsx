@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaWhatsapp, FaFacebook, FaLinkedin } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
 
 export default function Contact() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -43,6 +45,7 @@ export default function Contact() {
         message: '',
         service: 'other'
       });
+      router.push('/thank-you');
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmitStatus('error');

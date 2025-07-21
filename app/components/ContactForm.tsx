@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { ContactService } from '../types';
+import { useRouter } from 'next/navigation';
 
 const ContactForm: React.FC = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -69,6 +71,7 @@ const ContactForm: React.FC = () => {
         message: '',
         service: ContactService.OTHER
       });
+      router.push('/thank-you');
     } catch (error) {
       console.error('Error submitting form:', error);
       setError(error instanceof Error ? error.message : 'Failed to submit form');

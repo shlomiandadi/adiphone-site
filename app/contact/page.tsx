@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import { ContactService } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 export default function Contact() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -36,6 +38,7 @@ export default function Contact() {
 
       setStatus('הטופס נשלח בהצלחה! נציג יצור איתך קשר בהקדם.');
       setFormData({ name: '', email: '', phone: '', message: '', service: ContactService.OTHER });
+      router.push('/thank-you');
     } catch (error) {
       console.error('Error submitting form:', error);
       setStatus('אירעה שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר בטלפון.');

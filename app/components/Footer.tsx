@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 
 export default function Footer() {
   return (
@@ -43,6 +43,16 @@ export default function Footer() {
               <li>
                 <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
                   צור קשר
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
+                  מדיניות פרטיות
+                </Link>
+              </li>
+              <li>
+                <Link href="/accessibility-statement" className="text-gray-400 hover:text-white transition-colors">
+                  הצהרת נגישות
                 </Link>
               </li>
             </ul>
@@ -93,10 +103,13 @@ export default function Footer() {
               </p>
             </div>
             <div className="flex space-x-4 mt-4">
-              <a href="https://www.facebook.com/profile.php?viewas=100000686899395&id=100090294429735&locale=he_IL" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://www.facebook.com/profile.php?id=61578707397365" className="text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
                 <FaFacebook size={24} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://wa.me/972509159951?text=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%9F%20%D7%91%D7%A9%D7%99%D7%A8%D7%95%D7%AA%20%D7%91%D7%A0%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%D7%99%D7%9D%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%A9%D7%AA%D7%97%D7%96%D7%A8%D7%95%20%D7%90%D7%9C%D7%99" className="text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+                <FaWhatsapp size={24} />
+              </a>
+              <a href="https://www.linkedin.com/in/shlomi-malfuf-709961221/" className="text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
                 <FaLinkedin size={24} />
               </a>
             </div>

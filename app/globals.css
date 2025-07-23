@@ -48,29 +48,95 @@
   @apply fixed top-0 left-0 right-0 z-50 bg-blue-600 text-white py-2;
 }
 
-.marquee-container {
-  @apply overflow-hidden;
+/* High contrast mode - improved version - Updated: 2025-01-27 16:00 */
+
+/* רקע שחור וטקסט לבן לאלמנטים מבניים בלבד */
+body.high-contrast main,
+body.high-contrast section,
+body.high-contrast article,
+body.high-contrast aside,
+body.high-contrast header,
+body.high-contrast nav,
+body.high-contrast footer,
+body.high-contrast .container,
+body.high-contrast .card,
+body.high-contrast .box,
+body.high-contrast .rounded-lg,
+body.high-contrast .rounded-xl {
+  background-color: black !important;
+  color: white !important;
 }
 
-.marquee-content {
-  @apply flex animate-marquee whitespace-nowrap;
+/* טקסט */
+body.high-contrast h1,
+body.high-contrast h2,
+body.high-contrast h3,
+body.high-contrast h4,
+body.high-contrast h5,
+body.high-contrast h6,
+body.high-contrast p,
+body.high-contrast span,
+body.high-contrast li,
+body.high-contrast label,
+body.high-contrast strong,
+body.high-contrast b,
+body.high-contrast td,
+body.high-contrast th {
+  color: white !important;
+  background: transparent !important;
 }
 
-.marquee-content span {
-  @apply flex items-center mx-4;
+/* לא לגעת בתמונות, SVG, אייקונים, וידאו */
+body.high-contrast img,
+body.high-contrast svg,
+body.high-contrast video,
+body.high-contrast picture,
+body.high-contrast iframe {
+  background: none !important;
+  filter: none !important;
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* קישורים */
+body.high-contrast a {
+  color: #fbbf24 !important;
+  text-decoration: underline !important;
+  font-weight: bold !important;
+  background: transparent !important;
 }
 
-.animate-marquee {
-  animation: marquee 20s linear infinite;
+/* כפתורים */
+body.high-contrast button {
+  background-color: #fbbf24 !important;
+  color: black !important;
+  border: 2px solid #fbbf24 !important;
+}
+
+/* אל תיתן רקע שחור לכל אלמנט */
+body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):not(nav):not(footer):not(.container):not(.card):not(.box):not(.rounded-lg):not(.rounded-xl) {
+  background-color: transparent !important;
+}
+
+/* Highlight links mode */
+.highlight-links a {
+  @apply bg-yellow-200 text-black px-1 py-0.5 rounded underline;
+}
+
+.highlight-links a:hover {
+  @apply bg-yellow-300;
+}
+
+/* Cursor size variations */
+.cursor-small * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="black"/></svg>') 8 8, auto;
+}
+
+.cursor-large * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="black"/></svg>') 16 16, auto;
+}
+
+/* Focus styles for better accessibility */
+*:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
 }
 
 /* Skip to main content */
@@ -207,6 +273,57 @@
   }
   
   .prose a {
-    @apply text-blue-400 hover:text-blue-300;
+    @apply text-blue-400;
   }
+}
+
+/* Marquee styles */
+.marquee-container {
+  @apply overflow-hidden;
+}
+
+.marquee-content {
+  @apply flex animate-marquee whitespace-nowrap;
+}
+
+.marquee-content span {
+  @apply flex items-center mx-4;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+/* Accessibility statement button in high contrast mode */
+body.high-contrast button[onclick*='accessibility-statement'] {
+  background: black !important;
+  color: #fbbf24 !important;
+  border: 2px solid #fbbf24 !important;
+  font-weight: bold !important;
+}
+body.high-contrast button[onclick*='accessibility-statement']:hover {
+  background: #fbbf24 !important;
+  color: black !important;
+}
+
+body.high-contrast .accessibility-statement-btn {
+  background: black !important;
+  color: #fbbf24 !important;
+  border: 2px solid #fbbf24 !important;
+  font-weight: bold !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+body.high-contrast .accessibility-statement-btn:hover {
+  background: #fbbf24 !important;
+  color: black !important;
 }

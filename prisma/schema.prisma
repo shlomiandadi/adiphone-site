@@ -50,6 +50,19 @@ model Contact {
   updatedAt DateTime       @updatedAt
 }
 
+model PortfolioProject2 {
+  id              String   @id
+  name            String
+  slug            String   @unique
+  image           String
+  images          String[]
+  description     String
+  descriptionRich String?
+  url             String
+  date            DateTime
+  technologies    String[]
+}
+
 enum Role {
   USER
   ADMIN

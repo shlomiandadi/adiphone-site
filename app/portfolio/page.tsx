@@ -1,76 +1,55 @@
-'use client';
-
 import React from 'react';
-import Image from 'next/image';
+import Link from 'next/link';
 
-export default function Portfolio() {
-  const projects = [
-    {
-      id: 1,
-      title: 'אתר חנות אונליין',
-      description: 'חנות אונליין מלאה עם מערכת תשלומים ומנהל תוכן',
-      image: '/images/portfolio/project1.svg',
-      category: 'פיתוח אתרים'
-    },
-    {
-      id: 2,
-      title: 'קמפיין קידום אורגני',
-      description: 'הגדלת תנועה אורגנית ב-300% תוך 6 חודשים',
-      image: '/images/portfolio/project2.svg',
-      category: 'קידום אורגני'
-    },
-    {
-      id: 3,
-      title: 'קמפיין שיווק ממומן',
-      description: 'הגדלת המרות ב-200% בקמפיין גוגל אדס',
-      image: '/images/portfolio/project3.svg',
-      category: 'שיווק ממומן'
-    }
-  ];
+interface Project {
+  id: string;
+  name: string;
+  slug: string;
+  image?: string;
+  description?: string;
+}
+
+const cloudinaryBase = 'https://res.cloudinary.com/dooxg35gj/image/upload/v1753362055/portfolio/';
+
+async function fetchProjects(): Promise<Project[]> {
+  const baseUrl = process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:3002' 
+    : 'https://adi-phone.co.il';
+  const res = await fetch(`${baseUrl}/api/portfolio2`, { cache: 'no-store' });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+export default async function PortfolioPage() {
+  const projects = await fetchProjects();
 
   return (
-    <main className="pt-24">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 py-20 text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">תיק עבודות</h1>
-            <p className="text-xl max-w-3xl mx-auto">
-              הנה כמה מהפרויקטים האחרונים שלנו. כל פרויקט מייצג את המקצועיות והאיכות שאנחנו מציעים
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Grid */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
-              <div
-                key={project.id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
-              >
-                <div className="relative h-64">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm mb-4">
-                    {project.category}
-                  </span>
-                  <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                  <p className="text-gray-600">{project.description}</p>
-                </div>
+    <main className="max-w-6xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8 text-center">הפרויקטים שלנו</h1>
+      {projects.length === 0 ? (
+        <div className="text-center text-gray-500">לא נמצאו פרויקטים.</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {projects.map((project) => (
+            <Link
+              key={project.id}
+              href={`/portfolio/${project.slug}`}
+              className="block bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
+            >
+              <img
+                src={project.image || `${cloudinaryBase}${project.slug}.jpg`}
+                alt={project.name}
+                className="w-full h-48 object-cover"
+                loading="lazy"
+              />
+              <div className="p-4">
+                <h2 className="text-xl font-semibold mb-2">{project.name}</h2>
+                <p className="text-gray-600 text-sm line-clamp-3">{project.description}</p>
               </div>
-            ))}
-          </div>
+            </Link>
+          ))}
         </div>
-      </section>
+      )}
     </main>
   );
 } 

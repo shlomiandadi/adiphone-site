@@ -103,10 +103,15 @@ export const navigation: NavigationItem[] = [
     icon: "blog"
   },
   {
+    name: "פרוייקטים",
+    href: "/portfolio",
+    icon: "briefcase"
+  },
+  {
     name: "צור קשר",
     href: "/contact",
     icon: "envelope"
-  }
+  },
 ];
 
 export const promotions = [

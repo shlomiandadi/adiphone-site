@@ -1,0 +1,58 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+  NODE_VERSION = "18"
+  NEXT_PUBLIC_API_URL = "https://adi-phone.co.il"
+  # DATABASE_URL will be set in Netlify dashboard for Neon PostgreSQL
+  EMAIL_HOST = "smtp.gmail.com"
+  EMAIL_PORT = "587"
+  EMAIL_USER = "shlomiandadi@gmail.com"
+  EMAIL_PASS = "vqzf pcsn fpxl qiwa"
+  ADMIN_EMAIL = "shlomiandadi@gmail.com"
+  ADMIN_PASSWORD = "adi112211"
+  NEXT_PUBLIC_SITE_URL = "https://adi-phone.co.il"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@prisma/client", "prisma"]
+  included_files = ["prisma/**", ".env"]
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Content-Security-Policy = "upgrade-insecure-requests"
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "X-Requested-With, Content-Type, Authorization"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[redirects]]
+  from = "http://*"
+  to = "https://:splat"
+  status = 301
+  force = true
+
+[dev]
+  framework = "nextjs"
+  targetPort = 3000 

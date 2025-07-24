@@ -1,0 +1,38 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Elements -->
+  <circle cx="400" cy="300" r="250" fill="#2563EB" fill-opacity="0.1"/>
+  <circle cx="400" cy="300" r="200" fill="#2563EB" fill-opacity="0.15"/>
+  
+  <!-- Computer Screen -->
+  <rect x="250" y="150" width="300" height="200" rx="10" fill="#1E40AF"/>
+  <rect x="260" y="160" width="280" height="170" rx="5" fill="#FFFFFF"/>
+  
+  <!-- Code Elements -->
+  <rect x="280" y="180" width="120" height="10" rx="2" fill="#E5E7EB"/>
+  <rect x="280" y="200" width="180" height="10" rx="2" fill="#E5E7EB"/>
+  <rect x="280" y="220" width="150" height="10" rx="2" fill="#E5E7EB"/>
+  <rect x="280" y="240" width="200" height="10" rx="2" fill="#E5E7EB"/>
+  <rect x="280" y="260" width="160" height="10" rx="2" fill="#E5E7EB"/>
+  
+  <!-- Computer Stand -->
+  <path d="M370 350 L430 350 L420 380 L380 380 Z" fill="#1E40AF"/>
+  <rect x="350" y="380" width="100" height="10" rx="5" fill="#1E40AF"/>
+  
+  <!-- Floating Elements -->
+  <circle cx="200" cy="200" r="20" fill="#3B82F6"/>
+  <circle cx="600" cy="400" r="15" fill="#60A5FA"/>
+  <circle cx="550" cy="150" r="25" fill="#93C5FD"/>
+  
+  <!-- Code Brackets -->
+  <path d="M180 280 L200 260 L180 240" stroke="#3B82F6" stroke-width="4" fill="none"/>
+  <path d="M620 280 L600 260 L620 240" stroke="#3B82F6" stroke-width="4" fill="none"/>
+  
+  <!-- Abstract Lines -->
+  <line x1="150" y1="350" x2="200" y2="350" stroke="#BFDBFE" stroke-width="2"/>
+  <line x1="600" y1="200" x2="650" y2="200" stroke="#BFDBFE" stroke-width="2"/>
+  
+  <!-- Decorative Dots -->
+  <circle cx="150" cy="300" r="3" fill="#60A5FA"/>
+  <circle cx="650" cy="300" r="3" fill="#60A5FA"/>
+  <circle cx="400" cy="450" r="3" fill="#60A5FA"/>
+</svg> 

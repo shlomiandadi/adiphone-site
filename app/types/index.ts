@@ -1,0 +1,22 @@
+export enum ContactService {
+  WEB_DEVELOPMENT = 'WEB_DEVELOPMENT',
+  SEO = 'SEO',
+  PPC = 'PPC',
+  OTHER = 'OTHER'
+}
+
+export enum ContactStatus {
+  NEW = 'NEW',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  ARCHIVED = 'ARCHIVED'
+}
+
+export enum Category {
+  SEO = 'SEO',
+  WEB_DEVELOPMENT = 'WEB_DEVELOPMENT',
+  APP_DEVELOPMENT = 'APP_DEVELOPMENT',
+  DIGITAL_MARKETING = 'DIGITAL_MARKETING',
+  UI_UX = 'UI_UX',
+  ECOMMERCE = 'ECOMMERCE'
+} 

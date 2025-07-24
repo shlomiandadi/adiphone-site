@@ -1,0 +1,329 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for blog content */
+.prose {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+.prose h1 {
+  @apply text-3xl font-bold mb-6 mt-8 text-gray-900 dark:text-white;
+}
+
+.prose h2 {
+  @apply text-2xl font-bold mb-4 mt-6 text-gray-900 dark:text-white;
+}
+
+.prose h3 {
+  @apply text-xl font-bold mb-3 mt-5 text-gray-900 dark:text-white;
+}
+
+.prose p {
+  @apply mb-4 text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
+.prose ul {
+  @apply mb-4 list-disc list-inside text-gray-700 dark:text-gray-300;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+.prose strong {
+  @apply font-bold text-gray-900 dark:text-white;
+}
+
+.prose a {
+  @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline;
+}
+
+.prose blockquote {
+  @apply border-r-4 border-blue-500 pr-4 italic text-gray-600 dark:text-gray-400 my-4;
+}
+
+/* Accessibility bar styles */
+.accessibility-bar {
+  @apply fixed top-0 left-0 right-0 z-50 bg-blue-600 text-white py-2;
+}
+
+/* High contrast mode - improved version - Updated: 2025-01-27 16:00 */
+
+/* רקע שחור וטקסט לבן לאלמנטים מבניים בלבד */
+body.high-contrast main,
+body.high-contrast section,
+body.high-contrast article,
+body.high-contrast aside,
+body.high-contrast header,
+body.high-contrast nav,
+body.high-contrast footer,
+body.high-contrast .container,
+body.high-contrast .card,
+body.high-contrast .box,
+body.high-contrast .rounded-lg,
+body.high-contrast .rounded-xl {
+  background-color: black !important;
+  color: white !important;
+}
+
+/* טקסט */
+body.high-contrast h1,
+body.high-contrast h2,
+body.high-contrast h3,
+body.high-contrast h4,
+body.high-contrast h5,
+body.high-contrast h6,
+body.high-contrast p,
+body.high-contrast span,
+body.high-contrast li,
+body.high-contrast label,
+body.high-contrast strong,
+body.high-contrast b,
+body.high-contrast td,
+body.high-contrast th {
+  color: white !important;
+  background: transparent !important;
+}
+
+/* לא לגעת בתמונות, SVG, אייקונים, וידאו */
+body.high-contrast img,
+body.high-contrast svg,
+body.high-contrast video,
+body.high-contrast picture,
+body.high-contrast iframe {
+  background: none !important;
+  filter: none !important;
+}
+
+/* קישורים */
+body.high-contrast a {
+  color: #fbbf24 !important;
+  text-decoration: underline !important;
+  font-weight: bold !important;
+  background: transparent !important;
+}
+
+/* כפתורים */
+body.high-contrast button {
+  background-color: #fbbf24 !important;
+  color: black !important;
+  border: 2px solid #fbbf24 !important;
+}
+
+/* אל תיתן רקע שחור לכל אלמנט */
+body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):not(nav):not(footer):not(.container):not(.card):not(.box):not(.rounded-lg):not(.rounded-xl) {
+  background-color: transparent !important;
+}
+
+/* Highlight links mode */
+.highlight-links a {
+  @apply bg-yellow-200 text-black px-1 py-0.5 rounded underline;
+}
+
+.highlight-links a:hover {
+  @apply bg-yellow-300;
+}
+
+/* Cursor size variations */
+.cursor-small * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="black"/></svg>') 8 8, auto;
+}
+
+.cursor-large * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="black"/></svg>') 16 16, auto;
+}
+
+/* Focus styles for better accessibility */
+*:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+/* Skip to main content */
+.skip-to-main {
+  @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded;
+}
+
+/* Search bar styles */
+.search-container {
+  @apply relative;
+}
+
+.search-input {
+  @apply transition-all duration-300;
+}
+
+/* Floating buttons */
+.floating-button {
+  @apply fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors z-50;
+}
+
+/* Service layout styles */
+.service-hero {
+  @apply relative h-[400px] flex items-center justify-center text-white;
+}
+
+.service-hero-bg {
+  @apply absolute inset-0 z-0;
+}
+
+.service-hero-overlay {
+  @apply absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-600/90;
+}
+
+.service-hero-content {
+  @apply container mx-auto px-4 relative z-10;
+}
+
+/* Blog card styles */
+.blog-card {
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300;
+}
+
+.blog-card-image {
+  @apply relative h-48;
+}
+
+.blog-card-content {
+  @apply p-6;
+}
+
+.blog-card-title {
+  @apply text-xl font-bold text-gray-900 dark:text-white mb-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors;
+}
+
+.blog-card-excerpt {
+  @apply text-gray-600 dark:text-gray-300 mb-4 line-clamp-3;
+}
+
+.blog-card-tags {
+  @apply flex flex-wrap gap-2 mb-4;
+}
+
+.blog-card-tag {
+  @apply text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full;
+}
+
+/* Contact form styles */
+.contact-form {
+  @apply space-y-4;
+}
+
+.contact-input {
+  @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white;
+}
+
+.contact-textarea {
+  @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none;
+}
+
+.contact-button {
+  @apply w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg;
+}
+
+/* Navigation styles */
+.nav-link {
+  @apply px-3 lg:px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center hover:scale-105 transform text-white hover:bg-white/10 rounded-full;
+}
+
+.nav-dropdown {
+  @apply absolute right-0 mt-2 w-[480px] bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50 backdrop-blur-sm bg-opacity-90;
+}
+
+/* Footer styles */
+.footer-link {
+  @apply text-gray-400 hover:text-white transition-colors;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .nav-dropdown {
+    @apply w-full right-0;
+  }
+  
+  .service-hero {
+    @apply h-[300px];
+  }
+  
+  .blog-card-image {
+    @apply h-40;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .prose {
+    @apply text-gray-100;
+  }
+  
+  .prose h1,
+  .prose h2,
+  .prose h3 {
+    @apply text-white;
+  }
+  
+  .prose p,
+  .prose ul,
+  .prose li {
+    @apply text-gray-300;
+  }
+  
+  .prose strong {
+    @apply text-white;
+  }
+  
+  .prose a {
+    @apply text-blue-400;
+  }
+}
+
+/* Marquee styles */
+.marquee-container {
+  @apply overflow-hidden;
+}
+
+.marquee-content {
+  @apply flex animate-marquee whitespace-nowrap;
+}
+
+.marquee-content span {
+  @apply flex items-center mx-4;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+/* Accessibility statement button in high contrast mode */
+body.high-contrast button[onclick*='accessibility-statement'] {
+  background: black !important;
+  color: #fbbf24 !important;
+  border: 2px solid #fbbf24 !important;
+  font-weight: bold !important;
+}
+body.high-contrast button[onclick*='accessibility-statement']:hover {
+  background: #fbbf24 !important;
+  color: black !important;
+}
+
+body.high-contrast .accessibility-statement-btn {
+  background: black !important;
+  color: #fbbf24 !important;
+  border: 2px solid #fbbf24 !important;
+  font-weight: bold !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+body.high-contrast .accessibility-statement-btn:hover {
+  background: #fbbf24 !important;
+  color: black !important;
+}

@@ -79,6 +79,10 @@ export default function Navbar() {
             <Link href="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">
               צור קשר
             </Link>
+
+            <Link href="/portfolio" className="text-gray-700 hover:text-blue-600 transition-colors">
+              הפרויקטים שלנו
+            </Link>
           </div>
 
           <div className="md:hidden flex items-center">
@@ -150,6 +154,15 @@ export default function Navbar() {
               >
                 <FaEnvelope className="w-5 h-5 ml-2 text-gray-400" />
                 צור קשר
+              </Link>
+
+              <Link 
+                href="/portfolio"
+                className="flex items-center px-4 py-2.5 text-base text-gray-900 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <FaRocket className="w-5 h-5 ml-2 text-gray-400" />
+                הפרויקטים שלנו
               </Link>
             </div>
           </motion.div>

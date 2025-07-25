@@ -62,7 +62,7 @@ export default function ChatbotWidget() {
       )}
       {/* חלונית הצ'אט */}
       {open && (
-        <div className="fixed bottom-4 right-4 w-80 bg-white shadow-2xl rounded-2xl p-4 z-50 border border-gray-200 flex flex-col" style={{ minHeight: 420, maxHeight: 520 }}>
+        <div className="fixed bottom-20 right-4 w-80 bg-white shadow-2xl rounded-2xl p-4 z-50 border border-gray-200 flex flex-col" style={{ minHeight: 420, maxHeight: 520 }}>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <RobotIcon />

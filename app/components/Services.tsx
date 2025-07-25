@@ -30,16 +30,16 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">השירותים שלנו</h2>
-          <p className="text-xl text-gray-600">פתרונות דיגיטל מקצה לקצה לעסק שלך</p>
+          <h2 className="text-4xl font-bold mb-4 dark:text-white">השירותים שלנו</h2>
+          <p className="text-xl text-gray-600 dark:text-gray-300">פתרונות דיגיטל מקצה לקצה לעסק שלך</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
             <Link href={service.link} key={index} className="block group h-full">
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 group-hover:-translate-y-2 flex flex-col h-full">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 group-hover:-translate-y-2 flex flex-col h-full">
                 <div className="relative w-full pt-[66.67%]">
                   <Image
                     src={service.image}
@@ -51,9 +51,9 @@ export default function Services() {
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
-                  <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                  <p className="text-gray-600 mb-4 flex-grow">{service.description}</p>
-                  <span className="text-blue-600 group-hover:text-blue-700 inline-flex items-center font-medium mt-auto">
+                  <h3 className="text-xl font-bold mb-2 dark:text-white">{service.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 flex-grow">{service.description}</p>
+                  <span className="text-blue-600 group-hover:text-blue-700 dark:text-blue-400 dark:group-hover:text-blue-300 inline-flex items-center font-medium mt-auto">
                     קרא עוד
                     <svg className="w-4 h-4 mr-2 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />

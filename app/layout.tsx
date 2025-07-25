@@ -8,6 +8,7 @@ import BreadcrumbSchema from './components/BreadcrumbSchema';
 import FloatingButtons from './components/FloatingButtons';
 import AccessibilityBar from './components/AccessibilityBar';
 import Script from 'next/script';
+import ChatbotWidget from './components/ChatbotWidget';
 
 const heebo = Heebo({ 
   subsets: ['hebrew', 'latin'],
@@ -90,6 +91,7 @@ export default function RootLayout({
         <Footer />
         <FloatingButtons />
         <AccessibilityBar />
+        <ChatbotWidget />
       </body>
     </html>
   );

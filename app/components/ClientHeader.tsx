@@ -264,11 +264,13 @@ export default function ClientHeader() {
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center group">
-              <span className={`text-xl md:text-2xl font-bold transition-all duration-300 ${
+              <div className={`text-sm md:text-base font-bold transition-all duration-300 ${
                 isScrolled ? 'text-blue-600' : 'text-white'
-              } group-hover:scale-105 transform`}>
-                WebStudio
-              </span>
+              } group-hover:scale-105 transform leading-tight`}>
+                <div>Top Webstak</div>
+                <div className="text-xs md:text-sm">בנייה וקידום אתרים</div>
+                <div className="text-xs md:text-sm">(מבית עדי פון תקשורת)</div>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -437,9 +439,11 @@ export default function ClientHeader() {
         >
           <div className="px-4 py-6">
             <div className="flex justify-between items-center mb-6">
-              <span className="text-2xl font-bold text-blue-600 animate-fadeIn">
-                WebStudio
-              </span>
+              <div className="text-base font-bold text-blue-600 animate-fadeIn leading-tight">
+                <div>Top Webstak</div>
+                <div className="text-sm">בנייה וקידום אתרים</div>
+                <div className="text-sm">(מבית עדי פון תקשורת)</div>
+              </div>
               <button 
                 onClick={toggleMenu}
                 className="p-2 transition-transform duration-300 hover:scale-110"

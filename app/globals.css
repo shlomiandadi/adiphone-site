@@ -253,7 +253,8 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .prose {
-    @apply text-gray-100;
+    --tw-text-opacity: 1;
+    color: rgb(30 31 14 / 98%);
   }
   
   .prose h1,
@@ -265,11 +266,13 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
   .prose p,
   .prose ul,
   .prose li {
-    @apply text-gray-300;
+    --tw-text-opacity: 1;
+    color: rgb(30 31 14 / 98%);
   }
   
   .prose strong {
-    @apply text-white;
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0);
   }
   
   .prose a {

@@ -1,9 +1,9 @@
-'use client';
-
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
+import BlogPostSchema from '../../components/BlogPostSchema';
 
 interface BlogPost {
   id: string;
@@ -27,7 +27,7 @@ interface BlogPost {
 
 async function getBlogPost(slug: string) {
   try {
-    const res = await fetch(`/api/posts/${slug}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/posts/${slug}`, {
       next: { revalidate: 60 } // Revalidate every minute
     });
     
@@ -42,52 +42,51 @@ async function getBlogPost(slug: string) {
   }
 }
 
-export default function BlogPost({ params }: { params: { slug: string } }) {
-  const [post, setPost] = React.useState<BlogPost | null>(null);
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    async function fetchPost() {
-      try {
-        const postData = await getBlogPost(params.slug);
-        if (!postData) {
-          notFound();
-        }
-        setPost(postData);
-      } catch (error) {
-        console.error('Error fetching post:', error);
-        notFound();
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchPost();
-  }, [params.slug]);
-
-  if (loading) {
-    return (
-      <main className="pt-24">
-        <div className="container mx-auto px-4">
-          <div className="animate-pulse">
-            <div className="h-[400px] bg-gray-200 rounded-lg mb-8"></div>
-            <div className="max-w-3xl mx-auto">
-              <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/4 mb-8"></div>
-              <div className="space-y-4">
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = await getBlogPost(params.slug);
+  
+  if (!post) {
+    return {
+      title: 'פוסט לא נמצא | Top WebStack',
+      description: 'הפוסט שחיפשת לא נמצא',
+    };
   }
 
+  return {
+    title: post.metaTitle || post.title,
+    description: post.metaDesc || post.excerpt,
+    keywords: post.tags?.join(', '),
+    authors: [{ name: post.authorName }],
+    openGraph: {
+      title: post.metaTitle || post.title,
+      description: post.metaDesc || post.excerpt,
+      type: 'article',
+      publishedTime: post.createdAt,
+      modifiedTime: post.updatedAt,
+      authors: [post.authorName],
+      images: [
+        {
+          url: post.mainImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.metaTitle || post.title,
+      description: post.metaDesc || post.excerpt,
+      images: [post.mainImage],
+    },
+  };
+}
+
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const post = await getBlogPost(params.slug);
+
   if (!post) {
-    return notFound();
+    notFound();
   }
 
   const formatDate = (dateString: string) => {
@@ -101,6 +100,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
 
   return (
     <main className="pt-24">
+      <BlogPostSchema post={post} />
       {/* Hero Section */}
       <section className="relative h-[400px] flex items-center justify-center text-white">
         <div className="absolute inset-0 z-0">

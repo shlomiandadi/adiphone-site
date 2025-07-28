@@ -37,12 +37,12 @@ export default function BlogCard({ post }: BlogCardProps) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <Link href={`/blog/${post.slug}`} className="block">
-        <div className="relative h-48">
+        <div className="relative h-80 bg-gray-100 dark:bg-gray-700 mx-[-1.5rem]">
           <Image
             src={post.mainImage || '/images/blog/nextjs-guide.jpg'}
             alt={post.title}
             fill
-            className="object-cover"
+            className="object-contain"
           />
           <div className="absolute top-4 right-4">
             <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">

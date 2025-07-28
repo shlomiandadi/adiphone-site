@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { ContactService } from '@prisma/client';
 import BlogCard from '../components/BlogCard';
+import BlogSchema from '../components/BlogSchema';
+import { metadata } from './metadata';
 
 interface BlogPost {
   id: string;
@@ -129,6 +131,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <BlogSchema posts={posts} />
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
         <div className="container mx-auto px-4 text-center">

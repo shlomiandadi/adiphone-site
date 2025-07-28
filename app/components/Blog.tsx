@@ -117,12 +117,12 @@ export default function Blog() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {posts.map((post) => (
             <article key={post.slug} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-              <div className="relative h-48">
+              <div className="relative h-80 bg-gray-100 dark:bg-gray-700 mx-[-1.5rem]">
                 <Image
                   src={post.mainImage || '/images/blog/nextjs-guide.jpg'}
                   alt={post.title}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
               <div className="p-6">

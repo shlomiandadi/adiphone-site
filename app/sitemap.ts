@@ -11,6 +11,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/portfolio',
     '/blog',
     '/contact',
+    '/privacy-policy',
+    '/accessibility-statement',
     '/services/ai',
     '/services/analytics',
     '/services/app-development',
@@ -35,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Dynamic blog posts
   try {
-    const response = await fetch(`${baseUrl}/api/posts`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/posts`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +57,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
-    return [...staticRoutes, ...blogRoutes];
+    // Dynamic portfolio projects
+    const portfolioResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/portfolio2`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    let portfolioRoutes: any[] = [];
+    if (portfolioResponse.ok) {
+      const portfolioData = await portfolioResponse.json();
+      const projects = Array.isArray(portfolioData) ? portfolioData : [];
+      portfolioRoutes = projects.map((project: any) => ({
+        url: `${baseUrl}/portfolio/${project.slug}`,
+        lastModified: project.date ? new Date(project.date) : new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      }));
+    }
+
+    return [...staticRoutes, ...blogRoutes, ...portfolioRoutes];
   } catch (error) {
     console.error('Error generating sitemap:', error);
     return staticRoutes;

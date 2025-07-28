@@ -32,6 +32,9 @@ export default function Hero() {
               <br />
               <span className="text-primary">פתרונות דיגיטליים מתקדמים</span>
             </h1>
+            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-6">
+              Top Webstak - בנייה וקידום אתרים (מבית עדי פון תקשורת)
+            </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto lg:mr-0">
               אנחנו מתמחים בבניית אתרים, קידום אתרים ופתרונות דיגיטליים מתקדמים שיעזרו לעסק שלך לצמוח ולהתפתח
             </p>

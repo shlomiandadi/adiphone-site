@@ -28,6 +28,7 @@ export default function Home() {
             <div className="container mx-auto px-4 h-full flex items-center">
               <div className="max-w-2xl text-white">
                 <h1 className="text-5xl font-bold mb-6">פתרונות דיגיטל מתקדמים</h1>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Top Webstak - בנייה וקידום אתרים (מבית עדי פון תקשורת)</h2>
                 <p className="text-xl mb-8">אנחנו מספקים פתרונות דיגיטליים מקיפים לעסקים, כולל בניית אתרים, קידום וניהול מדיה חברתית</p>
                 <Link href="/contact" className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors">
                   צור קשר

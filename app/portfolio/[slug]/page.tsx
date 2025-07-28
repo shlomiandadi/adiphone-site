@@ -18,7 +18,7 @@ const cloudinaryBase = 'https://res.cloudinary.com/dooxg35gj/image/upload/v17533
 
 async function fetchProject(slug: string): Promise<Project | null> {
   const baseUrl = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:3002' 
+    ? 'http://localhost:3000' 
     : 'https://adi-phone.co.il';
   const res = await fetch(`${baseUrl}/api/portfolio2?slug=${slug}`, { cache: 'no-store' });
   if (!res.ok) return null;

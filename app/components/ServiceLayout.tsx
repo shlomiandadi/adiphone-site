@@ -142,7 +142,7 @@ export default function ServiceLayout({
             variants={fadeInUp}
             className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800"
           >
-            <div className="prose prose-lg mx-auto max-w-4xl dark:prose-invert">
+            <div className="prose prose-lg mx-auto max-w-4xl dark:prose-invert prose-gray dark:prose-gray-600">
               {description}
             </div>
           </motion.div>
@@ -188,7 +188,7 @@ export default function ServiceLayout({
                   <h3 className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-600">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -233,7 +233,7 @@ export default function ServiceLayout({
                   >
                     <FaCheck />
                   </motion.div>
-                  <p className="text-lg text-gray-700 dark:text-gray-200">{benefit}</p>
+                  <p className="text-lg text-gray-700 dark:text-gray-600">{benefit}</p>
                 </div>
               </motion.div>
             ))}
@@ -278,7 +278,7 @@ export default function ServiceLayout({
                 <h3 className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
                   {step.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
+                <p className="text-gray-600 dark:text-gray-600">{step.description}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -322,7 +322,7 @@ export default function ServiceLayout({
                   <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
                     {item.title}
                   </h3>
-                  <p className="mb-4 text-gray-600 dark:text-gray-300">
+                  <p className="mb-4 text-gray-600 dark:text-gray-600">
                     {item.description}
                   </p>
                   <Link
@@ -363,7 +363,7 @@ export default function ServiceLayout({
                 variants={fadeInUp}
                 className="rounded-xl bg-gray-50 p-8 shadow-lg dark:bg-gray-800"
               >
-                <blockquote className="mb-6 text-lg italic text-gray-700 dark:text-gray-300">
+                <blockquote className="mb-6 text-lg italic text-gray-700 dark:text-gray-500">
                   "{testimonial.quote}"
                 </blockquote>
                 <div className="flex items-center justify-between">
@@ -371,7 +371,7 @@ export default function ServiceLayout({
                     <p className="font-semibold text-gray-900 dark:text-white">
                       {testimonial.author}
                     </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-gray-600 dark:text-gray-600">
                       {testimonial.company}
                     </p>
                   </div>
@@ -416,7 +416,7 @@ export default function ServiceLayout({
                 <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
                   {item.question}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300">{item.answer}</p>
+                <p className="text-gray-600 dark:text-gray-600">{item.answer}</p>
               </motion.div>
             ))}
           </motion.div>

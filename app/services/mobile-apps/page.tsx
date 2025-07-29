@@ -9,6 +9,7 @@ export default function MobileAppService() {
   const serviceData = {
     title: "פיתוח אפליקציות",
     subtitle: "אפליקציות מובייל חדשניות ומותאמות אישית",
+    serviceType: "mobile-apps",
     description: (
       <>
         <h2><strong>פיתוח אפליקציות: הרבה יותר מקוד – זו הדרך שלכם להיות בכף ידם של הלקוחות</strong></h2>

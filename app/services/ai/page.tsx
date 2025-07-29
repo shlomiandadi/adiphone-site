@@ -7,6 +7,7 @@ export default function AIService() {
   const serviceData = {
     title: "פתרונות בינה מלאכותית",
     subtitle: "טכנולוגיות AI חדשניות להאצת הצמיחה העסקית",
+    serviceType: "ai",
     description: (
       <>
         <h2><strong>שירותי בינה מלאכותית (AI): המהפכה הבאה כבר כאן, והעסק שלך יכול להוביל אותה</strong></h2>

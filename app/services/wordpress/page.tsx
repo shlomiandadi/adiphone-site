@@ -7,6 +7,7 @@ export default function WordPressService() {
   const serviceData = {
     title: "בניית אתרי וורדפרס",
     subtitle: "אתרי וורדפרס מקצועיים ומותאמים אישית",
+    serviceType: "web-development",
     description: (
       <>
         <h2><strong>פיתוח אתרי וורדפרס: הכלי החזק בעולם, בידיים של המומחים הנכונים</strong></h2>

@@ -7,6 +7,7 @@ export default function SoftwareService() {
   const serviceData = {
     title: "פיתוח תוכנה",
     subtitle: "פתרונות תוכנה מתקדמים המותאמים לצרכים שלכם",
+    serviceType: "software-development",
     description: (
       <>
         <h2><strong>פתרונות תוכנה: לא מה שאתם צריכים, אלא מה שהעסק שלכם צריך כדי לנצח</strong></h2>

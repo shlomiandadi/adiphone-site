@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobileAlt, FaPaintBrush, FaBolt, FaShieldAlt, FaStar } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { IconType } from 'react-icons';
+import TableOfContents from './TableOfContents';
 
 interface ServiceLayoutProps {
   title: string;
@@ -134,18 +135,33 @@ export default function ServiceLayout({
 
       {/* Description Section */}
       <section className="bg-gradient-to-b from-gray-50 to-white px-4 py-16 dark:from-gray-900 dark:to-gray-800">
-        <div className="container mx-auto max-w-4xl">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800"
-          >
-            <div className="prose prose-lg mx-auto max-w-4xl dark:prose-invert prose-gray dark:prose-gray-600">
-              {description}
+        <div className="container mx-auto max-w-6xl">
+          {/* Mobile Table of Contents - At the top */}
+          <div className="mb-8 lg:hidden">
+            <TableOfContents />
+          </div>
+          
+          <div className="flex gap-8">
+            {/* Main Content */}
+            <div className="flex-1">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+                className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800"
+              >
+                <div className="prose prose-lg mx-auto max-w-4xl dark:prose-invert prose-gray dark:prose-gray-600">
+                  {description}
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
+            
+            {/* Desktop Table of Contents Sidebar */}
+            <div className="hidden lg:block flex-shrink-0">
+              <TableOfContents />
+            </div>
+          </div>
         </div>
       </section>
 

@@ -2,11 +2,41 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { FaWheelchair, FaTimes, FaFont, FaEye } from 'react-icons/fa';
+
+// Robot Icon Component for Chatbot
+function RobotIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="16" fill="currentColor"/>
+      <rect x="8" y="13" width="16" height="10" rx="5" fill="white"/>
+      <circle cx="13" cy="18" r="1.5" fill="currentColor"/>
+      <circle cx="19" cy="18" r="1.5" fill="currentColor"/>
+      <rect x="15" y="7" width="2" height="5" rx="1" fill="white"/>
+      <rect x="11" y="11" width="2" height="2" rx="1" fill="white"/>
+      <rect x="19" y="11" width="2" height="2" rx="1" fill="white"/>
+    </svg>
+  );
+}
 
 export default function FloatingButtons() {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [chatbotOpen, setChatbotOpen] = useState(false);
+  const [accessibilityOpen, setAccessibilityOpen] = useState(false);
+  
+  // Chatbot states
+  const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Accessibility states
+  const [fontSize, setFontSize] = useState(16);
+  const [highContrast, setHighContrast] = useState(false);
+  const [highlightLinks, setHighlightLinks] = useState(false);
+  const [cursorSize, setCursorSize] = useState('normal');
 
   useEffect(() => {
     setMounted(true);
@@ -20,6 +50,123 @@ export default function FloatingButtons() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Load saved accessibility preferences from localStorage
+  useEffect(() => {
+    const savedFontSize = localStorage.getItem('accessibility-fontSize');
+    const savedHighContrast = localStorage.getItem('accessibility-highContrast');
+    const savedHighlightLinks = localStorage.getItem('accessibility-highlightLinks');
+    const savedCursorSize = localStorage.getItem('accessibility-cursorSize');
+
+    if (savedFontSize) {
+      setFontSize(parseInt(savedFontSize));
+      document.documentElement.style.fontSize = `${savedFontSize}px`;
+    }
+    if (savedHighContrast === 'true') {
+      setHighContrast(true);
+      document.body.classList.add('high-contrast');
+    }
+    if (savedHighlightLinks === 'true') {
+      setHighlightLinks(true);
+      document.body.classList.add('highlight-links');
+    }
+    if (savedCursorSize) {
+      setCursorSize(savedCursorSize);
+      document.body.classList.add(`cursor-${savedCursorSize}`);
+    }
+  }, []);
+
+  // Chatbot functions
+  useEffect(() => {
+    if (chatbotOpen) messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, chatbotOpen]);
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    setMessages((msgs) => [...msgs, { role: "user", content: input }]);
+    setLoading(true);
+    const res = await fetch("/api/chatbot", {
+      method: "POST",
+      body: JSON.stringify({ message: input }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    setMessages((msgs) => [
+      ...msgs,
+      { role: "bot", content: data.answer }
+    ]);
+    setInput("");
+    setLoading(false);
+  };
+
+  // Accessibility functions
+  const increaseFontSize = () => {
+    const newSize = Math.min(fontSize + 2, 24);
+    setFontSize(newSize);
+    document.documentElement.style.fontSize = `${newSize}px`;
+    localStorage.setItem('accessibility-fontSize', newSize.toString());
+  };
+
+  const decreaseFontSize = () => {
+    const newSize = Math.max(fontSize - 2, 12);
+    setFontSize(newSize);
+    document.documentElement.style.fontSize = `${newSize}px`;
+    localStorage.setItem('accessibility-fontSize', newSize.toString());
+  };
+
+  const resetFontSize = () => {
+    setFontSize(16);
+    document.documentElement.style.fontSize = '16px';
+    localStorage.removeItem('accessibility-fontSize');
+  };
+
+  const toggleHighContrast = () => {
+    const newValue = !highContrast;
+    setHighContrast(newValue);
+    if (newValue) {
+      document.body.classList.add('high-contrast');
+    } else {
+      document.body.classList.remove('high-contrast');
+    }
+    localStorage.setItem('accessibility-highContrast', newValue.toString());
+  };
+
+  const toggleHighlightLinks = () => {
+    const newValue = !highlightLinks;
+    setHighlightLinks(newValue);
+    if (newValue) {
+      document.body.classList.add('highlight-links');
+    } else {
+      document.body.classList.remove('highlight-links');
+    }
+    localStorage.setItem('accessibility-highlightLinks', newValue.toString());
+  };
+
+  const changeCursorSize = (size: string) => {
+    document.body.classList.remove(`cursor-${cursorSize}`);
+    setCursorSize(size);
+    document.body.classList.add(`cursor-${size}`);
+    localStorage.setItem('accessibility-cursorSize', size);
+  };
+
+  const resetAll = () => {
+    setFontSize(16);
+    document.documentElement.style.fontSize = '16px';
+    localStorage.removeItem('accessibility-fontSize');
+
+    setHighContrast(false);
+    document.body.classList.remove('high-contrast');
+    localStorage.removeItem('accessibility-highContrast');
+
+    setHighlightLinks(false);
+    document.body.classList.remove('highlight-links');
+    localStorage.removeItem('accessibility-highlightLinks');
+
+    document.body.classList.remove(`cursor-${cursorSize}`);
+    setCursorSize('normal');
+    document.body.classList.add('cursor-normal');
+    localStorage.removeItem('accessibility-cursorSize');
+  };
+
   if (!mounted) {
     return null;
   }
@@ -29,6 +176,195 @@ export default function FloatingButtons() {
       <>
         {/* Spacer to prevent content from being hidden behind the fixed strip */}
         <div className="h-16 md:hidden" />
+        
+        {/* Chatbot Panel */}
+        {chatbotOpen && (
+          <div className="fixed inset-0 z-[99999] flex items-end justify-end p-4 pb-20 md:hidden">
+            <div 
+              className="absolute inset-0 bg-black bg-opacity-50"
+              onClick={() => setChatbotOpen(false)}
+            />
+            <div className="relative bg-white rounded-t-xl shadow-2xl w-full max-w-sm max-h-[70vh] overflow-y-auto" dir="rtl">
+              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                    <RobotIcon />
+                  </div>
+                  <span className="font-bold text-purple-700">צ'אט AI</span>
+                </div>
+                <button
+                  onClick={() => setChatbotOpen(false)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label="סגור"
+                >
+                  <FaTimes className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+              <div className="p-4">
+                <div className="h-64 overflow-y-auto mb-4 flex flex-col gap-2">
+                  {messages.map((msg, i) => (
+                    <div key={i} className={msg.role === "user" ? "text-right" : "text-left"}>
+                      <span className={msg.role === "user" ? "bg-blue-100 text-blue-900" : "bg-gray-100 text-gray-900"} style={{ borderRadius: 8, padding: 6, display: "inline-block", margin: 2 }}>
+                        {msg.content}
+                      </span>
+                    </div>
+                  ))}
+                  {loading && <div className="text-gray-400">הבוט כותב...</div>}
+                  <div ref={messagesEndRef} />
+                </div>
+                <div className="flex mt-auto">
+                  <input
+                    className="flex-1 border rounded px-2 py-1"
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && sendMessage()}
+                    placeholder="כתוב שאלה..."
+                    disabled={loading}
+                    autoFocus
+                  />
+                  <button className="ml-2 bg-purple-600 text-white px-4 py-1 rounded disabled:opacity-50" onClick={sendMessage} disabled={loading}>
+                    שלח
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Accessibility Panel */}
+        {accessibilityOpen && (
+          <div className="fixed inset-0 z-[99999] flex items-end justify-end p-4 pb-20 md:hidden">
+            <div 
+              className="absolute inset-0 bg-black bg-opacity-50"
+              onClick={() => setAccessibilityOpen(false)}
+            />
+            <div className="relative bg-white rounded-t-xl shadow-2xl w-full max-w-sm max-h-[70vh] overflow-y-auto" dir="rtl">
+              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                <div className="flex items-center gap-2">
+                  <FaWheelchair className="w-5 h-5 text-orange-600" />
+                  <span className="font-bold text-orange-700">הגדרות נגישות</span>
+                </div>
+                <button
+                  onClick={() => setAccessibilityOpen(false)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label="סגור"
+                >
+                  <FaTimes className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+              <div className="p-4 space-y-4">
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                    <FaFont className="w-4 h-4 text-orange-600" />
+                    גודל גופן
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={decreaseFontSize}
+                      className="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+                      aria-label="הקטן גופן"
+                    >
+                      A-
+                    </button>
+                    <span className="text-sm text-gray-600 min-w-[3rem] text-center">
+                      {fontSize}px
+                    </span>
+                    <button
+                      onClick={increaseFontSize}
+                      className="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+                      aria-label="הגדל גופן"
+                    >
+                      A+
+                    </button>
+                    <button
+                      onClick={resetFontSize}
+                      className="px-3 py-2 bg-orange-100 hover:bg-orange-200 text-orange-700 rounded-lg transition-colors text-sm"
+                    >
+                      איפוס
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                    <FaEye className="w-4 h-4 text-orange-600" />
+                    ניגודיות גבוהה
+                  </h3>
+                  <button
+                    onClick={toggleHighContrast}
+                    className={`w-full p-3 rounded-lg transition-colors text-sm ${
+                      highContrast
+                        ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-300'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {highContrast ? '✓ מופעל - רקע שחור, טקסט לבן' : 'הפעל ניגודיות גבוהה'}
+                  </button>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">הדגשת קישורים</h3>
+                  <button
+                    onClick={toggleHighlightLinks}
+                    className={`w-full p-3 rounded-lg transition-colors text-sm ${
+                      highlightLinks
+                        ? 'bg-blue-100 text-blue-800 border-2 border-blue-300'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {highlightLinks ? '✓ מופעל - קישורים מודגשים' : 'הפעל הדגשת קישורים'}
+                  </button>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">גודל סמן</h3>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => changeCursorSize('small')}
+                      className={`px-3 py-2 rounded-lg transition-colors text-sm ${
+                        cursorSize === 'small' ? 'bg-orange-100 text-orange-700' : 'bg-gray-200 hover:bg-gray-300'
+                      }`}
+                    >
+                      קטן
+                    </button>
+                    <button
+                      onClick={() => changeCursorSize('normal')}
+                      className={`px-3 py-2 rounded-lg transition-colors text-sm ${
+                        cursorSize === 'normal' ? 'bg-orange-100 text-orange-700' : 'bg-gray-200 hover:bg-gray-300'
+                      }`}
+                    >
+                      רגיל
+                    </button>
+                    <button
+                      onClick={() => changeCursorSize('large')}
+                      className={`px-3 py-2 rounded-lg transition-colors text-sm ${
+                        cursorSize === 'large' ? 'bg-orange-100 text-orange-700' : 'bg-gray-200 hover:bg-gray-300'
+                      }`}
+                    >
+                      גדול
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <button
+                    onClick={resetAll}
+                    className="w-full p-3 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors text-sm"
+                  >
+                    איפוס כל ההגדרות
+                  </button>
+                </div>
+                <div>
+                  <a
+                    href="/accessibility-statement"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full p-3 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm text-center block"
+                  >
+                    צפייה בתקנון נגישות
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div 
           className="fixed bottom-0 left-0 right-0 z-[99999] bg-white border-t border-gray-200 shadow-lg md:hidden"
           style={{
@@ -47,6 +383,7 @@ export default function FloatingButtons() {
         >
           <div className="container mx-auto px-4">
             <div className="flex justify-around items-center h-16">
+              {/* WhatsApp Button */}
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -76,6 +413,7 @@ export default function FloatingButtons() {
                 </Link>
               </motion.div>
 
+              {/* Phone Button */}
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -107,6 +445,48 @@ export default function FloatingButtons() {
                   </div>
                   <span className="text-xs mt-1 text-gray-600">התקשר</span>
                 </Link>
+              </motion.div>
+
+              {/* Chatbot Button */}
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="relative group"
+              >
+                <button
+                  onClick={() => setChatbotOpen(!chatbotOpen)}
+                  className="flex flex-col items-center"
+                  aria-label="פתח צ'אט AI"
+                >
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-purple-400 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-200"></div>
+                    <div className="relative w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                      <RobotIcon />
+                    </div>
+                  </div>
+                  <span className="text-xs mt-1 text-gray-600">צ'אט AI</span>
+                </button>
+              </motion.div>
+
+              {/* Accessibility Button */}
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="relative group"
+              >
+                <button
+                  onClick={() => setAccessibilityOpen(!accessibilityOpen)}
+                  className="flex flex-col items-center"
+                  aria-label="פתח הגדרות נגישות"
+                >
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-200"></div>
+                    <div className="relative w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+                      <FaWheelchair className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <span className="text-xs mt-1 text-gray-600">נגישות</span>
+                </button>
               </motion.div>
             </div>
           </div>
@@ -192,6 +572,248 @@ export default function FloatingButtons() {
           </svg>
         </Link>
       </motion.div>
+
+      {/* Chatbot Button */}
+      <motion.div
+        initial={{ scale: 0, rotate: -180 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+          delay: 0.6
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="relative group"
+      >
+        <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-purple-400 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-200"></div>
+        <button
+          onClick={() => setChatbotOpen(!chatbotOpen)}
+          className="relative flex items-center justify-center w-14 h-14 bg-purple-500 hover:bg-purple-600 rounded-full shadow-lg transition-colors duration-200"
+          aria-label="פתח צ'אט AI"
+        >
+          <span className="absolute -top-10 right-0 bg-black text-white text-sm py-1 px-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            צ'אט AI
+          </span>
+          <RobotIcon />
+        </button>
+      </motion.div>
+
+      {/* Accessibility Button */}
+      <motion.div
+        initial={{ scale: 0, rotate: 180 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+          delay: 0.8
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="relative group"
+      >
+        <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-200"></div>
+        <button
+          onClick={() => setAccessibilityOpen(!accessibilityOpen)}
+          className="relative flex items-center justify-center w-14 h-14 bg-orange-500 hover:bg-orange-600 rounded-full shadow-lg transition-colors duration-200"
+          aria-label="פתח הגדרות נגישות"
+        >
+          <span className="absolute -top-10 right-0 bg-black text-white text-sm py-1 px-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            נגישות
+          </span>
+          <FaWheelchair className="w-7 h-7 text-white" />
+        </button>
+      </motion.div>
+
+      {/* Chatbot Panel for Desktop */}
+      {chatbotOpen && (
+        <div className="fixed inset-0 z-[99999] flex items-end justify-end p-4">
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() => setChatbotOpen(false)}
+          />
+          <div className="relative bg-white rounded-t-xl shadow-2xl w-full max-w-sm max-h-[80vh] overflow-y-auto" dir="rtl">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                  <RobotIcon />
+                </div>
+                <span className="font-bold text-purple-700">צ'אט AI</span>
+              </div>
+              <button
+                onClick={() => setChatbotOpen(false)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                aria-label="סגור"
+              >
+                <FaTimes className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+            <div className="p-4">
+              <div className="h-64 overflow-y-auto mb-4 flex flex-col gap-2">
+                {messages.map((msg, i) => (
+                  <div key={i} className={msg.role === "user" ? "text-right" : "text-left"}>
+                    <span className={msg.role === "user" ? "bg-blue-100 text-blue-900" : "bg-gray-100 text-gray-900"} style={{ borderRadius: 8, padding: 6, display: "inline-block", margin: 2 }}>
+                      {msg.content}
+                    </span>
+                  </div>
+                ))}
+                {loading && <div className="text-gray-400">הבוט כותב...</div>}
+                <div ref={messagesEndRef} />
+              </div>
+              <div className="flex mt-auto">
+                <input
+                  className="flex-1 border rounded px-2 py-1"
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && sendMessage()}
+                  placeholder="כתוב שאלה..."
+                  disabled={loading}
+                  autoFocus
+                />
+                <button className="ml-2 bg-purple-600 text-white px-4 py-1 rounded disabled:opacity-50" onClick={sendMessage} disabled={loading}>
+                  שלח
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Accessibility Panel for Desktop */}
+      {accessibilityOpen && (
+        <div className="fixed inset-0 z-[99999] flex items-end justify-end p-4">
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() => setAccessibilityOpen(false)}
+          />
+          <div className="relative bg-white rounded-t-xl shadow-2xl w-full max-w-sm max-h-[80vh] overflow-y-auto" dir="rtl">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <FaWheelchair className="w-5 h-5 text-orange-600" />
+                <span className="font-bold text-orange-700">הגדרות נגישות</span>
+              </div>
+              <button
+                onClick={() => setAccessibilityOpen(false)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                aria-label="סגור"
+              >
+                <FaTimes className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+            <div className="p-4 space-y-4">
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <FaFont className="w-4 h-4 text-orange-600" />
+                  גודל גופן
+                </h3>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={decreaseFontSize}
+                    className="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+                    aria-label="הקטן גופן"
+                  >
+                    A-
+                  </button>
+                  <span className="text-sm text-gray-600 min-w-[3rem] text-center">
+                    {fontSize}px
+                  </span>
+                  <button
+                    onClick={increaseFontSize}
+                    className="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+                    aria-label="הגדל גופן"
+                  >
+                    A+
+                  </button>
+                  <button
+                    onClick={resetFontSize}
+                    className="px-3 py-2 bg-orange-100 hover:bg-orange-200 text-orange-700 rounded-lg transition-colors text-sm"
+                  >
+                    איפוס
+                  </button>
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <FaEye className="w-4 h-4 text-orange-600" />
+                  ניגודיות גבוהה
+                </h3>
+                <button
+                  onClick={toggleHighContrast}
+                  className={`w-full p-3 rounded-lg transition-colors text-sm ${
+                    highContrast
+                      ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-300'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {highContrast ? '✓ מופעל - רקע שחור, טקסט לבן' : 'הפעל ניגודיות גבוהה'}
+                </button>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">הדגשת קישורים</h3>
+                <button
+                  onClick={toggleHighlightLinks}
+                  className={`w-full p-3 rounded-lg transition-colors text-sm ${
+                    highlightLinks
+                      ? 'bg-blue-100 text-blue-800 border-2 border-blue-300'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {highlightLinks ? '✓ מופעל - קישורים מודגשים' : 'הפעל הדגשת קישורים'}
+                </button>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">גודל סמן</h3>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => changeCursorSize('small')}
+                    className={`px-3 py-2 rounded-lg transition-colors text-sm ${
+                      cursorSize === 'small' ? 'bg-orange-100 text-orange-700' : 'bg-gray-200 hover:bg-gray-300'
+                    }`}
+                  >
+                    קטן
+                  </button>
+                  <button
+                    onClick={() => changeCursorSize('normal')}
+                    className={`px-3 py-2 rounded-lg transition-colors text-sm ${
+                      cursorSize === 'normal' ? 'bg-orange-100 text-orange-700' : 'bg-gray-200 hover:bg-gray-300'
+                    }`}
+                  >
+                    רגיל
+                  </button>
+                  <button
+                    onClick={() => changeCursorSize('large')}
+                    className={`px-3 py-2 rounded-lg transition-colors text-sm ${
+                      cursorSize === 'large' ? 'bg-orange-100 text-orange-700' : 'bg-gray-200 hover:bg-gray-300'
+                    }`}
+                  >
+                    גדול
+                  </button>
+                </div>
+              </div>
+                              <div>
+                  <button
+                    onClick={resetAll}
+                    className="w-full p-3 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors text-sm"
+                  >
+                    איפוס כל ההגדרות
+                  </button>
+                </div>
+                <div>
+                  <a
+                    href="/accessibility-statement"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full p-3 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm text-center block"
+                  >
+                    צפייה בתקנון נגישות
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 } 

@@ -97,6 +97,38 @@ export async function PATCH(
       updateData.slug = data.slug;
     }
     
+    if (data.content) {
+      updateData.content = data.content;
+    }
+    
+    if (data.title) {
+      updateData.title = data.title;
+    }
+    
+    if (data.excerpt) {
+      updateData.excerpt = data.excerpt;
+    }
+    
+    if (data.mainImage) {
+      updateData.mainImage = data.mainImage;
+    }
+    
+    if (data.category) {
+      updateData.category = data.category;
+    }
+    
+    if (data.tags) {
+      updateData.tags = data.tags;
+    }
+    
+    if (data.metaTitle) {
+      updateData.metaTitle = data.metaTitle;
+    }
+    
+    if (data.metaDesc) {
+      updateData.metaDesc = data.metaDesc;
+    }
+    
     const post = await prisma.post.update({
       where: {
         slug: params.slug

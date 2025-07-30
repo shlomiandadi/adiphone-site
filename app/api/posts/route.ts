@@ -34,6 +34,7 @@ export async function GET(request: Request) {
       select: {
         id: true,
         title: true,
+        content: true,
         excerpt: true,
         mainImage: true,
         category: true,
@@ -58,6 +59,7 @@ export async function GET(request: Request) {
       return {
         id: post.id,
         title: post.title,
+        content: post.content,
         excerpt: post.excerpt,
         mainImage: post.mainImage || '/images/blog/nextjs-guide.jpg',
         category: post.category,

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import BlogPostSchema from '../../components/BlogPostSchema';
+import BlogNavigation from '../../components/BlogNavigation';
 
 interface BlogPost {
   id: string;
@@ -140,6 +141,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </div>
       </section>
+
+      {/* Blog Navigation */}
+      <BlogNavigation currentSlug={params.slug} />
     </main>
   );
 } 

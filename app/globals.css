@@ -39,6 +39,39 @@
   @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline;
 }
 
+.prose img {
+  @apply max-w-full h-auto rounded-lg shadow-lg my-6 mx-auto block;
+  display: block !important;
+  margin: 1.5rem auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Additional styles for images in blog content */
+.prose img[src*="cloudinary"] {
+  display: block !important;
+  margin: 1.5rem auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Force display for all images in prose */
+.prose img {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 .prose blockquote {
   @apply border-r-4 border-blue-500 pr-4 italic text-gray-600 dark:text-gray-400 my-4;
 }

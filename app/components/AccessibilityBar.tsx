@@ -109,15 +109,15 @@ export default function AccessibilityBar() {
 
   return (
     <>
-      {/* Floating Accessibility Button */}
-      <button
+      {/* Floating Accessibility Button - מוסתר כי הפונקציונליות עברה ל-FloatingButtons */}
+      {/* <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-16 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        className="fixed bottom-16 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300 md:flex hidden"
         aria-label="פתח הגדרות נגישות"
         title="הגדרות נגישות"
       >
         <FaWheelchair className="w-6 h-6" />
-      </button>
+      </button> */}
 
       {/* Accessibility Panel */}
       {isOpen && (

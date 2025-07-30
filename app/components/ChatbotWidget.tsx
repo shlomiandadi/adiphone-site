@@ -49,17 +49,17 @@ export default function ChatbotWidget() {
 
   return (
     <>
-      {/* כפתור עגול לפתיחת הצ'אט */}
-      {!open && (
+      {/* כפתור עגול לפתיחת הצ'אט - מוסתר כי הפונקציונליות עברה ל-FloatingButtons */}
+      {/* {!open && (
         <button
-          className="fixed bottom-32 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center w-16 h-16 transition-all focus:outline-none border-4 border-white"
+          className="fixed bottom-32 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center w-16 h-16 transition-all focus:outline-none border-4 border-white md:flex hidden"
           style={{ boxShadow: '0 4px 24px 0 #2563eb33' }}
           onClick={() => setOpen(true)}
           aria-label="התחל צ'אט AI"
         >
           <RobotIcon />
         </button>
-      )}
+      )} */}
       {/* חלונית הצ'אט */}
       {open && (
         <div className="fixed bottom-20 right-4 w-80 bg-white shadow-2xl rounded-2xl p-4 z-50 border border-gray-200 flex flex-col" style={{ minHeight: 420, maxHeight: 520 }}>

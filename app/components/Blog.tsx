@@ -52,7 +52,9 @@ export default function Blog() {
         console.error('Invalid data format:', data);
         throw new Error('Invalid response format');
       }
-      setPosts(data.posts);
+      // Take only the 3 most recent posts
+      const recentPosts = data.posts.slice(0, 3);
+      setPosts(recentPosts);
     } catch (error) {
       console.error('Error fetching blogs:', error);
       setError(error instanceof Error ? error.message : 'Failed to fetch blogs');

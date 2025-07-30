@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import BlogPostSchema from '../../components/BlogPostSchema';
+import BlogNavigation from '../../components/BlogNavigation';
 
 interface BlogPost {
   id: string;
@@ -134,12 +135,15 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <div 
-              className="prose prose-lg dark:prose-invert max-w-none"
+              className="prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </div>
         </div>
       </section>
+
+      {/* Blog Navigation */}
+      <BlogNavigation currentSlug={params.slug} />
     </main>
   );
 } 

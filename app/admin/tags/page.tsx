@@ -1,13 +1,13 @@
 import { redirect } from 'next/navigation';
 import { getAdminUser } from '../../../lib/adminAuth';
-import PostEditor from '../components/PostEditor';
+import TagsManager from '../components/TagsManager';
 
-export default async function NewPostPage() {
+export default async function TagsPage() {
   const user = await getAdminUser();
   
   if (!user) {
     redirect('/admin/login');
   }
 
-  return <PostEditor mode="create" />;
+  return <TagsManager />;
 } 

@@ -50,24 +50,26 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
-  // קטגוריות זמינות
-  const categories = [
-    'פיתוח אתרים',
-    'SEO',
-    'שיווק דיגיטלי',
-    'עיצוב',
-    'אפליקציות',
-    'בלוג',
-    'טיפים',
-    'חדשות'
-  ];
+  const [categories, setCategories] = useState<Array<{id: string, name: string, slug: string}>>([]);
 
   useEffect(() => {
+    fetchCategories();
     if (mode === 'edit' && postId) {
       fetchPost();
     }
   }, [mode, postId]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/admin/categories');
+      if (response.ok) {
+        const categoriesData = await response.json();
+        setCategories(categoriesData);
+      }
+    } catch (error) {
+      console.error('שגיאה בטעינת קטגוריות:', error);
+    }
+  };
 
   const fetchPost = async () => {
     setLoading(true);
@@ -426,8 +428,8 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                   >
                     <option value="">בחר קטגוריה</option>
                     {categories.map(category => (
-                      <option key={category} value={category}>
-                        {category}
+                      <option key={category.id} value={category.slug}>
+                        {category.name}
                       </option>
                     ))}
                   </select>

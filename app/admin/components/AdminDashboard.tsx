@@ -56,7 +56,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
       const response = await fetch('/api/admin/categories');
       if (response.ok) {
         const data = await response.json();
-        setCategories(data.categories || []);
+        setCategories(Array.isArray(data) ? data : []);
       }
     } catch (error) {
       console.error('Error fetching categories:', error);

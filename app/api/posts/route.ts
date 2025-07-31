@@ -6,6 +6,8 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log('Received POST data:', body);
+    
     const {
       title,
       content,
@@ -54,23 +56,29 @@ export async function POST(request: NextRequest) {
     }
 
     // יצירת הפוסט
+    const postData: any = {
+      title,
+      content,
+      excerpt: excerpt || '',
+      mainImage: mainImage || '',
+      tags: Array.isArray(tags) ? tags : [],
+      metaTitle: metaTitle || title,
+      metaDesc: metaDesc || excerpt || '',
+      published: published || false,
+      slug: slug || title.toLowerCase().replace(/[^\u0590-\u05FFa-z0-9\s-]/g, '').replace(/\s+/g, '-'),
+      authorName: 'מנהל האתר',
+      authorEmail: 'admin@example.com',
+      views: 0,
+      likes: 0
+    };
+
+    // הוספת categoryId רק אם יש קטגוריה
+    if (categoryRef?.id) {
+      postData.categoryId = categoryRef.id;
+    }
+
     const post = await prisma.post.create({
-      data: {
-        title,
-        content,
-        excerpt: excerpt || '',
-        mainImage: mainImage || '',
-        categoryId: categoryRef?.id,
-        tags: Array.isArray(tags) ? tags : [],
-        metaTitle: metaTitle || title,
-        metaDesc: metaDesc || excerpt || '',
-        published: published || false,
-        slug: slug || title.toLowerCase().replace(/[^\u0590-\u05FFa-z0-9\s-]/g, '').replace(/\s+/g, '-'),
-        authorName: 'מנהל האתר',
-        authorEmail: 'admin@example.com',
-        views: 0,
-        likes: 0
-      }
+      data: postData
     });
 
     return NextResponse.json({

@@ -21,27 +21,27 @@ model User {
 }
 
 model Post {
-  id          String   @id @default(cuid())
-  slug        String   @unique
+  id          String    @id @default(cuid())
+  slug        String    @unique
   title       String
   excerpt     String
   content     String
   mainImage   String
   images      String[]
   tags        String[]
-  published   Boolean  @default(false)
+  published   Boolean   @default(false)
   authorName  String?
   authorEmail String?
-  views       Int      @default(0)
-  likes       Int      @default(0)
+  views       Int       @default(0)
+  likes       Int       @default(0)
   metaTitle   String
   metaDesc    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  author      User?    @relation(fields: [authorId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   authorId    String?
-  category    Category? @relation(fields: [categoryId], references: [id])
   categoryId  String?
+  author      User?     @relation(fields: [authorId], references: [id])
+  category    Category? @relation(fields: [categoryId], references: [id])
   postTags    PostTag[]
 }
 
@@ -67,10 +67,10 @@ model Tag {
 
 model PostTag {
   id     String @id @default(cuid())
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId String
-  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
   tagId  String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@unique([postId, tagId])
 }

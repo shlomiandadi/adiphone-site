@@ -40,8 +40,8 @@ export default function CategoriesManager() {
     try {
       const response = await fetch('/api/admin/categories');
       if (response.ok) {
-        const data = await response.json();
-        setCategories(data.categories || []);
+              const data = await response.json();
+      setCategories(Array.isArray(data) ? data : []);
       }
     } catch (error) {
       setError('שגיאה בטעינת הקטגוריות');

@@ -61,10 +61,15 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
 
   const fetchCategories = async () => {
     try {
+      console.log('Fetching categories...');
       const response = await fetch('/api/admin/categories');
+      console.log('Response status:', response.status);
       if (response.ok) {
         const categoriesData = await response.json();
+        console.log('Fetched categories:', categoriesData);
         setCategories(categoriesData);
+      } else {
+        console.error('Failed to fetch categories:', response.status, response.statusText);
       }
     } catch (error) {
       console.error('שגיאה בטעינת קטגוריות:', error);
@@ -141,6 +146,8 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
         published: publish ? true : postData.published,
         tags: postData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
       };
+
+      console.log('Sending data:', finalData);
 
       const url = mode === 'create' ? '/api/posts' : `/api/posts/${postId}`;
       const method = mode === 'create' ? 'POST' : 'PUT';

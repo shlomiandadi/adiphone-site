@@ -109,8 +109,11 @@ export async function GET(request: NextRequest) {
     // בניית תנאי החיפוש
     const where: any = {};
     
+    // ברירת מחדל: רק פוסטים מפורסמים
     if (published !== null) {
       where.published = published === 'true';
+    } else {
+      where.published = true;
     }
     
     if (category) {

@@ -11,7 +11,10 @@ export async function GET(
 ) {
   try {
     const post = await prisma.post.findUnique({
-      where: { slug: params.slug }
+      where: { 
+        slug: params.slug,
+        published: true // רק פוסטים מפורסמים
+      }
     });
 
     if (!post) {

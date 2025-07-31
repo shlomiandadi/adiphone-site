@@ -41,6 +41,7 @@ export default function SoftwareDevelopmentPage() {
     <ServiceLayout
       title="פיתוח תוכנה"
       subtitle="פתרונות תוכנה מותאמים אישית לעסקים"
+      serviceType="software-development"
       description={(
         <>
           <h2><strong>פיתוח תוכנה מותאם אישית: כשהעסק שלכם ייחודי, גם התוכנה שלו צריכה להיות כזאת</strong></h2>

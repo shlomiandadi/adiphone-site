@@ -7,6 +7,7 @@ export default function AnalyticsService() {
   const serviceData = {
     title: "אנליטיקס ומדידה",
     subtitle: "קבלת החלטות חכמות מבוססות נתונים",
+    serviceType: "analytics",
     description: (
       <>
         <h2><strong>שירותי אנליטיקס: כי הנתונים שלכם שווים כסף, אם רק יודעים מה לשאול</strong></h2>

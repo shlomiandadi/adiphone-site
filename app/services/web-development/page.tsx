@@ -8,6 +8,7 @@ export default function WebDevelopmentPage() {
     <ServiceLayout
       title="פיתוח אתרים"
       subtitle="אתרים מקצועיים ומותאמים אישית"
+      serviceType="web-development"
       description={(
         <>
           <h2><strong>בניית אתרים: האתר שלכם הוא לא כרטיס ביקור – הוא המשרד, חלון הראווה והמוכרן הראשי שלכם</strong></h2>

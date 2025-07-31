@@ -8,6 +8,7 @@ export default function PPCService() {
   const serviceData = {
     title: "קמפיינים ממומנים",
     subtitle: "ניהול קמפיינים ממומנים שמביאים תוצאות",
+    serviceType: "ppc",
     description: (
       <>
         <h2><strong>קידום ממומן (PPC): הדרך המהירה והמדידה ביותר להגיע ללקוחות שמחפשים אתכם עכשיו</strong></h2>

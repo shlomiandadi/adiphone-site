@@ -8,6 +8,7 @@ export default function SEOService() {
   const serviceData = {
     title: "קידום אורגני SEO",
     subtitle: "הובלה לצמרת תוצאות החיפוש בגוגל",
+    serviceType: "seo",
     description: (
       <>
         <h2><strong>קידום אתרים (SEO): הדרך הבטוחה להצלחה עסקית באינטרנט</strong></h2>

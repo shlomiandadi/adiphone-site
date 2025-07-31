@@ -41,6 +41,7 @@ export default function AppDevelopmentPage() {
     <ServiceLayout
       title="פיתוח אפליקציות"
       subtitle="פתרונות תוכנה מתקדמים לעסקים"
+      serviceType="app-development"
       description="אנו מתמחים בפיתוח אפליקציות מובייל ווב מתקדמות, תוך שימוש בטכנולוגיות החדשניות ביותר. הצוות המקצועי שלנו מביא ניסיון עשיר בפיתוח פתרונות תוכנה מותאמים אישית לצרכי הלקוח."
       heroImage="/images/services/app-development-hero.jpg"
       features={[

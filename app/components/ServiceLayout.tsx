@@ -7,12 +7,14 @@ import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRock
 import { motion } from 'framer-motion';
 import { IconType } from 'react-icons';
 import TableOfContents from './TableOfContents';
+import ServicePricing from './ServicePricing';
 
 interface ServiceLayoutProps {
   title: string;
   subtitle: string;
   description: React.ReactNode;
   heroImage: string;
+  serviceType?: string; // Add service type for pricing
   features: Array<{
     title: string;
     description: string;
@@ -92,6 +94,7 @@ export default function ServiceLayout({
   subtitle,
   description,
   heroImage,
+  serviceType,
   features,
   benefits,
   process,
@@ -438,6 +441,9 @@ export default function ServiceLayout({
           </motion.div>
         </div>
       </section>
+
+      {/* Pricing Section */}
+      {serviceType && <ServicePricing serviceType={serviceType} />}
 
       {/* CTA Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-16 dark:from-blue-900 dark:to-purple-900">

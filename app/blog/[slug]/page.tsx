@@ -103,17 +103,21 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     <main className="pt-24">
       <BlogPostSchema post={post} />
       {/* Hero Section */}
-      <section className="relative h-[400px] flex items-center justify-center text-white">
+      <section className="relative h-[500px] flex items-center justify-center text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image
-            src={post.mainImage || '/images/blog/seo-guide.jpg'}
-            alt={post.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-600/90" />
+          {post.mainImage ? (
+            <Image
+              src={post.mainImage}
+              alt={post.title}
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-blue-600 to-purple-700" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-600/80" />
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center">
@@ -134,6 +138,19 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
+            {/* Main Image Display */}
+            {post.mainImage && (
+              <div className="mb-8">
+                <Image
+                  src={post.mainImage}
+                  alt={post.title}
+                  width={800}
+                  height={400}
+                  className="w-full h-auto rounded-lg shadow-lg"
+                  priority
+                />
+              </div>
+            )}
             <div 
               className="prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
               dangerouslySetInnerHTML={{ __html: post.content }}

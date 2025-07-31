@@ -60,7 +60,6 @@ export async function POST(request: NextRequest) {
         content,
         excerpt: excerpt || '',
         mainImage: mainImage || '',
-        category: category || 'SEO',
         categoryId: categoryRef?.id,
         tags: Array.isArray(tags) ? tags : [],
         metaTitle: metaTitle || title,
@@ -107,7 +106,7 @@ export async function GET(request: NextRequest) {
     }
     
     if (category) {
-      where.categoryRef = {
+      where.category = {
         slug: category
       };
     }
@@ -124,7 +123,14 @@ export async function GET(request: NextRequest) {
           slug: true,
           excerpt: true,
           mainImage: true,
-          category: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              color: true
+            }
+          },
           published: true,
           createdAt: true,
           updatedAt: true,
@@ -147,7 +153,9 @@ export async function GET(request: NextRequest) {
       slug: post.slug,
       excerpt: post.excerpt,
       mainImage: post.mainImage,
-      category: post.category,
+      category: post.category?.name || 'כללי',
+      categorySlug: post.category?.slug || 'general',
+      categoryColor: post.category?.color || '#3B82F6',
       published: post.published,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,

@@ -84,6 +84,20 @@ export async function PUT(
       }
     }
 
+    // מציאת או יצירת קטגוריה
+    let categoryRef;
+    if (category) {
+      categoryRef = await prisma.category.findUnique({
+        where: { slug: category }
+      });
+    }
+    
+    if (!categoryRef) {
+      categoryRef = await prisma.category.findFirst({
+        where: { slug: 'seo' }
+      });
+    }
+
     // עדכון הפוסט
     const updatedPost = await prisma.post.update({
       where: { slug: params.slug },
@@ -92,7 +106,7 @@ export async function PUT(
         content,
         excerpt: excerpt || '',
         mainImage: mainImage || '',
-        category: category || 'SEO',
+        categoryId: categoryRef?.id,
         tags: Array.isArray(tags) ? tags : [],
         metaTitle: metaTitle || title,
         metaDesc: metaDesc || excerpt || '',

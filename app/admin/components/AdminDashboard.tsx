@@ -87,20 +87,25 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
     }
   };
 
-  const handleDeletePost = async (postId: string) => {
+  const handleDeletePost = async (postSlug: string) => {
     if (!confirm('האם אתה בטוח שברצונך למחוק פוסט זה?')) {
       return;
     }
 
     try {
-      const response = await fetch(`/api/posts/${postId}`, {
+      const response = await fetch(`/api/posts/${postSlug}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
       if (response.ok) {
-        setPosts(posts.filter(post => post.id !== postId));
+        setPosts(posts.filter(post => post.slug !== postSlug));
+        alert('הפוסט נמחק בהצלחה!');
       } else {
-        alert('שגיאה במחיקת הפוסט');
+        const errorData = await response.json();
+        alert(`שגיאה במחיקת הפוסט: ${errorData.error || 'שגיאה לא ידועה'}`);
       }
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -383,7 +388,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
                             ערוך
                           </Link>
                           <button
-                            onClick={() => handleDeletePost(post.id)}
+                            onClick={() => handleDeletePost(post.slug)}
                             className="text-red-600 hover:text-red-900"
                           >
                             מחק

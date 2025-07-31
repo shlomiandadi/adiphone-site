@@ -10,11 +10,18 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
+    const { searchParams } = new URL(request.url);
+    const admin = searchParams.get('admin');
+
+    const where: any = { slug: params.slug };
+    
+    // אם זה לא מערכת הניהול, בדוק שרק פוסטים מפורסמים
+    if (admin !== 'true') {
+      where.published = true;
+    }
+
     const post = await prisma.post.findUnique({
-      where: { 
-        slug: params.slug,
-        published: true // רק פוסטים מפורסמים
-      }
+      where
     });
 
     if (!post) {

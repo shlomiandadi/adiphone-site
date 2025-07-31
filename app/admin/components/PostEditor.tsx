@@ -79,7 +79,7 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
   const fetchPost = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/posts/${postId}`);
+      const response = await fetch(`/api/posts/${postId}?admin=true`);
       if (response.ok) {
         const post = await response.json();
         setPostData({
@@ -87,7 +87,7 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
           content: post.content || '',
           excerpt: post.excerpt || '',
           mainImage: post.mainImage || '',
-          category: post.category || '',
+          category: post.category?.slug || '',
           tags: Array.isArray(post.tags) ? post.tags.join(', ') : post.tags || '',
           metaTitle: post.metaTitle || '',
           metaDesc: post.metaDesc || '',

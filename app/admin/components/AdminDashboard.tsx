@@ -39,7 +39,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch('/api/posts');
+      const response = await fetch('/api/posts?admin=true');
       if (response.ok) {
         const data = await response.json();
         setPosts(data.posts || []);

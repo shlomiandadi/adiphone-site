@@ -103,17 +103,26 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10');
     const published = searchParams.get('published');
     const category = searchParams.get('category');
+    const admin = searchParams.get('admin'); // פרמטר מיוחד למערכת הניהול
 
     const skip = (page - 1) * limit;
 
     // בניית תנאי החיפוש
     const where: any = {};
     
-    // ברירת מחדל: רק פוסטים מפורסמים
-    if (published !== null) {
-      where.published = published === 'true';
+    // אם זה מערכת הניהול, הראה את כל הפוסטים
+    if (admin === 'true') {
+      if (published !== null) {
+        where.published = published === 'true';
+      }
+      // אם לא צוין published, הראה את כל הפוסטים
     } else {
-      where.published = true;
+      // ברירת מחדל: רק פוסטים מפורסמים
+      if (published !== null) {
+        where.published = published === 'true';
+      } else {
+        where.published = true;
+      }
     }
     
     if (category) {

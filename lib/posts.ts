@@ -1,6 +1,8 @@
-import { PrismaClient, Category, Post } from '@prisma/client';
+import { PrismaClient, Post } from '@prisma/client';
 
 const prisma = new PrismaClient();
+
+type Category = 'SEO' | 'WEB_DEVELOPMENT' | 'APP_DEVELOPMENT' | 'DIGITAL_MARKETING' | 'UI_UX' | 'ECOMMERCE';
 
 export async function getPublishedPosts({ limit }: { limit?: number } = {}): Promise<Post[]> {
   return prisma.post.findMany({

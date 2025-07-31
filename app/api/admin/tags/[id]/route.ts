@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '../../../../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function PUT(
   request: NextRequest,
@@ -82,14 +84,7 @@ export async function DELETE(
   try {
     // בדיקה אם התגית קיימת
     const existingTag = await prisma.tag.findUnique({
-      where: { id: params.id },
-      include: {
-        _count: {
-          select: {
-            posts: true
-          }
-        }
-      }
+      where: { id: params.id }
     });
 
     if (!existingTag) {

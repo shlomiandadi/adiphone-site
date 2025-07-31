@@ -1,9 +1,11 @@
 import { MetadataRoute } from 'next';
+import { PrismaClient } from '@prisma/client';
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://adi-phone.co.il';
+const prisma = new PrismaClient();
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Static routes only
+  // Static routes
   const staticRoutes = [
     '',
     '/about',
@@ -35,5 +37,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8,
   }));
 
-  return staticRoutes;
+  // Blog posts
+  const blogPosts = await prisma.post.findMany({
+    where: { published: true },
+    select: { slug: true, updatedAt: true }
+  });
+
+  const blogRoutes = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updatedAt,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...blogRoutes];
 } 

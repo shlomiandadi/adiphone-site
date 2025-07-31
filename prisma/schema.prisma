@@ -8,13 +8,16 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
+  id        String    @id @default(cuid())
+  username  String    @unique
+  email     String    @unique
   password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role      Role      @default(AUTHOR)
+  isActive  Boolean   @default(true)
+  lastLogin DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  posts     Post[]
 }
 
 model Post {
@@ -25,7 +28,7 @@ model Post {
   content     String
   mainImage   String
   images      String[]
-  category    Category
+  category    String
   tags        String[]
   published   Boolean  @default(false)
   authorName  String?
@@ -36,6 +39,41 @@ model Post {
   metaDesc    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  author      User?    @relation(fields: [authorId], references: [id])
+  authorId    String?
+  categoryRef Category? @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  postTags    PostTag[]
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  color       String   @default("#3B82F6")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  posts       Post[]
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  postTags  PostTag[]
+}
+
+model PostTag {
+  id     String @id @default(cuid())
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  String
+
+  @@unique([postId, tagId])
 }
 
 model Contact {
@@ -64,17 +102,9 @@ model PortfolioProject2 {
 }
 
 enum Role {
-  USER
   ADMIN
-}
-
-enum Category {
-  SEO
-  WEB_DEVELOPMENT
-  APP_DEVELOPMENT
-  DIGITAL_MARKETING
-  UI_UX
-  ECOMMERCE
+  EDITOR
+  AUTHOR
 }
 
 enum ContactStatus {

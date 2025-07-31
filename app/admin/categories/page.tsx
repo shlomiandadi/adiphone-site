@@ -1,13 +1,13 @@
 import { redirect } from 'next/navigation';
 import { getAdminUser } from '../../../lib/adminAuth';
-import PostEditor from '../components/PostEditor';
+import CategoriesManager from '../components/CategoriesManager';
 
-export default async function NewPostPage() {
+export default async function CategoriesPage() {
   const user = await getAdminUser();
   
   if (!user) {
     redirect('/admin/login');
   }
 
-  return <PostEditor mode="create" />;
+  return <CategoriesManager />;
 } 

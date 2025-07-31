@@ -1,118 +1,153 @@
-import { NextResponse } from 'next/server';
-import prisma from '../../../../lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
   try {
     const post = await prisma.post.findUnique({
-      where: {
-        slug: params.slug,
-        published: true
-      },
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        excerpt: true,
-        mainImage: true,
-        category: true,
-        createdAt: true,
-        tags: true,
-        slug: true,
-        published: true,
-        authorName: true,
-        authorEmail: true,
-        views: true,
-        likes: true,
-        metaTitle: true,
-        metaDesc: true,
-        updatedAt: true
-      }
+      where: { slug: params.slug }
     });
 
     if (!post) {
       return NextResponse.json(
-        { error: 'Post not found' },
+        { error: 'פוסט לא נמצא' },
         { status: 404 }
       );
     }
 
-    const createdDate = new Date(post.createdAt);
-    const updatedDate = new Date(post.updatedAt);
-
-    const formattedPost = {
-      id: post.id,
-      title: post.title,
-      content: post.content,
-      description: post.excerpt,
-      image: post.mainImage || '/images/blog-placeholder.jpg',
-      category: post.category,
-      date: createdDate.toLocaleDateString('he-IL', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      }),
-      keywords: post.tags,
-      relatedPosts: [],
-      slug: post.slug,
-      published: post.published,
-      authorName: post.authorName || 'Admin',
-      authorEmail: post.authorEmail,
-      views: post.views,
-      likes: post.likes,
-      metaTitle: post.metaTitle,
-      metaDesc: post.metaDesc,
-      createdAt: createdDate.toISOString(),
-      updatedAt: updatedDate.toISOString()
-    };
-
-    return NextResponse.json(formattedPost);
+    return NextResponse.json(post);
   } catch (error) {
     console.error('Error fetching post:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch post' },
+      { error: 'שגיאה בטעינת הפוסט' },
       { status: 500 }
     );
   }
 }
 
-export async function PATCH(
-  request: Request,
+export async function PUT(
+  request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
   try {
-    const data = await request.json();
-    
-    const updateData: any = {};
-    
-    if (data.published !== undefined) {
-      updateData.published = data.published;
+    const body = await request.json();
+    const {
+      title,
+      content,
+      excerpt,
+      mainImage,
+      category,
+      tags,
+      metaTitle,
+      metaDesc,
+      published,
+      slug: newSlug
+    } = body;
+
+    // ולידציה בסיסית
+    if (!title || !content) {
+      return NextResponse.json(
+        { error: 'כותרת ותוכן הם שדות חובה' },
+        { status: 400 }
+      );
     }
-    
-    if (data.slug) {
-      updateData.slug = data.slug;
-    }
-    
-    const post = await prisma.post.update({
-      where: {
-        slug: params.slug
-      },
-      data: updateData
+
+    // בדיקה אם הפוסט קיים
+    const existingPost = await prisma.post.findUnique({
+      where: { slug: params.slug }
     });
 
-    return NextResponse.json({ 
-      success: true, 
-      message: `Post updated successfully`,
-      data: post
+    if (!existingPost) {
+      return NextResponse.json(
+        { error: 'פוסט לא נמצא' },
+        { status: 404 }
+      );
+    }
+
+    // בדיקה אם ה-slug החדש כבר קיים (אם השתנה)
+    if (newSlug && newSlug !== params.slug) {
+      const slugExists = await prisma.post.findUnique({
+        where: { slug: newSlug }
+      });
+
+      if (slugExists) {
+        return NextResponse.json(
+          { error: 'כתובת URL כבר קיימת במערכת' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // עדכון הפוסט
+    const updatedPost = await prisma.post.update({
+      where: { slug: params.slug },
+      data: {
+        title,
+        content,
+        excerpt: excerpt || '',
+        mainImage: mainImage || '',
+        category: category || 'SEO',
+        tags: Array.isArray(tags) ? tags : [],
+        metaTitle: metaTitle || title,
+        metaDesc: metaDesc || excerpt || '',
+        published: published !== undefined ? published : existingPost.published,
+        slug: newSlug || params.slug,
+        updatedAt: new Date()
+      }
     });
+
+    return NextResponse.json({
+      success: true,
+      message: published ? 'הפוסט פורסם בהצלחה!' : 'הפוסט נשמר כטיוטה!',
+      post: updatedPost
+    });
+
   } catch (error) {
     console.error('Error updating post:', error);
     return NextResponse.json(
-      { error: 'Failed to update post' },
+      { error: 'שגיאה בעדכון הפוסט' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
+  try {
+    // בדיקה אם הפוסט קיים
+    const existingPost = await prisma.post.findUnique({
+      where: { slug: params.slug }
+    });
+
+    if (!existingPost) {
+      return NextResponse.json(
+        { error: 'פוסט לא נמצא' },
+        { status: 404 }
+      );
+    }
+
+    // מחיקת הפוסט
+    await prisma.post.delete({
+      where: { slug: params.slug }
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: 'הפוסט נמחק בהצלחה'
+    });
+
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    return NextResponse.json(
+      { error: 'שגיאה במחיקת הפוסט' },
       { status: 500 }
     );
   }

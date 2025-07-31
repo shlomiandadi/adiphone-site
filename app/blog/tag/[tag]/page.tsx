@@ -1,9 +1,12 @@
-import { Category } from '@prisma/client';
 import { FaBlog, FaCode, FaMobileAlt, FaSearch, FaPaintBrush, FaShoppingCart } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import Link from 'next/link';
 import Image from 'next/image';
-import prisma from '../../../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+type Category = 'SEO' | 'WEB_DEVELOPMENT' | 'APP_DEVELOPMENT' | 'DIGITAL_MARKETING' | 'UI_UX' | 'ECOMMERCE';
 
 const categoryIcons: Record<Category, IconType> = {
   SEO: FaSearch,
@@ -52,7 +55,7 @@ export default async function TagPage({ params }: Props) {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post) => {
-          const Icon = categoryIcons[post.category];
+          const Icon = categoryIcons[post.category as Category] || FaBlog;
           return (
             <Link
               key={post.id}
@@ -70,7 +73,7 @@ export default async function TagPage({ params }: Props) {
               <div className="p-6">
                 <div className="flex items-center gap-2 mb-2">
                   <Icon className="text-primary" />
-                  <span className="text-sm text-gray-600">{categoryTitles[post.category]}</span>
+                  <span className="text-sm text-gray-600">{categoryTitles[post.category as Category] || 'קטגוריה'}</span>
                 </div>
                 <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
                 <p className="text-gray-600 mb-4">{post.excerpt}</p>

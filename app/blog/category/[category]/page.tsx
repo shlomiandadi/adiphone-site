@@ -1,10 +1,13 @@
-import { Category } from '@prisma/client';
 import { FaBlog, FaCode, FaMobileAlt, FaSearch, FaPaintBrush, FaShoppingCart } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import prisma from '../../../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+type Category = 'SEO' | 'WEB_DEVELOPMENT' | 'APP_DEVELOPMENT' | 'DIGITAL_MARKETING' | 'UI_UX' | 'ECOMMERCE';
 
 const categoryIcons: Record<Category, IconType> = {
   SEO: FaSearch,

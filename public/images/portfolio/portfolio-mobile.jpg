@@ -1,1 +1,0 @@
-{"is_successful":false,"error_message":"The error happens when the API can't connect to the provided URL. It might mean that the site blocks the API or is temporarily unavailable. Generally, you can safely retry to take a screenshot.","error_code":"network_error","documentation_url":"https://screenshotone.com/docs/errors/network-error/"}

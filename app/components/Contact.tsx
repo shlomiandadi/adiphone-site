@@ -89,7 +89,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white">טלפון</h4>
-                    <p className="text-gray-600 dark:text-gray-300">0509159951</p>
+                    <a href="tel:0509159951" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">0509159951</a>
                   </div>
                 </div>
 

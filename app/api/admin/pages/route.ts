@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { title, slug, content, templateId, published = false } = body;
+    const { title, slug, content, templateId, published = false, templateSections } = body;
 
     // בדיקה שהדף לא קיים כבר
     const existingPage = await prisma.page.findUnique({
@@ -41,13 +41,33 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'דף עם URL זה כבר קיים' }, { status: 400 });
     }
 
+    // אם יש סקשנים מעודכנים, צור תבנית חדשה עבור הדף הזה
+    let finalTemplateId = templateId;
+    if (templateSections && templateSections.length > 0) {
+      const customTemplate = await prisma.template.create({
+        data: {
+          name: `${title} - תבנית מותאמת`,
+          description: `תבנית מותאמת אישית עבור ${title}`,
+          sections: {
+            create: templateSections.map((section: any, index: number) => ({
+              type: section.type,
+              title: section.title,
+              content: section.content,
+              order: index
+            }))
+          }
+        }
+      });
+      finalTemplateId = customTemplate.id;
+    }
+
     // יצירת הדף
     const page = await prisma.page.create({
       data: {
         title,
         slug,
         content,
-        templateId,
+        templateId: finalTemplateId,
         published,
         metaTitle: title,
         metaDesc: content ? content.substring(0, 160) : '',

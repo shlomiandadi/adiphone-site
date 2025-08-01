@@ -42,6 +42,9 @@ export default function PagesManager() {
     templateId: '',
     published: false
   });
+  
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+  const [templateSections, setTemplateSections] = useState<any[]>([]);
 
   useEffect(() => {
     fetchPages();
@@ -78,12 +81,17 @@ export default function PagesManager() {
     e.preventDefault();
     
     try {
+      const pageData = {
+        ...formData,
+        templateSections: templateSections // שמירת הסקשנים המעודכנים
+      };
+
       const response = await fetch('/api/admin/pages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(pageData),
       });
 
       if (response.ok) {
@@ -97,6 +105,8 @@ export default function PagesManager() {
           templateId: '',
           published: false
         });
+        setSelectedTemplate(null);
+        setTemplateSections([]);
       } else {
         const error = await response.json();
         alert(error.error || 'שגיאה ביצירת הדף');
@@ -201,6 +211,323 @@ export default function PagesManager() {
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('he-IL');
+  };
+
+  const renderSectionEditor = (section: any, index: number) => {
+    const { type, content } = section;
+    
+    const updateSectionContent = (newContent: any) => {
+      const newSections = [...templateSections];
+      newSections[index] = { ...section, content: newContent };
+      setTemplateSections(newSections);
+    };
+    
+    switch (type) {
+      case 'hero':
+        return (
+          <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">כותרת</label>
+              <input
+                type="text"
+                value={content.title || ''}
+                onChange={(e) => updateSectionContent({ ...content, title: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">תת-כותרת</label>
+              <input
+                type="text"
+                value={content.subtitle || ''}
+                onChange={(e) => updateSectionContent({ ...content, subtitle: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">תמונה רקע</label>
+              <input
+                type="text"
+                value={content.backgroundImage || ''}
+                onChange={(e) => updateSectionContent({ ...content, backgroundImage: e.target.value })}
+                className="w-full p-2 border rounded"
+                placeholder="/images/hero-bg.jpg"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">טקסט כפתור</label>
+              <input
+                type="text"
+                value={content.buttonText || ''}
+                onChange={(e) => updateSectionContent({ ...content, buttonText: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">קישור כפתור</label>
+              <input
+                type="text"
+                value={content.buttonLink || ''}
+                onChange={(e) => updateSectionContent({ ...content, buttonLink: e.target.value })}
+                className="w-full p-2 border rounded"
+                placeholder="/contact"
+              />
+            </div>
+          </div>
+        );
+
+      case 'content':
+        return (
+          <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">כותרת</label>
+              <input
+                type="text"
+                value={content.title || ''}
+                onChange={(e) => updateSectionContent({ ...content, title: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">תוכן (HTML מלא)</label>
+              <textarea
+                value={content.content || ''}
+                onChange={(e) => updateSectionContent({ ...content, content: e.target.value })}
+                className="w-full p-2 border rounded h-32 font-mono text-sm"
+                placeholder="<p>תוכן עם HTML מלא</p><h2>כותרת משנה</h2>"
+              />
+            </div>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id={`showTOC-${section.id}`}
+                checked={content.showTableOfContents || false}
+                onChange={(e) => updateSectionContent({ ...content, showTableOfContents: e.target.checked })}
+                className="mr-2"
+              />
+              <label htmlFor={`showTOC-${section.id}`} className="text-sm font-medium text-gray-700">
+                הצג תוכן עניינים
+              </label>
+            </div>
+          </div>
+        );
+
+      case 'features':
+        return (
+          <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">כותרת הסקשן</label>
+              <input
+                type="text"
+                value={content.title || ''}
+                onChange={(e) => updateSectionContent({ ...content, title: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">היתרונות</label>
+              {content.features?.map((feature: any, featureIndex: number) => (
+                <div key={featureIndex} className="border p-3 rounded mb-3 space-y-2">
+                  <input
+                    type="text"
+                    placeholder="כותרת היתרון"
+                    value={feature.title || ''}
+                    onChange={(e) => {
+                      const newFeatures = [...content.features];
+                      newFeatures[featureIndex] = { ...feature, title: e.target.value };
+                      updateSectionContent({ ...content, features: newFeatures });
+                    }}
+                    className="w-full p-2 border rounded"
+                  />
+                  <input
+                    type="text"
+                    placeholder="תיאור היתרון"
+                    value={feature.description || ''}
+                    onChange={(e) => {
+                      const newFeatures = [...content.features];
+                      newFeatures[featureIndex] = { ...feature, description: e.target.value };
+                      updateSectionContent({ ...content, features: newFeatures });
+                    }}
+                    className="w-full p-2 border rounded"
+                  />
+                  <select
+                    value={feature.icon || 'star'}
+                    onChange={(e) => {
+                      const newFeatures = [...content.features];
+                      newFeatures[featureIndex] = { ...feature, icon: e.target.value };
+                      updateSectionContent({ ...content, features: newFeatures });
+                    }}
+                    className="w-full p-2 border rounded"
+                  >
+                    <option value="star">כוכב</option>
+                    <option value="check">צ'ק</option>
+                    <option value="heart">לב</option>
+                    <option value="bolt">ברק</option>
+                    <option value="rocket">רקטה</option>
+                    <option value="crown">כתר</option>
+                  </select>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'pricing':
+        return (
+          <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">כותרת הסקשן</label>
+              <input
+                type="text"
+                value={content.title || ''}
+                onChange={(e) => updateSectionContent({ ...content, title: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">החבילות</label>
+              {content.plans?.map((plan: any, planIndex: number) => (
+                <div key={planIndex} className="border p-3 rounded mb-3 space-y-2">
+                  <input
+                    type="text"
+                    placeholder="שם החבילה"
+                    value={plan.name || ''}
+                    onChange={(e) => {
+                      const newPlans = [...content.plans];
+                      newPlans[planIndex] = { ...plan, name: e.target.value };
+                      updateSectionContent({ ...content, plans: newPlans });
+                    }}
+                    className="w-full p-2 border rounded"
+                  />
+                  <input
+                    type="text"
+                    placeholder="מחיר"
+                    value={plan.price || ''}
+                    onChange={(e) => {
+                      const newPlans = [...content.plans];
+                      newPlans[planIndex] = { ...plan, price: e.target.value };
+                      updateSectionContent({ ...content, plans: newPlans });
+                    }}
+                    className="w-full p-2 border rounded"
+                  />
+                  <input
+                    type="text"
+                    placeholder="תכונות (מופרדות בפסיקים)"
+                    value={plan.features?.join(', ') || ''}
+                    onChange={(e) => {
+                      const newPlans = [...content.plans];
+                      newPlans[planIndex] = { ...plan, features: e.target.value.split(',').map(f => f.trim()) };
+                      updateSectionContent({ ...content, plans: newPlans });
+                    }}
+                    className="w-full p-2 border rounded"
+                  />
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={plan.popular || false}
+                      onChange={(e) => {
+                        const newPlans = [...content.plans];
+                        newPlans[planIndex] = { ...plan, popular: e.target.checked };
+                        updateSectionContent({ ...content, plans: newPlans });
+                      }}
+                      className="mr-2"
+                    />
+                    <label className="text-sm font-medium text-gray-700">חבילה פופולרית</label>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'faq':
+        return (
+          <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">כותרת הסקשן</label>
+              <input
+                type="text"
+                value={content.title || ''}
+                onChange={(e) => updateSectionContent({ ...content, title: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">שאלות ותשובות</label>
+              {content.questions?.map((qa: any, qaIndex: number) => (
+                <div key={qaIndex} className="border p-3 rounded mb-3 space-y-2">
+                  <input
+                    type="text"
+                    placeholder="השאלה"
+                    value={qa.question || ''}
+                    onChange={(e) => {
+                      const newQuestions = [...content.questions];
+                      newQuestions[qaIndex] = { ...qa, question: e.target.value };
+                      updateSectionContent({ ...content, questions: newQuestions });
+                    }}
+                    className="w-full p-2 border rounded"
+                  />
+                  <textarea
+                    placeholder="התשובה"
+                    value={qa.answer || ''}
+                    onChange={(e) => {
+                      const newQuestions = [...content.questions];
+                      newQuestions[qaIndex] = { ...qa, answer: e.target.value };
+                      updateSectionContent({ ...content, questions: newQuestions });
+                    }}
+                    className="w-full p-2 border rounded h-20"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'cta':
+        return (
+          <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">כותרת</label>
+              <input
+                type="text"
+                value={content.title || ''}
+                onChange={(e) => updateSectionContent({ ...content, title: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">תת-כותרת</label>
+              <input
+                type="text"
+                value={content.subtitle || ''}
+                onChange={(e) => updateSectionContent({ ...content, subtitle: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">טקסט כפתור</label>
+              <input
+                type="text"
+                value={content.buttonText || ''}
+                onChange={(e) => updateSectionContent({ ...content, buttonText: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">קישור כפתור</label>
+              <input
+                type="text"
+                value={content.buttonLink || ''}
+                onChange={(e) => updateSectionContent({ ...content, buttonLink: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+          </div>
+        );
+
+      default:
+        return <div className="text-gray-500">עורך לא זמין לסוג סקשן זה</div>;
+    }
   };
 
   if (loading) {
@@ -382,7 +709,21 @@ export default function PagesManager() {
                 <label className="block text-sm font-medium mb-2">תבנית</label>
                 <select
                   value={formData.templateId}
-                  onChange={(e) => setFormData({ ...formData, templateId: e.target.value })}
+                  onChange={(e) => {
+                    const templateId = e.target.value;
+                    setFormData({ ...formData, templateId });
+                    
+                    if (templateId) {
+                      const template = templates.find(t => t.id === templateId);
+                      if (template) {
+                        setSelectedTemplate(template);
+                        setTemplateSections(JSON.parse(JSON.stringify(template.sections)));
+                      }
+                    } else {
+                      setSelectedTemplate(null);
+                      setTemplateSections([]);
+                    }
+                  }}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">בחר תבנית</option>
@@ -404,6 +745,21 @@ export default function PagesManager() {
                   placeholder="תוכן נוסף לדף (אופציונלי)"
                 />
               </div>
+
+              {/* Template Sections Editor */}
+              {selectedTemplate && templateSections.length > 0 && (
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-semibold mb-4">עריכת סקשני התבנית</h3>
+                  <div className="space-y-6">
+                    {templateSections.map((section, index) => (
+                      <div key={section.id} className="border rounded-lg p-4 bg-gray-50">
+                        <h4 className="font-medium mb-3 text-gray-800">{section.title}</h4>
+                        {renderSectionEditor(section, index)}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="flex items-center">
                 <input

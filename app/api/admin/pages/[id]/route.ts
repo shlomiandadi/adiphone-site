@@ -40,7 +40,7 @@ export async function PUT(
 ) {
   try {
     const body = await request.json();
-    const { title, slug, content, templateId, published } = body;
+    const { title, slug, content, templateId, published, templateSections } = body;
 
     // בדיקה שהדף קיים
     const existingPage = await prisma.page.findUnique({
@@ -62,6 +62,52 @@ export async function PUT(
       }
     }
 
+    // אם יש סקשנים מעודכנים, צור תבנית חדשה או עדכן את הקיימת
+    let finalTemplateId = templateId;
+    if (templateSections && templateSections.length > 0) {
+      // בדוק אם יש תבנית קיימת לדף הזה
+      if (existingPage.templateId) {
+        // עדכן את התבנית הקיימת
+        await prisma.section.deleteMany({
+          where: { templateId: existingPage.templateId }
+        });
+        
+        await prisma.template.update({
+          where: { id: existingPage.templateId },
+          data: {
+            name: `${title} - תבנית מותאמת`,
+            description: `תבנית מותאמת אישית עבור ${title}`,
+            sections: {
+              create: templateSections.map((section: any, index: number) => ({
+                type: section.type,
+                title: section.title,
+                content: section.content,
+                order: index
+              }))
+            }
+          }
+        });
+        finalTemplateId = existingPage.templateId;
+      } else {
+        // צור תבנית חדשה
+        const customTemplate = await prisma.template.create({
+          data: {
+            name: `${title} - תבנית מותאמת`,
+            description: `תבנית מותאמת אישית עבור ${title}`,
+            sections: {
+              create: templateSections.map((section: any, index: number) => ({
+                type: section.type,
+                title: section.title,
+                content: section.content,
+                order: index
+              }))
+            }
+          }
+        });
+        finalTemplateId = customTemplate.id;
+      }
+    }
+
     // עדכון הדף
     const updatedPage = await prisma.page.update({
       where: { id: params.id },
@@ -69,7 +115,7 @@ export async function PUT(
         title,
         slug,
         content,
-        templateId,
+        templateId: finalTemplateId,
         published,
         metaTitle: title,
         metaDesc: content ? content.substring(0, 160) : '',

@@ -123,12 +123,17 @@ export default function PagesManager() {
     if (!editingPage) return;
 
     try {
+      const pageData = {
+        ...formData,
+        templateSections: templateSections // שמירת הסקשנים המעודכנים
+      };
+
       const response = await fetch(`/api/admin/pages/${editingPage.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(pageData),
       });
 
       if (response.ok) {
@@ -144,6 +149,8 @@ export default function PagesManager() {
           templateId: '',
           published: false
         });
+        setSelectedTemplate(null);
+        setTemplateSections([]);
       } else {
         const error = await response.json();
         alert(error.error || 'שגיאה בעדכון הדף');
@@ -174,15 +181,24 @@ export default function PagesManager() {
     }
   };
 
-  const handleEditPage = (page: Page) => {
+    const handleEditPage = (page: Page) => {
     setEditingPage(page);
     setFormData({
       title: page.title,
       slug: page.slug,
       content: page.content,
-             templateId: page.templateRelation?.id || '',
+      templateId: page.templateRelation?.id || '',
       published: page.published
     });
+    
+    // טען את התבנית והסקשנים הקיימים
+    if (page.templateRelation) {
+      setSelectedTemplate(page.templateRelation);
+      setTemplateSections(page.templateRelation.sections || []);
+    } else {
+      setSelectedTemplate(null);
+      setTemplateSections([]);
+    }
   };
 
   const handleCreateTemplate = async (templateData: any) => {

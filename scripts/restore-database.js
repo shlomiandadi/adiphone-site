@@ -78,6 +78,15 @@ async function restoreDatabase(backupFile) {
     // Restore Posts
     if (backupData.posts && backupData.posts.length > 0) {
       for (const post of backupData.posts) {
+        // מציאת הקטגוריה לפי שם
+        let categoryId = null;
+        if (post.category) {
+          const category = await prisma.category.findFirst({
+            where: { name: post.category }
+          });
+          categoryId = category?.id || null;
+        }
+
         await prisma.post.create({
           data: {
             id: post.id,
@@ -87,7 +96,6 @@ async function restoreDatabase(backupFile) {
             content: post.content,
             mainImage: post.mainImage,
             images: post.images,
-            category: post.category,
             tags: post.tags,
             published: post.published,
             authorName: post.authorName,
@@ -99,7 +107,7 @@ async function restoreDatabase(backupFile) {
             createdAt: post.createdAt,
             updatedAt: post.updatedAt,
             authorId: post.authorId,
-            categoryId: post.categoryId
+            categoryId: categoryId
           }
         });
       }

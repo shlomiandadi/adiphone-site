@@ -88,7 +88,7 @@ model Contact {
 }
 
 model PortfolioProject2 {
-  id              String   @id
+  id              String   @id @default(cuid())
   name            String
   slug            String   @unique
   image           String
@@ -98,6 +98,11 @@ model PortfolioProject2 {
   url             String
   date            DateTime
   technologies    String[]
+  published       Boolean  @default(false)
+  metaTitle       String?
+  metaDesc        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 enum Role {

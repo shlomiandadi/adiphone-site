@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(project);
     } else {
       const projects = await prisma.portfolioProject2.findMany({
+        where: { published: true }, // רק פרויקטים מפורסמים
         orderBy: { date: 'desc' },
       });
       return NextResponse.json(projects);

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaCheck, FaStar, FaRocket, FaCrown, FaGem, FaHeart, FaBolt } from 'react-icons/fa';
+import DynamicTableOfContents from '../components/DynamicTableOfContents';
 
 interface PageData {
   id: string;
@@ -66,6 +67,8 @@ const colorMap: { [key: string]: string } = {
 // פונקציה לחילוץ כותרות מ-HTML
 const extractHeadings = (html: string) => {
   const headings: { id: string; text: string; level: number }[] = [];
+  
+  // יצירת DOM parser
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
   
@@ -74,6 +77,10 @@ const extractHeadings = (html: string) => {
     elements.forEach((element) => {
       const text = element.textContent || '';
       const id = text.toLowerCase().replace(/[^a-z0-9]/g, '-');
+      
+      // הוספת ID לאלמנט
+      element.id = id;
+      
       headings.push({
         id,
         text,
@@ -108,6 +115,25 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
 
     fetchPageData();
   }, [params.slug]);
+
+  // הוספת IDs לכותרות אחרי שהתוכן נטען
+  React.useEffect(() => {
+    if (pageData) {
+      // המתן קצת שהתוכן יטען
+      const timer = setTimeout(() => {
+        const headingElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headingElements.forEach((element, index) => {
+          if (!element.id) {
+            const text = element.textContent || '';
+            const id = text.toLowerCase().replace(/[^a-z0-9]/g, '-');
+            element.id = id;
+          }
+        });
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [pageData]);
 
   if (loading) {
     return (
@@ -191,28 +217,14 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
         return (
           <section key={section.id} className="bg-gradient-to-b from-gray-50 to-white px-4 py-16 dark:from-gray-900 dark:to-gray-800">
             <div className="container mx-auto max-w-6xl">
+              {/* Mobile Table of Contents - At the top */}
+              {content.showTableOfContents && (
+                <div className="mb-8 lg:hidden">
+                  <DynamicTableOfContents content={content.content || ''} />
+                </div>
+              )}
+              
               <div className="flex gap-8">
-                {/* תוכן עניינים בצד שמאל */}
-                {content.showTableOfContents && (
-                  <div className="w-64 flex-shrink-0">
-                    <div className="sticky top-8 bg-white p-6 rounded-lg shadow-lg dark:bg-gray-800">
-                      <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">תוכן עניינים</h3>
-                      <nav className="space-y-2">
-                        {content.content && extractHeadings(content.content).map((heading, index) => (
-                          <a
-                            key={index}
-                            href={`#${heading.id}`}
-                            className="block text-blue-600 hover:text-blue-800 transition-colors dark:text-blue-400 dark:hover:text-blue-300 text-sm"
-                            style={{ paddingLeft: `${(heading.level - 1) * 12}px` }}
-                          >
-                            {heading.text}
-                          </a>
-                        ))}
-                      </nav>
-                    </div>
-                  </div>
-                )}
-                
                 {/* תוכן ראשי */}
                 <div className="flex-1">
                   <motion.div
@@ -234,6 +246,13 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                     />
                   </motion.div>
                 </div>
+                
+                {/* Desktop Table of Contents Sidebar */}
+                {content.showTableOfContents && (
+                  <div className="hidden lg:block flex-shrink-0">
+                    <DynamicTableOfContents content={content.content || ''} />
+                  </div>
+                )}
               </div>
             </div>
           </section>

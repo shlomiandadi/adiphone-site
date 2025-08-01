@@ -15,7 +15,14 @@ async function fetchProjects(): Promise<Project[]> {
   const baseUrl = process.env.NODE_ENV === 'development' 
     ? 'http://localhost:3000' 
     : 'https://adi-phone.co.il';
-  const res = await fetch(`${baseUrl}/api/portfolio2`, { cache: 'no-store' });
+  const res = await fetch(`${baseUrl}/api/portfolio2`, { 
+    cache: 'no-store',
+    headers: {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }
+  });
   if (!res.ok) return [];
   return res.json();
 }

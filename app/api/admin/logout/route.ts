@@ -3,7 +3,9 @@ import { cookies } from 'next/headers';
 
 export async function POST() {
   try {
-    const cookieStore = await cookies();
+    const cookieStore = cookies();
+    
+    // מחיקת ה-cookie
     cookieStore.delete('admin-token');
 
     return NextResponse.json({

@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 import { getAdminUser } from '../../../lib/adminAuth';
-import TagsManager from '../components/TagsManager';
+import PortfolioManager from '../components/PortfolioManager';
 import AdminLayout from '../../components/admin/AdminLayout';
 
-export default async function TagsPage() {
+export default async function PortfolioPage() {
   const user = await getAdminUser();
 
   if (!user) {
@@ -12,7 +12,7 @@ export default async function TagsPage() {
 
   return (
     <AdminLayout user={user}>
-      <TagsManager />
+      <PortfolioManager />
     </AdminLayout>
   );
 } 

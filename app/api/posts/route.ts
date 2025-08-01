@@ -6,6 +6,8 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log('Received POST data:', body);
+    
     const {
       title,
       content,
@@ -54,24 +56,29 @@ export async function POST(request: NextRequest) {
     }
 
     // יצירת הפוסט
+    const postData: any = {
+      title,
+      content,
+      excerpt: excerpt || '',
+      mainImage: mainImage || '',
+      tags: Array.isArray(tags) ? tags : [],
+      metaTitle: metaTitle || title,
+      metaDesc: metaDesc || excerpt || '',
+      published: published || false,
+      slug: slug || title.toLowerCase().replace(/[^\u0590-\u05FFa-z0-9\s-]/g, '').replace(/\s+/g, '-'),
+      authorName: 'מנהל האתר',
+      authorEmail: 'admin@example.com',
+      views: 0,
+      likes: 0
+    };
+
+    // הוספת categoryId רק אם יש קטגוריה
+    if (categoryRef?.id) {
+      postData.categoryId = categoryRef.id;
+    }
+
     const post = await prisma.post.create({
-      data: {
-        title,
-        content,
-        excerpt: excerpt || '',
-        mainImage: mainImage || '',
-        category: category || 'SEO',
-        categoryId: categoryRef?.id,
-        tags: Array.isArray(tags) ? tags : [],
-        metaTitle: metaTitle || title,
-        metaDesc: metaDesc || excerpt || '',
-        published: published || false,
-        slug: slug || title.toLowerCase().replace(/[^\u0590-\u05FFa-z0-9\s-]/g, '').replace(/\s+/g, '-'),
-        authorName: 'מנהל האתר',
-        authorEmail: 'admin@example.com',
-        views: 0,
-        likes: 0
-      }
+      data: postData
     });
 
     return NextResponse.json({
@@ -96,18 +103,30 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10');
     const published = searchParams.get('published');
     const category = searchParams.get('category');
+    const admin = searchParams.get('admin'); // פרמטר מיוחד למערכת הניהול
 
     const skip = (page - 1) * limit;
 
     // בניית תנאי החיפוש
     const where: any = {};
     
-    if (published !== null) {
-      where.published = published === 'true';
+    // אם זה מערכת הניהול, הראה את כל הפוסטים
+    if (admin === 'true') {
+      if (published !== null) {
+        where.published = published === 'true';
+      }
+      // אם לא צוין published, הראה את כל הפוסטים
+    } else {
+      // ברירת מחדל: רק פוסטים מפורסמים
+      if (published !== null) {
+        where.published = published === 'true';
+      } else {
+        where.published = true;
+      }
     }
     
     if (category) {
-      where.categoryRef = {
+      where.category = {
         slug: category
       };
     }
@@ -124,7 +143,14 @@ export async function GET(request: NextRequest) {
           slug: true,
           excerpt: true,
           mainImage: true,
-          category: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              color: true
+            }
+          },
           published: true,
           createdAt: true,
           updatedAt: true,
@@ -147,7 +173,9 @@ export async function GET(request: NextRequest) {
       slug: post.slug,
       excerpt: post.excerpt,
       mainImage: post.mainImage,
-      category: post.category,
+      category: post.category?.name || 'כללי',
+      categorySlug: post.category?.slug || 'general',
+      categoryColor: post.category?.color || '#3B82F6',
       published: post.published,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,

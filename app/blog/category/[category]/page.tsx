@@ -40,9 +40,18 @@ export default async function CategoryPage({ params }: Props) {
     notFound();
   }
 
+  // קודם נמצא את הקטגוריה לפי slug
+  const categoryRecord = await prisma.category.findUnique({
+    where: { slug: params.category }
+  });
+
+  if (!categoryRecord) {
+    notFound();
+  }
+
   const posts = await prisma.post.findMany({
     where: {
-      category,
+      categoryId: categoryRecord.id,
       published: true,
     },
     orderBy: {

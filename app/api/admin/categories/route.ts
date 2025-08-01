@@ -21,9 +21,7 @@ export async function GET() {
       createdAt: category.createdAt
     }));
 
-    return NextResponse.json({
-      categories: formattedCategories
-    });
+    return NextResponse.json({ categories: formattedCategories });
 
   } catch (error) {
     console.error('Error fetching categories:', error);

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaSave, FaTimes } from 'react-icons/fa';
 import TemplateForm from './TemplateForm';
+import RichTextEditor from './RichTextEditor';
 
 interface Page {
   id: string;
@@ -305,12 +306,11 @@ export default function PagesManager() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">תוכן (HTML מלא)</label>
-              <textarea
+              <label className="block text-sm font-medium text-gray-700 mb-1">תוכן</label>
+              <RichTextEditor
                 value={content.content || ''}
-                onChange={(e) => updateSectionContent({ ...content, content: e.target.value })}
-                className="w-full p-2 border rounded h-32 font-mono text-sm"
-                placeholder="<p>תוכן עם HTML מלא</p><h2>כותרת משנה</h2>"
+                onChange={(value) => updateSectionContent({ ...content, content: value })}
+                placeholder="כתוב את התוכן כאן..."
               />
             </div>
             <div className="flex items-center">
@@ -450,6 +450,52 @@ export default function PagesManager() {
                     />
                     <label className="text-sm font-medium text-gray-700">חבילה פופולרית</label>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'process':
+        return (
+          <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">כותרת הסקשן</label>
+              <input
+                type="text"
+                value={content.title || ''}
+                onChange={(e) => updateSectionContent({ ...content, title: e.target.value })}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">שלבי התהליך</label>
+              {content.steps?.map((step: any, stepIndex: number) => (
+                <div key={stepIndex} className="border p-3 rounded mb-3 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-gray-600">שלב {stepIndex + 1}</span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="כותרת השלב"
+                    value={step.title || ''}
+                    onChange={(e) => {
+                      const newSteps = [...content.steps];
+                      newSteps[stepIndex] = { ...step, title: e.target.value };
+                      updateSectionContent({ ...content, steps: newSteps });
+                    }}
+                    className="w-full p-2 border rounded"
+                  />
+                  <textarea
+                    placeholder="תיאור השלב"
+                    value={step.description || ''}
+                    onChange={(e) => {
+                      const newSteps = [...content.steps];
+                      newSteps[stepIndex] = { ...step, description: e.target.value };
+                      updateSectionContent({ ...content, steps: newSteps });
+                    }}
+                    className="w-full p-2 border rounded h-20"
+                  />
                 </div>
               ))}
             </div>

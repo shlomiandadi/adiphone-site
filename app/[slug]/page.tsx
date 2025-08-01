@@ -191,42 +191,50 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
         return (
           <section key={section.id} className="bg-gradient-to-b from-gray-50 to-white px-4 py-16 dark:from-gray-900 dark:to-gray-800">
             <div className="container mx-auto max-w-6xl">
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeInUp}
-                className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800"
-              >
-                {content.title && (
-                  <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
-                    {content.title}
-                  </h2>
-                )}
-                
+              <div className="flex gap-8">
+                {/* תוכן עניינים בצד שמאל */}
                 {content.showTableOfContents && (
-                  <div className="bg-gray-50 p-6 rounded-lg mb-8 dark:bg-gray-700">
-                    <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">תוכן עניינים</h3>
-                    <nav className="space-y-2">
-                      {content.content && extractHeadings(content.content).map((heading, index) => (
-                        <a
-                          key={index}
-                          href={`#${heading.id}`}
-                          className="block text-blue-600 hover:text-blue-800 transition-colors dark:text-blue-400 dark:hover:text-blue-300"
-                          style={{ paddingLeft: `${(heading.level - 1) * 20}px` }}
-                        >
-                          {heading.text}
-                        </a>
-                      ))}
-                    </nav>
+                  <div className="w-64 flex-shrink-0">
+                    <div className="sticky top-8 bg-white p-6 rounded-lg shadow-lg dark:bg-gray-800">
+                      <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">תוכן עניינים</h3>
+                      <nav className="space-y-2">
+                        {content.content && extractHeadings(content.content).map((heading, index) => (
+                          <a
+                            key={index}
+                            href={`#${heading.id}`}
+                            className="block text-blue-600 hover:text-blue-800 transition-colors dark:text-blue-400 dark:hover:text-blue-300 text-sm"
+                            style={{ paddingLeft: `${(heading.level - 1) * 12}px` }}
+                          >
+                            {heading.text}
+                          </a>
+                        ))}
+                      </nav>
+                    </div>
                   </div>
                 )}
                 
-                <div 
-                  className="prose prose-lg mx-auto max-w-4xl dark:prose-invert prose-gray dark:prose-gray-600"
-                  dangerouslySetInnerHTML={{ __html: content.content || '' }}
-                />
-              </motion.div>
+                {/* תוכן ראשי */}
+                <div className="flex-1">
+                  <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    variants={fadeInUp}
+                    className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800"
+                  >
+                    {content.title && (
+                      <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
+                        {content.title}
+                      </h2>
+                    )}
+                    
+                    <div 
+                      className="prose prose-lg mx-auto max-w-none dark:prose-invert prose-gray dark:prose-gray-600"
+                      dangerouslySetInnerHTML={{ __html: content.content || '' }}
+                    />
+                  </motion.div>
+                </div>
+              </div>
             </div>
           </section>
         );

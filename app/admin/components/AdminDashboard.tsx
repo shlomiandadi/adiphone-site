@@ -143,14 +143,20 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
           <h1 className="text-3xl font-bold text-gray-900">לוח בקרה</h1>
           <p className="text-gray-600">ברוך הבא, {user.username}</p>
         </div>
-        <form action="/api/admin/logout" method="POST">
-          <button
-            type="submit"
-            className="px-4 py-2 text-sm text-red-600 hover:text-red-800 border border-red-300 hover:border-red-400 rounded-md transition-colors"
-          >
-            התנתקות
-          </button>
-        </form>
+        <button
+          onClick={async () => {
+            try {
+              await fetch('/api/admin/logout', { method: 'POST' });
+              window.location.href = '/admin/login';
+            } catch (error) {
+              console.error('Logout error:', error);
+              window.location.href = '/admin/login';
+            }
+          }}
+          className="px-4 py-2 text-sm text-red-600 hover:text-red-800 border border-red-300 hover:border-red-400 rounded-md transition-colors"
+        >
+          התנתקות
+        </button>
       </div>
 
       {/* Quick Actions */}

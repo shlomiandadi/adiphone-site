@@ -42,6 +42,9 @@ export default async function TagPage({ params }: Props) {
       },
       published: true,
     },
+    include: {
+      category: true,
+    },
     orderBy: {
       createdAt: 'desc',
     },
@@ -55,7 +58,7 @@ export default async function TagPage({ params }: Props) {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post) => {
-          const Icon = categoryIcons[post.category as Category] || FaBlog;
+          const Icon = categoryIcons[post.category?.name as Category] || FaBlog;
           return (
             <Link
               key={post.id}
@@ -73,7 +76,7 @@ export default async function TagPage({ params }: Props) {
               <div className="p-6">
                 <div className="flex items-center gap-2 mb-2">
                   <Icon className="text-primary" />
-                  <span className="text-sm text-gray-600">{categoryTitles[post.category as Category] || 'קטגוריה'}</span>
+                  <span className="text-sm text-gray-600">{categoryTitles[post.category?.name as Category] || 'קטגוריה'}</span>
                 </div>
                 <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
                 <p className="text-gray-600 mb-4">{post.excerpt}</p>

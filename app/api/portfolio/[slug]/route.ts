@@ -15,27 +15,27 @@ export async function GET(
 
     const where: any = { slug: params.slug };
     
-    // אם זה לא מערכת הניהול, בדוק שרק פוסטים מפורסמים
+    // אם זה לא מערכת הניהול, בדוק שרק פרויקטים מפורסמים
     if (admin !== 'true') {
       where.published = true;
     }
 
-    const post = await prisma.post.findUnique({
+    const project = await prisma.portfolioProject2.findUnique({
       where
     });
 
-    if (!post) {
+    if (!project) {
       return NextResponse.json(
-        { error: 'פוסט לא נמצא' },
+        { error: 'פרויקט לא נמצא' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(post);
+    return NextResponse.json(project);
   } catch (error) {
-    console.error('Error fetching post:', error);
+    console.error('Error fetching portfolio project:', error);
     return NextResponse.json(
-      { error: 'שגיאה בטעינת הפוסט' },
+      { error: 'שגיאה בטעינת הפרויקט' },
       { status: 500 }
     );
   }
@@ -48,12 +48,14 @@ export async function PUT(
   try {
     const body = await request.json();
     const {
-      title,
-      content,
-      excerpt,
-      mainImage,
-      category,
-      tags,
+      name,
+      description,
+      descriptionRich,
+      url,
+      date,
+      technologies,
+      image,
+      images,
       metaTitle,
       metaDesc,
       published,
@@ -61,28 +63,28 @@ export async function PUT(
     } = body;
 
     // ולידציה בסיסית
-    if (!title || !content) {
+    if (!name || !description) {
       return NextResponse.json(
-        { error: 'כותרת ותוכן הם שדות חובה' },
+        { error: 'שם ותיאור הם שדות חובה' },
         { status: 400 }
       );
     }
 
-    // בדיקה אם הפוסט קיים
-    const existingPost = await prisma.post.findUnique({
+    // בדיקה אם הפרויקט קיים
+    const existingProject = await prisma.portfolioProject2.findUnique({
       where: { slug: params.slug }
     });
 
-    if (!existingPost) {
+    if (!existingProject) {
       return NextResponse.json(
-        { error: 'פוסט לא נמצא' },
+        { error: 'פרויקט לא נמצא' },
         { status: 404 }
       );
     }
 
     // בדיקה אם ה-slug החדש כבר קיים (אם השתנה)
     if (newSlug && newSlug !== params.slug) {
-      const slugExists = await prisma.post.findUnique({
+      const slugExists = await prisma.portfolioProject2.findUnique({
         where: { slug: newSlug }
       });
 
@@ -94,33 +96,21 @@ export async function PUT(
       }
     }
 
-    // מציאת או יצירת קטגוריה
-    let categoryRef;
-    if (category) {
-      categoryRef = await prisma.category.findUnique({
-        where: { slug: category }
-      });
-    }
-    
-    if (!categoryRef) {
-      categoryRef = await prisma.category.findFirst({
-        where: { slug: 'seo' }
-      });
-    }
-
-    // עדכון הפוסט
-    const updatedPost = await prisma.post.update({
+    // עדכון הפרויקט
+    const updatedProject = await prisma.portfolioProject2.update({
       where: { slug: params.slug },
       data: {
-        title,
-        content,
-        excerpt: excerpt || '',
-        mainImage: mainImage || '',
-        categoryId: categoryRef?.id,
-        tags: Array.isArray(tags) ? tags : [],
-        metaTitle: metaTitle || title,
-        metaDesc: metaDesc || excerpt || '',
-        published: published !== undefined ? published : existingPost.published,
+        name,
+        description,
+        descriptionRich: descriptionRich || '',
+        url: url || '',
+        date: date ? new Date(date) : existingProject.date,
+        technologies: Array.isArray(technologies) ? technologies : [],
+        image: image || '',
+        images: Array.isArray(images) ? images : [],
+        metaTitle: metaTitle || name,
+        metaDesc: metaDesc || description,
+        published: published !== undefined ? published : existingProject.published,
         slug: newSlug || params.slug,
         updatedAt: new Date()
       }
@@ -128,14 +118,14 @@ export async function PUT(
 
     return NextResponse.json({
       success: true,
-      message: published ? 'הפוסט פורסם בהצלחה!' : 'הפוסט נשמר כטיוטה!',
-      post: updatedPost
+      message: published ? 'הפרויקט פורסם בהצלחה!' : 'הפרויקט נשמר כטיוטה!',
+      project: updatedProject
     });
 
   } catch (error) {
-    console.error('Error updating post:', error);
+    console.error('Error updating portfolio project:', error);
     return NextResponse.json(
-      { error: 'שגיאה בעדכון הפוסט' },
+      { error: 'שגיאה בעדכון הפרויקט' },
       { status: 500 }
     );
   }
@@ -146,32 +136,32 @@ export async function DELETE(
   { params }: { params: { slug: string } }
 ) {
   try {
-    // בדיקה אם הפוסט קיים
-    const existingPost = await prisma.post.findUnique({
+    // בדיקה אם הפרויקט קיים
+    const existingProject = await prisma.portfolioProject2.findUnique({
       where: { slug: params.slug }
     });
 
-    if (!existingPost) {
+    if (!existingProject) {
       return NextResponse.json(
-        { error: 'פוסט לא נמצא' },
+        { error: 'פרויקט לא נמצא' },
         { status: 404 }
       );
     }
 
-    // מחיקת הפוסט
-    await prisma.post.delete({
+    // מחיקת הפרויקט
+    await prisma.portfolioProject2.delete({
       where: { slug: params.slug }
     });
 
     return NextResponse.json({
       success: true,
-      message: 'הפוסט נמחק בהצלחה'
+      message: 'הפרויקט נמחק בהצלחה'
     });
 
   } catch (error) {
-    console.error('Error deleting post:', error);
+    console.error('Error deleting portfolio project:', error);
     return NextResponse.json(
-      { error: 'שגיאה במחיקת הפוסט' },
+      { error: 'שגיאה במחיקת הפרויקט' },
       { status: 500 }
     );
   }

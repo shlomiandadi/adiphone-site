@@ -12,7 +12,11 @@
     "fix-categories": "node scripts/fix-posts-categories.js",
     "fix-blog-slug": "node scripts/fix-blog-slug.js",
     "fix-blog-images": "echo 'Blog images are now fixed in the code'",
-    "remove-duplicate-image": "node scripts/remove-duplicate-image.js"
+    "remove-duplicate-image": "node scripts/remove-duplicate-image.js",
+    "backup-db": "node scripts/backup-database.js",
+    "restore-db": "node scripts/restore-database.js",
+    "create-categories": "node scripts/create-default-categories.js",
+    "check-categories": "node scripts/check-categories.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

@@ -13,33 +13,37 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 
 import 'react-quill/dist/quill.snow.css';
 
-interface PostData {
-  title: string;
-  content: string;
-  excerpt: string;
-  mainImage: string;
-  category: string;
-  tags: string;
+interface PortfolioData {
+  name: string;
+  description: string;
+  descriptionRich: string;
+  url: string;
+  date: string;
+  technologies: string;
+  image: string;
+  images: string;
   metaTitle: string;
   metaDesc: string;
   published: boolean;
   slug: string;
 }
 
-interface PostEditorProps {
+interface PortfolioEditorProps {
   mode: 'create' | 'edit';
-  postId?: string;
+  projectId?: string;
 }
 
-export default function PostEditor({ mode, postId }: PostEditorProps) {
+export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProps) {
   const router = useRouter();
-  const [postData, setPostData] = useState<PostData>({
-    title: '',
-    content: '',
-    excerpt: '',
-    mainImage: '',
-    category: '',
-    tags: '',
+  const [projectData, setProjectData] = useState<PortfolioData>({
+    name: '',
+    description: '',
+    descriptionRich: '',
+    url: '',
+    date: new Date().toISOString().split('T')[0],
+    technologies: '',
+    image: '',
+    images: '',
     metaTitle: '',
     metaDesc: '',
     published: false,
@@ -50,60 +54,43 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [categories, setCategories] = useState<Array<{id: string, name: string, slug: string}>>([]);
 
   useEffect(() => {
-    fetchCategories();
-    if (mode === 'edit' && postId) {
-      fetchPost();
+    if (mode === 'edit' && projectId) {
+      fetchProject();
     }
-  }, [mode, postId]);
+  }, [mode, projectId]);
 
-  const fetchCategories = async () => {
-    try {
-      console.log('Fetching categories...');
-      const response = await fetch('/api/admin/categories');
-      console.log('Response status:', response.status);
-      if (response.ok) {
-        const categoriesData = await response.json();
-        console.log('Fetched categories:', categoriesData);
-        setCategories(categoriesData.categories || []);
-      } else {
-        console.error('Failed to fetch categories:', response.status, response.statusText);
-      }
-    } catch (error) {
-      console.error('שגיאה בטעינת קטגוריות:', error);
-    }
-  };
-
-  const fetchPost = async () => {
+  const fetchProject = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/posts/${postId}?admin=true`);
+      const response = await fetch(`/api/portfolio/${projectId}?admin=true`);
       if (response.ok) {
-        const post = await response.json();
-        setPostData({
-          title: post.title || '',
-          content: post.content || '',
-          excerpt: post.excerpt || '',
-          mainImage: post.mainImage || '',
-          category: post.category?.slug || '',
-          tags: Array.isArray(post.tags) ? post.tags.join(', ') : post.tags || '',
-          metaTitle: post.metaTitle || '',
-          metaDesc: post.metaDesc || '',
-          published: post.published || false,
-          slug: post.slug || ''
+        const project = await response.json();
+        setProjectData({
+          name: project.name || '',
+          description: project.description || '',
+          descriptionRich: project.descriptionRich || '',
+          url: project.url || '',
+          date: project.date ? new Date(project.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          technologies: Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies || '',
+          image: project.image || '',
+          images: Array.isArray(project.images) ? project.images.join(', ') : project.images || '',
+          metaTitle: project.metaTitle || '',
+          metaDesc: project.metaDesc || '',
+          published: project.published || false,
+          slug: project.slug || ''
         });
       }
     } catch (error) {
-      setError('שגיאה בטעינת הפוסט');
+      setError('שגיאה בטעינת הפרויקט');
     } finally {
       setLoading(false);
     }
   };
 
-  const generateSlug = (title: string) => {
-    return title
+  const generateSlug = (name: string) => {
+    return name
       .toLowerCase()
       .replace(/[^\u0590-\u05FFa-z0-9\s-]/g, '')
       .replace(/\s+/g, '-')
@@ -114,14 +101,14 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     
-    setPostData(prev => ({
+    setProjectData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
     }));
 
-    // יצירת slug אוטומטית מהכותרת
-    if (name === 'title' && !postData.slug) {
-      setPostData(prev => ({
+    // יצירת slug אוטומטית מהשם
+    if (name === 'name' && !projectData.slug) {
+      setProjectData(prev => ({
         ...prev,
         slug: generateSlug(value)
       }));
@@ -129,9 +116,9 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
   };
 
   const handleContentChange = (content: string) => {
-    setPostData(prev => ({
+    setProjectData(prev => ({
       ...prev,
-      content
+      descriptionRich: content
     }));
   };
 
@@ -142,14 +129,15 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
 
     try {
       const finalData = {
-        ...postData,
-        published: publish ? true : postData.published,
-        tags: postData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+        ...projectData,
+        published: publish ? true : projectData.published,
+        technologies: projectData.technologies.split(',').map(tech => tech.trim()).filter(tech => tech),
+        images: projectData.images.split(',').map(img => img.trim()).filter(img => img)
       };
 
-      console.log('Sending data:', finalData);
+      console.log('Sending portfolio data:', finalData);
 
-      const url = mode === 'create' ? '/api/posts' : `/api/posts/${postId}`;
+      const url = mode === 'create' ? '/api/portfolio' : `/api/portfolio/${projectId}`;
       const method = mode === 'create' ? 'POST' : 'PUT';
 
       const response = await fetch(url, {
@@ -162,16 +150,16 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
 
       if (response.ok) {
         const result = await response.json();
-        setSuccess(publish ? 'הפוסט פורסם בהצלחה!' : 'הפוסט נשמר כטיוטה!');
+        setSuccess(publish ? 'הפרויקט פורסם בהצלחה!' : 'הפרויקט נשמר כטיוטה!');
         
         if (mode === 'create') {
           setTimeout(() => {
-            router.push('/admin');
+            router.push('/admin/portfolio');
           }, 1500);
         }
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'שגיאה בשמירת הפוסט');
+        setError(errorData.error || 'שגיאה בשמירת הפרויקט');
       }
     } catch (error) {
       setError('שגיאה בחיבור לשרת');
@@ -205,15 +193,15 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                {mode === 'create' ? 'פוסט חדש' : 'עריכת פוסט'}
+                {mode === 'create' ? 'פרויקט חדש' : 'עריכת פרויקט'}
               </h1>
             </div>
             <div className="flex items-center space-x-4 space-x-reverse">
               <Link
-                href="/admin"
+                href="/admin/portfolio"
                 className="text-gray-600 hover:text-gray-900 text-sm"
               >
-                חזרה לדשבורד
+                חזרה לפרויקטים
               </Link>
             </div>
           </div>
@@ -238,33 +226,50 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
               </div>
             )}
 
-            {/* Title */}
+            {/* Project Name */}
             <div className="bg-white rounded-lg shadow p-6">
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                כותרת הפוסט *
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                שם הפרויקט *
               </label>
               <input
                 type="text"
-                id="title"
-                name="title"
-                value={postData.title}
+                id="name"
+                name="name"
+                value={projectData.name}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="הכנס כותרת לפוסט..."
+                placeholder="הכנס שם לפרויקט..."
                 required
               />
             </div>
 
-            {/* Content Editor */}
+            {/* Description */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                תיאור קצר *
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={projectData.description}
+                onChange={handleInputChange}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="תיאור קצר של הפרויקט..."
+                required
+              />
+            </div>
+
+            {/* Rich Description */}
             <div className="bg-white rounded-lg shadow p-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                תוכן הפוסט *
+                תיאור מפורט
               </label>
               <div className="border border-gray-300 rounded-md">
                 <ReactQuill
-                  value={postData.content}
+                  value={projectData.descriptionRich}
                   onChange={handleContentChange}
-                  placeholder="כתוב את תוכן הפוסט כאן..."
+                  placeholder="כתוב תיאור מפורט של הפרויקט כאן..."
                   modules={{
                     toolbar: [
                       [{ 'header': [1, 2, 3, false] }],
@@ -275,45 +280,76 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                       ['clean']
                     ]
                   }}
-                  style={{ height: '400px' }}
+                  style={{ height: '300px' }}
                 />
               </div>
             </div>
 
-            {/* Excerpt */}
+            {/* Project URL */}
             <div className="bg-white rounded-lg shadow p-6">
-              <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-2">
-                תקציר
+              <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-2">
+                כתובת הפרויקט
               </label>
-              <textarea
-                id="excerpt"
-                name="excerpt"
-                value={postData.excerpt}
+              <input
+                type="url"
+                id="url"
+                name="url"
+                value={projectData.url}
                 onChange={handleInputChange}
-                rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="תקציר קצר של הפוסט..."
+                placeholder="https://example.com"
+              />
+            </div>
+
+            {/* Project Date */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
+                תאריך הפרויקט
+              </label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                value={projectData.date}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Technologies */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <label htmlFor="technologies" className="block text-sm font-medium text-gray-700 mb-2">
+                טכנולוגיות
+              </label>
+              <input
+                type="text"
+                id="technologies"
+                name="technologies"
+                value={projectData.technologies}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="React, Node.js, MongoDB (מופרדות בפסיקים)"
               />
             </div>
 
             {/* Main Image */}
             <div className="bg-white rounded-lg shadow p-6">
-              <label htmlFor="mainImage" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-2">
                 תמונה ראשית
               </label>
               <input
                 type="url"
-                id="mainImage"
-                name="mainImage"
-                value={postData.mainImage}
+                id="image"
+                name="image"
+                value={projectData.image}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="https://example.com/image.jpg"
               />
-              {postData.mainImage && (
+              {projectData.image && (
                 <div className="mt-2">
                   <img 
-                    src={postData.mainImage} 
+                    src={projectData.image} 
                     alt="תמונה ראשית" 
                     className="w-32 h-32 object-cover rounded"
                     onError={(e) => {
@@ -322,6 +358,23 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                   />
                 </div>
               )}
+            </div>
+
+            {/* Additional Images */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-2">
+                תמונות נוספות
+              </label>
+              <input
+                type="text"
+                id="images"
+                name="images"
+                value={projectData.images}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
+              />
+              <p className="text-sm text-gray-500 mt-1">הפרד כתובות URL בפסיקים</p>
             </div>
           </div>
 
@@ -337,7 +390,7 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                     <input
                       type="checkbox"
                       name="published"
-                      checked={postData.published}
+                      checked={projectData.published}
                       onChange={handleInputChange}
                       className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
@@ -378,7 +431,7 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                     type="text"
                     id="slug"
                     name="slug"
-                    value={postData.slug}
+                    value={projectData.slug}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                     placeholder="url-ידידותי"
@@ -393,7 +446,7 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                     type="text"
                     id="metaTitle"
                     name="metaTitle"
-                    value={postData.metaTitle}
+                    value={projectData.metaTitle}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                     placeholder="כותרת למנועי חיפוש"
@@ -407,53 +460,11 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                   <textarea
                     id="metaDesc"
                     name="metaDesc"
-                    value={postData.metaDesc}
+                    value={projectData.metaDesc}
                     onChange={handleInputChange}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                     placeholder="תיאור קצר למנועי חיפוש"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Categories & Tags */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">קטגוריות ותגיות</h3>
-              
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-                    קטגוריה
-                  </label>
-                  <select
-                    id="category"
-                    name="category"
-                    value={postData.category}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">בחר קטגוריה</option>
-                    {categories.map(category => (
-                      <option key={category.id} value={category.slug}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
-                    תגיות
-                  </label>
-                  <input
-                    type="text"
-                    id="tags"
-                    name="tags"
-                    value={postData.tags}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    placeholder="תגיות מופרדות בפסיקים"
                   />
                 </div>
               </div>

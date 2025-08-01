@@ -1,236 +1,208 @@
-import { NextResponse } from 'next/server';
-import { Category, Post } from '@prisma/client';
-import prisma from '../../../lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 
-interface CreatePostInput {
-  title: string;
-  content: string;
-  excerpt: string;
-  mainImage: string;
-  images: string[];
-  category: Category;
-  tags: string[];
-  authorName: string;
-  authorEmail: string;
-  metaTitle: string;
-  metaDesc: string;
-}
+const prisma = new PrismaClient();
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
-
-export async function GET(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    await prisma.$connect();
-    console.log('Database connection successful');
-
-    const posts = await prisma.post.findMany({
-      where: {
-        published: true
-      },
-      orderBy: {
-        createdAt: 'desc'
-      },
-      select: {
-        id: true,
-        title: true,
-        excerpt: true,
-        mainImage: true,
-        category: true,
-        createdAt: true,
-        tags: true,
-        slug: true,
-        published: true,
-        authorName: true,
-        authorEmail: true,
-        views: true,
-        likes: true,
-        metaTitle: true,
-        metaDesc: true,
-        updatedAt: true
-      }
-    });
-
-    const formattedPosts = posts.map((post) => {
-      const createdDate = new Date(post.createdAt);
-      const updatedDate = new Date(post.updatedAt);
-
-      return {
-        id: post.id,
-        title: post.title,
-        excerpt: post.excerpt,
-        mainImage: post.mainImage || '/images/blog/nextjs-guide.jpg',
-        category: post.category,
-        createdAt: createdDate.toISOString(),
-        tags: post.tags || [],
-        slug: post.slug,
-        published: post.published,
-        authorName: post.authorName || 'Admin',
-        authorEmail: post.authorEmail,
-        views: post.views,
-        likes: post.likes,
-        metaTitle: post.metaTitle,
-        metaDesc: post.metaDesc,
-        updatedAt: updatedDate.toISOString()
-      };
-    });
-
-    return new NextResponse(JSON.stringify({ posts: formattedPosts }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-      }
-    });
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    return new NextResponse(JSON.stringify({ 
-      error: 'Failed to fetch posts',
-      details: error instanceof Error ? error.message : 'Internal server error',
-      stack: error instanceof Error && process.env.NODE_ENV === 'development' ? error.stack : undefined
-    }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-      }
-    });
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
-export async function POST(request: Request) {
-  try {
-    await prisma.$connect();
-    console.log('Database connection successful');
-
-    const data = await request.json();
+    const body = await request.json();
+    console.log('Received POST data:', body);
     
-    const requiredFields: (keyof CreatePostInput)[] = [
-      'title',
-      'content',
-      'excerpt',
-      'mainImage',
-      'category',
-      'tags',
-      'authorName',
-      'authorEmail',
-      'metaTitle',
-      'metaDesc'
-    ];
+    const {
+      title,
+      content,
+      excerpt,
+      mainImage,
+      category,
+      tags,
+      metaTitle,
+      metaDesc,
+      published,
+      slug
+    } = body;
 
-    for (const field of requiredFields) {
-      if (!data[field]) {
-        return new NextResponse(JSON.stringify({ 
-          error: `Missing required field: ${field}` 
-        }), {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-          }
-        });
-      }
+    // ולידציה בסיסית
+    if (!title || !content) {
+      return NextResponse.json(
+        { error: 'כותרת ותוכן הם שדות חובה' },
+        { status: 400 }
+      );
     }
 
-    if (!Object.values(Category).includes(data.category)) {
-      return new NextResponse(JSON.stringify({ 
-        error: 'Invalid category' 
-      }), {
-        status: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-        }
+    // בדיקה אם ה-slug כבר קיים
+    const existingPost = await prisma.post.findUnique({
+      where: { slug: slug || title.toLowerCase().replace(/\s+/g, '-') }
+    });
+
+    if (existingPost) {
+      return NextResponse.json(
+        { error: 'כתובת URL כבר קיימת במערכת' },
+        { status: 400 }
+      );
+    }
+
+    // מציאת או יצירת קטגוריה
+    let categoryRef;
+    if (category) {
+      categoryRef = await prisma.category.findUnique({
+        where: { slug: category }
+      });
+    }
+    
+    if (!categoryRef) {
+      categoryRef = await prisma.category.findFirst({
+        where: { slug: 'seo' }
       });
     }
 
-    const postInput: CreatePostInput = {
-      ...data,
-      images: Array.isArray(data.images) ? data.images : [],
-      tags: Array.isArray(data.tags) ? data.tags : [],
+    // יצירת הפוסט
+    const postData: any = {
+      title,
+      content,
+      excerpt: excerpt || '',
+      mainImage: mainImage || '',
+      tags: Array.isArray(tags) ? tags : [],
+      metaTitle: metaTitle || title,
+      metaDesc: metaDesc || excerpt || '',
+      published: published || false,
+      slug: slug || title.toLowerCase().replace(/[^\u0590-\u05FFa-z0-9\s-]/g, '').replace(/\s+/g, '-'),
+      authorName: 'מנהל האתר',
+      authorEmail: 'admin@example.com',
+      views: 0,
+      likes: 0
     };
 
-    const slug = postInput.title
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-');
-
-    const post = await prisma.post.create({
-      data: {
-        ...postInput,
-        slug,
-        published: false,
-        views: 0,
-        likes: 0,
-      },
-    });
-
-    return new NextResponse(JSON.stringify({ 
-      success: true, 
-      data: post,
-      message: 'Post created successfully'
-    }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-      }
-    });
-  } catch (error) {
-    console.error('Error creating post:', error);
-    
-    if (error instanceof Error) {
-      if (error.message.includes('Unique constraint')) {
-        return new NextResponse(JSON.stringify({ 
-          error: 'A post with this title already exists' 
-        }), {
-          status: 409,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-          }
-        });
-      }
+    // הוספת categoryId רק אם יש קטגוריה
+    if (categoryRef?.id) {
+      postData.categoryId = categoryRef.id;
     }
 
-    return new NextResponse(JSON.stringify({ 
-      error: 'Failed to create post',
-      details: error instanceof Error ? error.message : 'Internal server error'
-    }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-      }
+    const post = await prisma.post.create({
+      data: postData
     });
-  } finally {
-    await prisma.$disconnect();
+
+    return NextResponse.json({
+      success: true,
+      message: published ? 'הפוסט פורסם בהצלחה!' : 'הפוסט נשמר כטיוטה!',
+      post
+    });
+
+  } catch (error) {
+    console.error('Error creating post:', error);
+    return NextResponse.json(
+      { error: 'שגיאה ביצירת הפוסט' },
+      { status: 500 }
+    );
   }
 }
 
-export async function OPTIONS(request: Request) {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '10');
+    const published = searchParams.get('published');
+    const category = searchParams.get('category');
+    const admin = searchParams.get('admin'); // פרמטר מיוחד למערכת הניהול
+
+    const skip = (page - 1) * limit;
+
+    // בניית תנאי החיפוש
+    const where: any = {};
+    
+    // אם זה מערכת הניהול, הראה את כל הפוסטים
+    if (admin === 'true') {
+      if (published !== null) {
+        where.published = published === 'true';
+      }
+      // אם לא צוין published, הראה את כל הפוסטים
+    } else {
+      // ברירת מחדל: רק פוסטים מפורסמים
+      if (published !== null) {
+        where.published = published === 'true';
+      } else {
+        where.published = true;
+      }
     }
-  });
+    
+    if (category) {
+      where.category = {
+        slug: category
+      };
+    }
+
+    const [posts, total] = await Promise.all([
+      prisma.post.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          excerpt: true,
+          mainImage: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              color: true
+            }
+          },
+          published: true,
+          createdAt: true,
+          updatedAt: true,
+          authorName: true,
+          authorEmail: true,
+          views: true,
+          likes: true,
+          metaTitle: true,
+          metaDesc: true,
+          tags: true
+        }
+      }),
+      prisma.post.count({ where })
+    ]);
+
+    // עיבוד הפוסטים לפורמט הנכון
+    const formattedPosts = posts.map(post => ({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt,
+      mainImage: post.mainImage,
+      category: post.category?.name || 'כללי',
+      categorySlug: post.category?.slug || 'general',
+      categoryColor: post.category?.color || '#3B82F6',
+      published: post.published,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+      authorName: post.authorName,
+      authorEmail: post.authorEmail,
+      views: post.views,
+      likes: post.likes,
+      metaTitle: post.metaTitle,
+      metaDesc: post.metaDesc,
+      tags: Array.isArray(post.tags) ? post.tags : []
+    }));
+
+    return NextResponse.json({
+      posts: formattedPosts,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit)
+      }
+    });
+
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return NextResponse.json(
+      { error: 'שגיאה בטעינת הפוסטים' },
+      { status: 500 }
+    );
+  }
 }

@@ -8,6 +8,7 @@ export default function OrganicSeoPage() {
     <ServiceLayout
       title="קידום אורגני"
       subtitle="קידום אתרים בגוגל בשיטות אורגניות"
+      serviceType="seo"
       description="אנו מתמחים בקידום אתרים אורגני בגוגל, תוך שימוש בשיטות עבודה מתקדמות ואסטרטגיות SEO מוכחות. הצוות המקצועי שלנו מביא ניסיון עשיר בהעלאת אתרים לעמודים הראשונים בגוגל."
       heroImage="/images/services/organic-seo-hero.jpg"
       features={[

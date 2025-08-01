@@ -113,15 +113,8 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Hero Section */}
-      <div className="relative h-[40vh] min-h-[400px] w-full">
-        <Image
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200"
-          alt="Services Hero"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary-dark/80">
+      <div className="relative h-[40vh] min-h-[400px] w-full bg-gradient-to-r from-blue-600 to-purple-700">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-dark/90">
           <div className="container mx-auto px-4 h-full flex flex-col justify-center">
             <motion.h1 
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"

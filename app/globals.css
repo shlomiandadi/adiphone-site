@@ -2,6 +2,260 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Admin form styles */
+.admin-form select {
+  z-index: 1000 !important;
+  position: relative !important;
+}
+
+.admin-form select option {
+  background-color: white !important;
+  color: #374151 !important;
+  padding: 8px 12px !important;
+}
+
+/* Ensure dropdown appears above other elements */
+.admin-form {
+  position: relative;
+  z-index: 10;
+}
+
+/* Template selection dropdown specific styles */
+.admin-form select[name="template"],
+.admin-form select[value*="template"] {
+  z-index: 9999 !important;
+  position: relative !important;
+}
+
+.admin-form select[name="template"] option,
+.admin-form select[value*="template"] option {
+  z-index: 9999 !important;
+  position: relative !important;
+  background-color: white !important;
+  color: #374151 !important;
+  padding: 8px 12px !important;
+  border: 1px solid #d1d5db !important;
+}
+
+/* Force dropdown to appear above everything */
+.admin-form select {
+  z-index: 99999 !important;
+}
+
+.admin-form select:focus {
+  z-index: 99999 !important;
+}
+
+/* Ensure the form container doesn't clip the dropdown */
+.admin-form {
+  overflow: visible !important;
+}
+
+.admin-form > * {
+  overflow: visible !important;
+}
+
+/* Template selection dropdown specific fixes */
+.admin-form select[name="template"] {
+  z-index: 999999 !important;
+  position: relative !important;
+}
+
+.admin-form select[name="template"]:focus {
+  z-index: 999999 !important;
+}
+
+/* Ensure dropdown options are visible */
+.admin-form select[name="template"] option {
+  background-color: white !important;
+  color: #374151 !important;
+  padding: 8px 12px !important;
+  border: 1px solid #d1d5db !important;
+}
+
+/* Force all select elements in admin forms to be visible */
+.admin-form select,
+.admin-form select:focus,
+.admin-form select option {
+  z-index: 999999 !important;
+  position: relative !important;
+  background-color: white !important;
+  color: #374151 !important;
+}
+
+/* Ensure the dropdown container doesn't clip */
+.admin-form .relative {
+  overflow: visible !important;
+  z-index: 999999 !important;
+}
+
+/* Template selector specific styles */
+.template-selector {
+  overflow: visible !important;
+  z-index: 999999 !important;
+  position: relative !important;
+  max-width: 300px !important;
+}
+
+.template-dropdown {
+  z-index: 999999 !important;
+  position: relative !important;
+  max-width: 300px !important;
+  width: 100% !important;
+}
+
+.template-dropdown:focus {
+  z-index: 999999 !important;
+  max-width: 300px !important;
+}
+
+.template-dropdown option {
+  background-color: white !important;
+  color: #374151 !important;
+  padding: 8px 12px !important;
+  border: 1px solid #d1d5db !important;
+  max-width: 300px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Force dropdown to be visible */
+select:focus {
+  z-index: 999999 !important;
+  position: relative !important;
+}
+
+select option {
+  background-color: white !important;
+  color: #374151 !important;
+  padding: 8px 12px !important;
+  border: 1px solid #d1d5db !important;
+}
+
+/* Alternative dropdown fix */
+.admin-form select:focus {
+  position: relative !important;
+  z-index: 999999 !important;
+}
+
+.admin-form select:focus + div {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  z-index: 999999 !important;
+  background: white !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 4px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Fix for large screens - prevent dropdown from going off-screen */
+@media (min-width: 1400px) {
+  .admin-form select {
+    position: relative !important;
+    max-width: 300px !important;
+  }
+  
+  .admin-form select:focus {
+    position: relative !important;
+    z-index: 999999 !important;
+    max-width: 300px !important;
+  }
+  
+  .admin-form select option {
+    position: relative !important;
+    z-index: 999999 !important;
+    background-color: white !important;
+    color: #374151 !important;
+    padding: 8px 12px !important;
+    border: 1px solid #d1d5db !important;
+    max-width: 300px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  
+  /* Force dropdown to stay within container */
+  .template-selector {
+    position: relative !important;
+    overflow: visible !important;
+    z-index: 999999 !important;
+    max-width: 300px !important;
+  }
+  
+  .template-dropdown {
+    position: relative !important;
+    z-index: 999999 !important;
+    max-width: 300px !important;
+    width: 100% !important;
+  }
+  
+  .template-dropdown:focus {
+    position: relative !important;
+    z-index: 999999 !important;
+    max-width: 300px !important;
+  }
+  
+  /* Ensure the form container doesn't cause overflow */
+  .admin-form {
+    overflow: visible !important;
+    position: relative !important;
+  }
+  
+  /* Force all select elements to be visible */
+  .admin-form select,
+  .admin-form select:focus,
+  .admin-form select option {
+    position: relative !important;
+    z-index: 999999 !important;
+    background-color: white !important;
+    color: #374151 !important;
+    max-width: 300px !important;
+  }
+  
+  /* Override any parent overflow */
+  .admin-form * {
+    overflow: visible !important;
+  }
+  
+  /* Force dropdown to stay within viewport */
+  .admin-form select:focus {
+    position: relative !important;
+    z-index: 999999 !important;
+    max-width: 300px !important;
+  }
+  
+  /* Ensure dropdown options are visible */
+  .admin-form select option {
+    position: relative !important;
+    z-index: 999999 !important;
+    background-color: white !important;
+    color: #374151 !important;
+    padding: 8px 12px !important;
+    border: 1px solid #d1d5db !important;
+    max-width: 300px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+}
+
+/* Modal specific fixes */
+.modal select,
+.modal select:focus {
+  z-index: 999999 !important;
+  position: relative !important;
+}
+
+/* Override any parent overflow */
+.admin-form,
+.admin-form *,
+.modal,
+.modal * {
+  overflow: visible !important;
+}
+
 /* Custom styles for blog content */
 .prose {
   @apply text-gray-900 dark:text-gray-100;

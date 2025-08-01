@@ -34,6 +34,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
   const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
+  const [pages, setPages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchPosts = async () => {
@@ -86,6 +87,16 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
     }
   };
 
+  const fetchPages = async () => {
+    try {
+      const response = await fetch('/api/admin/pages');
+      const data = await response.json();
+      setPages(data.pages || []);
+    } catch (error) {
+      console.error('Error fetching pages:', error);
+    }
+  };
+
   const handleDeletePost = async (postSlug: string) => {
     if (confirm('האם אתה בטוח שברצונך למחוק פוסט זה?')) {
       try {
@@ -109,7 +120,8 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
         fetchProjects(),
         fetchCategories(),
         fetchTags(),
-        fetchUsers()
+        fetchUsers(),
+        fetchPages()
       ]);
       setLoading(false);
     };
@@ -184,6 +196,12 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
           className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium"
         >
           ניהול תגיות
+        </Link>
+        <Link
+          href="/admin/pages"
+          className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+        >
+          ניהול דפים
         </Link>
         {user.role === 'ADMIN' && (
           <Link
@@ -284,6 +302,20 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
             </div>
           </div>
         </div>
+
+        <Link href="/admin/pages" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="flex items-center">
+            <div className="p-2 bg-orange-100 rounded-lg">
+              <svg className="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div className="mr-4">
+              <p className="text-sm font-medium text-gray-600">דפים</p>
+              <p className="text-2xl font-bold text-gray-900">{pages.length}</p>
+            </div>
+          </div>
+        </Link>
 
         {user.role === 'ADMIN' && (
           <Link href="/admin/users" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">

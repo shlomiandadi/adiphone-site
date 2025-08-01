@@ -105,6 +105,47 @@ model PortfolioProject2 {
   updatedAt       DateTime @updatedAt
 }
 
+model Page {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  content     String
+  excerpt     String?
+  template    PageTemplate @default(GENERAL)
+  published   Boolean    @default(false)
+  order       Int        @default(0)
+  metaTitle   String?
+  metaDesc    String?
+  metaKeywords String?
+  featuredImage String?
+  // שדות מותאמים לתבניות
+  heroTitle   String?
+  heroSubtitle String?
+  heroImage   String?
+  heroButtonText String?
+  heroButtonLink String?
+  // שדות לשירותים
+  serviceFeatures Json? // [{title: string, description: string, icon: string}]
+  serviceBenefits Json? // [{title: string, description: string}]
+  servicePricing Json? // [{plan: string, price: string, features: string[], popular: boolean}]
+  // שדות לאודות
+  aboutImage  String?
+  aboutStats  Json? // [{label: string, value: string, icon: string}]
+  teamMembers Json? // [{name: string, role: string, image: string, bio: string}]
+  // שדות לצור קשר
+  contactInfo Json? // {phone: string, email: string, address: string, hours: string}
+  contactForm Json? // {fields: string[], successMessage: string}
+  // שדות לדף נחיתה
+  landingSections Json? // [{type: string, title: string, content: string, image: string}]
+  testimonials Json? // [{name: string, role: string, content: string, image: string}]
+  // שדות לבלוג
+  blogAuthor  String?
+  blogCategory String?
+  blogTags    String[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
 enum Role {
   ADMIN
   EDITOR
@@ -123,4 +164,13 @@ enum ContactService {
   SEO
   PPC
   OTHER
+}
+
+enum PageTemplate {
+  GENERAL
+  SERVICE
+  ABOUT
+  CONTACT
+  LANDING
+  BLOG
 }

@@ -162,7 +162,12 @@ async function restoreDatabase(backupFile) {
             descriptionRich: project.descriptionRich,
             url: project.url,
             date: project.date,
-            technologies: project.technologies
+            technologies: project.technologies,
+            published: true, // מפרסם את כל הפרויקטים
+            metaTitle: project.metaTitle,
+            metaDesc: project.metaDesc,
+            createdAt: project.createdAt,
+            updatedAt: project.updatedAt
           }
         });
       }

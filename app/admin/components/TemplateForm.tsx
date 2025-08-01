@@ -1,618 +1,876 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { FaPlus, FaTrash, FaSave, FaEye, FaEdit } from 'react-icons/fa';
 
 interface TemplateFormProps {
-  template: string;
-  formData: any;
-  onChange: (field: string, value: any) => void;
+  onSubmit: (template: any) => void;
+  initialData?: any;
 }
 
-export default function TemplateForm({ template, formData, onChange }: TemplateFormProps) {
-  const [activeTab, setActiveTab] = useState('basic');
+interface Section {
+  id: string;
+  type: string;
+  title: string;
+  content: any;
+  order: number;
+}
 
-  const renderBasicFields = () => (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">כותרת ראשית</label>
-          <input
-            type="text"
-            value={formData.title || ''}
-            onChange={(e) => onChange('title', e.target.value)}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">URL מותאם (Slug)</label>
-          <input
-            type="text"
-            value={formData.slug || ''}
-            onChange={(e) => onChange('slug', e.target.value)}
-            placeholder="לדוגמה: about-us, services"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            השאר ריק כדי ליצור URL אוטומטי מהכותרת
-          </p>
-        </div>
-      </div>
-      
-      <div>
-        <label className="block text-sm font-medium mb-1">תקציר</label>
-        <textarea
-          value={formData.excerpt || ''}
-          onChange={(e) => onChange('excerpt', e.target.value)}
-          rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
+export default function TemplateForm({ onSubmit, initialData }: TemplateFormProps) {
+  const [templateName, setTemplateName] = useState(initialData?.name || '');
+  const [templateDescription, setTemplateDescription] = useState(initialData?.description || '');
+  const [sections, setSections] = useState<Section[]>(initialData?.sections || []);
 
-      <div>
-        <label className="block text-sm font-medium mb-1">תוכן ראשי</label>
-        <textarea
-          value={formData.content || ''}
-          onChange={(e) => onChange('content', e.target.value)}
-          required
-          rows={8}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
+  const sectionTypes = [
+    { value: 'hero', label: 'באנר עליון', description: 'באנר עם כותרת, תת-כותרת ותמונה רקע' },
+    { value: 'content', label: 'תוכן עיקרי', description: 'תוכן טקסטואלי עם כותרות ופסקאות' },
+    { value: 'features', label: 'יתרונות', description: 'רשימת יתרונות עם אייקונים' },
+    { value: 'benefits', label: 'היתרונות שלנו', description: 'רשימת יתרונות עם צ\'קמרקס' },
+    { value: 'process', label: 'תהליך עבודה', description: 'שלבי תהליך העבודה' },
+    { value: 'portfolio', label: 'פורטפוליו', description: 'עבודות לדוגמה' },
+    { value: 'testimonials', label: 'המלצות', description: 'המלצות לקוחות' },
+    { value: 'faq', label: 'שאלות נפוצות', description: 'שאלות ותשובות' },
+    { value: 'pricing', label: 'מחירון', description: 'חבילות מחיר' },
+    { value: 'cta', label: 'קריאה לפעולה', description: 'סקשן CTA' }
+  ];
 
-      <div>
-        <label className="block text-sm font-medium mb-1">תמונה ראשית</label>
-        <input
-          type="url"
-          value={formData.featuredImage || ''}
-          onChange={(e) => onChange('featuredImage', e.target.value)}
-          placeholder="https://example.com/image.jpg"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-    </div>
-  );
-
-  const renderHeroFields = () => (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">כותרת הירו</label>
-          <input
-            type="text"
-            value={formData.heroTitle || ''}
-            onChange={(e) => onChange('heroTitle', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">כותרת משנה הירו</label>
-          <input
-            type="text"
-            value={formData.heroSubtitle || ''}
-            onChange={(e) => onChange('heroSubtitle', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">תמונת הירו</label>
-          <input
-            type="url"
-            value={formData.heroImage || ''}
-            onChange={(e) => onChange('heroImage', e.target.value)}
-            placeholder="https://example.com/hero-image.jpg"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">טקסט כפתור</label>
-          <input
-            type="text"
-            value={formData.heroButtonText || ''}
-            onChange={(e) => onChange('heroButtonText', e.target.value)}
-            placeholder="לחץ כאן"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">קישור כפתור</label>
-        <input
-          type="url"
-          value={formData.heroButtonLink || ''}
-          onChange={(e) => onChange('heroButtonLink', e.target.value)}
-          placeholder="https://example.com"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-    </div>
-  );
-
-  const renderServiceFields = () => (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium mb-3">תכונות השירות</h3>
-        <div className="space-y-3">
-          {(formData.serviceFeatures || []).map((feature: any, index: number) => (
-            <div key={index} className="p-3 border border-gray-200 rounded-md">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <input
-                  type="text"
-                  placeholder="כותרת"
-                  value={feature.title || ''}
-                  onChange={(e) => {
-                    const newFeatures = [...(formData.serviceFeatures || [])];
-                    newFeatures[index] = { ...feature, title: e.target.value };
-                    onChange('serviceFeatures', newFeatures);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-                <input
-                  type="text"
-                  placeholder="תיאור"
-                  value={feature.description || ''}
-                  onChange={(e) => {
-                    const newFeatures = [...(formData.serviceFeatures || [])];
-                    newFeatures[index] = { ...feature, description: e.target.value };
-                    onChange('serviceFeatures', newFeatures);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-                <input
-                  type="text"
-                  placeholder="אייקון (FontAwesome)"
-                  value={feature.icon || ''}
-                  onChange={(e) => {
-                    const newFeatures = [...(formData.serviceFeatures || [])];
-                    newFeatures[index] = { ...feature, icon: e.target.value };
-                    onChange('serviceFeatures', newFeatures);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  const newFeatures = (formData.serviceFeatures || []).filter((_: any, i: number) => i !== index);
-                  onChange('serviceFeatures', newFeatures);
-                }}
-                className="mt-2 text-red-600 text-sm"
-              >
-                מחק תכונה
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => {
-              const newFeatures = [...(formData.serviceFeatures || []), { title: '', description: '', icon: '' }];
-              onChange('serviceFeatures', newFeatures);
-            }}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
-          >
-            הוסף תכונה
-          </button>
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-lg font-medium mb-3">יתרונות השירות</h3>
-        <div className="space-y-3">
-          {(formData.serviceBenefits || []).map((benefit: any, index: number) => (
-            <div key={index} className="p-3 border border-gray-200 rounded-md">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  placeholder="כותרת"
-                  value={benefit.title || ''}
-                  onChange={(e) => {
-                    const newBenefits = [...(formData.serviceBenefits || [])];
-                    newBenefits[index] = { ...benefit, title: e.target.value };
-                    onChange('serviceBenefits', newBenefits);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-                <input
-                  type="text"
-                  placeholder="תיאור"
-                  value={benefit.description || ''}
-                  onChange={(e) => {
-                    const newBenefits = [...(formData.serviceBenefits || [])];
-                    newBenefits[index] = { ...benefit, description: e.target.value };
-                    onChange('serviceBenefits', newBenefits);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  const newBenefits = (formData.serviceBenefits || []).filter((_: any, i: number) => i !== index);
-                  onChange('serviceBenefits', newBenefits);
-                }}
-                className="mt-2 text-red-600 text-sm"
-              >
-                מחק יתרון
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => {
-              const newBenefits = [...(formData.serviceBenefits || []), { title: '', description: '' }];
-              onChange('serviceBenefits', newBenefits);
-            }}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
-          >
-            הוסף יתרון
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderAboutFields = () => (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium mb-1">תמונת אודות</label>
-        <input
-          type="url"
-          value={formData.aboutImage || ''}
-          onChange={(e) => onChange('aboutImage', e.target.value)}
-          placeholder="https://example.com/about-image.jpg"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      <div>
-        <h3 className="text-lg font-medium mb-3">סטטיסטיקות</h3>
-        <div className="space-y-3">
-          {(formData.aboutStats || []).map((stat: any, index: number) => (
-            <div key={index} className="p-3 border border-gray-200 rounded-md">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <input
-                  type="text"
-                  placeholder="תגית"
-                  value={stat.label || ''}
-                  onChange={(e) => {
-                    const newStats = [...(formData.aboutStats || [])];
-                    newStats[index] = { ...stat, label: e.target.value };
-                    onChange('aboutStats', newStats);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-                <input
-                  type="text"
-                  placeholder="ערך"
-                  value={stat.value || ''}
-                  onChange={(e) => {
-                    const newStats = [...(formData.aboutStats || [])];
-                    newStats[index] = { ...stat, value: e.target.value };
-                    onChange('aboutStats', newStats);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-                <input
-                  type="text"
-                  placeholder="אייקון"
-                  value={stat.icon || ''}
-                  onChange={(e) => {
-                    const newStats = [...(formData.aboutStats || [])];
-                    newStats[index] = { ...stat, icon: e.target.value };
-                    onChange('aboutStats', newStats);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  const newStats = (formData.aboutStats || []).filter((_: any, i: number) => i !== index);
-                  onChange('aboutStats', newStats);
-                }}
-                className="mt-2 text-red-600 text-sm"
-              >
-                מחק סטטיסטיקה
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => {
-              const newStats = [...(formData.aboutStats || []), { label: '', value: '', icon: '' }];
-              onChange('aboutStats', newStats);
-            }}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
-          >
-            הוסף סטטיסטיקה
-          </button>
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-lg font-medium mb-3">חברי הצוות</h3>
-        <div className="space-y-3">
-          {(formData.teamMembers || []).map((member: any, index: number) => (
-            <div key={index} className="p-3 border border-gray-200 rounded-md">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  placeholder="שם"
-                  value={member.name || ''}
-                  onChange={(e) => {
-                    const newMembers = [...(formData.teamMembers || [])];
-                    newMembers[index] = { ...member, name: e.target.value };
-                    onChange('teamMembers', newMembers);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-                <input
-                  type="text"
-                  placeholder="תפקיד"
-                  value={member.role || ''}
-                  onChange={(e) => {
-                    const newMembers = [...(formData.teamMembers || [])];
-                    newMembers[index] = { ...member, role: e.target.value };
-                    onChange('teamMembers', newMembers);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-                <input
-                  type="url"
-                  placeholder="תמונה"
-                  value={member.image || ''}
-                  onChange={(e) => {
-                    const newMembers = [...(formData.teamMembers || [])];
-                    newMembers[index] = { ...member, image: e.target.value };
-                    onChange('teamMembers', newMembers);
-                  }}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-                <textarea
-                  placeholder="ביוגרפיה"
-                  value={member.bio || ''}
-                  onChange={(e) => {
-                    const newMembers = [...(formData.teamMembers || [])];
-                    newMembers[index] = { ...member, bio: e.target.value };
-                    onChange('teamMembers', newMembers);
-                  }}
-                  rows={2}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  const newMembers = (formData.teamMembers || []).filter((_: any, i: number) => i !== index);
-                  onChange('teamMembers', newMembers);
-                }}
-                className="mt-2 text-red-600 text-sm"
-              >
-                מחק חבר צוות
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => {
-              const newMembers = [...(formData.teamMembers || []), { name: '', role: '', image: '', bio: '' }];
-              onChange('teamMembers', newMembers);
-            }}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
-          >
-            הוסף חבר צוות
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderContactFields = () => (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium mb-3">פרטי קשר</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">טלפון</label>
-            <input
-              type="tel"
-              value={formData.contactInfo?.phone || ''}
-              onChange={(e) => onChange('contactInfo', { ...formData.contactInfo, phone: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">אימייל</label>
-            <input
-              type="email"
-              value={formData.contactInfo?.email || ''}
-              onChange={(e) => onChange('contactInfo', { ...formData.contactInfo, email: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">כתובת</label>
-            <input
-              type="text"
-              value={formData.contactInfo?.address || ''}
-              onChange={(e) => onChange('contactInfo', { ...formData.contactInfo, address: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">שעות פעילות</label>
-            <input
-              type="text"
-              value={formData.contactInfo?.hours || ''}
-              onChange={(e) => onChange('contactInfo', { ...formData.contactInfo, hours: e.target.value })}
-              placeholder="א-ה 9:00-18:00"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-lg font-medium mb-3">טופס יצירת קשר</h3>
-        <div>
-          <label className="block text-sm font-medium mb-1">הודעת הצלחה</label>
-          <input
-            type="text"
-            value={formData.contactForm?.successMessage || ''}
-            onChange={(e) => onChange('contactForm', { ...formData.contactForm, successMessage: e.target.value })}
-            placeholder="תודה! נחזור אליך בהקדם"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderBlogFields = () => (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">מחבר</label>
-          <input
-            type="text"
-            value={formData.blogAuthor || ''}
-            onChange={(e) => onChange('blogAuthor', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">קטגוריה</label>
-          <input
-            type="text"
-            value={formData.blogCategory || ''}
-            onChange={(e) => onChange('blogCategory', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">תגיות (מופרדות בפסיקים)</label>
-        <input
-          type="text"
-          value={formData.blogTags?.join(', ') || ''}
-          onChange={(e) => onChange('blogTags', e.target.value.split(',').map(tag => tag.trim()))}
-          placeholder="תגית 1, תגית 2, תגית 3"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-    </div>
-  );
-
-  const renderSeoFields = () => (
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium mb-1">Meta Title</label>
-        <input
-          type="text"
-          value={formData.metaTitle || ''}
-          onChange={(e) => onChange('metaTitle', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Meta Description</label>
-        <textarea
-          value={formData.metaDesc || ''}
-          onChange={(e) => onChange('metaDesc', e.target.value)}
-          rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Meta Keywords</label>
-        <input
-          type="text"
-          value={formData.metaKeywords || ''}
-          onChange={(e) => onChange('metaKeywords', e.target.value)}
-          placeholder="מילות מפתח, מופרדות בפסיקים"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-    </div>
-  );
-
-  const getTabs = () => {
-    const tabs = [
-      { id: 'basic', label: 'שדות בסיסיים' },
-      { id: 'hero', label: 'הירו' },
-      { id: 'seo', label: 'SEO' }
-    ];
-
-    if (template === 'SERVICE') {
-      tabs.splice(2, 0, { id: 'service', label: 'פרטי שירות' });
-    } else if (template === 'ABOUT') {
-      tabs.splice(2, 0, { id: 'about', label: 'פרטי אודות' });
-    } else if (template === 'CONTACT') {
-      tabs.splice(2, 0, { id: 'contact', label: 'פרטי קשר' });
-    } else if (template === 'BLOG') {
-      tabs.splice(2, 0, { id: 'blog', label: 'פרטי בלוג' });
-    }
-
-    return tabs;
+  const addSection = (type: string) => {
+    const newSection: Section = {
+      id: Date.now().toString(),
+      type,
+      title: sectionTypes.find(st => st.value === type)?.label || type,
+      content: getDefaultContent(type),
+      order: sections.length
+    };
+    setSections([...sections, newSection]);
   };
 
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'basic':
-        return renderBasicFields();
+  const getDefaultContent = (type: string) => {
+    switch (type) {
       case 'hero':
-        return renderHeroFields();
-      case 'service':
-        return renderServiceFields();
-      case 'about':
-        return renderAboutFields();
-      case 'contact':
-        return renderContactFields();
-      case 'blog':
-        return renderBlogFields();
-      case 'seo':
-        return renderSeoFields();
+        return {
+          title: 'כותרת ראשית',
+          subtitle: 'תת כותרת',
+          backgroundImage: '/images/hero-bg.jpg',
+          buttonText: 'צור קשר',
+          buttonLink: '/contact'
+        };
+      case 'content':
+        return {
+          title: 'כותרת התוכן',
+          content: '<p>תוכן הדף יופיע כאן...</p>'
+        };
+      case 'features':
+        return {
+          title: 'היתרונות שלנו',
+          features: [
+            { title: 'יתרון 1', description: 'תיאור היתרון', icon: 'star' },
+            { title: 'יתרון 2', description: 'תיאור היתרון', icon: 'check' },
+            { title: 'יתרון 3', description: 'תיאור היתרון', icon: 'heart' },
+            { title: 'יתרון 4', description: 'תיאור היתרון', icon: 'shield' }
+          ]
+        };
+      case 'benefits':
+        return {
+          title: 'היתרונות שלנו',
+          benefits: [
+            'יתרון ראשון',
+            'יתרון שני',
+            'יתרון שלישי',
+            'יתרון רביעי',
+            'יתרון חמישי',
+            'יתרון שישי'
+          ]
+        };
+      case 'process':
+        return {
+          title: 'תהליך העבודה שלנו',
+          steps: [
+            { title: 'שלב 1', description: 'תיאור השלב' },
+            { title: 'שלב 2', description: 'תיאור השלב' },
+            { title: 'שלב 3', description: 'תיאור השלב' },
+            { title: 'שלב 4', description: 'תיאור השלב' }
+          ]
+        };
+      case 'portfolio':
+        return {
+          title: 'העבודות שלנו',
+          items: [
+            { title: 'עבודה 1', description: 'תיאור העבודה', image: '/images/portfolio/project1.jpg', link: '#' },
+            { title: 'עבודה 2', description: 'תיאור העבודה', image: '/images/portfolio/project2.jpg', link: '#' },
+            { title: 'עבודה 3', description: 'תיאור העבודה', image: '/images/portfolio/project3.jpg', link: '#' }
+          ]
+        };
+      case 'testimonials':
+        return {
+          title: 'מה לקוחות חושבים עלינו?',
+          testimonials: [
+            { quote: 'המלצה ראשונה', author: 'שם הלקוח', company: 'שם החברה' },
+            { quote: 'המלצה שנייה', author: 'שם הלקוח', company: 'שם החברה' }
+          ]
+        };
+      case 'faq':
+        return {
+          title: 'שאלות נפוצות',
+          questions: [
+            { question: 'שאלה ראשונה?', answer: 'תשובה לשאלה הראשונה' },
+            { question: 'שאלה שנייה?', answer: 'תשובה לשאלה השנייה' }
+          ]
+        };
+      case 'pricing':
+        return {
+          title: 'מחירון שירותים',
+          plans: [
+            {
+              name: 'חבילה בסיסית',
+              price: '₪1,000',
+              period: 'חד פעמי',
+              description: 'תיאור החבילה',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3'],
+              popular: false
+            },
+            {
+              name: 'חבילה מתקדמת',
+              price: '₪2,000',
+              period: 'חד פעמי',
+              description: 'תיאור החבילה',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4'],
+              popular: true
+            }
+          ]
+        };
+      case 'cta':
+        return {
+          title: 'מוכנים להתחיל?',
+          subtitle: 'צרו איתנו קשר עוד היום ונעזור לכם להגשים את החזון שלכם',
+          buttonText: 'דברו איתנו',
+          buttonLink: '/contact'
+        };
       default:
-        return renderBasicFields();
+        return {};
+    }
+  };
+
+  const updateSection = (id: string, content: any) => {
+    setSections(sections.map(section => 
+      section.id === id ? { ...section, content } : section
+    ));
+  };
+
+  const removeSection = (id: string) => {
+    setSections(sections.filter(section => section.id !== id));
+  };
+
+  const moveSection = (id: string, direction: 'up' | 'down') => {
+    const index = sections.findIndex(s => s.id === id);
+    if (index === -1) return;
+
+    const newSections = [...sections];
+    if (direction === 'up' && index > 0) {
+      [newSections[index], newSections[index - 1]] = [newSections[index - 1], newSections[index]];
+    } else if (direction === 'down' && index < sections.length - 1) {
+      [newSections[index], newSections[index + 1]] = [newSections[index + 1], newSections[index]];
+    }
+    setSections(newSections);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit({
+      name: templateName,
+      description: templateDescription,
+      sections: sections.map((section, index) => ({ ...section, order: index }))
+    });
+  };
+
+  const renderSectionEditor = (section: Section) => {
+    const { type, content } = section;
+
+    switch (type) {
+      case 'hero':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת ראשית"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="תת כותרת"
+              value={content.subtitle || ''}
+              onChange={(e) => updateSection(section.id, { ...content, subtitle: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="URL תמונת רקע"
+              value={content.backgroundImage || ''}
+              onChange={(e) => updateSection(section.id, { ...content, backgroundImage: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="טקסט כפתור"
+              value={content.buttonText || ''}
+              onChange={(e) => updateSection(section.id, { ...content, buttonText: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="קישור כפתור"
+              value={content.buttonLink || ''}
+              onChange={(e) => updateSection(section.id, { ...content, buttonLink: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+        );
+
+      case 'content':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת התוכן"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <textarea
+              placeholder="תוכן הדף (HTML מותר)"
+              value={content.content || ''}
+              onChange={(e) => updateSection(section.id, { ...content, content: e.target.value })}
+              className="w-full p-2 border rounded h-32"
+            />
+          </div>
+        );
+
+      case 'features':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת הסקשן"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            {content.features?.map((feature: any, index: number) => (
+              <div key={index} className="border p-3 rounded space-y-2">
+                <input
+                  type="text"
+                  placeholder="כותרת היתרון"
+                  value={feature.title || ''}
+                  onChange={(e) => {
+                    const newFeatures = [...content.features];
+                    newFeatures[index] = { ...feature, title: e.target.value };
+                    updateSection(section.id, { ...content, features: newFeatures });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="תיאור היתרון"
+                  value={feature.description || ''}
+                  onChange={(e) => {
+                    const newFeatures = [...content.features];
+                    newFeatures[index] = { ...feature, description: e.target.value };
+                    updateSection(section.id, { ...content, features: newFeatures });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <select
+                  value={feature.icon || 'star'}
+                  onChange={(e) => {
+                    const newFeatures = [...content.features];
+                    newFeatures[index] = { ...feature, icon: e.target.value };
+                    updateSection(section.id, { ...content, features: newFeatures });
+                  }}
+                  className="w-full p-2 border rounded"
+                >
+                  <option value="star">כוכב</option>
+                  <option value="check">צ\'ק</option>
+                  <option value="heart">לב</option>
+                  <option value="shield">מגן</option>
+                  <option value="rocket">רקטה</option>
+                  <option value="crown">כתר</option>
+                </select>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                const newFeatures = [...(content.features || []), { title: '', description: '', icon: 'star' }];
+                updateSection(section.id, { ...content, features: newFeatures });
+              }}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            >
+              <FaPlus /> הוסף יתרון
+            </button>
+          </div>
+        );
+
+      case 'benefits':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת הסקשן"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            {content.benefits?.map((benefit: string, index: number) => (
+              <div key={index} className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="יתרון"
+                  value={benefit || ''}
+                  onChange={(e) => {
+                    const newBenefits = [...content.benefits];
+                    newBenefits[index] = e.target.value;
+                    updateSection(section.id, { ...content, benefits: newBenefits });
+                  }}
+                  className="flex-1 p-2 border rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newBenefits = content.benefits.filter((_: string, i: number) => i !== index);
+                    updateSection(section.id, { ...content, benefits: newBenefits });
+                  }}
+                  className="px-3 py-2 text-red-600 hover:text-red-800"
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                const newBenefits = [...(content.benefits || []), ''];
+                updateSection(section.id, { ...content, benefits: newBenefits });
+              }}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            >
+              <FaPlus /> הוסף יתרון
+            </button>
+          </div>
+        );
+
+      case 'process':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת הסקשן"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            {content.steps?.map((step: any, index: number) => (
+              <div key={index} className="border p-3 rounded space-y-2">
+                <input
+                  type="text"
+                  placeholder="כותרת השלב"
+                  value={step.title || ''}
+                  onChange={(e) => {
+                    const newSteps = [...content.steps];
+                    newSteps[index] = { ...step, title: e.target.value };
+                    updateSection(section.id, { ...content, steps: newSteps });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="תיאור השלב"
+                  value={step.description || ''}
+                  onChange={(e) => {
+                    const newSteps = [...content.steps];
+                    newSteps[index] = { ...step, description: e.target.value };
+                    updateSection(section.id, { ...content, steps: newSteps });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                const newSteps = [...(content.steps || []), { title: '', description: '' }];
+                updateSection(section.id, { ...content, steps: newSteps });
+              }}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            >
+              <FaPlus /> הוסף שלב
+            </button>
+          </div>
+        );
+
+      case 'portfolio':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת הסקשן"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            {content.items?.map((item: any, index: number) => (
+              <div key={index} className="border p-3 rounded space-y-2">
+                <input
+                  type="text"
+                  placeholder="כותרת העבודה"
+                  value={item.title || ''}
+                  onChange={(e) => {
+                    const newItems = [...content.items];
+                    newItems[index] = { ...item, title: e.target.value };
+                    updateSection(section.id, { ...content, items: newItems });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="תיאור העבודה"
+                  value={item.description || ''}
+                  onChange={(e) => {
+                    const newItems = [...content.items];
+                    newItems[index] = { ...item, description: e.target.value };
+                    updateSection(section.id, { ...content, items: newItems });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="URL תמונה"
+                  value={item.image || ''}
+                  onChange={(e) => {
+                    const newItems = [...content.items];
+                    newItems[index] = { ...item, image: e.target.value };
+                    updateSection(section.id, { ...content, items: newItems });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="קישור"
+                  value={item.link || ''}
+                  onChange={(e) => {
+                    const newItems = [...content.items];
+                    newItems[index] = { ...item, link: e.target.value };
+                    updateSection(section.id, { ...content, items: newItems });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                const newItems = [...(content.items || []), { title: '', description: '', image: '', link: '#' }];
+                updateSection(section.id, { ...content, items: newItems });
+              }}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            >
+              <FaPlus /> הוסף עבודה
+            </button>
+          </div>
+        );
+
+      case 'testimonials':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת הסקשן"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            {content.testimonials?.map((testimonial: any, index: number) => (
+              <div key={index} className="border p-3 rounded space-y-2">
+                <textarea
+                  placeholder="המלצה"
+                  value={testimonial.quote || ''}
+                  onChange={(e) => {
+                    const newTestimonials = [...content.testimonials];
+                    newTestimonials[index] = { ...testimonial, quote: e.target.value };
+                    updateSection(section.id, { ...content, testimonials: newTestimonials });
+                  }}
+                  className="w-full p-2 border rounded h-20"
+                />
+                <input
+                  type="text"
+                  placeholder="שם הלקוח"
+                  value={testimonial.author || ''}
+                  onChange={(e) => {
+                    const newTestimonials = [...content.testimonials];
+                    newTestimonials[index] = { ...testimonial, author: e.target.value };
+                    updateSection(section.id, { ...content, testimonials: newTestimonials });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="שם החברה"
+                  value={testimonial.company || ''}
+                  onChange={(e) => {
+                    const newTestimonials = [...content.testimonials];
+                    newTestimonials[index] = { ...testimonial, company: e.target.value };
+                    updateSection(section.id, { ...content, testimonials: newTestimonials });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                const newTestimonials = [...(content.testimonials || []), { quote: '', author: '', company: '' }];
+                updateSection(section.id, { ...content, testimonials: newTestimonials });
+              }}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            >
+              <FaPlus /> הוסף המלצה
+            </button>
+          </div>
+        );
+
+      case 'faq':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת הסקשן"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            {content.questions?.map((faq: any, index: number) => (
+              <div key={index} className="border p-3 rounded space-y-2">
+                <input
+                  type="text"
+                  placeholder="שאלה"
+                  value={faq.question || ''}
+                  onChange={(e) => {
+                    const newQuestions = [...content.questions];
+                    newQuestions[index] = { ...faq, question: e.target.value };
+                    updateSection(section.id, { ...content, questions: newQuestions });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <textarea
+                  placeholder="תשובה"
+                  value={faq.answer || ''}
+                  onChange={(e) => {
+                    const newQuestions = [...content.questions];
+                    newQuestions[index] = { ...faq, answer: e.target.value };
+                    updateSection(section.id, { ...content, questions: newQuestions });
+                  }}
+                  className="w-full p-2 border rounded h-20"
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                const newQuestions = [...(content.questions || []), { question: '', answer: '' }];
+                updateSection(section.id, { ...content, questions: newQuestions });
+              }}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            >
+              <FaPlus /> הוסף שאלה
+            </button>
+          </div>
+        );
+
+      case 'pricing':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת הסקשן"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            {content.plans?.map((plan: any, index: number) => (
+              <div key={index} className="border p-3 rounded space-y-2">
+                <input
+                  type="text"
+                  placeholder="שם החבילה"
+                  value={plan.name || ''}
+                  onChange={(e) => {
+                    const newPlans = [...content.plans];
+                    newPlans[index] = { ...plan, name: e.target.value };
+                    updateSection(section.id, { ...content, plans: newPlans });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="מחיר"
+                  value={plan.price || ''}
+                  onChange={(e) => {
+                    const newPlans = [...content.plans];
+                    newPlans[index] = { ...plan, price: e.target.value };
+                    updateSection(section.id, { ...content, plans: newPlans });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="תקופה"
+                  value={plan.period || ''}
+                  onChange={(e) => {
+                    const newPlans = [...content.plans];
+                    newPlans[index] = { ...plan, period: e.target.value };
+                    updateSection(section.id, { ...content, plans: newPlans });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="תיאור"
+                  value={plan.description || ''}
+                  onChange={(e) => {
+                    const newPlans = [...content.plans];
+                    newPlans[index] = { ...plan, description: e.target.value };
+                    updateSection(section.id, { ...content, plans: newPlans });
+                  }}
+                  className="w-full p-2 border rounded"
+                />
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={plan.popular || false}
+                    onChange={(e) => {
+                      const newPlans = [...content.plans];
+                      newPlans[index] = { ...plan, popular: e.target.checked };
+                      updateSection(section.id, { ...content, plans: newPlans });
+                    }}
+                  />
+                  חבילה פופולרית
+                </label>
+                <div className="space-y-2">
+                  <label>תכונות:</label>
+                  {plan.features?.map((feature: string, featureIndex: number) => (
+                    <div key={featureIndex} className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="תכונה"
+                        value={feature || ''}
+                        onChange={(e) => {
+                          const newPlans = [...content.plans];
+                          const newFeatures = [...newPlans[index].features];
+                          newFeatures[featureIndex] = e.target.value;
+                          newPlans[index] = { ...plan, features: newFeatures };
+                          updateSection(section.id, { ...content, plans: newPlans });
+                        }}
+                        className="flex-1 p-2 border rounded"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newPlans = [...content.plans];
+                          const newFeatures = newPlans[index].features.filter((_: string, i: number) => i !== featureIndex);
+                          newPlans[index] = { ...plan, features: newFeatures };
+                          updateSection(section.id, { ...content, plans: newPlans });
+                        }}
+                        className="px-3 py-2 text-red-600 hover:text-red-800"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newPlans = [...content.plans];
+                      const newFeatures = [...(newPlans[index].features || []), ''];
+                      newPlans[index] = { ...plan, features: newFeatures };
+                      updateSection(section.id, { ...content, plans: newPlans });
+                    }}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                  >
+                    <FaPlus /> הוסף תכונה
+                  </button>
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                const newPlans = [...(content.plans || []), {
+                  name: '',
+                  price: '',
+                  period: '',
+                  description: '',
+                  features: [],
+                  popular: false
+                }];
+                updateSection(section.id, { ...content, plans: newPlans });
+              }}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            >
+              <FaPlus /> הוסף חבילה
+            </button>
+          </div>
+        );
+
+      case 'cta':
+        return (
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="כותרת"
+              value={content.title || ''}
+              onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="תת כותרת"
+              value={content.subtitle || ''}
+              onChange={(e) => updateSection(section.id, { ...content, subtitle: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="טקסט כפתור"
+              value={content.buttonText || ''}
+              onChange={(e) => updateSection(section.id, { ...content, buttonText: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="קישור כפתור"
+              value={content.buttonLink || ''}
+              onChange={(e) => updateSection(section.id, { ...content, buttonLink: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+        );
+
+      default:
+        return <div>עורך לא זמין לסוג זה</div>;
     }
   };
 
   return (
-    <div>
-      {/* כרטיסיות ניווט */}
-      <div className="border-b border-gray-200 mb-6">
-        <nav className="-mb-px flex space-x-8">
-          {getTabs().map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
-      </div>
+    <div className="max-w-4xl mx-auto p-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-bold mb-6">יצירת תבנית חדשה</h2>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">שם התבנית</label>
+              <input
+                type="text"
+                value={templateName}
+                onChange={(e) => setTemplateName(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="לדוגמה: תבנית שירותים"
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-2">תיאור התבנית</label>
+              <textarea
+                value={templateDescription}
+                onChange={(e) => setTemplateDescription(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="תיאור קצר של התבנית"
+                rows={3}
+              />
+            </div>
+          </div>
+        </div>
 
-      {/* תוכן הכרטיסייה */}
-      <div className="min-h-[400px]">
-        {renderTabContent()}
-      </div>
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl font-bold">סקשנים</h3>
+            <div className="relative">
+              <select
+                onChange={(e) => {
+                  if (e.target.value) {
+                    addSection(e.target.value);
+                    e.target.value = '';
+                  }
+                }}
+                className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">הוסף סקשן...</option>
+                {sectionTypes.map(type => (
+                  <option key={type.value} value={type.value}>
+                    {type.label} - {type.description}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {sections.map((section, index) => (
+              <motion.div
+                key={section.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="border border-gray-200 rounded-lg p-4"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="text-lg font-semibold">{section.title}</h4>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => moveSection(section.id, 'up')}
+                      disabled={index === 0}
+                      className="p-2 text-gray-600 hover:text-gray-800 disabled:opacity-50"
+                    >
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => moveSection(section.id, 'down')}
+                      disabled={index === sections.length - 1}
+                      className="p-2 text-gray-600 hover:text-gray-800 disabled:opacity-50"
+                    >
+                      ↓
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeSection(section.id)}
+                      className="p-2 text-red-600 hover:text-red-800"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="bg-gray-50 p-4 rounded">
+                  {renderSectionEditor(section)}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-4">
+          <button
+            type="submit"
+            className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <FaSave />
+            שמור תבנית
+          </button>
+        </div>
+      </form>
     </div>
   );
 } 

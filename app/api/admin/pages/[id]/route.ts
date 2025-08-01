@@ -1,145 +1,64 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { getAdminUser } from '../../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
 
-// GET - קבלת דף ספציפי
 export async function GET(
-  req: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const user = await getAdminUser();
-    if (!user) {
-      return NextResponse.json({ error: 'לא מורשה' }, { status: 401 });
-    }
-
     const page = await prisma.page.findUnique({
       where: { id: params.id },
       include: {
-        parent: {
-          select: {
-            id: true,
-            title: true,
-            slug: true
-          }
-        },
-        children: {
-          select: {
-            id: true,
-            title: true,
-            slug: true
+        templateRelation: {
+          include: {
+            sections: {
+              orderBy: {
+                order: 'asc'
+              }
+            }
           }
         }
       }
     });
 
     if (!page) {
-      return NextResponse.json({ error: 'דף לא נמצא' }, { status: 404 });
+      return NextResponse.json({ error: 'הדף לא נמצא' }, { status: 404 });
     }
 
     return NextResponse.json(page);
-
   } catch (error) {
     console.error('Error fetching page:', error);
-    return NextResponse.json(
-      { error: 'שגיאה בטעינת הדף' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'שגיאה בטעינת הדף' }, { status: 500 });
   }
 }
 
-// PUT - עדכון דף
 export async function PUT(
-  req: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const user = await getAdminUser();
-    if (!user) {
-      return NextResponse.json({ error: 'לא מורשה' }, { status: 401 });
-    }
+    const body = await request.json();
+    const { title, slug, content, templateId, published } = body;
 
-    const body = await req.json();
-    const {
-      title,
-      slug,
-      content,
-      excerpt,
-      template,
-      published,
-      order,
-      metaTitle,
-      metaDesc,
-      metaKeywords,
-      featuredImage,
-      // שדות מותאמים לתבניות
-      heroTitle,
-      heroSubtitle,
-      heroImage,
-      heroButtonText,
-      heroButtonLink,
-      // שדות לשירותים
-      serviceFeatures,
-      serviceBenefits,
-      servicePricing,
-      // שדות לאודות
-      aboutImage,
-      aboutStats,
-      teamMembers,
-      // שדות לצור קשר
-      contactInfo,
-      contactForm,
-      // שדות לדף נחיתה
-      landingSections,
-      testimonials,
-      // שדות לבלוג
-      blogAuthor,
-      blogCategory,
-      blogTags
-    } = body;
-
-    // בדיקה אם הדף קיים
+    // בדיקה שהדף קיים
     const existingPage = await prisma.page.findUnique({
       where: { id: params.id }
     });
 
     if (!existingPage) {
-      return NextResponse.json({ error: 'דף לא נמצא' }, { status: 404 });
+      return NextResponse.json({ error: 'הדף לא נמצא' }, { status: 404 });
     }
 
-    // יצירת slug - אם לא סופק slug מותאם, יצור אוטומטי מהכותרת
-    let finalSlug = slug;
-    if (!finalSlug || finalSlug.trim() === '') {
-      finalSlug = title
-        .toLowerCase()
-        .replace(/[^a-z0-9\u0590-\u05FF]/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '');
-    } else {
-      // ניקוי ה-slug המותאם
-      finalSlug = finalSlug
-        .toLowerCase()
-        .replace(/[^a-z0-9\u0590-\u05FF]/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '');
-    }
-
-    // בדיקה אם ה-slug החדש כבר קיים (אם השתנה)
-    if (finalSlug !== existingPage.slug) {
-      const slugExists = await prisma.page.findFirst({
-        where: {
-          slug: finalSlug,
-          id: { not: params.id }
-        }
+    // בדיקה שהדף לא קיים כבר עם ה-slug החדש (אם השתנה)
+    if (slug && slug !== existingPage.slug) {
+      const duplicatePage = await prisma.page.findUnique({
+        where: { slug }
       });
 
-      if (slugExists) {
-        return NextResponse.json(
-          { error: 'דף עם URL זה כבר קיים' },
-          { status: 400 }
-        );
+      if (duplicatePage) {
+        return NextResponse.json({ error: 'דף עם URL זה כבר קיים' }, { status: 400 });
       }
     }
 
@@ -148,86 +67,46 @@ export async function PUT(
       where: { id: params.id },
       data: {
         title,
-        slug: finalSlug,
+        slug,
         content,
-        excerpt,
-        template,
+        templateId,
         published,
-        order,
-        metaTitle: metaTitle || title,
-        metaDesc: metaDesc || excerpt || '',
-        metaKeywords,
-        featuredImage,
-        // שדות מותאמים לתבניות
-        heroTitle,
-        heroSubtitle,
-        heroImage,
-        heroButtonText,
-        heroButtonLink,
-        // שדות לשירותים
-        serviceFeatures,
-        serviceBenefits,
-        servicePricing,
-        // שדות לאודות
-        aboutImage,
-        aboutStats,
-        teamMembers,
-        // שדות לצור קשר
-        contactInfo,
-        contactForm,
-        // שדות לדף נחיתה
-        landingSections,
-        testimonials,
-        // שדות לבלוג
-        blogAuthor,
-        blogCategory,
-        blogTags
+        metaTitle: title,
+        metaDesc: content ? content.substring(0, 160) : '',
+        excerpt: content ? content.substring(0, 200) : ''
+      },
+      include: {
+        templateRelation: {
+          include: {
+            sections: {
+              orderBy: {
+                order: 'asc'
+              }
+            }
+          }
+        }
       }
     });
 
-    return NextResponse.json({
-      message: 'דף עודכן בהצלחה',
-      page: updatedPage
-    });
-
+    return NextResponse.json(updatedPage);
   } catch (error) {
     console.error('Error updating page:', error);
-    return NextResponse.json(
-      { error: 'שגיאה בעדכון הדף' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'שגיאה בעדכון הדף' }, { status: 500 });
   }
 }
 
-// DELETE - מחיקת דף
 export async function DELETE(
-  req: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const user = await getAdminUser();
-    if (!user) {
-      return NextResponse.json({ error: 'לא מורשה' }, { status: 401 });
-    }
-
-    // בדיקה אם הדף קיים
+    // בדיקה שהדף קיים
     const existingPage = await prisma.page.findUnique({
-      where: { id: params.id },
-      include: {
-        children: true
-      }
+      where: { id: params.id }
     });
 
     if (!existingPage) {
-      return NextResponse.json({ error: 'דף לא נמצא' }, { status: 404 });
-    }
-
-    // בדיקה אם יש דפי ילדים
-    if (existingPage.children.length > 0) {
-      return NextResponse.json(
-        { error: 'לא ניתן למחוק דף שיש לו דפי ילדים' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'הדף לא נמצא' }, { status: 404 });
     }
 
     // מחיקת הדף
@@ -235,15 +114,9 @@ export async function DELETE(
       where: { id: params.id }
     });
 
-    return NextResponse.json({
-      message: 'דף נמחק בהצלחה'
-    });
-
+    return NextResponse.json({ message: 'הדף נמחק בהצלחה' });
   } catch (error) {
     console.error('Error deleting page:', error);
-    return NextResponse.json(
-      { error: 'שגיאה במחיקת הדף' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'שגיאה במחיקת הדף' }, { status: 500 });
   }
 } 

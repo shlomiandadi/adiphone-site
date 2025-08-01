@@ -240,11 +240,26 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
               className="w-full p-2 border rounded"
             />
             <textarea
-              placeholder="תוכן הדף (HTML מותר)"
+              placeholder="תוכן הדף (HTML מלא מותר)"
               value={content.content || ''}
               onChange={(e) => updateSection(section.id, { ...content, content: e.target.value })}
-              className="w-full p-2 border rounded h-32"
+              className="w-full p-2 border rounded h-48 font-mono text-sm"
             />
+            <p className="text-xs text-gray-500">
+              תוכל להשתמש ב-HTML מלא: &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;a&gt;, &lt;ul&gt;, &lt;li&gt; וכו'
+            </p>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id={`showTOC-${section.id}`}
+                checked={content.showTableOfContents || false}
+                onChange={(e) => updateSection(section.id, { ...content, showTableOfContents: e.target.checked })}
+                className="mr-2"
+              />
+              <label htmlFor={`showTOC-${section.id}`} className="text-sm font-medium text-gray-700">
+                הצג תוכן עניינים עם ניווט
+              </label>
+            </div>
           </div>
         );
 

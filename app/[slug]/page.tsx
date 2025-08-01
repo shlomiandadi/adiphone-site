@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaCheck, FaStar, FaRocket, FaCrown, FaGem, FaHeart, FaShield, FaBolt } from 'react-icons/fa';
+import { FaCheck, FaStar, FaRocket, FaCrown, FaGem, FaHeart, FaBolt } from 'react-icons/fa';
 
 interface PageData {
   id: string;
@@ -45,7 +45,7 @@ const iconMap: { [key: string]: React.ReactNode } = {
   star: <FaStar className="w-8 h-8" />,
   check: <FaCheck className="w-8 h-8" />,
   heart: <FaHeart className="w-8 h-8" />,
-  shield: <FaShield className="w-8 h-8" />,
+  shield: <FaBolt className="w-8 h-8" />,
   rocket: <FaRocket className="w-8 h-8" />,
   crown: <FaCrown className="w-8 h-8" />,
   gem: <FaGem className="w-8 h-8" />,
@@ -61,6 +61,28 @@ const colorMap: { [key: string]: string } = {
   crown: 'from-yellow-500 to-orange-500',
   gem: 'from-purple-500 to-purple-600',
   bolt: 'from-blue-500 to-purple-600'
+};
+
+// פונקציה לחילוץ כותרות מ-HTML
+const extractHeadings = (html: string) => {
+  const headings: { id: string; text: string; level: number }[] = [];
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  
+  ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach((tag, index) => {
+    const elements = doc.querySelectorAll(tag);
+    elements.forEach((element) => {
+      const text = element.textContent || '';
+      const id = text.toLowerCase().replace(/[^a-z0-9]/g, '-');
+      headings.push({
+        id,
+        text,
+        level: index + 1
+      });
+    });
+  });
+  
+  return headings;
 };
 
 export default function DynamicPage({ params }: { params: { slug: string } }) {
@@ -181,6 +203,25 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                     {content.title}
                   </h2>
                 )}
+                
+                {content.showTableOfContents && (
+                  <div className="bg-gray-50 p-6 rounded-lg mb-8 dark:bg-gray-700">
+                    <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">תוכן עניינים</h3>
+                    <nav className="space-y-2">
+                      {content.content && extractHeadings(content.content).map((heading, index) => (
+                        <a
+                          key={index}
+                          href={`#${heading.id}`}
+                          className="block text-blue-600 hover:text-blue-800 transition-colors dark:text-blue-400 dark:hover:text-blue-300"
+                          style={{ paddingLeft: `${(heading.level - 1) * 20}px` }}
+                        >
+                          {heading.text}
+                        </a>
+                      ))}
+                    </nav>
+                  </div>
+                )}
+                
                 <div 
                   className="prose prose-lg mx-auto max-w-4xl dark:prose-invert prose-gray dark:prose-gray-600"
                   dangerouslySetInnerHTML={{ __html: content.content || '' }}

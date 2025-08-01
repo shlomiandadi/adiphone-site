@@ -46,6 +46,7 @@ export default function PagesManager() {
   
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
   const [templateSections, setTemplateSections] = useState<any[]>([]);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
     fetchPages();
@@ -108,13 +109,17 @@ export default function PagesManager() {
         });
         setSelectedTemplate(null);
         setTemplateSections([]);
+        setMessage({ type: 'success', text: 'הדף נוצר בהצלחה!' });
+        setTimeout(() => setMessage(null), 3000);
       } else {
         const error = await response.json();
-        alert(error.error || 'שגיאה ביצירת הדף');
+        setMessage({ type: 'error', text: error.error || 'שגיאה ביצירת הדף' });
+        setTimeout(() => setMessage(null), 5000);
       }
     } catch (error) {
       console.error('Error creating page:', error);
-      alert('שגיאה ביצירת הדף');
+      setMessage({ type: 'error', text: 'שגיאה ביצירת הדף' });
+      setTimeout(() => setMessage(null), 5000);
     }
   };
 
@@ -152,13 +157,17 @@ export default function PagesManager() {
         });
         setSelectedTemplate(null);
         setTemplateSections([]);
+        setMessage({ type: 'success', text: 'הדף עודכן בהצלחה!' });
+        setTimeout(() => setMessage(null), 3000);
       } else {
         const error = await response.json();
-        alert(error.error || 'שגיאה בעדכון הדף');
+        setMessage({ type: 'error', text: error.error || 'שגיאה בעדכון הדף' });
+        setTimeout(() => setMessage(null), 5000);
       }
     } catch (error) {
       console.error('Error updating page:', error);
-      alert('שגיאה בעדכון הדף');
+      setMessage({ type: 'error', text: 'שגיאה בעדכון הדף' });
+      setTimeout(() => setMessage(null), 5000);
     }
   };
 
@@ -172,13 +181,17 @@ export default function PagesManager() {
 
       if (response.ok) {
         setPages(pages.filter(page => page.id !== pageId));
+        setMessage({ type: 'success', text: 'הדף נמחק בהצלחה!' });
+        setTimeout(() => setMessage(null), 3000);
       } else {
         const error = await response.json();
-        alert(error.error || 'שגיאה במחיקת הדף');
+        setMessage({ type: 'error', text: error.error || 'שגיאה במחיקת הדף' });
+        setTimeout(() => setMessage(null), 5000);
       }
     } catch (error) {
       console.error('Error deleting page:', error);
-      alert('שגיאה במחיקת הדף');
+      setMessage({ type: 'error', text: 'שגיאה במחיקת הדף' });
+      setTimeout(() => setMessage(null), 5000);
     }
   };
 
@@ -602,6 +615,29 @@ export default function PagesManager() {
 
   return (
     <div className="space-y-6">
+      {/* Message Display */}
+      {message && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className={`p-4 rounded-lg border ${
+            message.type === 'success'
+              ? 'bg-green-50 border-green-200 text-green-800'
+              : 'bg-red-50 border-red-200 text-red-800'
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            {message.type === 'success' ? (
+              <FaCheck className="text-green-600" />
+            ) : (
+              <FaTimes className="text-red-600" />
+            )}
+            <span className="font-medium">{message.text}</span>
+          </div>
+        </motion.div>
+      )}
+
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">ניהול דפים</h1>

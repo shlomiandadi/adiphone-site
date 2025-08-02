@@ -96,6 +96,12 @@ export async function PUT(
       }
     }
 
+    // וידוא שה-URL מכיל כתובת מלאה
+    let finalUrl = url || '';
+    if (finalUrl && !finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+      finalUrl = 'https://' + finalUrl;
+    }
+
     // עדכון הפרויקט
     const updatedProject = await prisma.portfolioProject2.update({
       where: { slug: params.slug },
@@ -103,7 +109,7 @@ export async function PUT(
         name,
         description,
         descriptionRich: descriptionRich || '',
-        url: url || '',
+        url: finalUrl,
         date: date ? new Date(date) : existingProject.date,
         technologies: Array.isArray(technologies) ? technologies : [],
         image: image || '',

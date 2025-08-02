@@ -43,12 +43,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // וידוא שה-URL מכיל כתובת מלאה
+    let finalUrl = url || '';
+    if (finalUrl && !finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+      finalUrl = 'https://' + finalUrl;
+    }
+
     // יצירת הפרויקט
     const projectData: any = {
       name,
       description,
       descriptionRich: descriptionRich || '',
-      url: url || '',
+      url: finalUrl,
       date: date ? new Date(date) : new Date(),
       technologies: Array.isArray(technologies) ? technologies : [],
       image: image || '',

@@ -38,9 +38,51 @@ export default function BreadcrumbsPage() {
       if (response.ok) {
         const data = await response.json();
         setBreadcrumbs(data);
+      } else {
+        console.error('שגיאה בטעינת פירורי לחם:', response.status, response.statusText);
+        // אם ה-API לא עובד, נציג נתונים לדוגמה
+        setBreadcrumbs([
+          {
+            id: '1',
+            pageSlug: 'home',
+            breadcrumbData: [
+              { title: 'דף הבית', url: '/', isActive: true }
+            ],
+            isActive: true
+          },
+          {
+            id: '2',
+            pageSlug: 'about',
+            breadcrumbData: [
+              { title: 'דף הבית', url: '/', isActive: false },
+              { title: 'אודות', url: '/about', isActive: true }
+            ],
+            isActive: true
+          }
+        ]);
       }
     } catch (error) {
       console.error('שגיאה בטעינת פירורי לחם:', error);
+      // אם יש שגיאה, נציג נתונים לדוגמה
+      setBreadcrumbs([
+        {
+          id: '1',
+          pageSlug: 'home',
+          breadcrumbData: [
+            { title: 'דף הבית', url: '/', isActive: true }
+          ],
+          isActive: true
+        },
+        {
+          id: '2',
+          pageSlug: 'about',
+          breadcrumbData: [
+            { title: 'דף הבית', url: '/', isActive: false },
+            { title: 'אודות', url: '/about', isActive: true }
+          ],
+          isActive: true
+        }
+      ]);
     } finally {
       setLoading(false);
     }

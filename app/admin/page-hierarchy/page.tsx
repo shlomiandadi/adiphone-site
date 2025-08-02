@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import AdminLayout from '../../../components/admin/AdminLayout';
+import AdminLayout from '../../components/admin/AdminLayout';
 import { useAdminAuth } from '../../../lib/useAdminAuth';
 
 interface PageHierarchy {

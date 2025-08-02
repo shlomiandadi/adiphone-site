@@ -128,8 +128,15 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
     setSuccess('');
 
     try {
+      // וידוא שה-URL מכיל כתובת מלאה
+      let finalUrl = projectData.url;
+      if (finalUrl && !finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+        finalUrl = 'https://' + finalUrl;
+      }
+
       const finalData = {
         ...projectData,
+        url: finalUrl,
         published: publish ? true : projectData.published,
         technologies: projectData.technologies.split(',').map(tech => tech.trim()).filter(tech => tech),
         images: projectData.images.split(',').map(img => img.trim()).filter(img => img)
@@ -299,6 +306,9 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="https://example.com"
               />
+              <p className="text-sm text-gray-500 mt-1">
+                הזן כתובת מלאה כולל https:// (למשל: https://example.com)
+              </p>
             </div>
 
             {/* Project Date */}

@@ -31,7 +31,7 @@ export default function ServicesPage() {
     {
       title: "קידום אתרים",
       description: "קידום אורגני מקצועי שמביא תוצאות אמיתיות",
-      icon: <FaSearch className="w-8 h-8 text-primary" />,
+      icon: <FaSearch className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800",
       link: "/services/seo",
       features: ["מחקר מילות מפתח", "אופטימיזציה טכנית", "בניית קישורים", "תוכן איכותי"]
@@ -39,7 +39,7 @@ export default function ServicesPage() {
     {
       title: "בניית אתרי וורדפרס",
       description: "אתרים מקצועיים ומותאמים אישית בוורדפרס",
-      icon: <FaWordpress className="w-8 h-8 text-primary" />,
+      icon: <FaWordpress className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800",
       link: "/services/wordpress",
       features: ["עיצוב מותאם אישית", "ביצועים מהירים", "אבטחה מתקדמת", "ממשק ניהול נוח"]
@@ -47,7 +47,7 @@ export default function ServicesPage() {
     {
       title: "חנויות אינטרנט",
       description: "חנויות אונליין מתקדמות שמגדילות מכירות",
-      icon: <FaShoppingCart className="w-8 h-8 text-primary" />,
+      icon: <FaShoppingCart className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800",
       link: "/services/ecommerce",
       features: ["חווית קנייה מעולה", "ניהול מלאי", "שילוב סליקה", "אבטחת עסקאות"]
@@ -55,7 +55,7 @@ export default function ServicesPage() {
     {
       title: "פיתוח אפליקציות",
       description: "אפליקציות מובייל חדשניות לכל הפלטפורמות",
-      icon: <FaMobileAlt className="w-8 h-8 text-primary" />,
+      icon: <FaMobileAlt className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800",
       link: "/services/mobile-apps",
       features: ["Cross-Platform", "UX/UI מתקדם", "ביצועים מהירים", "אבטחה מובנית"]
@@ -63,7 +63,7 @@ export default function ServicesPage() {
     {
       title: "עיצוב ממשק משתמש",
       description: "עיצוב חוויות דיגיטליות מרהיבות",
-      icon: <FaPaintBrush className="w-8 h-8 text-primary" />,
+      icon: <FaPaintBrush className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800",
       link: "/services/ui-design",
       features: ["עיצוב ממוקד משתמש", "עיצוב רספונסיבי", "זהות מותג", "אינטראקציות חכמות"]
@@ -71,7 +71,7 @@ export default function ServicesPage() {
     {
       title: "קמפיינים ממומנים",
       description: "ניהול קמפיינים שמביאים תוצאות מדידות",
-      icon: <FaBullhorn className="w-8 h-8 text-primary" />,
+      icon: <FaBullhorn className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
       link: "/services/ppc",
       features: ["Google Ads", "מדיה חברתית", "רימרקטינג", "אופטימיזציה"]
@@ -79,7 +79,7 @@ export default function ServicesPage() {
     {
       title: "אנליטיקס ומדידה",
       description: "ניתוח נתונים מתקדם לקבלת החלטות מבוססות מידע",
-      icon: <FaChartLine className="w-8 h-8 text-primary" />,
+      icon: <FaChartLine className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
       link: "/services/analytics",
       features: ["Google Analytics 4", "דוחות מותאמים", "מעקב המרות", "אופטימיזציה"]
@@ -87,7 +87,7 @@ export default function ServicesPage() {
     {
       title: "פיתוח תוכנה",
       description: "פתרונות תוכנה מתקדמים ומותאמים אישית",
-      icon: <FaCode className="w-8 h-8 text-primary" />,
+      icon: <FaCode className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800",
       link: "/services/software",
       features: ["פיתוח מותאם", "ארכיטקטורה", "אבטחת מידע", "תחזוקה ותמיכה"]
@@ -95,7 +95,7 @@ export default function ServicesPage() {
     {
       title: "פתרונות AI",
       description: "שילוב טכנולוגיות AI חדשניות בעסק שלכם",
-      icon: <FaBrain className="w-8 h-8 text-primary" />,
+      icon: <FaBrain className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
       link: "/services/ai",
       features: ["צ'אטבוטים חכמים", "עיבוד שפה טבעית", "מערכות המלצה", "אוטומציה"]
@@ -103,7 +103,7 @@ export default function ServicesPage() {
     {
       title: "שירותי ענן",
       description: "פתרונות ענן מתקדמים לעסקים צומחים",
-      icon: <FaCloud className="w-8 h-8 text-primary" />,
+      icon: <FaCloud className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800",
       link: "/services/cloud",
       features: ["תשתיות ענן", "גיבוי ו-DR", "אבטחת מידע", "ניטור ותחזוקה"]
@@ -113,15 +113,8 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Hero Section */}
-      <div className="relative h-[40vh] min-h-[400px] w-full">
-        <Image
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200"
-          alt="Services Hero"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary-dark/80">
+      <div className="relative h-[40vh] min-h-[400px] w-full bg-gradient-to-r from-blue-600 to-blue-800">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 to-blue-800/90">
           <div className="container mx-auto px-4 h-full flex flex-col justify-center">
             <motion.h1 
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
@@ -200,7 +193,7 @@ export default function ServicesPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-primary to-primary-dark py-16">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-16">
         <div className="container mx-auto px-4 text-center">
           <motion.h2 
             className="text-3xl md:text-4xl font-bold text-white mb-4"
@@ -225,7 +218,7 @@ export default function ServicesPage() {
           >
             <Link 
               href="/contact"
-              className="inline-block bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300"
+              className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300"
             >
               דברו איתנו
             </Link>

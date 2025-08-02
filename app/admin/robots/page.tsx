@@ -21,9 +21,11 @@ export default function RobotsPage() {
   const [newDisallowPath, setNewDisallowPath] = useState('');
 
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      setUser(JSON.parse(userData));
+    if (typeof window !== 'undefined') {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
     }
     fetchRobotsSettings();
   }, []);

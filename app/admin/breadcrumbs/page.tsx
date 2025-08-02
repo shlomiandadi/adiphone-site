@@ -23,9 +23,11 @@ export default function BreadcrumbsPage() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      setUser(JSON.parse(userData));
+    if (typeof window !== 'undefined') {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
     }
     fetchBreadcrumbs();
   }, []);
@@ -98,7 +100,16 @@ export default function BreadcrumbsPage() {
     setFormData({ ...formData, breadcrumbData: currentData });
   };
 
-  if (!user) return null;
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">טוען...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <AdminLayout user={user}>

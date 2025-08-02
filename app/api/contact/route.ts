@@ -1,7 +1,8 @@
 import { NextRequest } from 'next/server';
-import prisma from '../../../lib/prisma';
+import { PrismaClient, ContactService } from '@prisma/client';
 import { sendContactEmail } from '../../../lib/emailService';
-import { ContactService } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 

@@ -39,6 +39,16 @@ model Post {
   likes       Int       @default(0)
   metaTitle   String
   metaDesc    String
+  metaKeywords String?
+  metaCanonical String?
+  metaRobots  String?    @default("index, follow")
+  metaOgTitle String?
+  metaOgDescription String?
+  metaOgImage String?
+  metaTwitterCard String? @default("summary_large_image")
+  metaTwitterTitle String?
+  metaTwitterDescription String?
+  metaTwitterImage String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   authorId    String?
@@ -104,6 +114,16 @@ model PortfolioProject2 {
   published       Boolean  @default(false)
   metaTitle       String?
   metaDesc        String?
+  metaKeywords    String?
+  metaCanonical   String?
+  metaRobots      String?  @default("index, follow")
+  metaOgTitle     String?
+  metaOgDescription String?
+  metaOgImage     String?
+  metaTwitterCard String?  @default("summary_large_image")
+  metaTwitterTitle String?
+  metaTwitterDescription String?
+  metaTwitterImage String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -120,6 +140,15 @@ model Page {
   metaTitle   String?
   metaDesc    String?
   metaKeywords String?
+  metaCanonical String?
+  metaRobots  String?    @default("index, follow")
+  metaOgTitle String?
+  metaOgDescription String?
+  metaOgImage String?
+  metaTwitterCard String? @default("summary_large_image")
+  metaTwitterTitle String?
+  metaTwitterDescription String?
+  metaTwitterImage String?
   featuredImage String?
   // שדות מותאמים לתבניות
   heroTitle   String?
@@ -213,4 +242,289 @@ enum PageTemplate {
   CONTACT
   LANDING
   BLOG
+}
+
+// טבלה לניהול תגיות מטא ו-SEO
+model SiteSettings {
+  id                String   @id @default(cuid())
+  siteName          String   @default("AdiPhone")
+  siteDescription   String?
+  siteKeywords      String?
+  siteUrl           String?
+  siteLogo          String?
+  siteFavicon       String?
+  googleAnalyticsId String?
+  googleTagManagerId String?
+  facebookPixelId   String?
+  twitterHandle     String?
+  facebookPage      String?
+  instagramHandle   String?
+  linkedinPage      String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+// טבלה לניהול הדר האתר
+model Header {
+  id                String   @id @default(cuid())
+  logo              String?
+  logoAlt           String?
+  logoWidth         Int      @default(150)
+  logoHeight        Int      @default(50)
+  showSearch        Boolean  @default(true)
+  searchPlaceholder String   @default("חיפוש...")
+  showContactButton Boolean  @default(true)
+  contactButtonText String   @default("צור קשר")
+  contactButtonLink String   @default("/contact")
+  backgroundColor   String   @default("#ffffff")
+  textColor         String   @default("#000000")
+  stickyHeader      Boolean  @default(true)
+  showLanguageSwitcher Boolean @default(false)
+  languages         String[] @default([])
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // קשר לתפריטים
+  menus Menu[]
+
+  @@map("header")
+}
+
+// טבלה לניהול תפריטים
+model Menu {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  location    MenuLocation
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // קשר לפריטי תפריט
+  menuItems MenuItem[]
+
+  // קשר להדר
+  headerId String?
+  header   Header? @relation(fields: [headerId], references: [id])
+
+  @@map("menus")
+}
+
+// טבלה לניהול פריטי תפריט
+model MenuItem {
+  id          String   @id @default(cuid())
+  title       String
+  url         String?
+  pageId      String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  openInNewTab Boolean @default(false)
+  icon        String?
+  cssClass    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // קשר לתפריט
+  menuId String
+  menu   Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  // קשר לפריטי תפריט ילדים
+  parentId String?
+  parent   MenuItem? @relation("MenuItemChildren", fields: [parentId], references: [id])
+  children MenuItem[] @relation("MenuItemChildren")
+
+  @@map("menu_items")
+}
+
+// טבלה לניהול פוטר
+model Footer {
+  id                    String   @id @default(cuid())
+  logo                  String?
+  logoAlt               String?
+  logoWidth             Int      @default(120)
+  logoHeight            Int      @default(40)
+  description           String?
+  backgroundColor       String   @default("#1f2937")
+  textColor             String   @default("#ffffff")
+  linkColor             String   @default("#9ca3af")
+  linkHoverColor        String   @default("#ffffff")
+  showNewsletter        Boolean  @default(true)
+  newsletterTitle       String   @default("הישארו מעודכנים")
+  newsletterDescription String   @default("הירשמו לניוזלטר שלנו")
+  newsletterPlaceholder String   @default("האימייל שלכם")
+  newsletterButtonText  String   @default("הרשמה")
+  showSocialLinks       Boolean  @default(true)
+  copyrightText         String   @default("© 2024 AdiPhone. כל הזכויות שמורות.")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // קשר לעמודות פוטר
+  columns FooterColumn[]
+
+  @@map("footer")
+}
+
+// טבלה לניהול עמודות פוטר
+model FooterColumn {
+  id        String   @id @default(cuid())
+  title     String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // קשר לפוטר
+  footerId String
+  footer   Footer @relation(fields: [footerId], references: [id], onDelete: Cascade)
+
+  // קשר לקישורים
+  links FooterLink[]
+
+  @@map("footer_columns")
+}
+
+// טבלה לניהול קישורי פוטר
+model FooterLink {
+  id          String   @id @default(cuid())
+  title       String
+  url         String?
+  pageId      String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  openInNewTab Boolean @default(false)
+  icon        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // קשר לעמודת פוטר
+  columnId String
+  column   FooterColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
+
+  @@map("footer_links")
+}
+
+// טבלה לניהול סטריפ עליון
+model TopStrip {
+  id          String   @id @default(cuid())
+  text        String
+  backgroundColor String @default("#3b82f6")
+  textColor   String   @default("#ffffff")
+  isActive    Boolean  @default(false)
+  showCloseButton Boolean @default(true)
+  linkUrl     String?
+  linkText    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("top_strip")
+}
+
+// אנומים חדשים
+enum MenuLocation {
+  HEADER_MAIN
+  HEADER_SECONDARY
+  FOOTER_MAIN
+  FOOTER_SECONDARY
+  MOBILE
+}
+
+// טבלה לניהול SEO
+model SEO {
+  id            String   @id @default(cuid())
+  page          String   @unique
+  title         String
+  description   String
+  keywords      String
+  ogTitle       String?
+  ogDescription String?
+  ogImage       String?
+  canonicalUrl  String?
+  robots        String   @default("index, follow")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("seo")
+}
+
+// טבלה לניהול היררכיה של עמודים
+model PageHierarchy {
+  id          String   @id @default(cuid())
+  pageId      String   @unique
+  pageSlug    String   @unique
+  pageTitle   String
+  parentId    String?
+  level       Int      @default(0)
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  showInBreadcrumb Boolean @default(true)
+  breadcrumbTitle String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // קשר לעמוד אב
+  parent      PageHierarchy? @relation("PageHierarchy", fields: [parentId], references: [id])
+  
+  // קשר לעמודים ילדים
+  children    PageHierarchy[] @relation("PageHierarchy")
+
+  @@map("page_hierarchy")
+}
+
+// טבלה לניהול פירורי לחם
+model Breadcrumb {
+  id          String   @id @default(cuid())
+  pageSlug    String   @unique
+  breadcrumbData Json   // JSON עם מבנה: [{title: string, url: string, isActive: boolean}]
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("breadcrumbs")
+}
+
+// טבלה לניהול תגיות קנוניקל
+model CanonicalTag {
+  id          String   @id @default(cuid())
+  pageSlug    String   @unique
+  canonicalUrl String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("canonical_tags")
+}
+
+// טבלה לניהול הגדרות מפת אתר
+model SitemapSettings {
+  id                    String   @id @default(cuid())
+  isEnabled             Boolean  @default(true)
+  includePages          Boolean  @default(true)
+  includePosts          Boolean  @default(true)
+  includeCategories     Boolean  @default(true)
+  includePortfolio      Boolean  @default(true)
+  excludePages          String[] // רשימת עמודים שלא לכלול
+  excludePaths          String[] // רשימת נתיבים שלא לכלול
+  priority              Float    @default(0.5)
+  changeFreq            String   @default("weekly")
+  lastModified          DateTime @default(now())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("sitemap_settings")
+}
+
+// טבלה לניהול הגדרות robots.txt
+model RobotsSettings {
+  id                    String   @id @default(cuid())
+  userAgent             String   @default("*")
+  allowPaths            String[] // רשימת נתיבים מותרים
+  disallowPaths         String[] // רשימת נתיבים אסורים
+  crawlDelay            Int      @default(0)
+  sitemapUrl            String?
+  isActive              Boolean  @default(true)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("robots_settings")
 } 

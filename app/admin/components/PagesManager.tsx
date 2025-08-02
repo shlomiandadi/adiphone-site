@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaPlus, FaEdit, FaTrash, FaEye, FaSave, FaTimes } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaEye, FaSave, FaTimes, FaCheck } from 'react-icons/fa';
 import TemplateForm from './TemplateForm';
 import RichTextEditor from './RichTextEditor';
 
@@ -148,7 +148,7 @@ export default function PagesManager() {
           page.id === editingPage.id ? updatedPage : page
         ));
         setEditingPage(null);
-        setFormData({
+    setFormData({
           title: '',
           slug: '',
           content: '',
@@ -254,7 +254,7 @@ export default function PagesManager() {
     
     switch (type) {
       case 'hero':
-        return (
+  return (
           <div className="space-y-3">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">כותרת</label>
@@ -273,17 +273,17 @@ export default function PagesManager() {
                 onChange={(e) => updateSectionContent({ ...content, subtitle: e.target.value })}
                 className="w-full p-2 border rounded"
               />
-            </div>
+      </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">תמונה רקע</label>
-              <input
-                type="text"
+        <input
+          type="text"
                 value={content.backgroundImage || ''}
                 onChange={(e) => updateSectionContent({ ...content, backgroundImage: e.target.value })}
                 className="w-full p-2 border rounded"
                 placeholder="/images/hero-bg.jpg"
               />
-            </div>
+      </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">טקסט כפתור</label>
               <input
@@ -292,7 +292,7 @@ export default function PagesManager() {
                 onChange={(e) => updateSectionContent({ ...content, buttonText: e.target.value })}
                 className="w-full p-2 border rounded"
               />
-            </div>
+        </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">קישור כפתור</label>
               <input
@@ -302,22 +302,22 @@ export default function PagesManager() {
                 className="w-full p-2 border rounded"
                 placeholder="/contact"
               />
-            </div>
+        </div>
           </div>
         );
 
       case 'content':
         return (
           <div className="space-y-3">
-            <div>
+              <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">כותרת</label>
-              <input
+                <input
                 type="text"
                 value={content.title || ''}
                 onChange={(e) => updateSectionContent({ ...content, title: e.target.value })}
                 className="w-full p-2 border rounded"
-              />
-            </div>
+                />
+              </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">תוכן</label>
               <RichTextEditor
@@ -634,7 +634,7 @@ export default function PagesManager() {
               <FaTimes className="text-red-600" />
             )}
             <span className="font-medium">{message.text}</span>
-          </div>
+        </div>
         </motion.div>
       )}
 
@@ -662,31 +662,31 @@ export default function PagesManager() {
       {/* Pages List */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  כותרת
-                </th>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                כותרת
+              </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   URL
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  תבנית
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  סטטוס
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  תאריך יצירה
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  פעולות
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {pages.map((page) => (
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                תבנית
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                סטטוס
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                תאריך יצירה
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                פעולות
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {pages.map((page) => (
                 <motion.tr
                   key={page.id}
                   initial={{ opacity: 0 }}
@@ -698,30 +698,30 @@ export default function PagesManager() {
                       {page.title}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-500">
                       /{page.slug}
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-500">
                       {page.templateRelation?.name || 'ללא תבנית'}
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      page.published
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {page.published ? 'מפורסם' : 'טיוטה'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    page.published 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {page.published ? 'מפורסם' : 'טיוטה'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {formatDate(page.createdAt)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex gap-2">
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <div className="flex gap-2">
                       <a
                         href={`/${page.slug}`}
                         target="_blank"
@@ -730,25 +730,25 @@ export default function PagesManager() {
                       >
                         <FaEye />
                       </a>
-                      <button
+                    <button
                         onClick={() => handleEditPage(page)}
                         className="text-green-600 hover:text-green-900"
-                      >
+                    >
                         <FaEdit />
-                      </button>
-                      <button
+                    </button>
+                    <button
                         onClick={() => handleDeletePage(page.id)}
-                        className="text-red-600 hover:text-red-900"
-                      >
+                      className="text-red-600 hover:text-red-900"
+                    >
                         <FaTrash />
-                      </button>
-                    </div>
-                  </td>
+                    </button>
+                  </div>
+                </td>
                 </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
+      </div>
       </div>
 
       {/* Create/Edit Page Modal */}

@@ -190,50 +190,50 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
     switch (type) {
       case 'hero':
         return (
-          <div className="space-y-4">
-            <input
-              type="text"
+    <div className="space-y-4">
+          <input
+            type="text"
               placeholder="כותרת ראשית"
               value={content.title || ''}
               onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
               className="w-full p-2 border rounded"
             />
-            <input
-              type="text"
+          <input
+            type="text"
               placeholder="תת כותרת"
               value={content.subtitle || ''}
               onChange={(e) => updateSection(section.id, { ...content, subtitle: e.target.value })}
               className="w-full p-2 border rounded"
             />
-            <input
+        <input
               type="text"
               placeholder="URL תמונת רקע"
               value={content.backgroundImage || ''}
               onChange={(e) => updateSection(section.id, { ...content, backgroundImage: e.target.value })}
               className="w-full p-2 border rounded"
             />
-            <input
-              type="text"
+          <input
+            type="text"
               placeholder="טקסט כפתור"
               value={content.buttonText || ''}
               onChange={(e) => updateSection(section.id, { ...content, buttonText: e.target.value })}
               className="w-full p-2 border rounded"
             />
-            <input
-              type="text"
+          <input
+            type="text"
               placeholder="קישור כפתור"
               value={content.buttonLink || ''}
               onChange={(e) => updateSection(section.id, { ...content, buttonLink: e.target.value })}
               className="w-full p-2 border rounded"
-            />
-          </div>
+          />
+        </div>
         );
 
       case 'content':
         return (
           <div className="space-y-4">
-            <input
-              type="text"
+          <input
+            type="text"
               placeholder="כותרת התוכן"
               value={content.title || ''}
               onChange={(e) => updateSection(section.id, { ...content, title: e.target.value })}
@@ -249,7 +249,7 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
               תוכל להשתמש ב-HTML מלא: &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;a&gt;, &lt;ul&gt;, &lt;li&gt; וכו'
             </p>
             <div className="flex items-center">
-              <input
+        <input
                 type="checkbox"
                 id={`showTOC-${section.id}`}
                 checked={content.showTableOfContents || false}
@@ -259,9 +259,9 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
               <label htmlFor={`showTOC-${section.id}`} className="text-sm font-medium text-gray-700">
                 הצג תוכן עניינים עם ניווט
               </label>
-            </div>
-          </div>
-        );
+      </div>
+    </div>
+  );
 
       case 'features':
         return (
@@ -351,29 +351,29 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
                   }}
                   className="flex-1 p-2 border rounded"
                 />
-                <button
-                  type="button"
-                  onClick={() => {
+              <button
+                type="button"
+                onClick={() => {
                     const newBenefits = content.benefits.filter((_: string, i: number) => i !== index);
                     updateSection(section.id, { ...content, benefits: newBenefits });
-                  }}
+                }}
                   className="px-3 py-2 text-red-600 hover:text-red-800"
-                >
+              >
                   <FaTrash />
-                </button>
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() => {
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => {
                 const newBenefits = [...(content.benefits || []), ''];
                 updateSection(section.id, { ...content, benefits: newBenefits });
-              }}
+            }}
               className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-            >
+          >
               <FaPlus /> הוסף יתרון
-            </button>
-          </div>
+          </button>
+        </div>
         );
 
       case 'process':
@@ -410,20 +410,20 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
                   }}
                   className="w-full p-2 border rounded"
                 />
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() => {
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => {
                 const newSteps = [...(content.steps || []), { title: '', description: '' }];
                 updateSection(section.id, { ...content, steps: newSteps });
-              }}
+            }}
               className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-            >
+          >
               <FaPlus /> הוסף שלב
-            </button>
-          </div>
-        );
+          </button>
+    </div>
+  );
 
       case 'portfolio':
         return (
@@ -437,7 +437,7 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
             />
             {content.items?.map((item: any, index: number) => (
               <div key={index} className="border p-3 rounded space-y-2">
-                <input
+        <input
                   type="text"
                   placeholder="כותרת העבודה"
                   value={item.title || ''}
@@ -481,19 +481,19 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
                   }}
                   className="w-full p-2 border rounded"
                 />
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() => {
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => {
                 const newItems = [...(content.items || []), { title: '', description: '', image: '', link: '#' }];
                 updateSection(section.id, { ...content, items: newItems });
-              }}
+            }}
               className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-            >
+          >
               <FaPlus /> הוסף עבודה
-            </button>
-          </div>
+          </button>
+        </div>
         );
 
       case 'testimonials':
@@ -688,9 +688,9 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
                         }}
                         className="flex-1 p-2 border rounded"
                       />
-                      <button
-                        type="button"
-                        onClick={() => {
+              <button
+                type="button"
+                onClick={() => {
                           const newPlans = [...content.plans];
                           const newFeatures = newPlans[index].features.filter((_: string, i: number) => i !== featureIndex);
                           newPlans[index] = { ...plan, features: newFeatures };
@@ -699,12 +699,12 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
                         className="px-3 py-2 text-red-600 hover:text-red-800"
                       >
                         <FaTrash />
-                      </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => {
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => {
                       const newPlans = [...content.plans];
                       const newFeatures = [...(newPlans[index].features || []), ''];
                       newPlans[index] = { ...plan, features: newFeatures };
@@ -713,9 +713,9 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
                     className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
                   >
                     <FaPlus /> הוסף תכונה
-                  </button>
-                </div>
-              </div>
+          </button>
+        </div>
+      </div>
             ))}
             <button
               type="button"
@@ -734,8 +734,8 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
             >
               <FaPlus /> הוסף חבילה
             </button>
-          </div>
-        );
+    </div>
+  );
 
       case 'cta':
         return (
@@ -768,8 +768,8 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
               onChange={(e) => updateSection(section.id, { ...content, buttonLink: e.target.value })}
               className="w-full p-2 border rounded"
             />
-          </div>
-        );
+    </div>
+  );
 
       default:
         return <div>עורך לא זמין לסוג זה</div>;
@@ -782,30 +782,30 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h2 className="text-2xl font-bold mb-6">יצירת תבנית חדשה</h2>
           
-          <div className="space-y-4">
-            <div>
+    <div className="space-y-4">
+      <div>
               <label className="block text-sm font-medium mb-2">שם התבנית</label>
-              <input
-                type="text"
+        <input
+          type="text"
                 value={templateName}
                 onChange={(e) => setTemplateName(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="לדוגמה: תבנית שירותים"
                 required
-              />
-            </div>
-            
-            <div>
+        />
+      </div>
+
+      <div>
               <label className="block text-sm font-medium mb-2">תיאור התבנית</label>
-              <textarea
+        <textarea
                 value={templateDescription}
                 onChange={(e) => setTemplateDescription(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="תיאור קצר של התבנית"
-                rows={3}
-              />
-            </div>
-          </div>
+          rows={3}
+        />
+      </div>
+    </div>
         </div>
 
         <div className="bg-white rounded-lg shadow-lg p-6">
@@ -858,13 +858,13 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
                     >
                       ↓
                     </button>
-                    <button
+            <button
                       type="button"
                       onClick={() => removeSection(section.id)}
                       className="p-2 text-red-600 hover:text-red-800"
                     >
                       <FaTrash />
-                    </button>
+            </button>
                   </div>
                 </div>
                 
@@ -874,7 +874,7 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
               </motion.div>
             ))}
           </div>
-        </div>
+      </div>
 
         <div className="flex justify-end gap-4">
           <button
@@ -884,7 +884,7 @@ export default function TemplateForm({ onSubmit, initialData }: TemplateFormProp
             <FaSave />
             שמור תבנית
           </button>
-        </div>
+      </div>
       </form>
     </div>
   );

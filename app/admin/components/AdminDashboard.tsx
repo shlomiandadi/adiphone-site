@@ -203,6 +203,36 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
         >
           ניהול דפים
         </Link>
+        <Link
+          href="/admin/site-settings"
+          className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+        >
+          הגדרות האתר
+        </Link>
+        <Link
+          href="/admin/header"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+        >
+          ניהול הדר
+        </Link>
+        <Link
+          href="/admin/menus"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+        >
+          ניהול תפריטים
+        </Link>
+        <Link
+          href="/admin/footer"
+          className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+        >
+          ניהול פוטר
+        </Link>
+        <Link
+          href="/admin/top-strip"
+          className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+        >
+          סטריפ עליון
+        </Link>
         {user.role === 'ADMIN' && (
           <Link
             href="/admin/users"

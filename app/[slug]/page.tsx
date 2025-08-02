@@ -4,13 +4,13 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaCheck, FaStar, FaRocket, FaCrown, FaGem, FaHeart, FaBolt } from 'react-icons/fa';
+import { FaCheck, FaStar, FaRocket, FaCrown, FaGem, FaHeart, FaBolt, FaShieldAlt } from 'react-icons/fa';
 import DynamicTableOfContents from '../components/DynamicTableOfContents';
 
 interface PageData {
   id: string;
   title: string;
-  slug: string;
+    slug: string;
   content: string;
   templateRelation: {
     name: string;
@@ -46,7 +46,7 @@ const iconMap: { [key: string]: React.ReactNode } = {
   star: <FaStar className="w-8 h-8" />,
   check: <FaCheck className="w-8 h-8" />,
   heart: <FaHeart className="w-8 h-8" />,
-  shield: <FaBolt className="w-8 h-8" />,
+  shield: <FaShieldAlt className="w-8 h-8" />,
   rocket: <FaRocket className="w-8 h-8" />,
   crown: <FaCrown className="w-8 h-8" />,
   gem: <FaGem className="w-8 h-8" />,
@@ -165,7 +165,7 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
 
     switch (type) {
       case 'hero':
-        return (
+          return (
           <section key={section.id} className="relative h-[60vh] min-h-[400px] w-full">
             <Image
               src={content.backgroundImage || '/images/hero-bg.jpg'}
@@ -209,7 +209,7 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                   </motion.div>
                 )}
               </div>
-            </div>
+                          </div>
           </section>
         );
 
@@ -223,7 +223,7 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                   <DynamicTableOfContents content={content.content || ''} />
                 </div>
               )}
-              
+
               <div className="flex gap-8">
                 {/* תוכן ראשי */}
                 <div className="flex-1">
@@ -254,7 +254,7 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                   </div>
                 )}
               </div>
-            </div>
+                </div>
           </section>
         );
 
@@ -302,7 +302,7 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                   </motion.div>
                 ))}
               </motion.div>
-            </div>
+                          </div>
           </section>
         );
 
@@ -342,11 +342,11 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                         <FaCheck />
                       </motion.div>
                       <p className="text-lg text-gray-700 dark:text-gray-600">{benefit}</p>
-                    </div>
+                      </div>
                   </motion.div>
-                ))}
+                    ))}
               </motion.div>
-            </div>
+                  </div>
           </section>
         );
 
@@ -391,7 +391,7 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                   </motion.div>
                 ))}
               </motion.div>
-            </div>
+                </div>
           </section>
         );
 
@@ -491,18 +491,18 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                       <div className="flex text-yellow-400">
                         {[...Array(5)].map((_, i) => (
                           <FaStar key={i} className="h-5 w-5" />
-                        ))}
-                      </div>
-                    </div>
+                    ))}
+                  </div>
+                </div>
                   </motion.div>
                 ))}
               </motion.div>
             </div>
           </section>
-        );
+          );
 
       case 'faq':
-        return (
+          return (
           <section key={section.id} className="bg-white px-4 py-16 dark:bg-gray-900">
             <div className="container mx-auto max-w-4xl">
               <motion.h2
@@ -535,7 +535,7 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                   </motion.div>
                 ))}
               </motion.div>
-            </div>
+                </div>
           </section>
         );
 
@@ -613,7 +613,7 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
                       ))}
                     </ul>
 
-                    <button
+                    <button 
                       onClick={() => window.open('https://wa.me/972509159951?text=שלום! אני מעוניין בחבילה ' + plan.name, '_blank')}
                       className={`w-full py-3 px-6 rounded-lg font-semibold transition-all ${
                         plan.popular
@@ -646,10 +646,10 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
               </motion.div>
             </div>
           </section>
-        );
+          );
 
       case 'cta':
-        return (
+          return (
           <section key={section.id} className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-16 dark:from-blue-900 dark:to-purple-900">
             <div className="container mx-auto max-w-4xl text-center">
               <motion.h2
@@ -694,12 +694,12 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
 
       default:
         return null;
-    }
-  };
+      }
+    };
 
-  return (
+    return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {pageData.templateRelation?.sections?.sort((a, b) => a.order - b.order).map(renderSection)}
-    </div>
-  );
+          </div>
+    );
 } 

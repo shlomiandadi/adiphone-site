@@ -617,3 +617,21 @@ body.high-contrast .accessibility-statement-btn:hover {
   background: #fbbf24 !important;
   color: black !important;
 }
+
+/* Admin sidebar scrollbar styles */
+.admin-sidebar nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-sidebar nav::-webkit-scrollbar-track {
+  background: #f7fafc;
+}
+
+.admin-sidebar nav::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+}
+
+.admin-sidebar nav::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}

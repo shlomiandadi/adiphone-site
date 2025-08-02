@@ -26,8 +26,12 @@ export default function AdminLayout({ children, user }: AdminLayoutProps) {
       </nav>
 
       {/* Sidebar */}
-      <div className="fixed top-16 bottom-0 left-0 w-64 bg-white shadow-lg z-20">
-        <nav className="mt-12 overflow-y-auto h-full pb-20 space-y-2">
+      <div className="fixed top-16 bottom-0 left-0 w-64 bg-white shadow-lg z-20 admin-sidebar">
+        <nav className="mt-12 overflow-y-auto h-full pb-20 space-y-2" style={{ 
+          maxHeight: 'calc(100vh - 4rem)',
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#cbd5e0 #f7fafc'
+        }}>
           <Link href="/admin" className="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100">
             <svg className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -152,6 +156,19 @@ export default function AdminLayout({ children, user }: AdminLayoutProps) {
               משתמשים
             </Link>
           )}
+          
+          {/* כפתור חזרה למעלה */}
+          <div className="border-t border-gray-200 mt-4 pt-4">
+            <a 
+              href="#top"
+              className="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100 w-full text-right"
+            >
+              <svg className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+              </svg>
+              חזור למעלה
+            </a>
+          </div>
         </nav>
       </div>
 

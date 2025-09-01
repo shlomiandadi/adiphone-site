@@ -118,7 +118,7 @@ export default function CookieConsent() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 p-4 sm:p-6">
+    <div className="fixed inset-x-0 bottom-0 z-50 p-4 sm:p-6 pb-20 md:pb-6">
       <div className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-white shadow-xl">
         <div className="p-4 sm:p-6">
           <h2 className="text-base sm:text-lg font-semibold mb-2">שימוש בעוגיות (Cookies)</h2>

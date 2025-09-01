@@ -75,7 +75,8 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', 'G-QMC63HG6SD');
+            // Defer GA collection until consent given (analytics_storage = granted)
+            gtag('config', 'G-QMC63HG6SD', { 'allow_ad_personalization_signals': false, 'anonymize_ip': true });
           `}
         </Script>
       </head>

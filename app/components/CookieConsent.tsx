@@ -1,6 +1,9 @@
+
+
 "use client";
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 type ConsentCategories = {
   necessary: boolean; // always true
@@ -61,30 +64,36 @@ function updateGtagConsent(categories: ConsentCategories) {
 }
 
 export default function CookieConsent() {
-  const existingConsent = useMemo(() => (typeof window !== "undefined" ? readConsent() : null), []);
-  const [visible, setVisible] = useState(!existingConsent);
+  const pathname = usePathname();
+  const [visible, setVisible] = useState(false);
   const [showCustomize, setShowCustomize] = useState(false);
-  const [categories, setCategories] = useState<ConsentCategories>(
-    existingConsent?.categories ?? {
-      necessary: true,
-      analytics: false,
-      marketing: false,
-      functional: false,
-    }
-  );
+  const [categories, setCategories] = useState<ConsentCategories>({
+    necessary: true,
+    analytics: false,
+    marketing: false,
+    functional: false,
+  });
 
+  // Initialize on mount and on route change to prevent re-opening when consent exists
   useEffect(() => {
-    if (existingConsent) {
-      updateGtagConsent(existingConsent.categories);
+    const consent = readConsent();
+    if (consent) {
+      setCategories({ ...consent.categories, necessary: true });
+      setVisible(false);
+      updateGtagConsent(consent.categories);
+    } else {
+      setVisible(true);
     }
-    // listen for external open requests
+  }, [pathname]);
+
+  // Listen for external open requests (cookie icon)
+  useEffect(() => {
     const openHandler = () => {
       setShowCustomize(true);
       setVisible(true);
     };
     window.addEventListener("open-cookie-settings", openHandler as EventListener);
     return () => window.removeEventListener("open-cookie-settings", openHandler as EventListener);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function persistAndClose(next: ConsentCategories) {

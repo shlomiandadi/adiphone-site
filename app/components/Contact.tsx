@@ -11,7 +11,8 @@ export default function Contact() {
     email: '',
     phone: '',
     message: '',
-    service: 'other'
+    service: 'other',
+    newsletter: true
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,7 +44,8 @@ export default function Contact() {
         email: '',
         phone: '',
         message: '',
-        service: 'other'
+        service: 'other',
+        newsletter: true
       });
       router.push('/thank-you');
     } catch (error) {
@@ -59,6 +61,13 @@ export default function Contact() {
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.checked
     }));
   };
 
@@ -228,6 +237,20 @@ export default function Contact() {
                       rows={4}
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
                     />
+                  </div>
+
+                  <div className="flex items-start space-x-3 space-x-reverse">
+                    <input
+                      type="checkbox"
+                      id="newsletter"
+                      name="newsletter"
+                      checked={formData.newsletter}
+                      onChange={handleCheckboxChange}
+                      className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="newsletter" className="text-sm text-gray-700 dark:text-gray-300">
+                      אני מעוניין/ת לקבל עדכונים, טיפים מקצועיים וחומרים שיווקיים על שירותי עדי פון תקשורת
+                    </label>
                   </div>
                 </div>
 

@@ -11,7 +11,8 @@ export default function Contact() {
     email: '',
     phone: '',
     message: '',
-    service: ContactService.OTHER
+    service: ContactService.OTHER,
+    newsletter: true
   });
   const [status, setStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,7 +38,7 @@ export default function Contact() {
       }
 
       setStatus('הטופס נשלח בהצלחה! נציג יצור איתך קשר בהקדם.');
-      setFormData({ name: '', email: '', phone: '', message: '', service: ContactService.OTHER });
+      setFormData({ name: '', email: '', phone: '', message: '', service: ContactService.OTHER, newsletter: true });
       router.push('/thank-you');
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -52,6 +53,13 @@ export default function Contact() {
     setFormData(prev => ({
       ...prev,
       [name]: name === 'service' ? value as ContactService : value
+    }));
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.checked
     }));
   };
 
@@ -144,6 +152,20 @@ export default function Contact() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 ></textarea>
+              </div>
+
+              <div className="flex items-start space-x-3 space-x-reverse">
+                <input
+                  type="checkbox"
+                  id="newsletter"
+                  name="newsletter"
+                  checked={formData.newsletter}
+                  onChange={handleCheckboxChange}
+                  className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label htmlFor="newsletter" className="text-sm text-gray-700">
+                  אני מעוניין/ת לקבל עדכונים, טיפים מקצועיים וחומרים שיווקיים על שירותי עדי פון תקשורת
+                </label>
               </div>
 
               {status && (

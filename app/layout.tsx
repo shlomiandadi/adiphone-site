@@ -8,6 +8,7 @@ import BreadcrumbSchema from './components/BreadcrumbSchema';
 import FloatingButtons from './components/FloatingButtons';
 import AccessibilityBar from './components/AccessibilityBar';
 import Script from 'next/script';
+import CookieConsent from './components/CookieConsent';
 import ChatbotWidget from './components/ChatbotWidget';
 
 const heebo = Heebo({ 
@@ -39,6 +40,19 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
       <head>
+        {/* Default deny until consent. This prevents accidental data collection before consent */}
+        <Script id="gtag-default-consent" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);} 
+            gtag('consent', 'default', {
+              'ad_storage': 'denied',
+              'analytics_storage': 'denied',
+              'functionality_storage': 'denied',
+              'security_storage': 'granted'
+            });
+          `}
+        </Script>
         <BreadcrumbSchema />
         {/* Google Tag Manager */}
         <Script id="google-tag-manager" strategy="afterInteractive">
@@ -61,7 +75,8 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', 'G-QMC63HG6SD');
+            // Defer GA collection until consent given (analytics_storage = granted)
+            gtag('config', 'G-QMC63HG6SD', { 'allow_ad_personalization_signals': false, 'anonymize_ip': true });
           `}
         </Script>
       </head>
@@ -91,6 +106,7 @@ export default function RootLayout({
         <Footer />
         <FloatingButtons />
         <AccessibilityBar />
+        <CookieConsent />
         <ChatbotWidget />
       </body>
     </html>

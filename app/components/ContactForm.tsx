@@ -9,7 +9,8 @@ const ContactForm: React.FC = () => {
     email: '',
     phone: '',
     message: '',
-    service: ContactService.OTHER
+    service: ContactService.OTHER,
+    newsletter: true
   });
   const [status, setStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,7 +70,8 @@ const ContactForm: React.FC = () => {
         email: '',
         phone: '',
         message: '',
-        service: ContactService.OTHER
+        service: ContactService.OTHER,
+        newsletter: true
       });
       router.push('/thank-you');
     } catch (error) {
@@ -85,6 +87,13 @@ const ContactForm: React.FC = () => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: value
+    }));
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.checked
     }));
   };
 
@@ -167,6 +176,20 @@ const ContactForm: React.FC = () => {
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:text-white"
           required
         ></textarea>
+      </div>
+
+      <div className="flex items-start space-x-3 space-x-reverse">
+        <input
+          type="checkbox"
+          id="newsletter"
+          name="newsletter"
+          checked={formData.newsletter}
+          onChange={handleCheckboxChange}
+          className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        />
+        <label htmlFor="newsletter" className="text-sm text-gray-700 dark:text-gray-300">
+          אני מעוניין/ת לקבל עדכונים, טיפים מקצועיים וחומרים שיווקיים על שירותי עדי פון תקשורת
+        </label>
       </div>
 
       {error && (

@@ -24,6 +24,7 @@ module.exports = {
           800: '#075985',
           900: '#0c4a6e',
         },
+        'primary-dark': '#0369a1',
       },
       keyframes: {
         'fade-in': {

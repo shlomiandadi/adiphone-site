@@ -25,6 +25,13 @@ export default function FloatingButtons() {
   const [isMobile, setIsMobile] = useState(false);
   const [chatbotOpen, setChatbotOpen] = useState(false);
   const [accessibilityOpen, setAccessibilityOpen] = useState(false);
+  const openCookieSettings = () => {
+    try {
+      window.dispatchEvent(new Event('open-cookie-settings'));
+    } catch {
+      // ignore
+    }
+  };
   
   // Chatbot states
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
@@ -468,6 +475,29 @@ export default function FloatingButtons() {
                 </button>
               </motion.div>
 
+              {/* Cookie Settings Button (Mobile) */}
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="relative group"
+              >
+                <button
+                  onClick={openCookieSettings}
+                  className="flex flex-col items-center"
+                  aria-label="הגדרות עוגיות"
+                >
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-gray-700 to-gray-500 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-200"></div>
+                    <div className="relative w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white">
+                        <path d="M11.984 2a1 1 0 0 1 .993.883l.007.117v1.07a2.5 2.5 0 0 0 2.354 2.495l.146.005h1.07a1 1 0 0 1 .117 1.993l-.117.007h-1.07a4.5 4.5 0 0 1-4.493-4.354L11.984 2Zm-1.16 3.277a8 8 0 1 1-3.548 15.556 1 1 0 0 1-.64-1.265l.041-.11.335-.76a1 1 0 0 1 1.589-.354l.088.082.6.6a1 1 0 0 0 1.464-1.366l-.077-.082-1.2-1.2a1 1 0 0 1 .235-1.58l.111-.052 1.13-.452a1 1 0 0 0-.328-1.945l-.112.005h-.85a1 1 0 0 1-.988-1.16l.02-.112.2-.8a1 1 0 0 0-1.32-1.164l-.103.043-.8.4a1 1 0 0 1-1.216-1.56l.087-.067a7.966 7.966 0 0 1 2.652-1.192Z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="text-xs mt-1 text-gray-600">עוגיות</span>
+                </button>
+              </motion.div>
+
               {/* Accessibility Button */}
               <motion.div
                 whileHover={{ scale: 1.1 }}
@@ -624,6 +654,35 @@ export default function FloatingButtons() {
             נגישות
           </span>
           <FaWheelchair className="w-7 h-7 text-white" />
+        </button>
+      </motion.div>
+
+      {/* Cookie Settings Button (Desktop) */}
+      <motion.div
+        initial={{ scale: 0, rotate: -180 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+          delay: 1.0
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="relative group"
+      >
+        <div className="absolute -inset-1 bg-gradient-to-r from-gray-700 to-gray-500 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-200"></div>
+        <button
+          onClick={openCookieSettings}
+          className="relative flex items-center justify-center w-14 h-14 bg-gray-900 hover:bg-gray-800 rounded-full shadow-lg transition-colors duration-200"
+          aria-label="הגדרות עוגיות"
+        >
+          <span className="absolute -top-10 right-0 bg-black text-white text-sm py-1 px-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            הגדרות עוגיות
+          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-white">
+            <path d="M11.984 2a1 1 0 0 1 .993.883l.007.117v1.07a2.5 2.5 0 0 0 2.354 2.495l.146.005h1.07a1 1 0 0 1 .117 1.993l-.117.007h-1.07a4.5 4.5 0 0 1-4.493-4.354L11.984 2Zm-1.16 3.277a8 8 0 1 1-3.548 15.556 1 1 0 0 1-.64-1.265l.041-.11.335-.76a1 1 0 0 1 1.589-.354l.088.082.6.6a1 1 0 0 0 1.464-1.366l-.077-.082-1.2-1.2a1 1 0 0 1 .235-1.58l.111-.052 1.13-.452a1 1 0 0 0-.328-1.945l-.112.005h-.85a1 1 0 0 1-.988-1.16l.02-.112.2-.8a1 1 0 0 0-1.32-1.164l-.103.043-.8.4a1 1 0 0 1-1.216-1.56l.087-.067a7.966 7.966 0 0 1 2.652-1.192Z" />
+          </svg>
         </button>
       </motion.div>
 

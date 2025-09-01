@@ -34,7 +34,8 @@ export default function Blog() {
     email: '',
     phone: '',
     message: 'מתעניין/ת בניוזלטר',
-    service: ContactService.OTHER
+    service: ContactService.OTHER,
+    newsletter: true
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState('');
@@ -85,7 +86,8 @@ export default function Blog() {
         email: '',
         phone: '',
         message: 'מתעניין/ת בניוזלטר',
-        service: ContactService.OTHER
+        service: ContactService.OTHER,
+        newsletter: true
       });
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -100,6 +102,13 @@ export default function Blog() {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.checked
+    }));
   };
 
   if (loading) {
@@ -217,6 +226,20 @@ export default function Blog() {
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   />
+                </div>
+
+                <div className="flex items-start space-x-3 space-x-reverse">
+                  <input
+                    type="checkbox"
+                    id="newsletter"
+                    name="newsletter"
+                    checked={formData.newsletter}
+                    onChange={handleCheckboxChange}
+                    className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="newsletter" className="text-sm text-gray-700 dark:text-gray-300">
+                    אני מעוניין/ת לקבל עדכונים, טיפים מקצועיים וחומרים שיווקיים על שירותי עדי פון תקשורת
+                  </label>
                 </div>
 
                 {status && (

@@ -9,12 +9,10 @@ import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import ProcessSteps from './components/ProcessSteps';
 import Technologies from './components/Technologies';
-import Metadata from './components/Metadata';
 
 export default function Home() {
   return (
     <>
-      <Metadata />
       <div className="overflow-hidden">
         <section className="relative h-[80vh] min-h-[600px]">
           <Image

@@ -24,11 +24,24 @@ export const viewport: Viewport = {
   themeColor: '#2563eb',
 };
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_API_URL || 'https://adi-phone.co.il';
+
 export const metadata: Metadata = {
-  title: 'עדי פון תקשורת - קידום ובניית אתרים',
-  description: 'עדי פון תקשורת - שירותי קידום אתרים מקצועיים, פיתוח אתרים, שיווק דיגיטלי ועוד',
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: 'Top Webstak - בנייה וקידום אתרים מקצועיים | עדי פון תקשורת',
+    template: '%s | Top Webstak',
+  },
+  description: 'Top Webstak - פתרונות דיגיטליים מקצועיים לעסקים: פיתוח אתרים, קידום SEO, בניית חנויות אונליין, פיתוח אפליקציות, עיצוב UI/UX ושיווק דיגיטלי. צוות מומחים עם ניסיון של למעלה מ-15 שנה.',
+  keywords: 'פיתוח אתרים, בניית אתרים, קידום אתרים, SEO, בניית חנויות, אפליקציות, שיווק דיגיטלי, Top Webstak, עדי פון תקשורת',
   icons: {
     icon: '/favicon.ico',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'he_IL',
+    siteName: 'Top Webstak',
+    url: baseUrl,
   },
 };
 

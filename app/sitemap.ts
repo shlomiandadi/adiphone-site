@@ -1,8 +1,6 @@
 import { MetadataRoute } from 'next';
-import { PrismaClient } from '@prisma/client';
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://adi-phone.co.il';
-const prisma = new PrismaClient();
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_API_URL || 'https://adi-phone.co.il';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static routes
@@ -37,18 +35,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8,
   }));
 
-  // Blog posts
-  const blogPosts = await prisma.post.findMany({
-    where: { published: true },
-    select: { slug: true, updatedAt: true }
-  });
+  // Blog posts - try to fetch from database, but don't fail if database is not available
+  let blogRoutes: MetadataRoute.Sitemap = [];
+  try {
+    if (process.env.DATABASE_URL) {
+      const { PrismaClient } = await import('@prisma/client');
+      const prisma = new PrismaClient();
+      
+      const blogPosts = await prisma.post.findMany({
+        where: { published: true },
+        select: { slug: true, updatedAt: true }
+      });
 
-  const blogRoutes = blogPosts.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.updatedAt,
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
+      blogRoutes = blogPosts.map((post) => ({
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: post.updatedAt,
+        changeFrequency: 'weekly' as const,
+        priority: 0.7,
+      }));
+
+      await prisma.$disconnect();
+    }
+  } catch (error) {
+    // If database is not available, just skip blog posts
+    console.warn('Could not fetch blog posts for sitemap:', error);
+  }
 
   return [...staticRoutes, ...blogRoutes];
 } 

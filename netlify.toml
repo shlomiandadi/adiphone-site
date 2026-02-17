@@ -4,7 +4,7 @@
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
   NEXT_PUBLIC_API_URL = "https://adi-phone.co.il"
   # DATABASE_URL will be set in Netlify dashboard for Neon PostgreSQL
   EMAIL_HOST = "smtp.gmail.com"

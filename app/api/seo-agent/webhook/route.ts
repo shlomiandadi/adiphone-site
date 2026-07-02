@@ -34,6 +34,8 @@ type SeoAgentArticle = {
   images?: WebhookImage[];
   publishedAt?: string;
   renderMode?: 'full';
+  authorName?: string;
+  byline?: string;
 };
 
 function verifySignature(rawBody: string, signature: string, secret: string): boolean {
@@ -85,6 +87,18 @@ function collectImages(article: SeoAgentArticle): string[] {
 
 function getArticleContent(article: SeoAgentArticle): string {
   return (article.contentHtml || article.content || '').trim();
+}
+
+function resolveAuthorName(article: SeoAgentArticle): string {
+  const fromName = article.authorName?.trim();
+  if (fromName) return fromName;
+
+  const byline = article.byline?.trim();
+  if (byline) {
+    return byline.replace(/^מאת\s+/i, '').trim() || byline;
+  }
+
+  return 'Top Webstak';
 }
 
 async function getDefaultCategoryId(): Promise<string | null> {
@@ -152,8 +166,8 @@ async function saveArticle(article: SeoAgentArticle) {
     schemaMarkup: article.schemaMarkup?.trim() || null,
     canonicalUrl: article.canonical?.trim() || `${getSiteUrl()}/blog/${slug}`,
     published,
-    authorName: 'SEO Agent',
-    authorEmail: 'seo-agent@adi-phone.co.il',
+    authorName: resolveAuthorName(article),
+    authorEmail: 'info@adi-phone.co.il',
     categoryId,
   };
 

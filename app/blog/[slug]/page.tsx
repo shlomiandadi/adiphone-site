@@ -24,6 +24,9 @@ interface BlogPost {
   metaTitle: string;
   metaDesc: string;
   updatedAt: string;
+  articleStyles?: string | null;
+  schemaMarkup?: string | null;
+  canonicalUrl?: string | null;
 }
 
 async function getBlogPost(slug: string) {
@@ -53,11 +56,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://adi-phone.co.il';
+
   return {
     title: post.metaTitle || post.title,
     description: post.metaDesc || post.excerpt,
     keywords: post.tags?.join(', '),
     authors: [{ name: post.authorName }],
+    alternates: {
+      canonical: post.canonicalUrl || `${siteUrl}/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.metaTitle || post.title,
       description: post.metaDesc || post.excerpt,
@@ -102,6 +110,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   return (
     <main className="pt-24">
       <BlogPostSchema post={post} />
+      {post.articleStyles && (
+        <style dangerouslySetInnerHTML={{ __html: post.articleStyles }} />
+      )}
       {/* Hero Section */}
       <section className="relative h-[500px] flex items-center justify-center text-white overflow-hidden">
         <div className="absolute inset-0 z-0">

@@ -36,6 +36,9 @@ model Post {
   likes       Int       @default(0)
   metaTitle   String
   metaDesc    String
+  articleStyles String? @db.Text
+  schemaMarkup  String? @db.Text
+  canonicalUrl  String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   authorId    String?

@@ -56,30 +56,37 @@ signature = HMAC_SHA256(secret, rawBody).hexdigest()
 
 האתר שומר מאמרים בטבלת `Post` (Prisma). מיפוי שדות:
 
-| שדה מ-SEO Agent | שדה ב-DB |
-|-----------------|----------|
+| שדה מ-SEO Agent | שדה ב-DB / שימוש |
+|-----------------|------------------|
 | `title` | `title` |
 | `slug` | `slug` (ייחודי) |
-| `content` | `content` (HTML) |
+| `contentHtml` | `content` (גוף המאמר בלבד, ללא schema) |
+| `articleStyles` | `articleStyles` → `<style>` בדף המאמר |
+| `schemaMarkup` | `schemaMarkup` → `<script type="application/ld+json">` ב-head |
 | `metaDescription` | `excerpt`, `metaDesc` |
 | `seoTitle` | `metaTitle` |
+| `canonical` | `canonicalUrl` |
 | `status: "publish"` | `published: true` |
 | `status: "draft"` | `published: false` |
 | `ogImage` | `mainImage` |
-| `images[].url` | `images[]` |
+| `images[].url` / `images[].base64` | `images[]` |
+| `primaryCategory` / `categories[]` | `categoryId` (נוצרת אם לא קיימת) |
+| `tags[]` | `tags[]` |
 
 - אם `slug` כבר קיים → **עדכון** (upsert)
 - קטגוריה ברירת מחדל: `seo`
 
 ### 5. תמונות
 
-מגיעות כ-URL (לא base64):
+מגיעות כ-URL או base64:
 
 ```json
 "images": [{ "url": "https://...", "alt": "...", "caption": "..." }]
+"images": [{ "base64": "...", "alt": "..." }]
 ```
 
-האתר שומר את כתובות ה-URL ישירות (כמו שאר המאמרים). `ogImage` הופך ל-`mainImage`.
+- `ogImage` → `mainImage`
+- `base64` נשמר כ-data URI במערכת
 
 ### 6. תגובת השרת
 
@@ -111,10 +118,11 @@ HTTP `200` + JSON:
 
 ```typescript
 {
-  id: string;                    // מזהה ב-SEO Agent
+  id: string;
   title: string;
   slug: string;
-  content: string;               // HTML מלא + schema ב-<script>
+  contentHtml: string;          // גוף המאמר — HTML בלבד
+  articleStyles: string;        // CSS ל-<style>
   status: "draft" | "publish";
   seoTitle: string;
   metaDescription: string;
@@ -122,13 +130,17 @@ HTTP `200` + JSON:
   ogDescription: string;
   ogImage?: string;
   canonical?: string;
-  schemaMarkup?: string;         // JSON-LD (גם מוטמע ב-content)
-  images?: { url, alt, caption? }[];
-  publishedAt?: string;          // ISO 8601
+  schemaMarkup?: string;        // JSON-LD ל-<head> בלבד
+  categories?: string[];
+  tags?: string[];
+  primaryCategory?: string;
+  images?: { url?, alt, caption?, base64? }[];
+  publishedAt?: string;
+  renderMode?: "full";
 }
 ```
 
-**חשוב:** אין `categories` / `tags` ב-Webhook. `content` כולל HTML מעוצב RTL + תג schema.
+**חשוב:** `contentHtml` = גוף המאמר. `articleStyles` ו-`schemaMarkup` נשמרים בנפרד ומוצגים בדף המאמר.
 
 ---
 
@@ -137,7 +149,7 @@ HTTP `200` + JSON:
 ```bash
 # 1. הגדירו SECRET
 SECRET="your-webhook-secret"
-BODY='{"id":"test-1","title":"מאמר בדיקה","slug":"test-article","content":"<p>תוכן בדיקה</p>","status":"publish","seoTitle":"מאמר בדיקה","metaDescription":"תיאור קצר","ogTitle":"מאמר בדיקה","ogDescription":"תיאור OG"}'
+BODY='{"id":"test-1","title":"מאמר בדיקה","slug":"test-article","contentHtml":"<p>תוכן בדיקה</p>","articleStyles":".article { direction: rtl; }","status":"publish","seoTitle":"מאמר בדיקה","metaDescription":"תיאור קצר","ogTitle":"מאמר בדיקה","ogDescription":"תיאור OG"}'
 
 # 2. חישוב חתימה (macOS/Linux)
 SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$SECRET" | awk '{print $2}')

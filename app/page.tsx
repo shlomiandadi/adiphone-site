@@ -9,10 +9,13 @@ import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import ProcessSteps from './components/ProcessSteps';
 import Technologies from './components/Technologies';
+import HomeFAQ from './components/HomeFAQ';
+import HomeSchema from './components/HomeSchema';
 
 export default function Home() {
   return (
     <>
+      <HomeSchema />
       <div className="overflow-hidden">
         <section className="relative h-[80vh] min-h-[600px]">
           <Image
@@ -58,6 +61,10 @@ export default function Home() {
 
         <section className="animate-slide-in">
           <Testimonials />
+        </section>
+
+        <section className="animate-slide-in">
+          <HomeFAQ />
         </section>
 
         <section className="animate-slide-in">

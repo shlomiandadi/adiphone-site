@@ -55,7 +55,7 @@ function collectImageUrls(article: SeoAgentArticle): string[] {
     .map((image) => image.url?.trim())
     .filter((url): url is string => Boolean(url));
 
-  return [...new Set(urls)];
+  return Array.from(new Set(urls));
 }
 
 async function getDefaultCategoryId(): Promise<string | null> {

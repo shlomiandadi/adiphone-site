@@ -25,8 +25,44 @@ interface BlogPost {
   updatedAt: string;
 }
 
+const POSTS_PER_PAGE = 6;
+
+interface PaginationInfo {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
+}
+
+function getPageNumbers(current: number, total: number): (number | 'ellipsis')[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  const pages: (number | 'ellipsis')[] = [1];
+
+  if (current > 3) pages.push('ellipsis');
+
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+
+  for (let i = start; i <= end; i++) pages.push(i);
+
+  if (current < total - 2) pages.push('ellipsis');
+
+  pages.push(total);
+  return pages;
+}
+
 export default function Blog() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [pagination, setPagination] = useState<PaginationInfo>({
+    page: 1,
+    limit: POSTS_PER_PAGE,
+    total: 0,
+    pages: 0,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -42,13 +78,26 @@ export default function Blog() {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        const response = await fetch('/api/posts');
+        const response = await fetch(
+          `/api/posts?page=${currentPage}&limit=${POSTS_PER_PAGE}`
+        );
         if (!response.ok) {
           throw new Error('Failed to fetch blogs');
         }
         const data = await response.json();
         setPosts(data.posts || []);
+        setPagination(
+          data.pagination || {
+            page: currentPage,
+            limit: POSTS_PER_PAGE,
+            total: data.posts?.length || 0,
+            pages: 1,
+          }
+        );
       } catch (err) {
         console.error('Error fetching blogs:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch blogs');
@@ -58,7 +107,13 @@ export default function Blog() {
     };
 
     fetchPosts();
-  }, []);
+  }, [currentPage]);
+
+  const goToPage = (page: number) => {
+    if (page < 1 || page > pagination.pages || page === currentPage) return;
+    setCurrentPage(page);
+    document.getElementById('blog-posts')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,32 +166,10 @@ export default function Blog() {
     }));
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-20">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600 dark:text-gray-300">טוען פוסטים...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-20">
-          <div className="text-center">
-            <div className="bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-200 px-4 py-3 rounded max-w-md mx-auto">
-              <p>שגיאה בטעינת הפוסטים: {error}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const pageNumbers = getPageNumbers(pagination.page, pagination.pages);
+  const showPagination = pagination.pages > 1;
+  const fromPost = pagination.total === 0 ? 0 : (pagination.page - 1) * pagination.limit + 1;
+  const toPost = Math.min(pagination.page * pagination.limit, pagination.total);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -154,8 +187,19 @@ export default function Blog() {
       <div className="container mx-auto px-4 py-16">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Blog Posts */}
-          <div className="lg:col-span-2">
-            {posts.length === 0 ? (
+          <div id="blog-posts" className="lg:col-span-2 scroll-mt-28">
+            {error ? (
+              <div className="text-center py-12">
+                <div className="bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-200 px-4 py-3 rounded max-w-md mx-auto">
+                  <p>שגיאה בטעינת הפוסטים: {error}</p>
+                </div>
+              </div>
+            ) : loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
+                <p className="mt-4 text-gray-600 dark:text-gray-300">טוען פוסטים...</p>
+              </div>
+            ) : posts.length === 0 ? (
               <div className="text-center py-12">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                   אין פוסטים זמינים כרגע
@@ -165,11 +209,68 @@ export default function Blog() {
                 </p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 gap-8">
-                {posts.map((post) => (
-                  <BlogCard key={post.id} post={post} />
-                ))}
-              </div>
+              <>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                  מציג {fromPost}–{toPost} מתוך {pagination.total} מאמרים
+                </p>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                  {posts.map((post) => (
+                    <BlogCard key={post.id} post={post} />
+                  ))}
+                </div>
+
+                {showPagination && (
+                  <nav
+                    className="mt-12 flex flex-wrap items-center justify-center gap-2"
+                    aria-label="ניווט בין עמודי הבלוג"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => goToPage(currentPage - 1)}
+                      disabled={currentPage <= 1}
+                      className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium transition-colors hover:bg-blue-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-800"
+                    >
+                      הקודם
+                    </button>
+
+                    {pageNumbers.map((item, index) =>
+                      item === 'ellipsis' ? (
+                        <span
+                          key={`ellipsis-${index}`}
+                          className="px-2 text-gray-400"
+                          aria-hidden="true"
+                        >
+                          …
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          key={item}
+                          onClick={() => goToPage(item)}
+                          aria-current={item === currentPage ? 'page' : undefined}
+                          className={`min-w-[2.5rem] px-3 py-2 rounded-lg font-medium transition-colors ${
+                            item === currentPage
+                              ? 'bg-blue-600 text-white shadow-md'
+                              : 'border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700'
+                          }`}
+                        >
+                          {item}
+                        </button>
+                      )
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => goToPage(currentPage + 1)}
+                      disabled={currentPage >= pagination.pages}
+                      className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium transition-colors hover:bg-blue-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-800"
+                    >
+                      הבא
+                    </button>
+                  </nav>
+                )}
+              </>
             )}
           </div>
 

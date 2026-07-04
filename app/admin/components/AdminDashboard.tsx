@@ -220,7 +220,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
             </div>
             <div className="mr-4">
               <p className="text-sm font-medium text-gray-600">סה"כ פוסטים</p>
-              <p className="text-2xl font-bold text-gray-900">{posts.length}</p>
+              <p className="text-2xl font-bold text-gray-900">{publishedCount + draftCount}</p>
             </div>
           </div>
         </Link>

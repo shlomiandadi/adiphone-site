@@ -30,6 +30,8 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ user }: AdminDashboardProps) {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [publishedCount, setPublishedCount] = useState(0);
+  const [draftCount, setDraftCount] = useState(0);
   const [projects, setProjects] = useState<PortfolioProject[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
@@ -38,9 +40,21 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch('/api/posts?admin=true');
-      const data = await response.json();
-      setPosts(data.posts || []);
+      const [recentRes, publishedRes, draftRes] = await Promise.all([
+        fetch('/api/posts?admin=true&page=1&limit=5'),
+        fetch('/api/posts?admin=true&published=true&page=1&limit=1'),
+        fetch('/api/posts?admin=true&published=false&page=1&limit=1'),
+      ]);
+
+      const [recentData, publishedData, draftData] = await Promise.all([
+        recentRes.json(),
+        publishedRes.json(),
+        draftRes.json(),
+      ]);
+
+      setPosts(recentData.posts || []);
+      setPublishedCount(publishedData.pagination?.total ?? 0);
+      setDraftCount(draftData.pagination?.total ?? 0);
     } catch (error) {
       console.error('Error fetching posts:', error);
     }
@@ -221,7 +235,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
             <div className="mr-4">
               <p className="text-sm font-medium text-gray-600">פוסטים מפורסמים</p>
               <p className="text-2xl font-bold text-gray-900">
-                {posts.filter(post => post.published).length}
+                {publishedCount}
               </p>
             </div>
           </div>
@@ -237,7 +251,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
             <div className="mr-4">
               <p className="text-sm font-medium text-gray-600">טיוטות</p>
               <p className="text-2xl font-bold text-gray-900">
-                {posts.filter(post => !post.published).length}
+                {draftCount}
               </p>
             </div>
           </div>
@@ -319,7 +333,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {posts.slice(0, 5).map((post) => (
+              {posts.map((post) => (
                 <tr key={post.slug}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">{post.title}</div>

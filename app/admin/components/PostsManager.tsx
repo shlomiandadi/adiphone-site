@@ -22,29 +22,83 @@ interface Post {
   tags: string[];
 }
 
+interface PaginationInfo {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
+}
+
+const POSTS_PER_PAGE = 10;
+
+function getPageNumbers(current: number, total: number): (number | 'ellipsis')[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  const pages: (number | 'ellipsis')[] = [1];
+
+  if (current > 3) pages.push('ellipsis');
+
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+
+  for (let i = start; i <= end; i++) pages.push(i);
+
+  if (current < total - 2) pages.push('ellipsis');
+
+  pages.push(total);
+  return pages;
+}
+
 export default function PostsManager() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [pagination, setPagination] = useState<PaginationInfo>({
+    page: 1,
+    limit: POSTS_PER_PAGE,
+    total: 0,
+    pages: 0,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    fetchPosts(currentPage);
+  }, [currentPage]);
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (page: number) => {
+    setLoading(true);
+    setError('');
+
     try {
-      const res = await fetch('/api/posts');
+      const res = await fetch(
+        `/api/posts?admin=true&page=${page}&limit=${POSTS_PER_PAGE}`
+      );
       if (!res.ok) {
         throw new Error('Failed to fetch posts');
       }
       const data = await res.json();
       setPosts(data.posts || []);
-    } catch (error) {
+      setPagination(
+        data.pagination || {
+          page,
+          limit: POSTS_PER_PAGE,
+          total: data.posts?.length || 0,
+          pages: 1,
+        }
+      );
+    } catch (err) {
       setError('שגיאה בטעינת הפוסטים');
-      console.error('Error:', error);
+      console.error('Error:', err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const goToPage = (page: number) => {
+    if (page < 1 || page > pagination.pages || page === currentPage) return;
+    setCurrentPage(page);
   };
 
   const handleDelete = async (slug: string) => {
@@ -61,21 +115,34 @@ export default function PostsManager() {
         throw new Error('Failed to delete post');
       }
 
-      setPosts(posts.filter(post => post.slug !== slug));
-    } catch (error) {
+      const remainingOnPage = posts.length - 1;
+      if (remainingOnPage === 0 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      } else {
+        fetchPosts(currentPage);
+      }
+    } catch (err) {
       setError('שגיאה במחיקת הפוסט');
-      console.error('Error:', error);
+      console.error('Error:', err);
     }
   };
 
-  if (loading) {
-    return <div className="p-6">טוען...</div>;
-  }
+  const pageNumbers = getPageNumbers(pagination.page, pagination.pages);
+  const showPagination = pagination.pages > 1;
+  const fromPost = pagination.total === 0 ? 0 : (pagination.page - 1) * pagination.limit + 1;
+  const toPost = Math.min(pagination.page * pagination.limit, pagination.total);
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">ניהול פוסטים</h1>
+        <div>
+          <h1 className="text-3xl font-bold">ניהול פוסטים</h1>
+          {!loading && pagination.total > 0 && (
+            <p className="text-sm text-gray-500 mt-1">
+              מציג {fromPost}–{toPost} מתוך {pagination.total} פוסטים
+            </p>
+          )}
+        </div>
         <Link
           href="/admin/posts/new"
           className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
@@ -115,7 +182,13 @@ export default function PostsManager() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {Array.isArray(posts) && posts.length > 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                  טוען פוסטים...
+                </td>
+              </tr>
+            ) : Array.isArray(posts) && posts.length > 0 ? (
               posts.map((post) => (
                 <tr key={post.slug}>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -160,13 +233,64 @@ export default function PostsManager() {
             ) : (
               <tr>
                 <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
-                  {Array.isArray(posts) ? 'אין פוסטים עדיין' : 'טוען פוסטים...'}
+                  אין פוסטים עדיין
                 </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
+
+      {showPagination && !loading && (
+        <nav
+          className="mt-6 flex flex-wrap items-center justify-center gap-2"
+          aria-label="ניווט בין עמודי הפוסטים"
+        >
+          <button
+            type="button"
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className="px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700 font-medium transition-colors hover:bg-indigo-50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white"
+          >
+            הקודם
+          </button>
+
+          {pageNumbers.map((item, index) =>
+            item === 'ellipsis' ? (
+              <span
+                key={`ellipsis-${index}`}
+                className="px-2 text-gray-400"
+                aria-hidden="true"
+              >
+                …
+              </span>
+            ) : (
+              <button
+                type="button"
+                key={item}
+                onClick={() => goToPage(item)}
+                aria-current={item === currentPage ? 'page' : undefined}
+                className={`min-w-[2.5rem] px-3 py-2 rounded-md font-medium transition-colors ${
+                  item === currentPage
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'border border-gray-300 bg-white text-gray-700 hover:bg-indigo-50'
+                }`}
+              >
+                {item}
+              </button>
+            )
+          )}
+
+          <button
+            type="button"
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage >= pagination.pages}
+            className="px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700 font-medium transition-colors hover:bg-indigo-50 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white"
+          >
+            הבא
+          </button>
+        </nav>
+      )}
     </div>
   );
-} 
+}

@@ -53,6 +53,49 @@
   status = 301
   force = true
 
+# Duplicate / thin service stubs → primary URLs (Ahrefs cannibalization + orphans)
+[[redirects]]
+  from = "/services/organic-seo"
+  to = "/services/seo"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/services/paid-promotion"
+  to = "/services/ppc"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/services/app-development"
+  to = "/services/mobile-apps"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/nyhvl-kmpyynym-mmvmnym"
+  to = "/blog/nyhvl-kmpyyn-mmvmn"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/portfolio/project1"
+  to = "/portfolio"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/portfolio/project2"
+  to = "/portfolio"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/portfolio/project3"
+  to = "/portfolio"
+  status = 301
+  force = true
+
 [dev]
   framework = "nextjs"
   targetPort = 3000 

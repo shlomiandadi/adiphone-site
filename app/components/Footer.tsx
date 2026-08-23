@@ -3,6 +3,21 @@
 import Link from 'next/link';
 import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 
+const footerServices = [
+  { href: '/services/web-development', label: 'בניית אתרים' },
+  { href: '/services/wordpress', label: 'אתרי וורדפרס' },
+  { href: '/services/seo', label: 'קידום אתרים SEO' },
+  { href: '/services/ppc', label: 'קידום ממומן PPC' },
+  { href: '/services/ecommerce', label: 'חנויות אונליין' },
+  { href: '/services/mobile-apps', label: 'פיתוח אפליקציות' },
+  { href: '/services/ui-design', label: 'עיצוב UI/UX' },
+  { href: '/services/software-development', label: 'פיתוח תוכנה' },
+  { href: '/services/analytics', label: 'אנליטיקס' },
+  { href: '/services/ai', label: 'פתרונות AI' },
+  { href: '/services/cloud', label: 'שירותי ענן' },
+  { href: '/blog', label: 'בלוג' },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
@@ -58,30 +73,17 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Services — crawlable internal links (reduces orphan pages) */}
           <div>
             <h3 className="text-xl font-bold mb-4">השירותים שלנו</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/services/web-development" className="text-gray-400 hover:text-white transition-colors">
-                  בניית אתרים
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/seo" className="text-gray-400 hover:text-white transition-colors">
-                  קידום אתרים
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/ui-design" className="text-gray-400 hover:text-white transition-colors">
-                  עיצוב ממשק
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/mobile-apps" className="text-gray-400 hover:text-white transition-colors">
-                  פיתוח אפליקציות
-                </Link>
-              </li>
+            <ul className="space-y-2 columns-1">
+              {footerServices.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-gray-400 hover:text-white transition-colors">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -122,4 +124,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-} 
+}

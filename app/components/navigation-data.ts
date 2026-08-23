@@ -37,6 +37,12 @@ export const navigation: NavigationItem[] = [
         description: "קידום אורגני מקצועי לעסקים"
       },
       {
+        name: "בניית אתרים",
+        href: "/services/web-development",
+        icon: "globe",
+        description: "פיתוח אתרי תדמית ומערכות Web"
+      },
+      {
         name: "בניית אתרי וורדפרס",
         href: "/services/wordpress",
         icon: "globe",
@@ -73,10 +79,16 @@ export const navigation: NavigationItem[] = [
         description: "ניתוח נתונים ואופטימיזציה"
       },
       {
-        name: "פיתוח תוכנה",
+        name: "פתרונות תוכנה",
         href: "/services/software",
         icon: "code",
-        description: "פתרונות תוכנה מותאמים אישית"
+        description: "ייעוץ, אינטגרציה והתאמת מערכות"
+      },
+      {
+        name: "פיתוח תוכנה בהתאמה אישית",
+        href: "/services/software-development",
+        icon: "code",
+        description: "בניית מערכות Web ו-Desktop מאפס"
       },
       {
         name: "פתרונות AI",

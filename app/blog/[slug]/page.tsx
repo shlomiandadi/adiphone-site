@@ -1,10 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import BlogPostSchema from '../../components/BlogPostSchema';
 import BlogNavigation from '../../components/BlogNavigation';
+import RelatedServiceCTA from '../../components/RelatedServiceCTA';
+import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
 
 interface BlogPost {
   id: string;
@@ -56,20 +57,28 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://adi-phone.co.il';
+  const siteUrl = getSiteUrl();
+  const override = BLOG_META_OVERRIDES[post.slug];
+  const title = override?.metaTitle || post.metaTitle || post.title;
+  const description = override?.metaDesc || post.metaDesc || post.excerpt;
+  const canonical = normalizeCanonicalUrl(
+    post.canonicalUrl,
+    `${siteUrl}/blog/${post.slug}`
+  );
 
   return {
-    title: post.metaTitle || post.title,
-    description: post.metaDesc || post.excerpt,
+    title,
+    description,
     keywords: post.tags?.join(', '),
     authors: [{ name: post.authorName }],
     alternates: {
-      canonical: post.canonicalUrl || `${siteUrl}/blog/${post.slug}`,
+      canonical,
     },
     openGraph: {
-      title: post.metaTitle || post.title,
-      description: post.metaDesc || post.excerpt,
+      title,
+      description,
       type: 'article',
+      url: canonical,
       publishedTime: post.createdAt,
       modifiedTime: post.updatedAt,
       authors: [post.authorName],
@@ -84,8 +93,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.metaTitle || post.title,
-      description: post.metaDesc || post.excerpt,
+      title,
+      description,
       images: [post.mainImage],
     },
   };
@@ -166,6 +175,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               className="prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
+            <RelatedServiceCTA slug={post.slug} />
           </div>
         </div>
       </section>

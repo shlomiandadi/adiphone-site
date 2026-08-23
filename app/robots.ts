@@ -1,12 +1,14 @@
 import { MetadataRoute } from 'next';
+import { getSiteUrl } from '../lib/seo';
 
 export default function robots(): MetadataRoute.Robots {
+  const siteUrl = getSiteUrl();
   return {
     rules: {
       userAgent: '*',
       allow: '/',
       disallow: ['/admin/', '/api/'],
     },
-    sitemap: `${process.env.NEXT_PUBLIC_API_URL || 'https://adi-phone.co.il'}/sitemap.xml`,
+    sitemap: `${siteUrl}/sitemap.xml`,
   };
-} 
+}

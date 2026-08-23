@@ -6,25 +6,25 @@ const services = [
     title: 'פיתוח אתרים',
     description: 'בניית אתרים מותאמים אישית עם טכנולוגיות מתקדמות ועיצוב מודרני. אנו מתמחים בבניית אתרים רספונסיביים, מהירים ומאובטחים.',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-    link: '/services#web-development'
+    link: '/services/web-development'
   },
   {
     title: 'קידום אורגני',
     description: 'שירותי SEO מקצועיים להגדלת החשיפה האורגנית שלך בגוגל. כולל מחקר מילות מפתח, אופטימיזציה טכנית ובניית קישורים.',
     image: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800',
-    link: '/services#seo'
+    link: '/services/seo'
   },
   {
     title: 'קמפיינים ממומנים',
     description: 'ניהול קמפיינים ממומנים בגוגל ובפייסבוק. אנו מתמחים בבניית קמפיינים ממוקדים עם ROI גבוה.',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
-    link: '/services#ppc'
+    link: '/services/ppc'
   },
   {
     title: 'פתרונות AI',
     description: 'שילוב טכנולוגיות AI מתקדמות בעסק שלך. צ׳אטבוטים, אוטומציה, ומערכות המלצה חכמות.',
     image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
-    link: '/services#ai'
+    link: '/services/ai'
   }
 ];
 
@@ -78,4 +78,4 @@ export default function Services() {
       </div>
     </section>
   );
-} 
+}

@@ -22,7 +22,8 @@ export default function BlogNavigation({ currentSlug }: BlogNavigationProps) {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/posts');
+        // Fetch enough posts so prev/next covers the full blog graph (orphan reduction)
+        const response = await fetch('/api/posts?limit=100');
         if (response.ok) {
           const data = await response.json();
           setPosts(data.posts || []);

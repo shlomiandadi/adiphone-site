@@ -16,7 +16,8 @@
     "backup-db": "node scripts/backup-database.js",
     "restore-db": "node scripts/restore-database.js",
     "create-categories": "node scripts/create-default-categories.js",
-    "check-categories": "node scripts/check-categories.js"
+    "check-categories": "node scripts/check-categories.js",
+    "fix-http-canonicals": "node scripts/fix-http-canonicals.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

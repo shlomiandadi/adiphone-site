@@ -40,7 +40,49 @@ const nextConfig = {
   staticPageGenerationTimeout: 120,
   generateBuildId: async () => {
     return 'build-' + Date.now()
-  }
+  },
+  async redirects() {
+    return [
+      // Duplicate / thin service stubs → primary service URLs (fixes cannibalization + orphans)
+      {
+        source: '/services/organic-seo',
+        destination: '/services/seo',
+        permanent: true,
+      },
+      {
+        source: '/services/paid-promotion',
+        destination: '/services/ppc',
+        permanent: true,
+      },
+      {
+        source: '/services/app-development',
+        destination: '/services/mobile-apps',
+        permanent: true,
+      },
+      // Near-duplicate PPC blog posts → keep the stronger guide
+      {
+        source: '/blog/nyhvl-kmpyynym-mmvmnym',
+        destination: '/blog/nyhvl-kmpyyn-mmvmn',
+        permanent: true,
+      },
+      // Thin placeholder portfolio stubs → hub (orphan cleanup)
+      {
+        source: '/portfolio/project1',
+        destination: '/portfolio',
+        permanent: true,
+      },
+      {
+        source: '/portfolio/project2',
+        destination: '/portfolio',
+        permanent: true,
+      },
+      {
+        source: '/portfolio/project3',
+        destination: '/portfolio',
+        permanent: true,
+      },
+    ];
+  },
 }
 
-module.exports = nextConfig 
+module.exports = nextConfig

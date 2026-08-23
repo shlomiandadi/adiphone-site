@@ -1,6 +1,7 @@
 import { createHmac, timingSafeEqual } from 'crypto';
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSiteUrl, normalizeCanonicalUrl } from '../../../../lib/seo';
 
 const prisma = new PrismaClient();
 
@@ -53,10 +54,6 @@ function verifySignature(rawBody: string, signature: string, secret: string): bo
 
 function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-}
-
-function getSiteUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL || 'https://adi-phone.co.il').replace(/\/$/, '');
 }
 
 function toSlug(value: string): string {
@@ -164,7 +161,10 @@ async function saveArticle(article: SeoAgentArticle) {
     metaDesc: article.metaDescription?.trim() || excerpt,
     articleStyles: article.articleStyles?.trim() || null,
     schemaMarkup: article.schemaMarkup?.trim() || null,
-    canonicalUrl: article.canonical?.trim() || `${getSiteUrl()}/blog/${slug}`,
+    canonicalUrl: normalizeCanonicalUrl(
+      article.canonical?.trim(),
+      `${getSiteUrl()}/blog/${slug}`
+    ),
     published,
     authorName: resolveAuthorName(article),
     authorEmail: 'info@adi-phone.co.il',

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaUsers, FaLightbulb, FaHandshake, FaHeart } from 'react-icons/fa';
+import { FaUsers, FaLightbulb, FaHandshake, FaHeart, FaCertificate } from 'react-icons/fa';
 import Team from '../components/Team';
 import Hero3D from '../components/hero3d/Hero3D';
 
@@ -67,7 +67,7 @@ export default function AboutPage() {
       <Hero3D
         theme="about"
         title="אודות החברה"
-        subtitle="סוכנות דיגיטל מבית עדי פון תקשורת, מפרדס חנה-כרכור"
+        subtitle="מובילים את המהפכה הדיגיטלית כבר למעלה מ-15 שנה"
         align="center"
         ctas={[
           { href: '/contact', label: 'צרו קשר' },
@@ -143,6 +143,23 @@ export default function AboutPage() {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      <section data-reveal className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-16 dark:from-blue-900 dark:to-purple-900">
+        <div className="container mx-auto max-w-4xl">
+          <div className="grid gap-8 md:grid-cols-2">
+            <div className="text-center">
+              <FaUsers className="mx-auto mb-4 text-4xl text-white" />
+              <h3 className="mb-2 text-3xl font-bold text-white">500+</h3>
+              <p className="text-lg text-white/90">לקוחות מרוצים</p>
+            </div>
+            <div className="text-center">
+              <FaCertificate className="mx-auto mb-4 text-4xl text-white" />
+              <h3 className="mb-2 text-3xl font-bold text-white">15+</h3>
+              <p className="text-lg text-white/90">שנות ניסיון</p>
+            </div>
+          </div>
         </div>
       </section>
 

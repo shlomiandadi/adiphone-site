@@ -7,6 +7,7 @@ export default function WordPressService() {
   const serviceData = {
     title: "בניית אתרי וורדפרס",
     subtitle: "אתרי וורדפרס מקצועיים ומותאמים אישית",
+    intro: "אתר וורדפרס הוא אתר הבנוי על מערכת הניהול וורדפרס, המאפשרת לכם לעדכן תכנים בעצמכם בקלות, בגמישות ובעלות נוחה.",
     serviceType: "web-development",
     description: (
       <>

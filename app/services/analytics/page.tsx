@@ -7,6 +7,7 @@ export default function AnalyticsService() {
   const serviceData = {
     title: "אנליטיקס ומדידה",
     subtitle: "קבלת החלטות חכמות מבוססות נתונים",
+    intro: "אנליטיקס הוא איסוף וניתוח של נתוני המשתמשים באתר, כדי לקבל החלטות שיווקיות ועסקיות מבוססות דאטה במקום ניחוש.",
     serviceType: "analytics",
     description: (
       <>

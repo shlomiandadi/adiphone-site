@@ -12,6 +12,8 @@ import ServicePricing from './ServicePricing';
 interface ServiceLayoutProps {
   title: string;
   subtitle: string;
+  /** Short direct-answer paragraph shown at the top (helps AEO/GEO). */
+  intro?: string;
   description: React.ReactNode;
   heroImage: string;
   serviceType?: string; // Add service type for pricing
@@ -93,6 +95,7 @@ const iconMap: { [key: string]: IconType } = {
 export default function ServiceLayout({
   title,
   subtitle,
+  intro,
   description,
   heroImage,
   serviceType,
@@ -102,8 +105,26 @@ export default function ServiceLayout({
   faq,
   portfolio,
 }: ServiceLayoutProps) {
+  const faqSchema = faq && faq.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      }
+    : null;
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[400px] w-full">
         <Image
@@ -154,6 +175,11 @@ export default function ServiceLayout({
                 variants={fadeInUp}
                 className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800"
               >
+                {intro && (
+                  <p className="mb-6 rounded-xl border-r-4 border-blue-600 bg-blue-50 p-5 text-lg leading-relaxed text-gray-800 dark:bg-gray-700 dark:text-gray-100">
+                    {intro}
+                  </p>
+                )}
                 <div className="prose prose-lg mx-auto max-w-4xl dark:prose-invert prose-gray dark:prose-gray-600">
                   {description}
                 </div>

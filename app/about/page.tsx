@@ -313,6 +313,44 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Who's behind the business + real links (facts only; TODOs for the owner) */}
+      <section className="bg-white px-4 py-16 dark:bg-gray-900">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+            מי עומד מאחורי Top Webstak
+          </h2>
+          <p className="mb-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            Top Webstak היא סוכנות דיגיטל מבית עדי פון תקשורת, הפועלת מפרדס חנה-כרכור
+            (זמיר 95) ונותנת שירות לעסקים באזור ובפריסה ארצית מרחוק.
+            {/* TODO(owner): הוסיפו כאן ביוגרפיה קצרה של הצוות (עדי פון, שלומי): שמות מלאים, תפקידים ושנות ניסיון בפועל — עובדות בלבד, ללא המצאות. */}
+          </p>
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href="tel:+972509159951"
+              className="rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-blue-700"
+            >
+              חייגו: 050-9159951
+            </a>
+            <a
+              href="https://www.facebook.com/profile.php?id=61578707397365"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-gray-300 px-6 py-3 font-semibold text-gray-800 transition-colors hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800"
+            >
+              Facebook
+            </a>
+            <a
+              href="https://www.linkedin.com/in/shlomi-malfuf-709961221/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-gray-300 px-6 py-3 font-semibold text-gray-800 transition-colors hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800"
+            >
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
   );
 } 

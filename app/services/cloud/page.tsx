@@ -7,6 +7,7 @@ export default function CloudService() {
   const serviceData = {
     title: "שירותי ענן",
     subtitle: "פתרונות ענן מתקדמים לעסקים צומחים",
+    intro: "שירותי ענן מאפשרים להריץ אתרים, מערכות ונתונים על תשתית מנוהלת ומאובטחת, עם גמישות וחיסכון בתחזוקת שרתים.",
     serviceType: "cloud",
     description: (
       <>

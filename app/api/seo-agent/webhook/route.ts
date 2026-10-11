@@ -6,12 +6,14 @@ import {
   applySeoAgentPayload,
   isSeoAgentApplyPayload,
   isSeoAgentArticlePayload,
+  probeSeoAgentBlobs,
   verifySeoAgentSignature,
 } from '../../../../seo-agent-apply';
 
 const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 type WebhookImage = {
   url?: string;
@@ -237,11 +239,13 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
+  const blobs = await probeSeoAgentBlobs();
   return NextResponse.json({
     ok: true,
     message: 'SEO Agent webhook is live. Send POST with X-SEO-Agent-Signature (HMAC-SHA256).',
     urlPattern: `${getSiteUrl()}/blog/{slug}`,
     apply: 'Title/meta/FAQ/schema overrides, redirects, llms.txt (Netlify Blobs)',
+    blobs,
     signatureHeader: 'X-SEO-Agent-Signature',
     signatureAlgorithm: 'HMAC-SHA256',
     envVar: 'SEO_AGENT_WEBHOOK_SECRET',

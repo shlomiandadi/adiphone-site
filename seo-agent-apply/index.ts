@@ -8,7 +8,7 @@ export {
 export { applySeoAgentRedirects } from './middleware';
 export { buildLlmsTxt } from './llms';
 export { SeoAgentPageExtras } from './components';
-export { getSeoAgentPageOverride, hasPageOverride, readSeoAgentState } from './store';
+export { getSeoAgentPageOverride, hasPageOverride, probeSeoAgentBlobs, readSeoAgentState } from './store';
 export { normalizeSeoAgentPath } from './paths';
 export type {
   SeoAgentApplyPayload,

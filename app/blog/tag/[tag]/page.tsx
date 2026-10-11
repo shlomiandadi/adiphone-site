@@ -3,6 +3,9 @@ import { IconType } from 'react-icons';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PrismaClient } from '@prisma/client';
+import type { Metadata } from 'next';
+import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
+import { metadata as blogMetadata } from '../../metadata';
 
 const prisma = new PrismaClient();
 
@@ -32,6 +35,10 @@ interface Props {
   };
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return mergeSeoAgentMetadata(`/blog/tag/${params.tag}`, blogMetadata);
+}
+
 export default async function TagPage({ params }: Props) {
   const decodedTag = decodeURIComponent(params.tag);
   
@@ -52,6 +59,7 @@ export default async function TagPage({ params }: Props) {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SeoAgentPageExtras path={`/blog/tag/${params.tag}`} />
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold mb-2">תוצאות עבור: {decodedTag}</h1>
         <p className="text-gray-600">נמצאו {posts.length} פוסטים</p>

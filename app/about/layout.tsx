@@ -1,6 +1,7 @@
 import { metadata as aboutMetadata, viewport as aboutViewport } from './metadata';
+import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
-export const metadata = aboutMetadata;
+export const generateMetadata = createSeoAgentGenerateMetadata('/about', aboutMetadata);
 export const viewport = aboutViewport;
 
 // sameAs: only profiles that are already linked from the site (footer).
@@ -54,6 +55,7 @@ export default function AboutLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
+      <SeoAgentPageExtras path="/about" />
       {children}
     </>
   );

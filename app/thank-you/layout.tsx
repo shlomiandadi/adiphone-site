@@ -1,11 +1,14 @@
-import { metadata as thankYouMetadata } from './page';
-
-export const metadata = thankYouMetadata;
+import { SeoAgentPageExtras } from '@/seo-agent-apply';
 
 export default function ThankYouLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <SeoAgentPageExtras path="/thank-you" />
+      {children}
+    </>
+  );
 }

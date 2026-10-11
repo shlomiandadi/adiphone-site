@@ -1,7 +1,13 @@
-import { createHmac, timingSafeEqual } from 'crypto';
 import { PrismaClient } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import { getSiteUrl, normalizeCanonicalUrl } from '../../../../lib/seo';
+import {
+  applySeoAgentPayload,
+  isSeoAgentApplyPayload,
+  isSeoAgentArticlePayload,
+  verifySeoAgentSignature,
+} from '../../../../seo-agent-apply';
 
 const prisma = new PrismaClient();
 
@@ -38,19 +44,6 @@ type SeoAgentArticle = {
   authorName?: string;
   byline?: string;
 };
-
-function verifySignature(rawBody: string, signature: string, secret: string): boolean {
-  if (!signature || !secret) return false;
-
-  const normalizedSignature = signature.replace(/^sha256=/i, '').trim();
-  const expected = createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
-
-  try {
-    return timingSafeEqual(Buffer.from(normalizedSignature, 'hex'), Buffer.from(expected, 'hex'));
-  } catch {
-    return false;
-  }
-}
 
 function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -193,26 +186,46 @@ export async function POST(request: NextRequest) {
     const rawBody = await request.text();
     const signature = request.headers.get('x-seo-agent-signature') || '';
 
-    if (!verifySignature(rawBody, signature, secret)) {
+    if (!verifySeoAgentSignature(rawBody, signature, secret)) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
 
-    let article: SeoAgentArticle;
+    let payload: unknown;
     try {
-      article = JSON.parse(rawBody) as SeoAgentArticle;
+      payload = JSON.parse(rawBody);
     } catch {
       return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
     }
 
-    const post = await saveArticle(article);
-    const url = `${getSiteUrl()}/blog/${post.slug}`;
+    if (isSeoAgentArticlePayload(payload)) {
+      const article = payload as SeoAgentArticle;
+      const post = await saveArticle(article);
+      const url = `${getSiteUrl()}/blog/${post.slug}`;
+      try {
+        revalidatePath(`/blog/${post.slug}`);
+        revalidatePath('/blog');
+        revalidatePath('/');
+      } catch {
+        // ignore
+      }
 
-    return NextResponse.json({
-      success: true,
-      url,
-      id: article.id || post.id,
-      postId: post.id,
-    });
+      return NextResponse.json({
+        success: true,
+        url,
+        id: article.id || post.id,
+        postId: post.id,
+      });
+    }
+
+    if (isSeoAgentApplyPayload(payload)) {
+      const result = await applySeoAgentPayload(payload);
+      return NextResponse.json(result);
+    }
+
+    return NextResponse.json(
+      { error: 'Unrecognized payload. Send an apply override or an article (title, slug, contentHtml).' },
+      { status: 400 }
+    );
   } catch (error) {
     console.error('SEO Agent webhook error:', error);
     const message = error instanceof Error ? error.message : 'Failed to process webhook';
@@ -228,6 +241,7 @@ export async function GET() {
     ok: true,
     message: 'SEO Agent webhook is live. Send POST with X-SEO-Agent-Signature (HMAC-SHA256).',
     urlPattern: `${getSiteUrl()}/blog/{slug}`,
+    apply: 'Title/meta/FAQ/schema overrides, redirects, llms.txt (Netlify Blobs)',
     signatureHeader: 'X-SEO-Agent-Signature',
     signatureAlgorithm: 'HMAC-SHA256',
     envVar: 'SEO_AGENT_WEBHOOK_SECRET',
@@ -239,6 +253,9 @@ export async function GET() {
       'tags',
       'primaryCategory',
       'images[].base64',
+      'overrides',
+      'redirects',
+      'llmsTxt',
     ],
   });
 }

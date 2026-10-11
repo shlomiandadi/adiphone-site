@@ -7,6 +7,7 @@ import BlogNavigation from '../../components/BlogNavigation';
 import RelatedServiceCTA from '../../components/RelatedServiceCTA';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
 import { getPostBySlug, getPublishedPosts } from '../../../lib/posts';
+import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
 /** Enable ISR: pages are cached and periodically regenerated instead of SSR per request. */
 export const revalidate = 300;
@@ -95,7 +96,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     `${siteUrl}/blog/${post.slug}`
   );
 
-  return {
+  return mergeSeoAgentMetadata(`/blog/${post.slug}`, {
     title,
     description,
     keywords: post.tags?.join(', '),
@@ -126,7 +127,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description,
       images: [post.mainImage],
     },
-  };
+  });
 }
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
@@ -147,6 +148,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 
   return (
     <main className="pt-24">
+      <SeoAgentPageExtras path={`/blog/${post.slug}`} />
       <BlogPostSchema post={post} />
       {post.articleStyles && (
         <style dangerouslySetInnerHTML={{ __html: post.articleStyles }} />

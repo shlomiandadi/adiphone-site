@@ -8,7 +8,7 @@
 
 | צד | מה עושים |
 |----|----------|
-| **מתכנת** | Route קיים ב-`app/api/seo-agent/webhook/route.ts`, Secret ב-env, שמירה ל-Prisma/PostgreSQL |
+| **מתכנת** | Route קיים ב-`app/api/seo-agent/webhook/route.ts`, Secret ב-env. מאמרים נשמרים ל-Prisma; apply (מטא/FAQ/schema/redirects/llms) נשמר ב-Netlify Blobs |
 | **משתמש** | מגדיר ב-SEO Agent: פלטפורמה Next.js, Webhook URL + Secret |
 | **Secret** | אותה מחרוזת בדיוק בשני הצדדים |
 

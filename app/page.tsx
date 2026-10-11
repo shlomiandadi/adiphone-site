@@ -11,15 +11,19 @@ import HomeFAQ from './components/HomeFAQ';
 import HomeSchema from './components/HomeSchema';
 import Testimonials from './components/Testimonials';
 import HeroVisualLoader from './components/HeroVisualLoader';
+import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
-export const metadata: Metadata = {
+const homeMetadata: Metadata = {
   description:
     'בניית אתרים, קידום בגוגל (SEO), קמפיינים ממומנים וקידום במנועי AI לעסקים. סוכנות דיגיטל מפרדס חנה. ייעוץ חינם: 050-9159951.',
 };
 
+export const generateMetadata = createSeoAgentGenerateMetadata('/', homeMetadata);
+
 export default function Home() {
   return (
     <>
+      <SeoAgentPageExtras path="/" />
       <HomeSchema />
       <div className="overflow-hidden">
         <section className="hero-stage relative h-[80vh] min-h-[600px] overflow-hidden">

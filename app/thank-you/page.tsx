@@ -1,13 +1,16 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { createSeoAgentGenerateMetadata } from '@/seo-agent-apply';
 
-export const metadata: Metadata = {
+const pageMetadata: Metadata = {
   title: 'תודה על פנייתך',
   robots: {
     index: false,
     follow: false,
   },
 };
+
+export const generateMetadata = createSeoAgentGenerateMetadata('/thank-you', pageMetadata);
 
 export default function ThankYou() {
   return (

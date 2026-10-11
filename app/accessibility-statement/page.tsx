@@ -1,6 +1,8 @@
 import React from 'react';
 
-export const metadata = {
+import { createSeoAgentGenerateMetadata } from '@/seo-agent-apply';
+
+const pageMetadata = {
   title: 'הצהרת נגישות',
   description:
     'הצהרת הנגישות של אתר Top Webstak מבית עדי פון תקשורת: אמצעי הנגישות באתר, הוראות שימוש ודרכי פנייה בנושא נגישות.',
@@ -12,6 +14,8 @@ export const metadata = {
     follow: true,
   },
 };
+
+export const generateMetadata = createSeoAgentGenerateMetadata('/accessibility-statement', pageMetadata);
 
 export default function AccessibilityStatement() {
   return (

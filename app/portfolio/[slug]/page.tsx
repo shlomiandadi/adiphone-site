@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import ProjectPageClient from './ProjectPageClient';
 import { plainTextMeta } from '../../../lib/seo';
+import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
 interface Project {
   id: string;
@@ -48,7 +49,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const title =
     (project.metaTitle && project.metaTitle.trim()) ||
     `${project.name} – ${type} | תיק עבודות Top Webstak`;
-  return {
+  return mergeSeoAgentMetadata(`/portfolio/${project.slug}`, {
     title: { absolute: title },
     description,
     alternates: {
@@ -60,11 +61,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       url: `/portfolio/${project.slug}`,
       images: project.images && project.images.length > 0 ? project.images : project.image ? [project.image] : [],
     },
-  };
+  });
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const project = await fetchProject(params.slug);
   if (!project) return notFound();
-  return <ProjectPageClient project={project} />;
+  return (
+    <>
+      <SeoAgentPageExtras path={`/portfolio/${project.slug}`} />
+      <ProjectPageClient project={project} />
+    </>
+  );
 } 

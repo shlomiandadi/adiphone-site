@@ -1,6 +1,7 @@
 import { metadata as serviceMetadata, viewport as serviceViewport } from './metadata';
+import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
-export const metadata = serviceMetadata;
+export const generateMetadata = createSeoAgentGenerateMetadata('/services/organic-seo', serviceMetadata);
 export const viewport = serviceViewport;
 
 export default function OrganicSEOLayout({
@@ -8,5 +9,10 @@ export default function OrganicSEOLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <SeoAgentPageExtras path="/services/organic-seo" />
+      {children}
+    </>
+  );
 }

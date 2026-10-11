@@ -26,7 +26,7 @@ export default function HeroVisual() {
     };
 
     const afterPaint = () => {
-      if ('requestIdleCallback' in window) {
+      if (typeof window.requestIdleCallback === 'function') {
         idleId = window.requestIdleCallback(start, { timeout: 500 });
       } else {
         timeoutId = window.setTimeout(start, 80);

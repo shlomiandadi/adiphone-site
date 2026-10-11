@@ -55,12 +55,17 @@ function PackageCard({ pkg }: { pkg: PricingPackage }) {
         href={whatsappUrl(pkg.whatsappText)}
         target="_blank"
         rel="noopener noreferrer"
+        data-package-name={pkg.name}
+        data-cta-location="pricing"
         className="mb-3 block rounded-lg bg-green-600 px-6 py-3 text-center font-semibold text-white transition-colors hover:bg-green-700"
       >
         וואטסאפ: {PHONE_DISPLAY}
       </a>
       <Link
         href="/contact"
+        data-cta="true"
+        data-package-name={pkg.name}
+        data-cta-location="pricing"
         className="block rounded-lg bg-gray-100 px-6 py-3 text-center font-semibold text-gray-900 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
       >
         השאירו פרטים

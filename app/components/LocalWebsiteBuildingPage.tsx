@@ -59,7 +59,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-white" dir="rtl">
+    <div className="min-h-screen bg-white" dir="rtl" data-cta-location="service-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
@@ -84,6 +84,8 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
             </a>
             <Link
               href="/contact"
+              data-cta="true"
+              data-cta-location="service-page"
               className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
             >
               לקבלת הצעת מחיר
@@ -294,6 +296,8 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
             </a>
             <Link
               href="/contact"
+              data-cta="true"
+              data-cta-location="service-page"
               className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
             >
               צרו קשר

@@ -54,6 +54,8 @@ function updateGtagConsent(categories: ConsentCategories) {
     // @ts-ignore
     window.gtag?.("consent", "update", {
       ad_storage: ad,
+      ad_user_data: ad,
+      ad_personalization: ad,
       analytics_storage: analytics,
       functionality_storage: functionality,
       security_storage: "granted",

@@ -1,6 +1,9 @@
+'use client';
+
 import React, { useState } from 'react';
 import { ContactService } from '../types';
 import { useRouter } from 'next/navigation';
+import { attachAttribution, trackGenerateLead } from '../../lib/tracking';
 
 const ContactForm: React.FC = () => {
   const router = useRouter();
@@ -56,7 +59,7 @@ const ContactForm: React.FC = () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(attachAttribution({ ...formData, form_name: 'contact_form' })),
       });
 
       if (!response.ok) {
@@ -64,6 +67,7 @@ const ContactForm: React.FC = () => {
         throw new Error(errorData.error || 'Failed to submit form');
       }
 
+      trackGenerateLead('contact_form', { service_name: formData.service });
       setSuccess('הטופס נשלח בהצלחה!');
       setFormData({
         name: '',
@@ -98,7 +102,7 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} data-form-name="contact_form" className="space-y-6">
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           שם מלא

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaWhatsapp, FaFacebook, FaLinkedin } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
+import { attachAttribution, trackGenerateLead } from '../../lib/tracking';
 
 export default function Contact() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function Contact() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(attachAttribution({ ...formData, form_name: 'homepage_contact' })),
       });
 
       const data = await response.json();
@@ -38,6 +39,7 @@ export default function Contact() {
         throw new Error(data.error || 'שגיאה בשליחת הטופס');
       }
 
+      trackGenerateLead('homepage_contact', { service_name: formData.service });
       setSubmitStatus('success');
       setFormData({
         name: '',
@@ -157,7 +159,7 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="lg:col-span-2 h-full">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 h-full">
-              <form onSubmit={handleSubmit} className="h-full flex flex-col">
+              <form onSubmit={handleSubmit} data-form-name="homepage_contact" className="h-full flex flex-col">
                 <div className="flex-grow space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>

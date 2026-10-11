@@ -133,6 +133,8 @@ export default function AeoGeoPage() {
             </a>
             <Link
               href="/contact"
+              data-cta="true"
+              data-cta-location="service-page"
               className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
             >
               לייעוץ ראשוני
@@ -243,6 +245,8 @@ export default function AeoGeoPage() {
             </a>
             <Link
               href="/contact"
+              data-cta="true"
+              data-cta-location="service-page"
               className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
             >
               צרו קשר

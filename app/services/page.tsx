@@ -255,6 +255,8 @@ export default function ServicesPage() {
           >
             <Link 
               href="/contact"
+              data-cta="true"
+              data-cta-location="service-page"
               className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300"
             >
               דברו איתנו

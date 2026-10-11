@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { formatAttributionEmailHtml, normalizeAttribution } from '@/lib/tracking';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -33,6 +34,7 @@ const sendCustomerEmail = async (data: any) => {
               <li><strong>הודעה:</strong> ${data.message}</li>
             </ul>
           </div>
+          ${formatAttributionEmailHtml(normalizeAttribution(data))}
           <p style="color: #666; line-height: 1.6;">בברכה,<br><strong>צוות עדי פון תקשורת</strong></p>
         </div>
       </div>
@@ -65,6 +67,7 @@ const sendAdminEmail = async (data: any) => {
               <li><strong>הודעה:</strong> ${data.message}</li>
             </ul>
           </div>
+          ${formatAttributionEmailHtml(normalizeAttribution(data))}
           <p style="color: #666; line-height: 1.6;">זמן הפנייה: ${new Date().toLocaleString('he-IL')}</p>
         </div>
       </div>

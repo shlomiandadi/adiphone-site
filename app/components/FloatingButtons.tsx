@@ -373,6 +373,7 @@ export default function FloatingButtons() {
         )}
 
         <div 
+          data-cta-location="floating"
           className="fixed bottom-0 left-0 right-0 z-[99999] bg-white border-t border-gray-200 shadow-lg md:hidden"
           style={{
             position: 'fixed',
@@ -526,7 +527,7 @@ export default function FloatingButtons() {
   }
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col gap-4">
+    <div className="fixed bottom-6 left-6 z-50 flex flex-col gap-4" data-cta-location="floating">
       {/* WhatsApp Button */}
       <motion.div
         initial={{ scale: 0, rotate: -180 }}

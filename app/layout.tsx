@@ -12,6 +12,7 @@ import AccessibilityBar from './components/AccessibilityBar';
 import Script from 'next/script';
 import CookieConsent from './components/CookieConsent';
 import ChatbotWidget from './components/ChatbotWidget';
+import AnalyticsTracker from './components/AnalyticsTracker';
 
 const heebo = Heebo({ 
   subsets: ['hebrew', 'latin'],
@@ -77,6 +78,8 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);} 
             gtag('consent', 'default', {
               'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
               'analytics_storage': 'denied',
               'functionality_storage': 'denied',
               'security_storage': 'granted'
@@ -103,10 +106,16 @@ export default function RootLayout({
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            // Defer GA collection until consent given (analytics_storage = granted)
-            gtag('config', 'G-QMC63HG6SD', { 'allow_ad_personalization_signals': false, 'anonymize_ip': true });
+            if (!window.__TW_GA4_CONFIGURED) {
+              window.__TW_GA4_CONFIGURED = true;
+              gtag('js', new Date());
+              gtag('config', 'G-QMC63HG6SD', {
+                send_page_view: true,
+                anonymize_ip: true,
+                allow_google_signals: true,
+                allow_ad_personalization_signals: false
+              });
+            }
           `}
         </Script>
       </head>
@@ -138,6 +147,7 @@ export default function RootLayout({
         <FloatingButtons />
         <AccessibilityBar />
         <CookieConsent />
+        <AnalyticsTracker />
         <ChatbotWidget />
       </body>
     </html>

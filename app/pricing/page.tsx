@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getSiteUrl } from '../../lib/seo';
+import Hero3D from '../components/hero3d/Hero3D';
 import {
   PHONE_DISPLAY,
   PHONE_TEL,
@@ -144,17 +145,18 @@ export default function PricingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <section className="bg-gradient-to-l from-blue-700 to-blue-500 px-4 py-20 text-white">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">מחירון בניית אתרים</h1>
-          <p className="mx-auto max-w-3xl text-lg text-white/90 md:text-xl">
-            תשובה ישירה לשאלה <strong>כמה עולה לבנות אתר?</strong> המחירים למטה הם מחירי פתיחה,
-            לא כוללים מע״מ, ומתאימים לעסקים קטנים ובינוניים בישראל.
-          </p>
-        </div>
-      </section>
+      <Hero3D
+        theme="pricing"
+        title="מחירון בניית אתרים"
+        subtitle="תשובה ישירה לשאלה כמה עולה לבנות אתר? המחירים למטה הם מחירי פתיחה, לא כוללים מע״מ, ומתאימים לעסקים קטנים ובינוניים בישראל."
+        align="center"
+        ctas={[
+          { href: '/contact', label: 'קבלו הצעת מחיר' },
+          { href: '/services/web-development', label: 'בניית אתרים', variant: 'secondary' },
+        ]}
+      />
 
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">כמה עולה לבנות אתר?</h2>
           <p className="mb-4 text-lg leading-relaxed text-gray-700">
@@ -185,7 +187,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-6xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">חבילות בניית אתרים</h2>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -244,7 +246,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-6xl">
           <h2 className="mb-8 text-center text-3xl font-bold text-gray-900">השוואת חבילות</h2>
           <div className="overflow-x-auto rounded-2xl ring-1 ring-gray-100">
@@ -276,7 +278,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">מה משפיע על המחיר</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -290,7 +292,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-4xl">
           <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">עלויות שוטפות ותוספות</h2>
           <p className="mx-auto mb-10 max-w-3xl text-center text-lg text-gray-700">
@@ -319,7 +321,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="bg-blue-50 px-4 py-16">
+      <section data-reveal className="bg-blue-50 px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">רוצים לראות עבודות או להעמיק בשירות?</h2>
           <p className="mb-6 text-lg text-gray-700">
@@ -360,7 +362,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">שאלות נפוצות על מחירים</h2>
           <div className="space-y-4">
@@ -374,7 +376,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="bg-blue-700 px-4 py-16 text-white">
+      <section data-reveal className="bg-blue-700 px-4 py-16 text-white">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="mb-4 text-3xl font-bold">רוצים הצעה מדויקת לעסק שלכם?</h2>
           <p className="mb-8 text-lg text-white/90">

@@ -9,6 +9,7 @@ export default function EcommerceService() {
     subtitle: "אנחנו מקימים חנויות אונליין מהירות, מעוצבות ומותאמות למובייל, שקל לנהל וכיף לקנות בהן. אם יש לכם מוצרים מעולים, בואו נהפוך אותם למקור הכנסה דיגיטלי שעובד בשבילכם 24/7.",
     intro: "חנות אינטרנטית (איקומרס) היא אתר למכירת מוצרים או שירותים אונליין, הכולל ניהול מוצרים, עגלת קניות וסליקה מאובטחת.",
     serviceType: "ecommerce",
+    portfolioTopic: "ecommerce" as const,
     description: (
       <>
         <h2><strong>הקמת חנויות אינטרנטיות: לא רק אתר, אלא מכונת מכירות משומנת שעובדת 24/7</strong></h2>
@@ -53,7 +54,7 @@ export default function EcommerceService() {
         <p><strong>צרו קשר עוד היום עם מומחי האיקומרס של Top Webstak, ובואו נבנה יחד חנות אינטרנטית שלא רק מוכרת, אלא בונה מותג.</strong></p>
       </>
     ),
-    heroImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&auto=format&fit=crop&q=60",
+    heroTheme: "ecommerce" as const,
     features: [
       {
         title: "עיצוב ייחודי",
@@ -126,20 +127,7 @@ export default function EcommerceService() {
         answer: "אנחנו יכולים לטפל עבורך בכל הצדדים הטכניים, כולל רכישת דומיין (שם אתר) והתקנה על שרת אחסון מהיר ומומלץ. אנחנו נדאג שהכל יעבוד חלק."
       }
     ],
-    portfolio: [
-      {
-        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=60',
-        title: 'BeautyBox',
-        description: 'הקמת חנות קוסמטיקה שהגדילה את המכירות ב-40% תוך חצי שנה מהעלייה לאוויר.',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=60',
-        title: 'Urban Pet',
-        description: 'עיצוב והקמה של חנות למוצרי חיות מחמד עם דגש על חווית משתמש וניהול מלאי קל.',
-        link: '#'
-      }
-    ]
+    portfolio: []
   };
 
   return <ServiceLayout {...serviceData} />;

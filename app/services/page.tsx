@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { FaSearch, FaWordpress, FaShoppingCart, FaMobileAlt, FaPaintBrush, FaBullhorn, FaChartLine, FaCode, FaBrain, FaCloud, FaRobot } from 'react-icons/fa';
 import { AGENCY_PROVIDER, SERVICES_HUB_ITEMS, buildServiceJsonLd } from '../../lib/service-schema';
 import { absoluteUrl } from '../../lib/seo';
+import Hero3D from '../components/hero3d/Hero3D';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -30,6 +31,14 @@ const iconAnimation = {
 
 export default function ServicesPage() {
   const services = [
+    {
+      title: "בניית אתרים",
+      description: "אתרי תדמית, דפי נחיתה וחנויות שנבנים כנכס דיגיטלי לעסק",
+      icon: <FaCode className="w-8 h-8 text-blue-600" />,
+      image: "/images/services/web-development.svg",
+      link: "/services/web-development",
+      features: ["אתר תדמית", "דף נחיתה", "חנות אונליין", "וורדפרס"]
+    },
     {
       title: "קידום אתרים",
       description: "קידום אורגני מקצועי שמביא תוצאות אמיתיות",
@@ -149,32 +158,16 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubServiceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubCatalogSchema) }} />
-      {/* Hero Section */}
-      <div className="relative h-[40vh] min-h-[400px] w-full bg-gradient-to-r from-blue-600 to-blue-800">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 to-blue-800/90">
-          <div className="container mx-auto px-4 h-full flex flex-col justify-center">
-            <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              השירותים שלנו
-            </motion.h1>
-            <motion.p 
-              className="text-xl md:text-2xl text-white/90 max-w-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              פתרונות דיגיטליים מקצועיים להצלחת העסק שלכם
-            </motion.p>
-          </div>
-        </div>
-      </div>
+      <Hero3D
+        theme="services"
+        title="השירותים שלנו"
+        subtitle="פתרונות דיגיטליים מקצועיים להצלחת העסק שלכם"
+        align="center"
+        ctas={[{ href: '/contact', label: 'צרו קשר' }]}
+      />
 
       {/* Services Grid */}
-      <div className="container mx-auto px-4 py-16">
+      <div data-reveal className="container mx-auto px-4 py-16">
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           variants={staggerChildren}
@@ -185,6 +178,7 @@ export default function ServicesPage() {
             <motion.div
               key={index}
               variants={fadeInUp}
+              data-tilt
               className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
               <Link href={service.link} className="block">
@@ -230,7 +224,7 @@ export default function ServicesPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-16">
+      <div data-reveal className="bg-gradient-to-r from-blue-600 to-blue-800 py-16">
         <div className="container mx-auto px-4 text-center">
           <motion.h2 
             className="text-3xl md:text-4xl font-bold text-white mb-4"

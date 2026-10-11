@@ -57,7 +57,7 @@ export default function CloudService() {
         <p><strong>צרו קשר עוד היום עם מומחי הענן של Top Webstak. בואו נתכנן יחד את המעבר שלכם לעתיד – עתיד גמיש, מאובטח וחסכוני יותר.</strong></p>
       </>
     ),
-    heroImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200",
+    heroTheme: "cloud" as const,
     features: [
       {
         title: "תשתיות ענן",
@@ -124,26 +124,7 @@ export default function CloudService() {
         answer: "העלות משתנה בהתאם להיקף השירותים והמשאבים הנדרשים. היתרון בענן הוא שמשלמים רק עבור מה שמשתמשים בו, וניתן להתאים את המשאבים לפי הצורך. אנחנו נעזור לכם לתכנן תקציב מדויק ולמקסם את התמורה להשקעה."
       }
     ],
-    portfolio: [
-      {
-        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800',
-        title: 'הגירה לענן',
-        description: 'העברת מערכות עסקיות לענן',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1520869562399-e772f042f422?w=800',
-        title: 'ניהול תשתיות ענן',
-        description: 'שירותי ניהול ותחזוקה בענן',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800',
-        title: 'אבטחת מידע בענן',
-        description: 'הטמעת פתרונות אבטחה מתקדמים',
-        link: '#'
-      }
-    ]
+    portfolio: []
   };
 
   return <ServiceLayout {...serviceData} />;

@@ -48,7 +48,8 @@ export default function UIDesignService() {
         <p><strong>רוצים ליצור מוצר שהלקוחות שלכם לא יפסיקו לדבר עליו? בואו נדבר. צוות המעצבים של Top Webstak כאן כדי להפוך את החזון שלכם למציאות יפהפייה ופונקציונלית.</strong></p>
       </>
     ),
-    heroImage: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200",
+    heroTheme: "ui-design" as const,
+    portfolioTopic: "ui" as const,
     features: [
       {
         title: "עיצוב חדשני",
@@ -115,26 +116,7 @@ export default function UIDesignService() {
         answer: "אנחנו מבצעים מחקר משתמשים מקיף שכולל: ראיונות עם משתמשים, ניתוח התנהגות, מיפוי נקודות כאב, ובדיקות שימושיות. בנוסף, אנחנו עובדים בשיטה איטרטיבית שכוללת בדיקות משתמשים לאורך כל תהליך העיצוב, מה שמאפשר לנו לוודא שהעיצוב אכן עונה על צרכי המשתמשים ומשיג את המטרות העסקיות."
       }
     ],
-    portfolio: [
-      {
-        image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800',
-        title: 'עיצוב אפליקציה',
-        description: 'UI/UX לאפליקציית מובייל',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1545235617-9465d2a55698?w=800',
-        title: 'עיצוב אתר תדמית',
-        description: 'עיצוב אתר תדמיתי לעסק',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800',
-        title: 'עיצוב מערכת ניהול',
-        description: 'UI/UX למערכת ניהול מתקדמת',
-        link: '#'
-      }
-    ]
+    portfolio: []
   };
 
   return <ServiceLayout {...serviceData} />;

@@ -10,7 +10,8 @@ export default function OrganicSeoPage() {
       subtitle="קידום אתרים בגוגל בשיטות אורגניות"
       serviceType="seo"
       description="אנו מתמחים בקידום אתרים אורגני בגוגל, תוך שימוש בשיטות עבודה מתקדמות ואסטרטגיות SEO מוכחות. הצוות המקצועי שלנו מביא ניסיון עשיר בהעלאת אתרים לעמודים הראשונים בגוגל."
-      heroImage="/images/services/organic-seo-hero.jpg"
+      heroTheme="seo"
+      portfolioTopic="seo"
       features={[
         {
           icon: FaChartLine,
@@ -68,26 +69,7 @@ export default function OrganicSeoPage() {
           answer: 'כן, אנחנו עובדים רק בשיטות White Hat שעומדות בהנחיות גוגל.'
         }
       ]}
-      portfolio={[
-        {
-          image: '/images/portfolio/seo1.jpg',
-          title: 'קידום אתר תדמית',
-          description: 'העלאת אתר לעמוד הראשון בגוגל',
-          link: '#'
-        },
-        {
-          image: '/images/portfolio/seo2.jpg',
-          title: 'קידום חנות אונליין',
-          description: 'שיפור תנועת גולשים והמרות',
-          link: '#'
-        },
-        {
-          image: '/images/portfolio/seo3.jpg',
-          title: 'קידום לוקאלי',
-          description: 'קידום עסקים מקומיים בגוגל',
-          link: '#'
-        }
-      ]}
+      portfolio={[]}
     />
   );
 } 

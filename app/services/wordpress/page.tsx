@@ -49,7 +49,8 @@ export default function WordPressService() {
         <p><strong>אם אתם רוצים אתר וורדפרס שנבנה על ידי מומחים, שמקפידים על הפרטים הקטנים ביותר וחושבים תמיד על ביצועים, אבטחה והתוצאות שלכם – הגעתם למקום הנכון.</strong></p>
       </>
     ),
-    heroImage: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200",
+    heroTheme: "wordpress" as const,
+    portfolioTopic: "wordpress" as const,
     features: [
       {
         title: "פיתוח מקצועי",
@@ -116,26 +117,7 @@ export default function WordPressService() {
         answer: "בהחלט! אנו מתמחים בהקמת חנויות WooCommerce, פלטפורמת הסחר האלקטרוני המובילה בוורדפרס. אנו יכולים לשלב מגוון פתרונות תשלום, ניהול מלאי, שילוח, ואינטגרציה עם מערכות ERP ו-CRM. החנות תהיה קלה לניהול ותספק חווית קנייה מעולה ללקוחות."
       }
     ],
-    portfolio: [
-      {
-        image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800',
-        title: 'אתר תדמית וורדפרס',
-        description: 'פיתוח אתר תדמית מקצועי בוורדפרס',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-        title: 'חנות WooCommerce',
-        description: 'הקמת חנות אונליין על בסיס וורדפרס',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800',
-        title: 'בלוג מקצועי',
-        description: 'פיתוח בלוג תוכן בוורדפרס',
-        link: '#'
-      }
-    ]
+    portfolio: []
   };
 
   return <ServiceLayout {...serviceData} />;

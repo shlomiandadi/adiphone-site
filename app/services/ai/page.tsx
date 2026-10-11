@@ -52,7 +52,7 @@ export default function AIService() {
         <p><strong>צרו קשר עם מומחי ה-AI של Top Webstak עוד היום, וגלו כיצד בינה מלאכותית יכולה להפוך למנוע הצמיחה החזק ביותר של העסק שלכם.</strong></p>
       </>
     ),
-    heroImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200",
+    heroTheme: "ai" as const,
     features: [
       {
         title: "צ'אטבוטים חכמים",
@@ -119,26 +119,7 @@ export default function AIService() {
         answer: "אנחנו מגדירים מדדי הצלחה ברורים בתחילת כל פרויקט, כגון: שיפור בשביעות רצון לקוחות, חיסכון בזמן ועלויות, שיפור בהמרות, ועוד. המערכות שלנו כוללות כלי ניטור ומדידה מובנים המאפשרים מעקב מתמיד אחר הביצועים."
       }
     ],
-    portfolio: [
-      {
-        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
-        title: 'מערכת המלצות AI',
-        description: 'פיתוח מערכת המלצות חכמה לאתר מסחר',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800',
-        title: 'צ׳אטבוט שירות לקוחות',
-        description: 'הטמעת צ׳אטבוט מבוסס בינה מלאכותית',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1488229297570-58520851e868?w=800',
-        title: 'אוטומציה עסקית',
-        description: 'אוטומציה של תהליכים עסקיים בארגון',
-        link: '#'
-      }
-    ]
+    portfolio: []
   };
 
   return <ServiceLayout {...serviceData} />;

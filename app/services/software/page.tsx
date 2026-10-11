@@ -43,7 +43,8 @@ export default function SoftwareService() {
         <p><strong>צרו קשר עוד היום עם יועצי התוכנה של Top Webstak. בואו נדבר על הבעיות העסקיות שלכם, ואנחנו נמצא את הפתרון הטכנולוגי שיתאים לכם כמו כפפה ליד.</strong></p>
       </>
     ),
-    heroImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200",
+    heroTheme: "software" as const,
+    portfolioTopic: "software" as const,
     features: [
       {
         title: "פיתוח מותאם",
@@ -110,26 +111,7 @@ export default function SoftwareService() {
         answer: "כן, אנחנו מציעים חבילות תמיכה ותחזוקה שונות הכוללות תיקון באגים, עדכוני אבטחה, גיבויים, ניטור ביצועים ותמיכה טכנית שוטפת. אנחנו מתאימים את חבילת התמיכה לצרכים הספציפיים של כל לקוח."
       }
     ],
-    portfolio: [
-      {
-        image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
-        title: 'מערכת ניהול לקוחות',
-        description: 'פיתוח מערכת CRM מותאמת אישית',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800',
-        title: 'מערכת אוטומציה',
-        description: 'אוטומציה של תהליכים עסקיים',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800',
-        title: 'פיתוח API',
-        description: 'פיתוח ממשקי API מתקדמים',
-        link: '#'
-      }
-    ]
+    portfolio: []
   };
 
   return <ServiceLayout {...serviceData} />;

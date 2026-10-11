@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getSiteUrl } from '../../../lib/seo';
+import Hero3D from '../../components/hero3d/Hero3D';
 
 const PHONE_DISPLAY = '050-9159951';
 const PHONE_TEL = '+972509159951';
@@ -101,26 +102,19 @@ export default function SeoServicePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      {/* Hero */}
-      <section className="bg-gradient-to-l from-green-700 to-emerald-600 px-4 py-20 text-white">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">קידום אתרים אורגני (SEO) לעסקים</h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90 md:text-xl">
-            קידום אורגני (SEO) מקצועי שמביא לעסק שלכם תנועה איכותית ולקוחות מגוגל – לאורך זמן.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a href={`tel:${PHONE_TEL}`} className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-green-700 transition-colors hover:bg-green-50">
-              חייגו: {PHONE_DISPLAY}
-            </a>
-            <Link href="/contact" data-cta="true" data-cta-location="service-page" className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10">
-              לייעוץ והצעת מחיר
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Hero3D
+        theme="seo"
+        title="קידום אתרים אורגני (SEO) לעסקים"
+        subtitle="קידום אורגני (SEO) מקצועי שמביא לעסק שלכם תנועה איכותית ולקוחות מגוגל – לאורך זמן."
+        align="center"
+        ctas={[
+          { href: `tel:${PHONE_TEL}`, label: `חייגו: ${PHONE_DISPLAY}` },
+          { href: '/contact', label: 'לייעוץ והצעת מחיר', variant: 'secondary' },
+        ]}
+      />
 
       {/* Intro */}
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <div className="rounded-xl border-r-4 border-green-600 bg-green-50 p-6">
             <h2 className="mb-3 text-2xl font-bold text-gray-900">מה זה קידום אתרים?</h2>
@@ -141,7 +135,7 @@ export default function SeoServicePage() {
       </section>
 
       {/* What's included */}
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">מה כולל השירות</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -156,7 +150,7 @@ export default function SeoServicePage() {
       </section>
 
       {/* Who it's for */}
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">למי מתאים קידום אורגני?</h2>
           <ul className="list-disc space-y-2 pr-6 text-lg text-gray-700">
@@ -169,7 +163,7 @@ export default function SeoServicePage() {
       </section>
 
       {/* Process */}
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה שלנו</h2>
           <div className="grid gap-6 md:grid-cols-4">
@@ -187,7 +181,7 @@ export default function SeoServicePage() {
       </section>
 
       {/* How results are measured */}
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">איך מודדים תוצאות?</h2>
           <p className="text-lg leading-relaxed text-gray-700">
@@ -200,7 +194,7 @@ export default function SeoServicePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-3xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">שאלות נפוצות</h2>
           <div className="space-y-4">
@@ -215,7 +209,7 @@ export default function SeoServicePage() {
       </section>
 
       {/* Related + CTA */}
-      <section className="bg-green-700 px-4 py-16 text-white">
+      <section data-reveal className="bg-green-700 px-4 py-16 text-white">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="mb-4 text-3xl font-bold">רוצים לקדם את העסק בגוגל?</h2>
           <p className="mb-6 text-lg text-white/90">

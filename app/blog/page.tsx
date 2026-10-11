@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import BlogCard from '../components/BlogCard';
+import Hero3D from '../components/hero3d/Hero3D';
 import BlogSchema from '../components/BlogSchema';
 import BlogNewsletterForm from '../components/BlogNewsletterForm';
 import { BLOG_POSTS_PER_PAGE, getPublishedPostsPage } from '../../lib/posts';
@@ -78,16 +79,15 @@ export default async function Blog({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <BlogSchema posts={posts} />
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6">בלוג</h1>
-          <p className="text-xl max-w-2xl mx-auto">
-            טיפים, מדריכים ועדכונים מהעולם הדיגיטלי
-          </p>
-        </div>
-      </section>
+      <Hero3D
+        theme="blog"
+        title="בלוג"
+        subtitle="טיפים, מדריכים ועדכונים מהעולם הדיגיטלי"
+        align="center"
+        ctas={[{ href: '#blog-posts', label: 'למאמרים' }]}
+      />
 
-      <div className="container mx-auto px-4 py-16">
+      <div data-reveal className="container mx-auto px-4 py-16">
         <div className="grid lg:grid-cols-3 gap-8">
           <div id="blog-posts" className="lg:col-span-2 scroll-mt-28">
             {posts.length === 0 ? (

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getSiteUrl } from '../../lib/seo';
+import Hero3D from './hero3d/Hero3D';
 import {
   LOCAL_WEBSITE_PAGES,
   PHONE_DISPLAY,
@@ -69,38 +70,20 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <section className="bg-gradient-to-l from-blue-700 to-blue-500 px-4 py-20 text-white">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">{h1}</h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90 md:text-xl">
-            {content.heroLead}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-blue-700 transition-colors hover:bg-blue-50"
-            >
-              חייגו עכשיו: {PHONE_DISPLAY}
-            </a>
-            <Link
-              href="/contact"
-              data-cta="true"
-              data-cta-location="service-page"
-              className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              לקבלת הצעת מחיר
-            </Link>
-            <Link
-              href="/pricing"
-              className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              למחירון בניית אתרים
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Hero3D
+        theme="local"
+        title={h1}
+        subtitle={content.heroLead}
+        cityName={content.cityName}
+        align="center"
+        ctas={[
+          { href: `tel:${PHONE_TEL}`, label: `חייגו עכשיו: ${PHONE_DISPLAY}` },
+          { href: '/contact', label: 'לקבלת הצעת מחיר', variant: 'secondary' },
+          { href: '/pricing', label: 'למחירון בניית אתרים', variant: 'secondary' },
+        ]}
+      />
 
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.introTitle}</h2>
           {content.introParagraphs.map((paragraph) => (
@@ -130,7 +113,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.localContextTitle}</h2>
           {content.localContextParagraphs.map((paragraph) => (
@@ -141,7 +124,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">
             {content.typicalBusinessesTitle}
@@ -157,7 +140,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">
             {content.includedTitle}
@@ -173,7 +156,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.servingTitle}</h2>
           {content.servingParagraphs.map((paragraph) => (
@@ -184,7 +167,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה שלנו</h2>
           <div className="grid gap-6 md:grid-cols-4">
@@ -201,7 +184,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="mb-6 text-3xl font-bold text-gray-900">בניית אתרים לפי אזור</h2>
           <p className="mb-6 text-lg text-gray-700">{content.areasIntro}</p>
@@ -241,7 +224,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
       </section>
 
       {content.extraSection && (
-        <section className="bg-blue-50 px-4 py-16">
+        <section data-reveal className="bg-blue-50 px-4 py-16">
           <div className="container mx-auto max-w-3xl text-right">
             <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.extraSection.title}</h2>
             {content.extraSection.paragraphs.map((paragraph) => (
@@ -262,7 +245,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         </section>
       )}
 
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">שאלות נפוצות</h2>
           <div className="space-y-4">
@@ -283,7 +266,7 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
-      <section className="bg-blue-700 px-4 py-16 text-white">
+      <section data-reveal className="bg-blue-700 px-4 py-16 text-white">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="mb-4 text-3xl font-bold">{content.ctaTitle}</h2>
           <p className="mb-8 text-lg text-white/90">{content.ctaText}</p>

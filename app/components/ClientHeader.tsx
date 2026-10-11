@@ -220,7 +220,7 @@ export default function ClientHeader() {
       : 'bg-white border-b border-slate-200/80 shadow-sm';
 
   return (
-    <div className="site-header fixed top-0 left-0 right-0 z-50" data-contrast={lightText ? 'hero' : 'light'}>
+    <div className="site-header fixed top-0 left-0 right-0 z-50" data-cta-location="header" data-contrast={lightText ? 'hero' : 'light'}>
       {overHero && (
         <div
           className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 via-black/30 to-transparent"
@@ -410,6 +410,8 @@ export default function ClientHeader() {
 
               <Link
                 href="/contact"
+                data-cta="true"
+                data-cta-location="header"
                 className="inline-flex items-center px-3 xl:px-4 h-9 text-xs xl:text-sm font-semibold rounded-full text-white bg-gradient-to-l from-blue-800 via-blue-700 to-blue-600 shadow-lg shadow-blue-700/25 hover:shadow-blue-700/40 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
               >
                 ייעוץ חינם
@@ -532,6 +534,8 @@ export default function ClientHeader() {
               </a>
               <Link
                 href="/contact"
+                data-cta="true"
+                data-cta-location="header"
                 className="block w-full px-4 py-3 text-center font-semibold text-white rounded-lg bg-gradient-to-l from-blue-800 via-blue-700 to-blue-600"
                 onClick={() => setIsMenuOpen(false)}
               >

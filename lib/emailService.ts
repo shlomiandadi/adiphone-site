@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { formatAttributionEmailHtml, normalizeAttribution } from './tracking';
 
 // Only create Resend instance if API key is available
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -21,6 +22,7 @@ export async function sendContactEmail(data: any) {
         <p><strong>שירות:</strong> ${data.service}</p>
         <p><strong>הודעה:</strong></p>
         <p>${data.message}</p>
+        ${formatAttributionEmailHtml(normalizeAttribution(data))}
       </div>
     `,
     replyTo: data.email

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ContactService } from '@prisma/client';
+import { attachAttribution, trackGenerateLead } from '../../lib/tracking';
 
 export default function BlogNewsletterForm() {
   const [formData, setFormData] = useState({
@@ -24,12 +25,13 @@ export default function BlogNewsletterForm() {
       const response = await fetch('/api/contact/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(attachAttribution({ ...formData, form_name: 'newsletter' })),
       });
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || 'שגיאה בשליחת הטופס');
       }
+      trackGenerateLead('newsletter');
       setStatus('תודה על ההרשמה לניוזלטר! נשלח לך עדכונים בקרוב.');
       setFormData({
         name: '',
@@ -70,7 +72,7 @@ export default function BlogNewsletterForm() {
         קבל עדכונים על פוסטים חדשים וטיפים שימושיים
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} data-form-name="newsletter" className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             שם מלא

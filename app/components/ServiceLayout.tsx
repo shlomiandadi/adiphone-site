@@ -128,7 +128,7 @@ export default function ServiceLayout({
     : null;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white dark:bg-gray-900" data-cta-location="service-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
@@ -469,6 +469,8 @@ export default function ServiceLayout({
             >
               <Link
                 href="/contact"
+                data-cta="true"
+                data-cta-location="service-page"
                 className="inline-block rounded-full bg-white px-8 py-4 text-lg font-semibold text-blue-600 shadow-lg transition-all hover:bg-blue-50 hover:shadow-xl dark:bg-gray-900 dark:text-blue-400 dark:hover:bg-gray-800"
               >
                 דברו איתנו

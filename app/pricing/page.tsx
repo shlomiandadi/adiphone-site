@@ -219,12 +219,17 @@ export default function PricingPage() {
                     href={whatsappUrl(pkg.whatsappText)}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-package-name={pkg.name}
+                    data-cta-location="pricing"
                     className="block rounded-full bg-green-600 px-4 py-3 text-center font-semibold text-white transition-colors hover:bg-green-700"
                   >
                     וואטסאפ: {PHONE_DISPLAY}
                   </a>
                   <Link
                     href="/contact"
+                    data-cta="true"
+                    data-package-name={pkg.name}
+                    data-cta-location="pricing"
                     className="block rounded-full border border-blue-700 px-4 py-3 text-center font-semibold text-blue-700 transition-colors hover:bg-blue-50"
                   >
                     השאירו פרטים

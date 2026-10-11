@@ -34,7 +34,7 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
   portfolioImages
 }) => {
   return (
-    <div className="min-h-screen bg-gray-50 pt-24">
+    <div className="min-h-screen bg-gray-50 pt-24" data-cta-location="service-page">
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[400px]">
         <Image
@@ -120,6 +120,8 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
           <p className="text-xl mb-8">צרו איתנו קשר עוד היום ונעזור לכם להגשים את החזון שלכם</p>
           <a
             href="/contact"
+            data-cta="true"
+            data-cta-location="service-page"
             className="inline-block bg-white text-blue-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors"
           >
             דברו איתנו

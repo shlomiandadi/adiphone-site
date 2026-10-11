@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { ContactService } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { attachAttribution, trackGenerateLead } from '../../lib/tracking';
 
 export default function Contact() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function Contact() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(attachAttribution({ ...formData, form_name: 'contact_page' })),
       });
 
       const data = await response.json();
@@ -37,6 +38,7 @@ export default function Contact() {
         throw new Error(data.error || 'שגיאה בשליחת הטופס');
       }
 
+      trackGenerateLead('contact_page', { service_name: formData.service });
       setStatus('הטופס נשלח בהצלחה! נציג יצור איתך קשר בהקדם.');
       setFormData({ name: '', email: '', phone: '', message: '', service: ContactService.OTHER, newsletter: true });
       router.push('/thank-you');
@@ -97,7 +99,7 @@ export default function Contact() {
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                 השאירו פרטים להצעת מחיר
               </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} data-form-name="contact_page" className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   שם מלא

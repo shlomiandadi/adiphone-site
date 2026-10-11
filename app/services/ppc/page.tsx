@@ -113,7 +113,7 @@ export default function PpcServicePage() {
             <a href={`tel:${PHONE_TEL}`} className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-orange-600 transition-colors hover:bg-orange-50">
               חייגו: {PHONE_DISPLAY}
             </a>
-            <Link href="/contact" className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10">
+            <Link href="/contact" data-cta="true" data-cta-location="service-page" className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10">
               לייעוץ והצעת מחיר
             </Link>
           </div>
@@ -234,7 +234,7 @@ export default function PpcServicePage() {
             <a href={`tel:${PHONE_TEL}`} className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-orange-600 transition-colors hover:bg-orange-50">
               חייגו: {PHONE_DISPLAY}
             </a>
-            <Link href="/contact" className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10">
+            <Link href="/contact" data-cta="true" data-cta-location="service-page" className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10">
               צרו קשר
             </Link>
           </div>

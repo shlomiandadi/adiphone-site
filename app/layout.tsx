@@ -4,6 +4,7 @@ import { Heebo } from 'next/font/google';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Breadcrumbs from './components/Breadcrumbs';
+import PageOffset from './components/PageOffset';
 import BreadcrumbSchema from './components/BreadcrumbSchema';
 import FloatingButtons from './components/FloatingButtons';
 import AccessibilityBar from './components/AccessibilityBar';
@@ -123,11 +124,11 @@ export default function RootLayout({
           דלג לתוכן הראשי
         </a>
         <Header />
-        <div className="pt-[6rem] md:pt-[7rem] bg-gray-50">
+        <PageOffset>
           <div className="container mx-auto px-4">
             <Breadcrumbs />
           </div>
-        </div>
+        </PageOffset>
         <main id="main-content" className="flex-grow w-full">
           {children}
         </main>

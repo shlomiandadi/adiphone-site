@@ -37,6 +37,12 @@ export const navigation: NavigationItem[] = [
         description: "קידום אורגני מקצועי לעסקים"
       },
       {
+        name: "קידום במנועי AI (AEO/GEO)",
+        href: "/services/aeo-geo",
+        icon: "chart-line",
+        description: "שהעסק יופיע בתשובות של מנועי AI"
+      },
+      {
         name: "בניית אתרים",
         href: "/services/web-development",
         icon: "globe",

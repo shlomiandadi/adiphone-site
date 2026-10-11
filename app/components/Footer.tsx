@@ -7,6 +7,7 @@ const footerServices = [
   { href: '/services/web-development', label: 'בניית אתרים' },
   { href: '/services/wordpress', label: 'אתרי וורדפרס' },
   { href: '/services/seo', label: 'קידום אתרים SEO' },
+  { href: '/services/aeo-geo', label: 'קידום במנועי AI (AEO/GEO)' },
   { href: '/services/ppc', label: 'קידום ממומן PPC' },
   { href: '/services/ecommerce', label: 'חנויות אונליין' },
   { href: '/services/mobile-apps', label: 'פיתוח אפליקציות' },

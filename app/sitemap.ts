@@ -17,6 +17,7 @@ const STATIC_ROUTES = [
   '/services/mobile-apps',
   '/services/ppc',
   '/services/seo',
+  '/services/aeo-geo',
   '/services/software',
   '/services/software-development',
   '/services/ui-design',

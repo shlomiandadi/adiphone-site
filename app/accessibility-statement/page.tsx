@@ -2,10 +2,14 @@ import React from 'react';
 
 export const metadata = {
   title: 'הצהרת נגישות',
-  description: 'הצהרת נגישות של עדי פון תקשורת',
+  description:
+    'הצהרת הנגישות של אתר Top Webstak מבית עדי פון תקשורת: אמצעי הנגישות באתר, הוראות שימוש ודרכי פנייה בנושא נגישות.',
+  alternates: {
+    canonical: '/accessibility-statement',
+  },
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
 };
 

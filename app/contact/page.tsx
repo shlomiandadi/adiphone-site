@@ -75,9 +75,28 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto space-y-10">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                איך אפשר ליצור קשר
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                מחפשים שותף לבניית אתר, לקידום בגוגל או לחנות אונליין? Top Webstak, מבית עדי פון תקשורת, יושבת בזמיר 95 בפרדס חנה-כרכור ומלווה עסקים מהאזור ומהארץ. בעמוד הזה אפשר להשאיר פרטים להצעת מחיר, לחייג ישירות או לשלוח הודעת וואטסאפ.
+              </p>
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                אנחנו מטפלים בפניות של בעלי עסקים שצריכים אתר תדמית, חנות, מערכת מותאמת, קידום אורגני או קידום במנועי AI. אין טופס ארוך: שם, טלפון, מייל ומה צריך – ונחזור אליכם לשיחת היכרות קצרה, בלי התחייבות.
+              </p>
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                אם אתם באזור פרדס חנה, חדרה, קיסריה, זכרון יעקב או חיפה, אפשר גם לתאם פגישה. המפה למטה מציגה את הכתובת. שעות הפעילות הן א׳–ה׳, 9:00–18:00. אפשר להתקשר ל־<a href="tel:0509159951" className="text-blue-600 hover:underline">050-9159951</a> או לכתוב ל־<a href="mailto:adiphoneseo@gmail.com" className="text-blue-600 hover:underline">adiphoneseo@gmail.com</a>.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                השאירו פרטים להצעת מחיר
+              </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -192,6 +211,28 @@ export default function Contact() {
                 {isSubmitting ? 'שולח...' : 'שליחה'}
               </button>
             </form>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                איפה אנחנו נמצאים
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
+                זמיר 95, פרדס חנה-כרכור
+              </p>
+              <div className="overflow-hidden rounded-xl shadow-lg border border-gray-200">
+                <iframe
+                  title="מפת Google – זמיר 95, פרדס חנה-כרכור"
+                  src="https://maps.google.com/maps?q=%D7%96%D7%9E%D7%99%D7%A8%2095%20%D7%A4%D7%A8%D7%93%D7%A1%20%D7%97%D7%A0%D7%94-%D7%9B%D7%A8%D7%9B%D7%95%D7%A8&hl=he&z=16&output=embed"
+                  width="100%"
+                  height="360"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>

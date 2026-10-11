@@ -56,7 +56,7 @@ export default function AnalyticsService() {
         <ul>
           <li><strong>עבור חנויות <a href="https://adi-phone.co.il/services/ecommerce"><strong>איקומרס</strong></a>:</strong> אנו מתמקדים במדדים כמו שיעור המרה, ערך הזמנה ממוצע (AOV), שיעור נטישת עגלות וערך חיי לקוח (LTV).</li>
           <li><strong>עבור <a href="https://adi-phone.co.il/services/mobile-apps"><strong>אפליקציות מובייל</strong></a>:</strong> אנו מנתחים את שיעורי השימור (Retention), מעורבות המשתמשים (Engagement), וההכנסות מרכישות בתוך האפליקציה.</li>
-          <li><strong>עבור חברות <a href="https://adi-phone.co.il/services/software"><strong>תוכנה (SaaS)</strong></a>:</strong> אנו עוקבים אחר תהליך ההרשמה (Onboarding), אימוץ פיצ'רים (Feature Adoption) ושיעור הנטישה (Churn).</li>
+          <li><strong>עבור חברות <a href="https://adi-phone.co.il/services/software-development"><strong>תוכנה (SaaS)</strong></a>:</strong> אנו עוקבים אחר תהליך ההרשמה (Onboarding), אימוץ פיצ'רים (Feature Adoption) ושיעור הנטישה (Churn).</li>
         </ul>
         <h2><strong>למה לבחור ב-Top Webstak לניהול האנליטיקס שלכם?</strong></h2>
         <p>אנו לא רק מנתחי נתונים. אנו אנשי אסטרטגיה, שיווק וטכנולוגיה. אנו לא מסתפקים בלהגיש לכם דוח – אנו מתרגמים את הנתונים להמלצות אופרטיביות ברורות שיעזרו לכם לצמוח. השקיפות, המומחיות והתשוקה שלנו לנתונים הופכות אותנו לשותפים האידיאליים למסע שלכם לעבר קבלת החלטות חכמה יותר.</p>

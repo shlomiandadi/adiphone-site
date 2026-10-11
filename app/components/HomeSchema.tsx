@@ -2,7 +2,7 @@ import { homeFaqItems } from '../data/homeFaq';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://adi-phone.co.il';
 const description =
-  'Top Webstak - פתרונות דיגיטליים מקצועיים לעסקים: פיתוח אתרים, קידום SEO, בניית חנויות אונליין, פיתוח אפליקציות, עיצוב UI/UX ושיווק דיגיטלי. צוות מומחים עם ניסיון של למעלה מ-15 שנה.';
+  'בניית אתרים, קידום בגוגל (SEO), קמפיינים ממומנים וקידום במנועי AI לעסקים. סוכנות דיגיטל מפרדס חנה. ייעוץ חינם: 050-9159951.';
 
 export default function HomeSchema() {
   const schemas = [
@@ -30,13 +30,22 @@ export default function HomeSchema() {
     },
     {
       '@context': 'https://schema.org',
-      '@type': 'ProfessionalService',
+      '@type': ['LocalBusiness', 'ProfessionalService'],
       name: 'Top Webstak בנייה וקידום אתרים',
       alternateName: 'עדי פון תקשורת',
       description,
       url: siteUrl,
       telephone: '+972-50-9159951',
       email: 'adiphoneseo@gmail.com',
+      openingHours: 'Su-Th 09:00-18:00',
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+          opens: '09:00',
+          closes: '18:00',
+        },
+      ],
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'זמיר 95',

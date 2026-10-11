@@ -7,9 +7,41 @@ export const SERVICE_CANONICALS = {
   seo: '/services/seo',
   webDevelopment: '/services/web-development',
   mobileApps: '/services/mobile-apps',
-  software: '/services/software',
+  software: '/services/software-development',
   softwareDevelopment: '/services/software-development',
 } as const;
+
+export const DEFAULT_OG_IMAGE = {
+  url: '/images/og-default.png',
+  width: 1200,
+  height: 630,
+  alt: 'Top Webstak – בניית וקידום אתרים, מבית עדי פון תקשורת',
+} as const;
+
+export const AUTHOR_SHLOMI = {
+  name: 'שלומי',
+  url: 'https://www.linkedin.com/in/shlomi-malfuf-709961221/',
+} as const;
+
+/** Strip tags and HTML entities, then trim to a meta-description length. */
+export function plainTextMeta(value: string | null | undefined, max = 155): string {
+  if (!value) return '';
+  const withoutTags = value.replace(/<[^>]*>/g, ' ');
+  const decoded = withoutTags
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&hellip;/gi, '…')
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&[a-z]+;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (decoded.length <= max) return decoded;
+  return `${decoded.slice(0, max - 1).trimEnd()}…`;
+}
 
 /**
  * Per-post SEO overrides for blog posts.

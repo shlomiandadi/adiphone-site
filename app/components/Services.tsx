@@ -43,11 +43,10 @@ export default function Services() {
                 <div className="relative w-full pt-[66.67%]">
                   <Image
                     src={service.image}
-                    alt={service.title}
+                    alt={`שירות ${service.title} של Top Webstak`}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover"
-                    priority={index < 2}
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">

@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'הפרויקטים שלנו | Top Webstak | תיק עבודות - אתרים ופרויקטים מוצלחים',
+  title: { absolute: 'תיק עבודות – אתרים וחנויות שבנינו | Top Webstak' },
   description: 'גלו את תיק העבודות שלנו - פרויקטים מוצלחים של פיתוח אתרים, בניית חנויות אונליין, אפליקציות מובייל ועוד. דוגמאות אמיתיות לעבודות מקצועיות.',
   keywords: 'תיק עבודות, פרויקטים, דוגמאות, אתרים, חנויות, אפליקציות, תיק פורטפוליו, Top Webstak',
   alternates: {
     canonical: '/portfolio',
   },
   openGraph: {
-    title: 'הפרויקטים שלנו | Top Webstak | תיק עבודות - אתרים ופרויקטים מוצלחים',
+    title: 'תיק עבודות – אתרים וחנויות שבנינו | Top Webstak',
     description: 'גלו את תיק העבודות שלנו - פרויקטים מוצלחים של פיתוח אתרים, בניית חנויות אונליין, אפליקציות מובייל ועוד.',
     type: 'website',
     locale: 'he_IL',

@@ -5,7 +5,7 @@ import { FaPaintBrush, FaMobileAlt, FaPalette, FaMagic } from 'react-icons/fa';
 
 export default function UIDesignService() {
   const serviceData = {
-    title: "עיצוב ממשק משתמש",
+    title: "עיצוב UI/UX לאתרים ואפליקציות",
     subtitle: "עיצוב חווית משתמש מרהיבה ואפקטיבית",
     intro: "עיצוב UI/UX הוא עיצוב חוויית המשתמש והממשק של מוצר דיגיטלי, כך שיהיה נוח, ברור ומזמין לשימוש – ומוביל לפעולה.",
     serviceType: "ui-design",

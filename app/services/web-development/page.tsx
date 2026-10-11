@@ -6,7 +6,7 @@ import { FaLaptopCode, FaMobileAlt, FaTachometerAlt } from 'react-icons/fa';
 export default function WebDevelopmentPage() {
   return (
     <ServiceLayout
-      title="פיתוח אתרים"
+      title="בניית אתרים לעסקים"
       subtitle="אתרים מקצועיים ומותאמים אישית"
       intro="בניית אתרים היא תהליך הקמת אתר מקצועי לעסק – תדמית, קטלוג או מערכת – שמהיר, מאובטח ומותאם לנייד."
       serviceType="web-development"

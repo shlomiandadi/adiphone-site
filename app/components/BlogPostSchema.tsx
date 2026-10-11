@@ -33,8 +33,12 @@ export default function BlogPostSchema({ post }: BlogPostSchemaProps) {
     image: post.mainImage,
     author: {
       '@type': 'Person',
-      name: post.authorName,
-      email: post.authorEmail,
+      name: post.authorName?.trim() || 'שלומי',
+      url: 'https://www.linkedin.com/in/shlomi-malfuf-709961221/',
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Top Webstak',
+      },
     },
     publisher: {
       '@type': 'Organization',

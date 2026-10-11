@@ -10,7 +10,7 @@ export default function Navigation() {
         { title: 'עיצוב ממשק משתמש', href: '/services/ui-design' },
         { title: 'קמפיינים ממומנים', href: '/services/ppc' },
         { title: 'אנליטיקס ומדידה', href: '/services/analytics' },
-        { title: 'פיתוח תוכנה', href: '/services/software' },
+        { title: 'פיתוח תוכנה', href: '/services/software-development' },
         { title: 'פתרונות AI', href: '/services/ai' },
         { title: 'שירותי ענן', href: '/services/cloud' },
       ]

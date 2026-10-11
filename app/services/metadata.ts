@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'השירותים שלנו | Top Webstak | פיתוח אתרים, SEO, שיווק דיגיטלי',
+  title: { absolute: 'שירותי בניית וקידום אתרים לעסקים | Top Webstak' },
   description: 'גלו את כל השירותים הדיגיטליים שלנו: פיתוח אתרים, קידום SEO, בניית חנויות אונליין, פיתוח אפליקציות, עיצוב UI/UX, קמפיינים ממומנים ועוד. פתרונות מקצועיים להצלחת העסק שלכם.',
   keywords: 'שירותים, פיתוח אתרים, קידום אתרים, SEO, בניית חנויות, אפליקציות, עיצוב, שיווק דיגיטלי, Top Webstak',
   alternates: {
     canonical: '/services',
   },
   openGraph: {
-    title: 'השירותים שלנו | Top Webstak | פיתוח אתרים, SEO, שיווק דיגיטלי',
+    title: 'שירותי בניית וקידום אתרים לעסקים | Top Webstak',
     description: 'גלו את כל השירותים הדיגיטליים שלנו: פיתוח אתרים, קידום SEO, בניית חנויות אונליין, פיתוח אפליקציות ועוד.',
     type: 'website',
     locale: 'he_IL',

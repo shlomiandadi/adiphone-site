@@ -32,8 +32,8 @@ export default function BlogSchema({ posts }: BlogSchemaProps) {
       "image": post.mainImage,
       "author": {
         "@type": "Person",
-        "name": post.authorName,
-        "email": post.authorEmail
+        "name": post.authorName?.trim() || "שלומי",
+        "url": "https://www.linkedin.com/in/shlomi-malfuf-709961221/"
       },
       "publisher": {
         "@type": "Organization",

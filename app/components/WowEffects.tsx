@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 const REVEAL_SELECTOR = '[data-reveal], [data-reveal-stagger], [data-clip-reveal], [data-count]';
 const FAILSAFE_MS = 1500;
@@ -49,36 +50,43 @@ function revealAll() {
   document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR).forEach(revealEl);
 }
 
+function showAllSafely() {
+  document.documentElement.classList.add('wow-fallback');
+  revealAll();
+}
+
 export default function WowEffects() {
+  const pathname = usePathname();
+
   useEffect(() => {
-    const progress = document.createElement('div');
-    progress.className = 'scroll-progress';
-    progress.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(progress);
+    const progress = document.querySelector('.scroll-progress') || document.createElement('div');
+    if (!progress.parentElement) {
+      progress.className = 'scroll-progress';
+      progress.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(progress);
+    }
 
     const updateProgress = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const value = max > 0 ? Math.min(1, window.scrollY / max) : 0;
-      progress.style.transform = `scaleX(${value})`;
+      (progress as HTMLElement).style.transform = `scaleX(${value})`;
     };
     updateProgress();
     window.addEventListener('scroll', updateProgress, { passive: true });
 
+    return () => window.removeEventListener('scroll', updateProgress);
+  }, []);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    showAllSafely();
+
     const reduced = prefersReducedMotion();
     const ioSupported = typeof IntersectionObserver === 'function';
-
     if (reduced || !ioSupported) {
-      document.documentElement.classList.remove('wow-ready');
-      document.documentElement.classList.add('wow-fallback');
-      revealAll();
-      return () => {
-        window.removeEventListener('scroll', updateProgress);
-        progress.remove();
-      };
+      html.classList.remove('wow-ready');
+      return () => showAllSafely();
     }
-
-    const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR));
-    revealTargets.filter(isInViewport).forEach(revealEl);
 
     let io: IntersectionObserver;
     try {
@@ -94,28 +102,41 @@ export default function WowEffects() {
         { threshold: 0.01, rootMargin: '64px 0px 64px 0px' }
       );
     } catch {
-      document.documentElement.classList.add('wow-fallback');
-      revealAll();
-      return () => {
-        window.removeEventListener('scroll', updateProgress);
-        progress.remove();
-      };
+      showAllSafely();
+      html.classList.remove('wow-ready');
+      return () => showAllSafely();
     }
 
-    revealTargets.forEach((el) => io.observe(el));
-    document.documentElement.classList.add('wow-ready');
+    const observed = new WeakSet<Element>();
+    const scan = () => {
+      document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR).forEach((el) => {
+        if (isInViewport(el)) revealEl(el);
+        if (observed.has(el)) return;
+        observed.add(el);
+        io.observe(el);
+      });
+    };
+
+    scan();
+    const raf = window.requestAnimationFrame(scan);
+
+    html.classList.add('wow-ready');
+    html.classList.remove('wow-fallback');
+    scan();
+
+    const mo = new MutationObserver(() => scan());
+    mo.observe(document.body, { childList: true, subtree: true });
 
     const failsafe = window.setTimeout(() => {
-      document.documentElement.classList.add('wow-fallback');
-      revealAll();
+      showAllSafely();
     }, FAILSAFE_MS);
 
-    const parallaxNodes = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+    const parallaxNodes = () => Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
     let ticking = false;
     const applyParallax = () => {
       ticking = false;
       const y = window.scrollY;
-      for (const el of parallaxNodes) {
+      for (const el of parallaxNodes()) {
         const speed = Number(el.dataset.parallax || 0.16);
         el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
       }
@@ -128,11 +149,21 @@ export default function WowEffects() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        showAllSafely();
+        scan();
+      }
+    };
+    window.addEventListener('pageshow', onPageShow);
+
     const canTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const tilts = Array.from(document.querySelectorAll<HTMLElement>('[data-tilt]'));
-    const cleanups: Array<() => void> = [];
-    if (canTilt) {
-      for (const card of tilts) {
+    const tiltCleanups: Array<() => void> = [];
+    const bindTilts = () => {
+      if (!canTilt) return;
+      document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+        if (card.dataset.tiltBound === 'true') return;
+        card.dataset.tiltBound = 'true';
         const onMove = (event: MouseEvent) => {
           const rect = card.getBoundingClientRect();
           const px = (event.clientX - rect.left) / rect.width - 0.5;
@@ -144,25 +175,26 @@ export default function WowEffects() {
         };
         card.addEventListener('mousemove', onMove);
         card.addEventListener('mouseleave', onLeave);
-        cleanups.push(() => {
+        tiltCleanups.push(() => {
           card.removeEventListener('mousemove', onMove);
           card.removeEventListener('mouseleave', onLeave);
+          delete card.dataset.tiltBound;
         });
-      }
-    }
+      });
+    };
+    bindTilts();
 
     return () => {
       window.clearTimeout(failsafe);
-      document.documentElement.classList.remove('wow-ready');
-      document.documentElement.classList.add('wow-fallback');
-      revealAll();
-      window.removeEventListener('scroll', updateProgress);
-      window.removeEventListener('scroll', onScroll);
+      window.cancelAnimationFrame(raf);
+      mo.disconnect();
       io.disconnect();
-      cleanups.forEach((fn) => fn());
-      progress.remove();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('pageshow', onPageShow);
+      tiltCleanups.forEach((fn) => fn());
+      showAllSafely();
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }

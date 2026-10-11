@@ -216,11 +216,17 @@ export default function ClientHeader() {
   const headerShell = overHero
     ? 'bg-transparent'
     : isScrolled
-      ? 'bg-white/80 shadow-[0_8px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl border-b border-white/60'
+      ? 'bg-white/92 shadow-[0_8px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl border-b border-slate-200/80'
       : 'bg-white border-b border-slate-200/80 shadow-sm';
 
   return (
-    <div className="site-header fixed top-0 left-0 right-0 z-50">
+    <div className="site-header fixed top-0 left-0 right-0 z-50" data-contrast={lightText ? 'hero' : 'light'}>
+      {overHero && (
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 via-black/30 to-transparent"
+          aria-hidden="true"
+        />
+      )}
       {!isHome && (
         <div className={`bg-blue-600 text-white relative overflow-hidden transition-all duration-300 ${
           isScrolled ? 'max-h-0 py-0 opacity-0' : 'max-h-12 py-2 opacity-100'
@@ -246,9 +252,9 @@ export default function ClientHeader() {
             isScrolled ? 'h-14' : 'h-16 lg:h-[4.25rem]'
           }`}>
             <Link href="/" className="flex items-center group shrink-0 min-w-0">
-              <div className={`font-bold transition-all duration-300 whitespace-nowrap ${
+              <div className={`header-logo font-bold transition-all duration-300 whitespace-nowrap ${
                 isScrolled ? 'text-sm' : 'text-sm xl:text-base'
-              } ${lightText ? 'text-white' : 'text-blue-600'}`}>
+              }`}>
                 <div>Top Webstak</div>
                 <div className={`text-[11px] leading-tight font-medium ${
                   isScrolled ? 'hidden' : 'hidden xl:block'
@@ -267,15 +273,7 @@ export default function ClientHeader() {
                       href={item.href || '#'}
                       aria-current={current ? 'page' : undefined}
                       aria-haspopup={item.submenu ? 'true' : undefined}
-                      className={`nav-link px-1.5 xl:px-2.5 py-2 text-[13px] xl:text-sm font-medium whitespace-nowrap transition-colors duration-300 flex items-center ${
-                        lightText
-                          ? current
-                            ? 'text-white'
-                            : 'text-white/90 hover:text-white'
-                          : current
-                            ? 'text-blue-600'
-                            : 'text-slate-800 hover:text-blue-600'
-                      }`}
+                      className="nav-link px-1.5 xl:px-2.5 py-2 text-[13px] xl:text-sm font-medium whitespace-nowrap transition-colors duration-300 flex items-center"
                     >
                       {item.name}
                       {item.submenu && (
@@ -316,13 +314,13 @@ export default function ClientHeader() {
                                     {Icon && <Icon className="w-5 h-5" />}
                                   </div>
                                   <div className="mr-3">
-                                    <div className={`text-sm font-medium ${
-                                      subCurrent ? 'text-blue-600' : 'text-slate-900'
+                                    <div className={`dropdown-title text-sm font-medium ${
+                                      subCurrent ? 'text-blue-700' : ''
                                     }`}>
                                       {subItem.name}
                                     </div>
                                     {subItem.description && (
-                                      <p className="mt-1 text-xs text-slate-500">
+                                      <p className="dropdown-desc mt-1 text-xs">
                                         {subItem.description}
                                       </p>
                                     )}
@@ -343,10 +341,10 @@ export default function ClientHeader() {
               <div ref={searchRef} className="relative">
                 <button
                   type="button"
-                  className={`inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                  className={`header-fg inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
                     !isScrolled ? 'xl:hidden' : ''
                   } ${searchExpanded ? 'hidden' : ''} ${
-                    lightText ? 'text-white/90 hover:bg-white/10' : 'text-slate-700 hover:bg-slate-100'
+                    lightText ? 'hover:bg-white/10' : 'hover:bg-slate-100'
                   }`}
                   aria-label="חיפוש"
                   aria-expanded={searchExpanded}
@@ -368,8 +366,8 @@ export default function ClientHeader() {
                       onKeyDown={handleKeyDown}
                       className={`w-32 2xl:w-40 h-9 pr-9 pl-3 rounded-full border text-sm focus:outline-none
                         ${lightText
-                          ? 'bg-white/10 border-white/20 text-white placeholder-white/70 focus:bg-white focus:text-gray-900 focus:border-blue-500'
-                          : 'bg-slate-100 border-slate-200 text-gray-900 placeholder-gray-500 focus:border-blue-500'
+                          ? 'bg-white/10 border-white/20 text-white placeholder-white/70 focus:bg-white focus:text-[#071433] focus:border-blue-500'
+                          : 'bg-slate-100 border-slate-200 text-[#071433] placeholder-slate-500 focus:border-blue-500'
                         }`}
                     />
                     <button
@@ -377,7 +375,7 @@ export default function ClientHeader() {
                       className="absolute right-3 top-1/2 -translate-y-1/2"
                       aria-label="חיפוש"
                     >
-                      <FaSearch className={lightText ? 'text-white/70' : 'text-gray-400'} size={14} />
+                      <FaSearch className="header-fg" size={14} />
                     </button>
                   </div>
                 </form>
@@ -401,8 +399,8 @@ export default function ClientHeader() {
 
               <a
                 href={PHONE_TEL}
-                className={`inline-flex items-center gap-1.5 h-9 px-2 xl:px-3 text-sm font-medium rounded-full transition-colors duration-300 ${
-                  lightText ? 'text-white/90 hover:text-white hover:bg-white/10' : 'text-slate-700 hover:text-blue-600 hover:bg-blue-50'
+                className={`header-fg inline-flex items-center gap-1.5 h-9 px-2 xl:px-3 text-sm font-medium rounded-full transition-colors duration-300 ${
+                  lightText ? 'hover:bg-white/10' : 'hover:bg-blue-50'
                 }`}
                 aria-label={`התקשרו ${PHONE_DISPLAY}`}
               >
@@ -412,7 +410,7 @@ export default function ClientHeader() {
 
               <Link
                 href="/contact"
-                className="inline-flex items-center px-3 xl:px-4 h-9 text-xs xl:text-sm font-semibold rounded-full text-white bg-gradient-to-l from-blue-700 via-blue-600 to-sky-400 shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
+                className="inline-flex items-center px-3 xl:px-4 h-9 text-xs xl:text-sm font-semibold rounded-full text-white bg-gradient-to-l from-blue-800 via-blue-700 to-blue-600 shadow-lg shadow-blue-700/25 hover:shadow-blue-700/40 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
               >
                 ייעוץ חינם
               </Link>
@@ -427,9 +425,9 @@ export default function ClientHeader() {
               aria-controls={menuId}
             >
               {isMenuOpen ? (
-                <FaTimes className={lightText ? 'text-white' : 'text-gray-900'} size={24} />
+                <FaTimes className="header-fg" size={24} />
               ) : (
-                <FaBars className={lightText ? 'text-white' : 'text-gray-900'} size={24} />
+                <FaBars className="header-fg" size={24} />
               )}
             </button>
           </div>
@@ -486,8 +484,8 @@ export default function ClientHeader() {
                   onChange={(e) => handleSearchInput(e.target.value)}
                   className="w-full h-12 px-4 pr-10 rounded-lg bg-gray-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2" aria-label="חיפוש">
-                  <FaSearch className="text-gray-500" size={18} />
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-[#071433]" aria-label="חיפוש">
+                  <FaSearch size={18} />
                 </button>
               </div>
             </form>
@@ -534,7 +532,7 @@ export default function ClientHeader() {
               </a>
               <Link
                 href="/contact"
-                className="block w-full px-4 py-3 text-center font-semibold text-white rounded-lg bg-gradient-to-l from-blue-700 via-blue-600 to-sky-400"
+                className="block w-full px-4 py-3 text-center font-semibold text-white rounded-lg bg-gradient-to-l from-blue-800 via-blue-700 to-blue-600"
                 onClick={() => setIsMenuOpen(false)}
               >
                 ייעוץ חינם

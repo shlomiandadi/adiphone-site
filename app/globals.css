@@ -254,9 +254,58 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
   @apply w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg;
 }
 
-/* Navigation styles */
+/* Navigation styles — color comes from header contrast theme, never forced white. */
 .nav-link {
-  @apply px-3 lg:px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center hover:scale-105 transform text-white hover:bg-white/10 rounded-full;
+  @apply px-3 lg:px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center;
+}
+
+.site-header[data-contrast='hero'] {
+  color: #ffffff;
+}
+
+.site-header[data-contrast='hero'] .header-logo,
+.site-header[data-contrast='hero'] .header-fg,
+.site-header[data-contrast='hero'] .nav-link {
+  color: #ffffff;
+}
+
+.site-header[data-contrast='hero'] .nav-link:hover,
+.site-header[data-contrast='hero'] .nav-link:focus-visible,
+.site-header[data-contrast='hero'] .nav-link[aria-current='page'] {
+  color: #ffffff;
+}
+
+.site-header[data-contrast='light'] {
+  color: #071433;
+}
+
+.site-header[data-contrast='light'] .header-logo {
+  color: #1e3a8a;
+}
+
+.site-header[data-contrast='light'] .header-fg,
+.site-header[data-contrast='light'] .nav-link {
+  color: #071433;
+}
+
+.site-header[data-contrast='light'] .nav-link:hover,
+.site-header[data-contrast='light'] .nav-link:focus-visible,
+.site-header[data-contrast='light'] .nav-link[aria-current='page'] {
+  color: #1d4ed8;
+}
+
+.site-header .header-dropdown a,
+.site-header .header-dropdown .dropdown-title {
+  color: #071433;
+}
+
+.site-header .header-dropdown .dropdown-desc {
+  color: #334155;
+}
+
+.site-header .header-dropdown a:hover .dropdown-title,
+.site-header .header-dropdown a[aria-current='page'] .dropdown-title {
+  color: #1d4ed8;
 }
 
 .nav-dropdown {

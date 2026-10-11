@@ -363,3 +363,10 @@ body.high-contrast .accessibility-statement-btn:hover {
   background: #fbbf24 !important;
   color: black !important;
 }
+
+/* Homepage hero: static brand gradient before/without the canvas (no CLS). */
+.hero-stage {
+  background:
+    radial-gradient(1200px 600px at 80% 20%, rgba(59, 130, 246, 0.35), transparent 55%),
+    linear-gradient(135deg, #071433 0%, #1e3a8a 42%, #1d4ed8 72%, #0b1f4d 100%);
+}

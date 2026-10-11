@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import Services from './components/Services';
@@ -11,6 +10,7 @@ import Technologies from './components/Technologies';
 import HomeFAQ from './components/HomeFAQ';
 import HomeSchema from './components/HomeSchema';
 import Testimonials from './components/Testimonials';
+import HeroVisualLoader from './components/HeroVisualLoader';
 
 export const metadata: Metadata = {
   description:
@@ -22,15 +22,9 @@ export default function Home() {
     <>
       <HomeSchema />
       <div className="overflow-hidden">
-        <section className="relative h-[80vh] min-h-[600px]">
-          <Image
-            src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80"
-            alt="צוות עובד על בניית וקידום אתרים במשרד מודרני"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50">
+        <section className="hero-stage relative h-[80vh] min-h-[600px] overflow-hidden">
+          <HeroVisualLoader />
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/65 via-black/45 to-black/25">
             <div className="container mx-auto px-4 h-full flex items-center">
               <div className="max-w-2xl text-white">
                 <h1 className="text-5xl font-bold mb-6">בניית וקידום אתרים לעסקים – Top Webstak</h1>

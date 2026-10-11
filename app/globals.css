@@ -413,11 +413,40 @@ body.high-contrast .accessibility-statement-btn:hover {
   color: black !important;
 }
 
-/* Homepage hero: static brand gradient before/without the canvas (no CLS). */
+/* Homepage hero: static brand gradient before/without the canvas (no CLS).
+   Height is content-driven so H1/CTAs stay in flow and cannot collapse. */
 .hero-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 32rem;
   background:
     radial-gradient(1200px 600px at 80% 20%, rgba(59, 130, 246, 0.35), transparent 55%),
     linear-gradient(135deg, #071433 0%, #1e3a8a 42%, #1d4ed8 72%, #0b1f4d 100%);
+}
+
+.hero-stage-visual {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-stage-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  min-height: 32rem;
+  padding-top: 7.5rem;
+  padding-bottom: 4rem;
+}
+
+@supports (min-height: 100svh) {
+  .hero-stage,
+  .hero-stage-content {
+    min-height: max(32rem, 100svh);
+  }
 }
 
 .nav-link {
@@ -492,7 +521,9 @@ body.high-contrast .accessibility-statement-btn:hover {
   background: linear-gradient(90deg, #1d4ed8, #38bdf8);
 }
 
-html.wow-ready [data-reveal] {
+/* Reveal is progressive enhancement only. Content is visible unless JS
+   confirmed IntersectionObserver and marked html.wow-ready. */
+html.wow-ready:not(.wow-fallback) [data-reveal]:not(.is-inview) {
   opacity: 0.001;
   transform: translate3d(0, 28px, 0);
   transition: opacity 700ms ease, transform 700ms ease;
@@ -503,7 +534,7 @@ html.wow-ready [data-reveal].is-inview {
   transform: none;
 }
 
-html.wow-ready [data-reveal-stagger] > * {
+html.wow-ready:not(.wow-fallback) [data-reveal-stagger]:not(.is-inview) > * {
   opacity: 0.001;
   transform: translate3d(0, 22px, 0);
   transition: opacity 620ms ease, transform 620ms ease;
@@ -524,7 +555,7 @@ html.wow-ready [data-reveal-stagger].is-inview > * {
   transform: none;
 }
 
-html.wow-ready [data-clip-reveal] {
+html.wow-ready:not(.wow-fallback) [data-clip-reveal]:not(.is-inview) {
   clip-path: inset(14% 10% 14% 10% round 1.25rem);
   transform: scale(1.06);
   transition: clip-path 800ms ease, transform 800ms ease;
@@ -533,6 +564,14 @@ html.wow-ready [data-clip-reveal] {
 html.wow-ready [data-clip-reveal].is-inview {
   clip-path: inset(0% round 0);
   transform: none;
+}
+
+html.wow-fallback [data-reveal],
+html.wow-fallback [data-reveal-stagger] > *,
+html.wow-fallback [data-clip-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
 }
 
 [data-tilt] {

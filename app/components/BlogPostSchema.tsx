@@ -15,12 +15,41 @@ interface BlogPostSchemaProps {
   };
 }
 
+const AUTHOR_PERSON = {
+  '@type': 'Person',
+  name: 'שלומי',
+  url: 'https://www.linkedin.com/in/shlomi-malfuf-709961221/',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Top Webstak',
+  },
+};
+
+function withShlomiAuthor(markup: string): string {
+  try {
+    const parsed = JSON.parse(markup);
+    const apply = (node: Record<string, unknown>) => {
+      if (node['@type'] === 'BlogPosting') node.author = AUTHOR_PERSON;
+      return node;
+    };
+    if (Array.isArray(parsed)) {
+      return JSON.stringify(parsed.map((item) => (item && typeof item === 'object' ? apply(item as Record<string, unknown>) : item)));
+    }
+    if (parsed && typeof parsed === 'object') {
+      return JSON.stringify(apply(parsed as Record<string, unknown>));
+    }
+  } catch {
+    // Keep stored markup if it is not valid JSON.
+  }
+  return markup;
+}
+
 export default function BlogPostSchema({ post }: BlogPostSchemaProps) {
   if (post.schemaMarkup) {
     return (
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: post.schemaMarkup }}
+        dangerouslySetInnerHTML={{ __html: withShlomiAuthor(post.schemaMarkup) }}
       />
     );
   }
@@ -31,15 +60,7 @@ export default function BlogPostSchema({ post }: BlogPostSchemaProps) {
     headline: post.title,
     description: post.excerpt,
     image: post.mainImage,
-    author: {
-      '@type': 'Person',
-      name: post.authorName?.trim() || 'שלומי',
-      url: 'https://www.linkedin.com/in/shlomi-malfuf-709961221/',
-      worksFor: {
-        '@type': 'Organization',
-        name: 'Top Webstak',
-      },
-    },
+    author: AUTHOR_PERSON,
     publisher: {
       '@type': 'Organization',
       name: 'Top Webstak',

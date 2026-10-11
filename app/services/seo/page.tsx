@@ -1,173 +1,241 @@
-'use client';
-
-import ServiceLayout from '../../components/ServiceLayout';
 import Link from 'next/link';
-import { FaSearch, FaCog, FaLink, FaFileAlt } from 'react-icons/fa';
+import { getSiteUrl } from '../../../lib/seo';
 
-export default function SEOService() {
-  const serviceData = {
-    title: "קידום אורגני SEO",
-    subtitle: "הובלה לצמרת תוצאות החיפוש בגוגל",
-    serviceType: "seo",
-    description: (
-      <>
-        <h2><strong>קידום אתרים (SEO): הדרך הבטוחה להצלחה עסקית באינטרנט</strong></h2>
-        <p>בעידן הדיגיטלי של היום, הנוכחות שלכם באינטרנט היא חלון הראווה המרכזי של העסק. לקוחות פוטנציאליים מחפשים אתכם בגוגל בכל רגע נתון. השאלה היא לא <em>האם</em> הם מחפשים, אלא <em>האם</em> הם מוצאים אתכם. אם אתם לא מופיעים בעמוד הראשון של תוצאות החיפוש עבור הביטויים הרלוונטיים לעסק שלכם, אתם פשוט לא קיימים עבור רובם המכריע. כאן בדיוק נכנס לתמונה <strong>קידום אתרים (SEO)</strong>.</p>
-        <p>ב-Top Webstak (מבית עדי פון תקשורת), אנו לא מאמינים בקיצורי דרך או בפתרונות קסם. אנו מתמחים בבניית אסטרטגיות SEO מקיפות, מבוססות נתונים ובראייה ארוכת טווח. המטרה שלנו היא לא רק להביא אתכם לעמוד הראשון, אלא לבסס אתכם כמובילי דעה בתחומכם, להגדיל את התנועה האיכותית לאתר, ובסופו של דבר – להגדיל את שורת הרווח של העסק.</p>
-        <h2><strong>מהו קידום אתרים (SEO) ולמה הוא הנכס הדיגיטלי החשוב ביותר שלכם?</strong></h2>
-        <p>קידום אתרים, או Search Engine Optimization, הוא תהליך מורכב של אופטימיזציה למבנה האתר, לתוכן שלו ולמוניטין שלו ברשת, במטרה לשפר את דירוגיו בתוצאות החיפוש ה"טבעיות" (הלא ממומנות) של מנועי חיפוש כמו גוגל.</p>
-        <p>בניגוד ל<a href="https://adi-phone.co.il/services/ppc"><strong>קידום ממומן (PPC)</strong></a>, שבו אתם משלמים על כל קליק והחשיפה נפסקת ברגע שמפסיקים לשלם, קידום אורגני הוא השקעה שממשיכה להניב פירות לאורך זמן. אתר המקודם היטב נהנה מתנועה קבועה ואיכותית של גולשים שמחפשים באופן אקטיבי את השירותים או המוצרים שאתם מציעים. אמון הגולשים בתוצאות האורגניות גבוה משמעותית מהאמון במודעות ממומנות, מה שמתורגם לאחוזי המרה גבוהים יותר.</p>
-        <h3><strong>היתרונות המרכזיים של השקעה ב-SEO:</strong></h3>
-        <ul>
-          <li><strong>אמינות וסמכות:</strong> הופעה במיקומים הראשונים בגוגל משדרת ללקוחות פוטנציאליים שאתם מותג רציני וסמכותי בתחומכם.</li>
-          <li><strong>תנועה איכותית וממוקדת:</strong> הגולשים שמגיעים לאתר דרך חיפוש אורגני הם בעלי כוונת רכישה גבוהה. הם חיפשו פתרון – ואתם הופעתם כתשובה.</li>
-          <li><strong>יחס עלות-תועלת (ROI) גבוה:</strong> על אף ההשקעה הראשונית, בטווח הארוך SEO מספק את ההחזר הגבוה ביותר על ההשקעה מבין כל ערוצי השיווק הדיגיטלי.</li>
-          <li><strong>נכס דיגיטלי צומח:</strong> כל מאמר, כל שיפור טכני וכל קישור איכותי שנבנה מחזקים את הנכס הדיגיטלי שלכם, והערך שלו רק הולך וגדל עם הזמן.</li>
-        </ul>
-        <h2><strong>תהליך העבודה שלנו ב-Top Webstak: אסטרטגיית SEO ב-360 מעלות</strong></h2>
-        <p>קידום אתרים מוצלח אינו פעולה חד-פעמית, אלא תהליך מתמשך הדורש מומחיות בתחומים רבים. ב-Top Webstak, פיתחנו מתודולוגיית עבודה סדורה המבטיחה כיסוי של כל ההיבטים החשובים להצלחתכם.</p>
-        <h3><strong>שלב 1: מחקר ואסטרטגיה – היסודות להצלחה</strong></h3>
-        <p>כל פרויקט SEO שאנו מובילים מתחיל בצלילה עמוקה להבנת העסק שלכם, קהל היעד והסביבה התחרותית.</p>
-        <ul>
-          <li><strong>מחקר מילות מפתח מעמיק:</strong> אנו מזהים את הביטויים המדויקים שהלקוחות שלכם מקלידים בגוגל, תוך התמקדות בביטויים עם נפח חיפוש גבוה וכוונת רכישה ברורה.</li>
-          <li><strong>ניתוח מתחרים:</strong> אנו מנתחים את האתרים המובילים בתחומכם. מה הם עושים נכון? היכן נקודות התורפה שלהם? המידע הזה מאפשר לנו לגבש אסטרטגיה שתעקוף אותם.</li>
-          <li><strong>ביקורת SEO טכנית (Audit):</strong> אנו מבצעים סריקה מקיפה של האתר כדי לאתר בעיות טכניות שעלולות לפגוע בדירוגים, כגון מהירות טעינה, בעיות סריקה, מבנה קישורים שבור ועוד. אנו מסתייעים בכלי <a href="https://adi-phone.co.il/services/analytics"><strong>אנליטיקס וניתוח נתונים</strong></a> מתקדמים כדי לקבל תמונה מלאה.</li>
-        </ul>
-        <h3><strong>שלב 2: אופטימיזציית On-Page וטכנית</strong></h3>
-        <p>בשלב זה, אנו "מסדרים את הבית" ומוודאים שהאתר שלכם מדבר בשפה שגוגל מבין ואוהב.</p>
-        <ul>
-          <li><strong>אופטימיזציה טכנית:</strong> אנו מטפלים בכל הבעיות שעלו בביקורת הטכנית. החל משיפור מהירות האתר, דרך הטמעת נתונים מובנים (Schema), אופטימיזציה של קבצי Robots.txt ומפת אתר, וכלה בהבטחת התאמה מושלמת למכשירים ניידים. שירותי <a href="https://adi-phone.co.il/services/web-development"><strong>פיתוח האתרים</strong></a> שלנו מבטיחים שהבסיס הטכנולוגי שלכם יהיה איתן.</li>
-          <li><strong>אופטימיזציה של תוכן קיים:</strong> אנו עוברים על עמודי האתר החשובים, משפרים את הכותרות (Titles, H1, H2), מחדדים את התיאורים (Meta Descriptions), ומטמיעים את מילות המפתח בצורה טבעית ואיכותית בתוך התוכן.</li>
-          <li><strong>שיפור חווית המשתמש (UX/UI):</strong> אתר שקשה לנווט בו או שאינו נעים לעין יגרום לגולשים לנטוש במהירות – וזהו איתות שלילי לגוגל. שיתוף פעולה הדוק עם צוות ה<a href="https://adi-phone.co.il/services/ui-design"><strong>עיצוב UI/UX</strong></a> שלנו מבטיח שהאתר לא רק ייראה נהדר, אלא גם יספק חוויה נוחה ואינטואיטיבית שתעודד המרות.</li>
-        </ul>
-        ``` html
-<h2>שלב 3: אסטרטגיית תוכן ובניית סמכות (Off-Page)</h2>
-<p>תוכן הוא המלך, אבל קישורים הם אלה שבונים את הממלכה.</p>
-<ul>
-    <li>
-        <strong>יצירת תוכן מבוסס ערך:</strong> אנו יוצרים תוכן חדש ואיכותי (מאמרים, מדריכים, מקרי בוחן) שעונה על השאלות של קהל היעד שלכם. תוכן כזה לא רק מושך תנועה, אלא גם מבסס אתכם כמומחים. בין אם אתם זקוקים לתוכן עבור אתר<a href="https://adi-phone.co.il/services/wordpress"> וורדפרס</a> או פלטפורמה אחרת, אנו יודעים כיצד להתאים אותו.
-    </li>
-    <li>
-        <strong>בניית פרופיל קישורים איכותי:</strong> קישורים מאתרים אחרים (Backlinks) הם הצבעת האמון החשובה ביותר עבור גוגל. אנו מנהלים קמפיינים מתוחכמים להשגת קישורים איכותיים ורלוונטיים מאתרים סמכותיים בתחומכם, תוך הימנעות מוחלטת משיטות "כובע אפור" שעלולות לסכן את האתר שלכם.
-    </li>
-</ul>
-<h2>SEO עבור עסקים ופלטפורמות שונות</h2>
-<p>תהליך ה-SEO אינו זהה לכל סוגי האתרים. ב-Top Webstak אנו מתאימים את האסטרטגיה שלנו לצרכים הייחודיים שלכם:</p>
-<ul>
-    <li>
-        <strong>קידום אתרי מסחר אלקטרוני:</strong> עבור חנויות אונליין, קידום אורגני הוא קריטי. אנו מתמחים באופטימיזציה של עמודי קטגוריה ומוצר, ניהול מבנה אתר מורכב ושיפור תהליך הרכישה כדי למקסם מכירות. שירותי ה-SEO שלנו משתלבים באופן מושלם עם פלטפורמות<a href="https://www.google.com/search?q=https://adi-phone.co.il/services/ecommerce&authuser=2"> חנויות איקומרס</a>.
-    </li>
-    <li>
-        <strong>קידום אפליקציות (ASO):</strong> אם השקעתם ב<a href="https://www.google.com/search?q=https://adi-phone.co.il/services/mobile-apps&authuser=2">פיתוח אפליקציות מובייל</a>, אתם צריכים לדאוג שימצאו אתכם גם בחנויות האפליקציות. אנו מספקים שירותי ASO (App Store Optimization) לשיפור הנראות והגדלת כמות ההורדות.
-    </li>
-    <li>
-        <strong>קידום עסקים מבוססי תוכנה:</strong> חברות המציעות שירותי<a href="https://adi-phone.co.il/services/software-development"> פיתוח תוכנה</a> או מוצרי SaaS זקוקות לאסטרטגיית תוכן מתוחכמת שתדבר לקהל טכני ותבנה אמון. אנו יודעים כיצד לעשות זאת.
-    </li>
-</ul>
-<h2>שילוב SEO עם ערוצי שיווק נוספים</h2>
-<p>אנו מאמינים בראייה הוליסטית. קידום אורגני עובד בצורה הטובה ביותר כאשר הוא משולב עם ערוצים נוספים. התובנות ממחקר מילות המפתח ב-SEO יכולות לשפר משמעותית את ביצועי הקמפיינים ב<a href="https://adi-phone.co.il/services/ppc">קידום ממומן בגוגל (PPC)</a>, והנתונים משני הערוצים יחד מספקים תמונה מלאה ומדויקת יותר לקבלת החלטות. יתרה מכך, אנו יכולים לרתום את כוחה של<a href="https://adi-phone.co.il/services/ai"> בינה מלאכותית (AI)</a> לניתוח מגמות וזיהוי הזדמנויות חדשות לקידום.</p>
-<h2>למה לבחור ב-Top Webstak לקידום האתר שלכם?</h2>
-<p>בחירת ספק שירותי SEO היא החלטה קריטית לעתיד העסק שלכם. ב-Top Webstak, אנו מתחייבים לשקיפות מלאה, תקשורת רציפה ועבודה קשה שמביאה תוצאות מדידות. אנו לא עוד סוכנות – אנו השותפים שלכם להצלחה הדיגיטלית.</p>
-<p><strong>מוכנים לכבוש את המקומות הראשונים בגוגל ולהזניק את העסק שלכם קדימה?</strong></p>
-<p><strong>צרו איתנו קשר עוד היום לפגישת ייעוץ ללא התחייבות ובואו נבנה יחד את אסטרטגיית ה-SEO שתביא אתכם לפסגה.</strong></p>
+const PHONE_DISPLAY = '050-9159951';
+const PHONE_TEL = '+972509159951';
 
-      </>
-    ),
-    heroImage: "https://images.unsplash.com/photo-1571078732297-5db94f2dba4c?w=1200&auto=format&fit=crop&q=60",
-    features: [
-      {
-        title: "מחקר מילות מפתח מתקדם",
-        description: "זיהוי הזדמנויות SEO וניתוח מתחרים מעמיק",
-        icon: FaSearch
+const INCLUDED = [
+  {
+    title: 'מחקר מילות מפתח',
+    description: 'זיהוי הביטויים שהלקוחות שלכם מחפשים בגוגל, לפי כוונת חיפוש ורלוונטיות לעסק.',
+  },
+  {
+    title: 'אופטימיזציה טכנית',
+    description: 'שיפור מהירות, מבנה אתר, נתונים מובנים (Schema) והתאמה לנייד – הבסיס שגוגל אוהב.',
+  },
+  {
+    title: 'תוכן ואופטימיזציית עמודים',
+    description: 'שיפור כותרות, תיאורים ותוכן העמודים כך שיענו על השאלות של קהל היעד.',
+  },
+  {
+    title: 'בניית סמכות (קישורים)',
+    description: 'השגת קישורים רלוונטיים ואיכותיים, ללא שיטות מסוכנות שעלולות לפגוע באתר.',
+  },
+  {
+    title: 'קידום מקומי',
+    description: 'אופטימיזציה לחיפושים מקומיים ולפרופיל Google Business, לעסקים שמשרתים אזור גיאוגרפי.',
+  },
+  {
+    title: 'מדידה ודיווח',
+    description: 'מעקב אחר דירוגים, תנועה אורגנית והמרות, עם דיווח שקוף על מה שנעשה ומה הלאה.',
+  },
+];
+
+const PROCESS = [
+  { title: 'אבחון ומחקר', description: 'ניתוח האתר, המתחרים ומילות המפתח הרלוונטיות.' },
+  { title: 'אסטרטגיה', description: 'בניית תוכנית עבודה לפי סדר עדיפויות ויעדים ברורים.' },
+  { title: 'יישום', description: 'תיקונים טכניים, שיפור תוכן ובניית סמכות לאורך זמן.' },
+  { title: 'מדידה ושיפור', description: 'מעקב אחר התוצאות ועדכון האסטרטגיה בהתאם לנתונים.' },
+];
+
+const FAQ = [
+  {
+    question: 'מה זה קידום אתרים (SEO)?',
+    answer:
+      'קידום אתרים אורגני (SEO) הוא תהליך של שיפור האתר והתוכן כדי להופיע גבוה יותר בתוצאות החיפוש הטבעיות (הלא ממומנות) של גוגל, ולהביא תנועה איכותית של גולשים שמחפשים את מה שאתם מציעים.',
+  },
+  {
+    question: 'כמה זמן לוקח לראות תוצאות?',
+    answer:
+      'קידום אורגני הוא תהליך ארוך טווח. בדרך כלל רואים שיפורים הדרגתיים לאורך מספר חודשים, כשהקצב תלוי בתחרותיות התחום, במצב האתר הנוכחי ובהיקף העבודה. איננו מבטיחים מיקום או מועד ספציפי – גוגל לא מאפשר זאת.',
+  },
+  {
+    question: 'איך מודדים הצלחה בקידום אורגני?',
+    answer:
+      'לפי שיפור בדירוג מילות המפתח המרכזיות, גידול בתנועה האורגנית לאתר, שיפור במדדי חוויית המשתמש (כולל Core Web Vitals), ובעיקר עלייה בכמות הפניות וההמרות שמגיעות מחיפוש אורגני.',
+  },
+  {
+    question: 'מה ההבדל בין קידום אורגני לקידום ממומן?',
+    answer:
+      'קידום אורגני בונה נכס לטווח ארוך ומביא תנועה מתמשכת ללא תשלום לכל קליק, אבל לוקח זמן. קידום ממומן (PPC) מביא תנועה כמעט מיידית אך נפסק כשמפסיקים לשלם. לרוב מומלץ לשלב בין השניים.',
+  },
+];
+
+export default function SeoServicePage() {
+  const siteUrl = getSiteUrl();
+  const pageUrl = `${siteUrl}/services/seo`;
+
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: 'קידום אתרים אורגני (SEO)',
+    name: 'קידום אתרים (SEO)',
+    url: pageUrl,
+    provider: {
+      '@type': 'ProfessionalService',
+      name: 'Top Webstak בנייה וקידום אתרים',
+      telephone: '+972-50-9159951',
+      email: 'adiphoneseo@gmail.com',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'זמיר 95',
+        addressLocality: 'פרדס חנה-כרכור',
+        addressCountry: 'IL',
       },
-      {
-        title: "אופטימיזציה טכנית",
-        description: "שיפור המבנה הטכני והביצועים של האתר",
-        icon: FaCog
-      },
-      {
-        title: "בניית קישורים איכותית",
-        description: "יצירת פרופיל קישורים טבעי וחזק",
-        icon: FaLink
-      },
-      {
-        title: "תוכן אופטימלי",
-        description: "יצירת תוכן איכותי המותאם למנועי חיפוש",
-        icon: FaFileAlt
-      }
-    ],
-    benefits: [
-      "דירוג גבוה במנועי חיפוש עבור מילות מפתח רלוונטיות",
-      "הגדלה משמעותית של תנועה אורגנית איכותית לאתר",
-      "שיפור שיעורי ההמרה ואיכות הלידים",
-      "בניית מוניטין דיגיטלי חזק ואמין",
-      "ROI גבוה לטווח ארוך בהשוואה לערוצי שיווק אחרים",
-      "נוכחות דיגיטלית חזקה ויתרון תחרותי משמעותי"
-    ],
-    process: [
-      {
-        title: "אבחון ומחקר מעמיק",
-        description: "ניתוח מקיף של האתר, המתחרים והשוק"
-      },
-      {
-        title: "בניית אסטרטגיה",
-        description: "פיתוח תכנית פעולה מותאמת אישית להשגת יעדים"
-      },
-      {
-        title: "אופטימיזציה ויישום",
-        description: "ביצוע שיפורים טכניים ויצירת תוכן איכותי"
-      },
-      {
-        title: "מעקב ושיפור מתמיד",
-        description: "ניטור תוצאות ועדכון האסטרטגיה בהתאם"
-      }
-    ],
-    faq: [
-      {
-        question: "כמה זמן לוקח לראות תוצאות בקידום אורגני?",
-        answer: "תהליך קידום אורגני הוא מסע ארוך טווח. בדרך כלל, ניתן לראות שיפורים ראשוניים תוך 3-4 חודשים, אך תוצאות משמעותיות מתקבלות לאחר 6-12 חודשים של עבודה עקבית. התוצאות תלויות בגורמים רבים כמו התחרותיות בתחום, מצב האתר הנוכחי, והיקף העבודה הנדרש."
-      },
-      {
-        question: "איך אתם מודדים הצלחה בקידום אורגני?",
-        answer: "אנו מודדים הצלחה במספר מדדים: שיפור בדירוג מילות המפתח המרכזיות, גידול בכמות התנועה האורגנית לאתר, שיפור בזמני טעינה ומדדי Core Web Vitals, עלייה בכמות ההמרות מתנועה אורגנית, ושיפור במדדי מעורבות המשתמשים כמו זמן שהייה באתר ושיעור נטישה."
-      },
-      {
-        question: "האם אתם עובדים עם מתחרים באותו תחום?",
-        answer: "לא, אנחנו מקפידים על בלעדיות בכל תחום באזור גיאוגרפי נתון. זה מאפשר לנו להתמקד במקסום התוצאות עבורכם ולהימנע מניגוד אינטרסים."
-      },
-      {
-        question: "מה כוללת חבילת הקידום האורגני שלכם?",
-        answer: "החבילה שלנו כוללת: מחקר מילות מפתח מקיף, אופטימיזציה טכנית מלאה לאתר, יצירת תוכן איכותי ואופטימיזציה שלו, בניית קישורים טבעית, ניטור ודיווח חודשי, וליווי צמוד של מומחה SEO. אנו מתאימים את השירותים לצרכים הספציפיים של כל לקוח."
-      }
-    ],
-    portfolio: [
-      {
-        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-        title: 'קידום אתר תדמית',
-        description: 'העלאת אתר לעמוד הראשון בגוגל',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800',
-        title: 'קידום חנות אונליין',
-        description: 'שיפור תנועת גולשים והמרות',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
-        title: 'קידום לוקאלי',
-        description: 'קידום עסקים מקומיים בגוגל',
-        link: '#'
-      }
-    ],
-    testimonials: [
-      {
-        quote: "הקידום האורגני העלה אותנו לעמוד הראשון בגוגל תוך חודשים ספורים! צוות מקצועי ושירות מעולה.",
-        author: "נועה כהן",
-        company: "סטודיו עיצוב גרפי"
-      }
-    ]
+      url: siteUrl,
+    },
   };
 
-  return <ServiceLayout {...serviceData} />;
-} 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  };
+
+  return (
+    <div className="min-h-screen bg-white" dir="rtl">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
+      {/* Hero */}
+      <section className="bg-gradient-to-l from-green-700 to-emerald-600 px-4 py-20 text-white">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h1 className="mb-4 text-4xl font-bold md:text-5xl">קידום אתרים</h1>
+          <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90 md:text-xl">
+            קידום אורגני (SEO) מקצועי שמביא לעסק שלכם תנועה איכותית ולקוחות מגוגל – לאורך זמן.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <a href={`tel:${PHONE_TEL}`} className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-green-700 transition-colors hover:bg-green-50">
+              חייגו: {PHONE_DISPLAY}
+            </a>
+            <Link href="/contact" className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10">
+              לייעוץ והצעת מחיר
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Intro */}
+      <section className="px-4 py-16">
+        <div className="container mx-auto max-w-3xl text-right">
+          <div className="rounded-xl border-r-4 border-green-600 bg-green-50 p-6">
+            <h2 className="mb-3 text-2xl font-bold text-gray-900">מה זה קידום אתרים?</h2>
+            <p className="text-lg leading-relaxed text-gray-800">
+              קידום אתרים אורגני (SEO) הוא תהליך של שיפור האתר והתוכן כדי שהעסק יופיע גבוה יותר
+              בתוצאות החיפוש הטבעיות של גוגל. בניגוד לקידום ממומן, התנועה האורגנית ממשיכה להגיע
+              לאורך זמן גם מבלי לשלם על כל קליק.
+            </p>
+          </div>
+          <p className="mt-6 text-lg leading-relaxed text-gray-700">
+            רוצים טיפים מעשיים להתחלה? קראו את המדריך שלנו:{' '}
+            <Link href="/blog/seo-tips-google-ranking-guide" className="text-green-700 underline">
+              טיפים לקידום אתרים בגוגל
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+
+      {/* What's included */}
+      <section className="bg-gray-50 px-4 py-16">
+        <div className="container mx-auto max-w-5xl">
+          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">מה כולל השירות</h2>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {INCLUDED.map((item) => (
+              <div key={item.title} className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+                <h3 className="mb-2 text-xl font-semibold text-gray-900">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Who it's for */}
+      <section className="px-4 py-16">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">למי מתאים קידום אורגני?</h2>
+          <ul className="list-disc space-y-2 pr-6 text-lg text-gray-700">
+            <li>עסקים שרוצים להגיע ללקוחות שכבר מחפשים את השירות או המוצר שלהם בגוגל.</li>
+            <li>עסקים מקומיים שרוצים להופיע בחיפושים באזור שלהם ובמפות גוגל.</li>
+            <li>חנויות אונליין שרוצות תנועה אורגנית לעמודי קטגוריה ומוצר.</li>
+            <li>עסקים שמעדיפים לבנות נכס דיגיטלי לטווח ארוך לצד פעילות שיווקית אחרת.</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section className="bg-gray-50 px-4 py-16">
+        <div className="container mx-auto max-w-5xl">
+          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה שלנו</h2>
+          <div className="grid gap-6 md:grid-cols-4">
+            {PROCESS.map((step, index) => (
+              <div key={step.title} className="rounded-xl bg-white p-6 text-center shadow-sm">
+                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-green-600 font-bold text-white">
+                  {index + 1}
+                </div>
+                <h3 className="mb-2 text-lg font-semibold text-gray-900">{step.title}</h3>
+                <p className="text-sm text-gray-600">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How results are measured */}
+      <section className="px-4 py-16">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">איך מודדים תוצאות?</h2>
+          <p className="text-lg leading-relaxed text-gray-700">
+            אנחנו עובדים בשקיפות מלאה. ההתקדמות נמדדת לפי דירוג מילות המפתח המרכזיות, כמות
+            התנועה האורגנית לאתר, מדדי חוויית המשתמש (כולל Core Web Vitals), ובעיקר לפי כמות
+            הפניות וההמרות שמגיעות מחיפוש אורגני. אנחנו משתמשים ב-Google Search Console
+            וב-Google Analytics, ולא מבטיחים מיקומים או מועדים שאיננו שולטים בהם.
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-gray-50 px-4 py-16">
+        <div className="container mx-auto max-w-3xl">
+          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">שאלות נפוצות</h2>
+          <div className="space-y-4">
+            {FAQ.map((item) => (
+              <div key={item.question} className="rounded-xl border border-gray-100 bg-white p-6 text-right shadow-sm">
+                <h3 className="mb-2 text-xl font-semibold text-gray-900">{item.question}</h3>
+                <p className="text-gray-700">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related + CTA */}
+      <section className="bg-green-700 px-4 py-16 text-white">
+        <div className="container mx-auto max-w-3xl text-center">
+          <h2 className="mb-4 text-3xl font-bold">רוצים לקדם את העסק בגוגל?</h2>
+          <p className="mb-6 text-lg text-white/90">
+            נשמח לבנות יחד אסטרטגיית קידום שמתאימה לעסק ולתקציב שלכם.
+          </p>
+          <p className="mb-8 text-white/80">
+            קשור:{' '}
+            <Link href="/services/ppc" className="underline">קידום ממומן (PPC)</Link> ·{' '}
+            <Link href="/services/aeo-geo" className="underline">קידום במנועי AI (AEO/GEO)</Link>
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <a href={`tel:${PHONE_TEL}`} className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-green-700 transition-colors hover:bg-green-50">
+              חייגו: {PHONE_DISPLAY}
+            </a>
+            <Link href="/contact" className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10">
+              צרו קשר
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

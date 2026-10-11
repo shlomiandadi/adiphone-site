@@ -12,62 +12,30 @@ export const SERVICE_CANONICALS = {
 } as const;
 
 /**
- * Blog posts that currently compete with service pages for the same head terms.
- * Soft fix: differentiate meta titles toward informational intent.
+ * Per-post SEO overrides for blog posts.
+ *
+ * `metaTitle`/`metaDesc` are OPTIONAL: provide them only when the stored DB values
+ * are weak and the code should win. For posts whose DB metaTitle/metaDesc were
+ * rewritten, omit them here so the DB values are used (the blog template falls back
+ * to `post.metaTitle`/`post.metaDesc`). `relatedService`/`relatedLabel` keep the
+ * contextual "related service" CTA at the bottom of the post.
+ *
+ * Note: entries for posts that are now 301-redirected (e.g. kmpyynym-mmvmnym,
+ * kydvm-mmvmn-ppc, bnyyt-atry-vvrdprs, nyhvl-kmpyynym-mmvmnym) were removed — those
+ * URLs no longer render.
  */
 export const BLOG_META_OVERRIDES: Record<
   string,
-  { metaTitle: string; metaDesc: string; relatedService: string; relatedLabel: string }
+  { metaTitle?: string; metaDesc?: string; relatedService: string; relatedLabel: string }
 > = {
+  // DB meta was rewritten — prefer DB values, keep only the related-service CTA.
   'mvmchh-vvrdprs': {
-    metaTitle: 'איך בוחרים מומחה לבניית אתר וורדפרס? מדריך השוואה 2026',
-    metaDesc:
-      'מדריך מעשי לבחירת מומחה וורדפרס: מה לבדוק לפני פיתוח, איך להשוות הצעות, ומתי כדאי לפנות לצוות מקצועי. מאת Top Webstak.',
     relatedService: SERVICE_CANONICALS.wordpress,
     relatedLabel: 'שירות בניית אתרי וורדפרס',
   },
   'nyhvl-kmpyyn-mmvmn': {
-    metaTitle: 'איך לנהל קמפיין ממומן נכון: שלבים, תקציב ומדידה לעסקים',
-    metaDesc:
-      'מדריך שלב-אחר-שלב לניהול קמפיין ממומן: הגדרת יעדים, בחירת פלטפורמה, מעקב המרות ואופטימיזציה יומית. מאת Top Webstak.',
     relatedService: SERVICE_CANONICALS.ppc,
     relatedLabel: 'שירות ניהול קמפיינים ממומנים',
-  },
-  'nyhvl-kmpyynym-mmvmnym': {
-    metaTitle: 'ניהול קמפיינים ממומנים ב-2026: אסטרטגיה, KPI ואופטימיזציה',
-    metaDesc:
-      'סקירה מקצועית לניהול קמפיינים ממומנים ב-2026: מבנה חשבון, מדדי הצלחה ושיפור ROI לאורך זמן. מאת Top Webstak.',
-    relatedService: SERVICE_CANONICALS.ppc,
-    relatedLabel: 'שירות קידום ממומן PPC',
-  },
-  'kydvm-mmvmn-ppc': {
-    metaTitle: 'מדריך קידום ממומן PPC למתחילים: מושגים, תקציב ותוצאות',
-    metaDesc:
-      'הסבר ברור על קידום ממומן PPC: איך זה עובד, מה ההבדל מ-SEO, ואיך מתחילים נכון עם תקציב מדיד. מאת Top Webstak.',
-    relatedService: SERVICE_CANONICALS.ppc,
-    relatedLabel: 'שירות קידום ממומן PPC',
-  },
-  'kmpyynym-mmvmnym': {
-    metaTitle: 'קמפיינים ממומנים לעסקים: מדריך תכנון והרצה נכונה',
-    metaDesc:
-      'מדריך תכנון לקמפיינים ממומנים: מחקר קהל, מסרים, מדידה ושיפור מתמשך. מאת Top Webstak.',
-    relatedService: SERVICE_CANONICALS.ppc,
-    relatedLabel: 'שירות קמפיינים ממומנים',
-  },
-  'bnyyt-atry-vvrdprs': {
-    metaTitle: 'בניית אתרי וורדפרס: מדריך תהליך מלא לעסקים',
-    metaDesc:
-      'מדריך תהליך לבניית אתר וורדפרס לעסק: אפיון, עיצוב, פיתוח, אבטחה וקידום. מאת Top Webstak.',
-    relatedService: SERVICE_CANONICALS.wordpress,
-    relatedLabel: 'שירות פיתוח אתרי וורדפרס',
-  },
-  // Quick win: #2.3 for "בניית אתרים פרדס חנה" with 0 clicks — stronger title + CTA/phone.
-  'bnyyt-atrym-prds-chnh': {
-    metaTitle: 'בניית אתרים בפרדס חנה לעסקים | Top Webstak – 050-9159951',
-    metaDesc:
-      'בניית אתרים בפרדס חנה והסביבה: אתרי תדמית וחנויות מהירים, מותאמים לנייד וידידותיים לגוגל, מצוות מקומי. קבלו הצעת מחיר ללא התחייבות – חייגו 050-9159951.',
-    relatedService: SERVICE_CANONICALS.webDevelopment,
-    relatedLabel: 'שירות בניית אתרים',
   },
 };
 

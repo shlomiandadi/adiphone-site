@@ -104,7 +104,7 @@ export default function SeoServicePage() {
       {/* Hero */}
       <section className="bg-gradient-to-l from-green-700 to-emerald-600 px-4 py-20 text-white">
         <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">קידום אתרים</h1>
+          <h1 className="mb-4 text-4xl font-bold md:text-5xl">קידום אתרים אורגני (SEO) לעסקים</h1>
           <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90 md:text-xl">
             קידום אורגני (SEO) מקצועי שמביא לעסק שלכם תנועה איכותית ולקוחות מגוגל – לאורך זמן.
           </p>

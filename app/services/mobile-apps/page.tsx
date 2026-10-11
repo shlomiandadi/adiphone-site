@@ -50,7 +50,7 @@ export default function MobileAppService() {
         <ul>
           <li><strong>פיתוח צד-שרת ותשתיות ענן:</strong> רוב האפליקציות דורשות "מוח" מאחורי הקלעים – שרת שינהל את המידע, המשתמשים והלוגיקה. אנו מפתחים צד-שרת חזק ומבוסס <a href="https://adi-phone.co.il/services/cloud"><strong>תשתיות ענן (Cloud)</strong></a>, המבטיח שהאפליקציה שלכם תוכל לצמוח ולהתמודד עם כל עומס.</li>
           <li><strong>ניתוח נתונים (App Analytics):</strong> כדי לשפר, חייבים למדוד. אנו מטמיעים כלי <a href="https://adi-phone.co.il/services/analytics"><strong>אנליטיקס</strong></a> מתקדמים כדי לעקוב אחר הורדות, שיעורי שימור, מעורבות משתמשים ומדדי מפתח נוספים.</li>
-          <li><strong>שיווק, קידום ו-ASO:</strong> אנו מסייעים בהכנת עמודי האפליקציה בחנויות (App Store Optimization - ASO) ומנהלים קמפיינים של <a href="https://adi-phone.co.il/services/paid-promotion"><strong>קידום ממומן</strong></a> להגדלת החשיפה וההורדות.</li>
+          <li><strong>שיווק, קידום ו-ASO:</strong> אנו מסייעים בהכנת עמודי האפליקציה בחנויות (App Store Optimization - ASO) ומנהלים קמפיינים של <a href="https://adi-phone.co.il/services/ppc"><strong>קידום ממומן</strong></a> להגדלת החשיפה וההורדות.</li>
         </ul>
         <p><strong>יש לכם רעיון לאפליקציה שיכולה לשנות את השוק? או אולי אתם רוצים לשפר את הקשר עם הלקוחות שלכם?</strong></p>
         <p><strong>בואו נדבר. צוות המומחים של Top Webstak ישמח לשמוע את החזון שלכם ולהפוך אותו יחד למציאות מצליחה בכף ידם של מיליוני משתמשים.</strong></p>

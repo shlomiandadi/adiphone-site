@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { IconType } from 'react-icons';
 import TableOfContents from './TableOfContents';
 import ServicePricing from './ServicePricing';
+import { buildServiceJsonLd, servicePathForType } from '../../lib/service-schema';
 
 interface ServiceLayoutProps {
   title: string;
@@ -17,6 +18,8 @@ interface ServiceLayoutProps {
   description: React.ReactNode;
   heroImage: string;
   serviceType?: string; // Add service type for pricing
+  /** Canonical service path for JSON-LD when it differs from serviceType. */
+  servicePath?: string;
   features: Array<{
     title: string;
     description: string;
@@ -99,12 +102,19 @@ export default function ServiceLayout({
   description,
   heroImage,
   serviceType,
+  servicePath,
   features,
   benefits,
   process,
   faq,
   portfolio,
 }: ServiceLayoutProps) {
+  const serviceSchema = buildServiceJsonLd({
+    name: title,
+    description: intro || subtitle,
+    path: servicePathForType(serviceType, servicePath),
+  });
+
   const faqSchema = faq && faq.length > 0
     ? {
         '@context': 'https://schema.org',
@@ -119,6 +129,10 @@ export default function ServiceLayout({
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
       {faqSchema && (
         <script
           type="application/ld+json"

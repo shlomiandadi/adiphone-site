@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaSearch, FaWordpress, FaShoppingCart, FaMobileAlt, FaPaintBrush, FaBullhorn, FaChartLine, FaCode, FaBrain, FaCloud, FaRobot } from 'react-icons/fa';
+import { AGENCY_PROVIDER, SERVICES_HUB_ITEMS, buildServiceJsonLd } from '../../lib/service-schema';
+import { absoluteUrl } from '../../lib/seo';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -89,7 +91,7 @@ export default function ServicesPage() {
       description: "פתרונות תוכנה מתקדמים ומותאמים אישית",
       icon: <FaCode className="w-8 h-8 text-blue-600" />,
       image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800",
-      link: "/services/software",
+      link: "/services/software-development",
       features: ["פיתוח מותאם", "ארכיטקטורה", "אבטחת מידע", "תחזוקה ותמיכה"]
     },
     {
@@ -118,8 +120,35 @@ export default function ServicesPage() {
     }
   ];
 
+  const hubServiceSchema = buildServiceJsonLd({
+    name: 'שירותי בניית וקידום אתרים לעסקים',
+    description:
+      'בניית אתרים, קידום בגוגל, חנויות אונליין, אפליקציות, עיצוב UI/UX, פיתוח תוכנה ופתרונות דיגיטל לעסקים.',
+    path: '/services',
+  });
+
+  const hubCatalogSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'השירותים של Top Webstak',
+    itemListElement: SERVICES_HUB_ITEMS.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      url: absoluteUrl(item.path),
+      item: {
+        '@type': 'Service',
+        name: item.name,
+        url: absoluteUrl(item.path),
+        provider: AGENCY_PROVIDER,
+      },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubServiceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubCatalogSchema) }} />
       {/* Hero Section */}
       <div className="relative h-[40vh] min-h-[400px] w-full bg-gradient-to-r from-blue-600 to-blue-800">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 to-blue-800/90">

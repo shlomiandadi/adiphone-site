@@ -42,7 +42,7 @@ export default function EcommerceService() {
         <h4><strong>שלב 4: השקה, שיווק ואופטימיזציה</strong></h4>
         <p>ההשקה היא רק תחילת המירוץ.</p>
         <ul>
-          <li><strong>הבאת תנועה לחנות:</strong> אנו בונים אסטרטגיית שיווק משולבת הכוללת <a href="https://adi-phone.co.il/services/paid-promotion"><strong>קידום ממומן בגוגל ובפייסבוק</strong></a> כדי להביא תנועה ממוקדת ומיידית.</li>
+          <li><strong>הבאת תנועה לחנות:</strong> אנו בונים אסטרטגיית שיווק משולבת הכוללת <a href="https://adi-phone.co.il/services/ppc"><strong>קידום ממומן בגוגל ובפייסבוק</strong></a> כדי להביא תנועה ממוקדת ומיידית.</li>
           <li><strong>ניתוח ושיפור מתמיד:</strong> באמצעות כלי <a href="https://adi-phone.co.il/services/analytics"><strong>אנליטיקס</strong></a> מתקדמים, אנו עוקבים אחר התנהגות הגולשים, מנתחים את נתוני המכירות ומבצעים אופטימיזציה מתמדת לשיפור יחס ההמרה.</li>
           <li><strong>שימוש בכלים מתקדמים:</strong> ניתן לרתום מערכות <a href="https://adi-phone.co.il/services/ai"><strong>בינה מלאכותית (AI)</strong></a> להצעת המלצות מוצר מותאמות אישית, מה שמגדיל את ערך הסל הממוצע.</li>
           <li><strong>תשתית אמינה:</strong> כל החנויות שאנו בונים מתארחות על גבי <a href="https://adi-phone.co.il/services/cloud"><strong>תשתיות ענן</strong></a> חזקות, המבטיחות שהחנות תעמוד בכל עומס תנועה, במיוחד בתקופות שיא כמו חגים ומבצעים.</li>

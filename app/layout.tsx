@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     default: 'Top Webstak - בנייה וקידום אתרים מקצועיים | עדי פון תקשורת',
     template: '%s | Top Webstak',
   },
-  description: 'Top Webstak - פתרונות דיגיטליים מקצועיים לעסקים: פיתוח אתרים, קידום SEO, בניית חנויות אונליין, פיתוח אפליקציות, עיצוב UI/UX ושיווק דיגיטלי. צוות מומחים עם ניסיון של למעלה מ-15 שנה.',
+  description: 'בניית אתרים, קידום בגוגל (SEO), קמפיינים ממומנים וקידום במנועי AI לעסקים. סוכנות דיגיטל מפרדס חנה. ייעוץ חינם: 050-9159951.',
   keywords: 'פיתוח אתרים, בניית אתרים, קידום אתרים, SEO, בניית חנויות, אפליקציות, שיווק דיגיטלי, Top Webstak, עדי פון תקשורת',
   icons: {
     icon: '/favicon.ico',
@@ -45,6 +45,18 @@ export const metadata: Metadata = {
     locale: 'he_IL',
     siteName: 'Top Webstak',
     url: baseUrl,
+    images: [
+      {
+        url: '/images/og-default.png',
+        width: 1200,
+        height: 630,
+        alt: 'Top Webstak – בניית וקידום אתרים, מבית עדי פון תקשורת',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/images/og-default.png'],
   },
 };
 

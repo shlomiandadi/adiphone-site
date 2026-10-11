@@ -125,7 +125,7 @@ export const navigation: NavigationItem[] = [
       },
       {
         name: "פתרונות תוכנה",
-        href: "/services/software",
+        href: "/services/software-development",
         icon: "code",
         description: "ייעוץ, אינטגרציה והתאמת מערכות"
       },

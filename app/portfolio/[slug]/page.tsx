@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import ProjectPageClient from './ProjectPageClient';
+import { plainTextMeta } from '../../../lib/seo';
 
 interface Project {
   id: string;
@@ -16,10 +17,12 @@ interface Project {
 
 const cloudinaryBase = 'https://res.cloudinary.com/dooxg35gj/image/upload/v1753362055/portfolio/';
 
-/** Strip HTML tags and collapse whitespace — meta descriptions must be plain text. */
-function stripHtml(value?: string): string {
-  if (!value) return '';
-  return value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+function inferProjectType(project: Project): string {
+  const haystack = `${project.description || ''} ${(project.technologies || []).join(' ')}`.toLowerCase();
+  if (/shop|woocommerce|shopify|ecommerce|חנות/.test(haystack)) return 'חנות אונליין';
+  if (/wordpress|וורדפרס/.test(haystack)) return 'אתר וורדפרס';
+  if (/app|mobile|אפליקצ/.test(haystack)) return 'אפליקציה';
+  return 'אתר';
 }
 
 async function fetchProject(slug: string): Promise<Project | null> {
@@ -35,15 +38,19 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const project = await fetchProject(params.slug);
   if (!project) return {};
   const description =
-    stripHtml(project.descriptionRich) || project.description || `פרויקט: ${project.name}`;
+    plainTextMeta(project.descriptionRich, 155) ||
+    plainTextMeta(project.description, 155) ||
+    plainTextMeta(`פרויקט: ${project.name}`, 155);
+  const type = inferProjectType(project);
+  const title = `${project.name} – ${type} | תיק עבודות Top Webstak`;
   return {
-    title: project.name,
+    title: { absolute: title },
     description,
     alternates: {
       canonical: `/portfolio/${project.slug}`,
     },
     openGraph: {
-      title: project.name,
+      title,
       description,
       url: `/portfolio/${project.slug}`,
       images: project.images && project.images.length > 0 ? project.images : project.image ? [project.image] : [],

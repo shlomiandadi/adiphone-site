@@ -17,15 +17,19 @@ const STATIC_ROUTES = [
   '/services/mobile-apps',
   '/services/ppc',
   '/services/seo',
-  '/services/software',
   '/services/software-development',
   '/services/ui-design',
   '/services/web-development',
   '/services/wordpress',
+  '/services/bniyat-atarim-pardes-hana',
 ] as const;
 
 /** Slugs that 301 elsewhere — must not appear in sitemap. */
-const REDIRECTED_BLOG_SLUGS = new Set(['nyhvl-kmpyynym-mmvmnym']);
+const REDIRECTED_BLOG_SLUGS = new Set([
+  'nyhvl-kmpyynym-mmvmnym',
+  'bnyyt-atrym-prds-chnh',
+  'bnyyt-atry-ayntrnt-bprds-chnh',
+]);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getSiteUrl();

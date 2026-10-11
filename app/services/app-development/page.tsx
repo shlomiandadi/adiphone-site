@@ -43,7 +43,8 @@ export default function AppDevelopmentPage() {
       subtitle="פתרונות תוכנה מתקדמים לעסקים"
       serviceType="app-development"
       description="אנו מתמחים בפיתוח אפליקציות מובייל ווב מתקדמות, תוך שימוש בטכנולוגיות החדשניות ביותר. הצוות המקצועי שלנו מביא ניסיון עשיר בפיתוח פתרונות תוכנה מותאמים אישית לצרכי הלקוח."
-      heroImage="/images/services/app-development-hero.jpg"
+      heroTheme="apps"
+      portfolioTopic="apps"
       features={[
         {
           title: 'פיתוח מהיר',
@@ -106,26 +107,7 @@ export default function AppDevelopmentPage() {
           answer: 'כן, אנחנו מציעים חבילות תחזוקה ותמיכה שוטפת לכל האפליקציות שלנו.'
         }
       ]}
-      portfolio={[
-        {
-          image: '/images/portfolio/app1.jpg',
-          title: 'אפליקציית מסחר',
-          description: 'אפליקציה לחנות אונליין',
-          link: '#'
-        },
-        {
-          image: '/images/portfolio/app2.jpg',
-          title: 'אפליקציית שירות',
-          description: 'אפליקציה לשירות לקוחות',
-          link: '#'
-        },
-        {
-          image: '/images/portfolio/app3.jpg',
-          title: 'אפליקציית ניהול',
-          description: 'אפליקציה לניהול עסקי',
-          link: '#'
-        }
-      ]}
+      portfolio={[]}
     />
   );
 } 

@@ -1,7 +1,7 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
-import WebDevHero from '../../components/WebDevHero';
+import Hero3D from '../../components/hero3d/Hero3D';
 import { FaLaptopCode, FaMobileAlt, FaTachometerAlt } from 'react-icons/fa';
 import { LOCAL_WEBSITE_PAGES } from '../../../lib/local-website-building';
 import type { WebsiteProjectCard } from '../../../lib/website-projects';
@@ -21,9 +21,14 @@ export default function WebDevelopmentView({ projects }: Props) {
       serviceType="web-development"
       disableMotionHide
       heroVisual={
-        <WebDevHero
+        <Hero3D
+          theme="web-development"
           title="בניית אתרים לעסקים"
           subtitle="אתרים מקצועיים ומותאמים אישית"
+          ctas={[
+            { href: '/contact', label: 'ייעוץ לבניית אתר' },
+            { href: '/pricing', label: 'מחירון בניית אתרים', variant: 'secondary' },
+          ]}
         />
       }
       featuresHeading="מה מקבלים באתר"

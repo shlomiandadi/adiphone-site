@@ -10,7 +10,7 @@ export default function PaidPromotionPage() {
       subtitle="ניהול קמפיינים ממומנים בגוגל ופייסבוק"
       serviceType="ppc"
       description="אנו מתמחים בניהול קמפיינים ממומנים בפלטפורמות המובילות, תוך שימוש בכלים מתקדמים ואסטרטגיות פרסום מוכחות. הצוות המקצועי שלנו מביא ניסיון עשיר בניהול תקציבי פרסום ומקסום החזר השקעה."
-      heroImage="/images/services/paid-promotion-hero.jpg"
+      heroTheme="ppc"
       features={[
         {
           icon: FaChartLine,
@@ -68,26 +68,7 @@ export default function PaidPromotionPage() {
           answer: 'אנחנו מתמחים בפרסום בגוגל, פייסבוק, אינסטגרם ולינקדאין.'
         }
       ]}
-      portfolio={[
-        {
-          image: '/images/portfolio/ads1.jpg',
-          title: 'קמפיין ממומן בגוגל',
-          description: 'ניהול קמפיין Google Ads לעסק',
-          link: '#'
-        },
-        {
-          image: '/images/portfolio/ads2.jpg',
-          title: 'קמפיין פייסבוק',
-          description: 'קמפיין ממומן בפייסבוק להגדלת חשיפה',
-          link: '#'
-        },
-        {
-          image: '/images/portfolio/ads3.jpg',
-          title: 'קמפיין אינסטגרם',
-          description: 'קמפיין ממומן באינסטגרם להגדלת מעורבות',
-          link: '#'
-        }
-      ]}
+      portfolio={[]}
     />
   );
 }

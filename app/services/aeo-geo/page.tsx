@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getSiteUrl } from '../../../lib/seo';
+import Hero3D from '../../components/hero3d/Hero3D';
 
 const PHONE_DISPLAY = '050-9159951';
 const PHONE_TEL = '+972509159951';
@@ -116,35 +117,19 @@ export default function AeoGeoPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      {/* Hero */}
-      <section className="bg-gradient-to-l from-blue-700 to-indigo-600 px-4 py-20 text-white">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">קידום במנועי AI – AEO ו-GEO</h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90 md:text-xl">
-            יותר ויותר לקוחות מקבלים תשובות ישירות ממנועי AI כמו ChatGPT, Google AI Overviews
-            ו-Perplexity. אנחנו עוזרים לעסק שלכם להופיע בתשובות האלה.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-blue-700 transition-colors hover:bg-blue-50"
-            >
-              חייגו: {PHONE_DISPLAY}
-            </a>
-            <Link
-              href="/contact"
-              data-cta="true"
-              data-cta-location="service-page"
-              className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              לייעוץ ראשוני
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Hero3D
+        theme="aeo-geo"
+        title="קידום במנועי AI – AEO ו-GEO"
+        subtitle="יותר ויותר לקוחות מקבלים תשובות ישירות ממנועי AI כמו ChatGPT, Google AI Overviews ו-Perplexity. אנחנו עוזרים לעסק שלכם להופיע בתשובות האלה."
+        align="center"
+        ctas={[
+          { href: `tel:${PHONE_TEL}`, label: `חייגו: ${PHONE_DISPLAY}` },
+          { href: '/contact', label: 'לייעוץ ראשוני', variant: 'secondary' },
+        ]}
+      />
 
       {/* Direct-answer intro (GEO-friendly) */}
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <div className="rounded-xl border-r-4 border-blue-600 bg-blue-50 p-6">
             <h2 className="mb-3 text-2xl font-bold text-gray-900">מה זה AEO ו-GEO?</h2>
@@ -159,7 +144,7 @@ export default function AeoGeoPage() {
       </section>
 
       {/* Why it matters */}
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">למה זה חשוב לעסק שלכם?</h2>
           <p className="mb-4 text-lg leading-relaxed text-gray-700">
@@ -182,7 +167,7 @@ export default function AeoGeoPage() {
       </section>
 
       {/* What's included */}
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">מה כולל השירות</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -197,7 +182,7 @@ export default function AeoGeoPage() {
       </section>
 
       {/* Process */}
-      <section className="bg-gray-50 px-4 py-16">
+      <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה שלנו</h2>
           <div className="grid gap-6 md:grid-cols-4">
@@ -215,7 +200,7 @@ export default function AeoGeoPage() {
       </section>
 
       {/* FAQ */}
-      <section className="px-4 py-16">
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">שאלות נפוצות</h2>
           <div className="space-y-4">
@@ -230,7 +215,7 @@ export default function AeoGeoPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-blue-700 px-4 py-16 text-white">
+      <section data-reveal className="bg-blue-700 px-4 py-16 text-white">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="mb-4 text-3xl font-bold">רוצים שהעסק יופיע בתשובות של מנועי AI?</h2>
           <p className="mb-8 text-lg text-white/90">

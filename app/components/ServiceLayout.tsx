@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobileAlt, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
@@ -8,7 +8,10 @@ import { motion } from 'framer-motion';
 import { IconType } from 'react-icons';
 import TableOfContents from './TableOfContents';
 import ServicePricing from './ServicePricing';
+import Hero3D from './hero3d/Hero3D';
+import type { HeroCta, HeroTheme } from './hero3d/types';
 import { buildServiceJsonLd, servicePathForType } from '../../lib/service-schema';
+import { matchesPortfolioTopic, type PortfolioTopic, type PublishedProject } from '../../lib/website-projects';
 
 export type ServiceOfferLink = {
   title: string;
@@ -30,6 +33,11 @@ interface ServiceLayoutProps {
   heroImage?: string;
   /** Custom hero (3D / HTML). When set, photo hero is skipped. */
   heroVisual?: React.ReactNode;
+  heroTheme?: HeroTheme;
+  heroCtas?: HeroCta[];
+  heroAlign?: 'start' | 'center';
+  /** Fetch real published projects instead of placeholder cards. */
+  portfolioTopic?: PortfolioTopic;
   serviceType?: string; // Add service type for pricing
   /** Canonical service path for JSON-LD when it differs from serviceType. */
   servicePath?: string;
@@ -125,6 +133,9 @@ export default function ServiceLayout({
   description,
   heroImage,
   heroVisual,
+  heroTheme,
+  heroCtas,
+  heroAlign = 'start',
   serviceType,
   servicePath,
   features,
@@ -134,15 +145,49 @@ export default function ServiceLayout({
   process,
   faq,
   portfolio = [],
-  portfolioHeading = 'החנויות שבנינו מדברות בעד עצמן',
-  portfolioCtaLabel = 'לצפייה בחנות',
+  portfolioTopic,
+  portfolioHeading = 'פרויקטים שבנינו',
+  portfolioCtaLabel = 'לצפייה בפרויקט',
   serviceOffers,
   serviceOffersHeading = 'סוגי אתרים שאנחנו בונים',
   localLinks,
   localLinksHeading = 'בניית אתרים באזור',
-  disableMotionHide = false,
+  disableMotionHide = true,
 }: ServiceLayoutProps) {
   const motionInitial = disableMotionHide ? false : 'hidden';
+  const [topicPortfolio, setTopicPortfolio] = useState(portfolioTopic ? [] : portfolio);
+
+  useEffect(() => {
+    if (!portfolioTopic) {
+      setTopicPortfolio(portfolio);
+      return;
+    }
+    let cancelled = false;
+    fetch('https://adi-phone.co.il/api/portfolio2')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((rows: PublishedProject[]) => {
+        if (cancelled || !Array.isArray(rows)) return;
+        setTopicPortfolio(
+          rows
+            .filter((row) => row.slug && row.name && row.published !== false && matchesPortfolioTopic(row, portfolioTopic))
+            .slice(0, 6)
+            .map((row) => ({
+              image: row.image || '/images/portfolio/project1.svg',
+              title: row.name as string,
+              description: row.description || '',
+              link: `/portfolio/${row.slug}`,
+            }))
+        );
+      })
+      .catch(() => {
+        if (!cancelled) setTopicPortfolio([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [portfolio, portfolioTopic]);
+
+  const visiblePortfolio = portfolioTopic ? topicPortfolio : portfolio;
   const serviceSchema = buildServiceJsonLd({
     name: title,
     description: intro || subtitle,
@@ -176,6 +221,17 @@ export default function ServiceLayout({
       {/* Hero Section */}
       {heroVisual ? (
         heroVisual
+      ) : heroTheme ? (
+        <Hero3D
+          theme={heroTheme}
+          title={title}
+          subtitle={subtitle}
+          align={heroAlign}
+          ctas={heroCtas || [
+            { href: '/contact', label: 'צרו קשר' },
+            { href: '/portfolio', label: 'תיק עבודות', variant: 'secondary' },
+          ]}
+        />
       ) : heroImage ? (
       <div className="relative h-[60vh] min-h-[400px] w-full">
         <Image
@@ -438,7 +494,7 @@ export default function ServiceLayout({
       </section>
       )}
 
-      {portfolio.length > 0 && (
+      {visiblePortfolio.length > 0 && (
       <section data-reveal className={`px-4 py-16 ${serviceOffers && serviceOffers.length > 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800'}`}>
         <div className="container mx-auto max-w-6xl">
           <motion.h2
@@ -457,7 +513,7 @@ export default function ServiceLayout({
             variants={staggerChildren}
             className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
           >
-            {portfolio.map((item, index) => (
+            {visiblePortfolio.map((item, index) => (
               <motion.div
                 key={item.link + index}
                 variants={fadeInUp}

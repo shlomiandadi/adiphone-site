@@ -85,7 +85,8 @@ export default function SoftwareDevelopmentPage() {
           <p><strong>יש לכם צורך ייחודי ששום תוכנת מדף לא פותרת? דברו איתנו. המהנדסים של Top Webstak מוכנים לאתגר.</strong></p>
         </>
       )}
-      heroImage="/images/services/software-development-hero.jpg"
+      heroTheme="software"
+      portfolioTopic="software"
       features={[
         {
           icon: FaCode,
@@ -143,26 +144,7 @@ export default function SoftwareDevelopmentPage() {
           answer: 'אנחנו עובדים עם מגוון טכנולוגיות מתקדמות כולל Node.js, React, Python, ועוד.'
         }
       ]}
-      portfolio={[
-        {
-          image: '/images/portfolio/software1.jpg',
-          title: 'מערכת ניהול לקוחות',
-          description: 'פיתוח מערכת CRM מותאמת אישית',
-          link: '#'
-        },
-        {
-          image: '/images/portfolio/software2.jpg',
-          title: 'מערכת אוטומציה',
-          description: 'אוטומציה של תהליכים עסקיים',
-          link: '#'
-        },
-        {
-          image: '/images/portfolio/software3.jpg',
-          title: 'פיתוח API',
-          description: 'פיתוח ממשקי API מתקדמים',
-          link: '#'
-        }
-      ]}
+      portfolio={[]}
     />
   );
 } 

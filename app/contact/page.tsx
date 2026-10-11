@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ContactService } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { attachAttribution, trackGenerateLead } from '../../lib/tracking';
+import Hero3D from '../components/hero3d/Hero3D';
 
 export default function Contact() {
   const router = useRouter();
@@ -67,17 +68,18 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6">צור קשר</h1>
-          <p className="text-xl max-w-2xl mx-auto">
-            מוכנים להתחיל את הפרויקט הבא שלכם? צרו איתנו קשר ונחזור אליכם בהקדם
-          </p>
-        </div>
-      </section>
+      <Hero3D
+        theme="contact"
+        title="צור קשר"
+        subtitle="מוכנים להתחיל את הפרויקט הבא שלכם? צרו איתנו קשר ונחזור אליכם בהקדם"
+        align="center"
+        ctas={[
+          { href: 'tel:+972509159951', label: 'חייגו: 050-9159951' },
+          { href: '#contact-form', label: 'לטופס יצירת קשר', variant: 'secondary' },
+        ]}
+      />
 
-      <section className="py-16">
+      <section id="contact-form" data-reveal className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto space-y-10">
             <div>

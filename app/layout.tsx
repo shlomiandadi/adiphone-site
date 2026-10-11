@@ -1,4 +1,5 @@
 import './globals.css';
+import './components/hero3d/hero3d.css';
 import type { Metadata, Viewport } from 'next';
 import { Heebo } from 'next/font/google';
 import Header from './components/Header';

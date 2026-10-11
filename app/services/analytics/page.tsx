@@ -64,7 +64,7 @@ export default function AnalyticsService() {
         <p><strong>צרו קשר עוד היום עם מומחי האנליטיקס של Top Webstak, ובואו נגלה יחד את ההזדמנויות החבויות בתוך הדאטה שלכם.</strong></p>
       </>
     ),
-    heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200",
+    heroTheme: "analytics",
     features: [
       {
         title: "הטמעת Google Analytics 4",
@@ -131,26 +131,7 @@ export default function AnalyticsService() {
         answer: "כן, אנחנו לא רק מודדים ומנתחים, אלא גם מספקים המלצות מעשיות לשיפור והטמעה שלהן. השירות כולל אופטימיזציה מתמדת של דפי נחיתה, תהליכי המרה, וקמפיינים שיווקיים על בסיס הנתונים שנאספים."
       }
     ],
-    portfolio: [
-      {
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
-        title: 'דשבורד אנליטיקס',
-        description: 'פיתוח דשבורד נתונים מתקדם',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-        title: 'הטמעת Google Analytics',
-        description: 'הטמעת מערכת מדידה באתרי לקוחות',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1572177812156-58036aae439c?w=800',
-        title: 'ניתוח נתוני משתמשים',
-        description: 'ניתוח התנהגות משתמשים לשיפור חווית הלקוח',
-        link: '#'
-      }
-    ]
+    portfolio: []
   };
 
   return <ServiceLayout {...serviceData} />;

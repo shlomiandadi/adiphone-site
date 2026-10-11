@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Hero3D from '../components/hero3d/Hero3D';
 
 interface Project {
   id: string;
@@ -31,8 +32,15 @@ export default async function PortfolioPage() {
   const projects = await fetchProjects();
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">הפרויקטים שלנו</h1>
+    <main>
+      <Hero3D
+        theme="portfolio"
+        title="הפרויקטים שלנו"
+        subtitle="עבודות אמיתיות מתיק העבודות של Top Webstak"
+        align="center"
+        ctas={[{ href: '/contact', label: 'דברו איתנו על הפרויקט הבא' }]}
+      />
+      <div data-reveal className="max-w-6xl mx-auto px-4 py-12">
       {projects.length === 0 ? (
         <div className="text-center text-gray-500">לא נמצאו פרויקטים.</div>
       ) : (
@@ -57,6 +65,7 @@ export default async function PortfolioPage() {
           ))}
         </div>
       )}
+      </div>
     </main>
   );
 } 

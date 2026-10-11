@@ -56,7 +56,8 @@ export default function MobileAppService() {
         <p><strong>בואו נדבר. צוות המומחים של Top Webstak ישמח לשמוע את החזון שלכם ולהפוך אותו יחד למציאות מצליחה בכף ידם של מיליוני משתמשים.</strong></p>
       </>
     ),
-    heroImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200",
+    heroTheme: "apps",
+    portfolioTopic: "apps",
     features: [
       {
         title: "פיתוח מותאם",
@@ -123,26 +124,7 @@ export default function MobileAppService() {
         answer: "כן, אנו מציעים חבילות תמיכה ותחזוקה הכוללות: ניטור ביצועים, תיקון באגים, עדכוני אבטחה, התאמות לגרסאות OS חדשות, וסיוע בהטמעת פיצ'רים חדשים. אנו מלווים את הלקוחות שלנו לטווח ארוך ומבטיחים את הצלחת האפליקציה גם לאחר ההשקה."
       }
     ],
-    portfolio: [
-      {
-        image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800',
-        title: 'אפליקציית מסחר',
-        description: 'פיתוח אפליקציה לחנות אונליין',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800',
-        title: 'אפליקציית שירות',
-        description: 'אפליקציה לשירות לקוחות',
-        link: '#'
-      },
-      {
-        image: 'https://images.unsplash.com/photo-1573867639040-6dd25fa5f597?w=800',
-        title: 'אפליקציית ניהול',
-        description: 'פיתוח אפליקציה לניהול עסקי',
-        link: '#'
-      }
-    ]
+    portfolio: []
   };
 
   return <ServiceLayout {...serviceData} />;

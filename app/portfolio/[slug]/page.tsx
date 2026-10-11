@@ -16,6 +16,12 @@ interface Project {
 
 const cloudinaryBase = 'https://res.cloudinary.com/dooxg35gj/image/upload/v1753362055/portfolio/';
 
+/** Strip HTML tags and collapse whitespace — meta descriptions must be plain text. */
+function stripHtml(value?: string): string {
+  if (!value) return '';
+  return value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 async function fetchProject(slug: string): Promise<Project | null> {
   const baseUrl = process.env.NODE_ENV === 'development' 
     ? 'http://localhost:3000' 
@@ -28,15 +34,17 @@ async function fetchProject(slug: string): Promise<Project | null> {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const project = await fetchProject(params.slug);
   if (!project) return {};
+  const description =
+    stripHtml(project.descriptionRich) || project.description || `פרויקט: ${project.name}`;
   return {
     title: project.name,
-    description: project.descriptionRich || project.description || `פרויקט: ${project.name}`,
+    description,
     alternates: {
       canonical: `/portfolio/${project.slug}`,
     },
     openGraph: {
       title: project.name,
-      description: project.descriptionRich || project.description || `פרויקט: ${project.name}`,
+      description,
       url: `/portfolio/${project.slug}`,
       images: project.images && project.images.length > 0 ? project.images : project.image ? [project.image] : [],
     },

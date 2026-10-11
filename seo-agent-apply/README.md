@@ -23,6 +23,6 @@ https://adi-phone.co.il/api/seo-agent/webhook
 - Title / meta / OG / canonical overrides via `generateMetadata`
 - FAQ + JSON-LD via `<SeoAgentPageExtras path="..." />`
 - 301/302 redirects in `middleware.ts` (existing `next.config.js` / `netlify.toml` redirects stay)
-- `/llms.txt` merged on top of `public/llms.txt`
+- `/llms.txt` served by `app/llms.txt/route.ts` (same body as the previous public file; store additions are appended)
 - `revalidatePath` after each successful apply
 - Existing article-publish payloads (`title` + `slug` + `contentHtml`) still write to Prisma

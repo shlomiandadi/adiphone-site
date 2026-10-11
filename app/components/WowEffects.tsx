@@ -2,13 +2,25 @@
 
 import { useEffect } from 'react';
 
+const REVEAL_SELECTOR = '[data-reveal], [data-reveal-stagger], [data-clip-reveal], [data-count]';
+const FAILSAFE_MS = 1500;
+
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+function isInViewport(el: Element) {
+  const rect = el.getBoundingClientRect();
+  const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+  const vw = window.innerWidth || document.documentElement.clientWidth || 0;
+  return rect.bottom > 0 && rect.right > 0 && rect.top < vh && rect.left < vw;
+}
+
 function countUp(el: HTMLElement) {
+  if (el.dataset.countRan === 'true') return;
   const target = Number(el.dataset.count);
   if (!Number.isFinite(target)) return;
+  el.dataset.countRan = 'true';
   const suffix = el.dataset.suffix ?? '';
   const prefix = el.dataset.prefix ?? '';
   const decimals = Number(el.dataset.decimals ?? 0);
@@ -28,6 +40,15 @@ function countUp(el: HTMLElement) {
   requestAnimationFrame(tick);
 }
 
+function revealEl(el: HTMLElement) {
+  el.classList.add('is-inview');
+  if (el.hasAttribute('data-count')) countUp(el);
+}
+
+function revealAll() {
+  document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR).forEach(revealEl);
+}
+
 export default function WowEffects() {
   useEffect(() => {
     const progress = document.createElement('div');
@@ -35,40 +56,59 @@ export default function WowEffects() {
     progress.setAttribute('aria-hidden', 'true');
     document.body.appendChild(progress);
 
-    const reduced = prefersReducedMotion();
     const updateProgress = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const value = max > 0 ? Math.min(1, window.scrollY / max) : 0;
       progress.style.transform = `scaleX(${value})`;
     };
     updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
 
-    if (reduced) {
-      window.addEventListener('scroll', updateProgress, { passive: true });
+    const reduced = prefersReducedMotion();
+    const ioSupported = typeof IntersectionObserver === 'function';
+
+    if (reduced || !ioSupported) {
+      document.documentElement.classList.remove('wow-ready');
+      document.documentElement.classList.add('wow-fallback');
+      revealAll();
       return () => {
         window.removeEventListener('scroll', updateProgress);
         progress.remove();
       };
     }
 
+    const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR));
+    revealTargets.filter(isInViewport).forEach(revealEl);
+
+    let io: IntersectionObserver;
+    try {
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const target = entry.target as HTMLElement;
+            revealEl(target);
+            io.unobserve(target);
+          }
+        },
+        { threshold: 0.01, rootMargin: '64px 0px 64px 0px' }
+      );
+    } catch {
+      document.documentElement.classList.add('wow-fallback');
+      revealAll();
+      return () => {
+        window.removeEventListener('scroll', updateProgress);
+        progress.remove();
+      };
+    }
+
+    revealTargets.forEach((el) => io.observe(el));
     document.documentElement.classList.add('wow-ready');
 
-    const revealTargets = document.querySelectorAll<HTMLElement>(
-      '[data-reveal], [data-reveal-stagger], [data-clip-reveal], [data-count]'
-    );
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          const target = entry.target as HTMLElement;
-          target.classList.add('is-inview');
-          if (target.hasAttribute('data-count')) countUp(target);
-          io.unobserve(target);
-        }
-      },
-      { threshold: 0.16, rootMargin: '0px 0px -8% 0px' }
-    );
-    revealTargets.forEach((el) => io.observe(el));
+    const failsafe = window.setTimeout(() => {
+      document.documentElement.classList.add('wow-fallback');
+      revealAll();
+    }, FAILSAFE_MS);
 
     const parallaxNodes = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
     let ticking = false;
@@ -81,7 +121,6 @@ export default function WowEffects() {
       }
     };
     const onScroll = () => {
-      updateProgress();
       if (!ticking) {
         ticking = true;
         requestAnimationFrame(applyParallax);
@@ -113,7 +152,11 @@ export default function WowEffects() {
     }
 
     return () => {
+      window.clearTimeout(failsafe);
       document.documentElement.classList.remove('wow-ready');
+      document.documentElement.classList.add('wow-fallback');
+      revealAll();
+      window.removeEventListener('scroll', updateProgress);
       window.removeEventListener('scroll', onScroll);
       io.disconnect();
       cleanups.forEach((fn) => fn());

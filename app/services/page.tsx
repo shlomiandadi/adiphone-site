@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaSearch, FaWordpress, FaShoppingCart, FaMobileAlt, FaPaintBrush, FaBullhorn, FaChartLine, FaCode, FaBrain, FaCloud } from 'react-icons/fa';
+import { FaSearch, FaWordpress, FaShoppingCart, FaMobileAlt, FaPaintBrush, FaBullhorn, FaChartLine, FaCode, FaBrain, FaCloud, FaRobot } from 'react-icons/fa';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -99,6 +99,14 @@ export default function ServicesPage() {
       image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
       link: "/services/ai",
       features: ["צ'אטבוטים חכמים", "עיבוד שפה טבעית", "מערכות המלצה", "אוטומציה"]
+    },
+    {
+      title: "קידום במנועי AI (AEO/GEO)",
+      description: "שהעסק יופיע בתשובות של ChatGPT, Google AI ו-Perplexity",
+      icon: <FaRobot className="w-8 h-8 text-blue-600" />,
+      image: "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?w=800",
+      link: "/services/aeo-geo",
+      features: ["מחקר שאלות", "תוכן בפורמט תשובה", "נתונים מובנים", "חיזוק זהות העסק"]
     },
     {
       title: "שירותי ענן",

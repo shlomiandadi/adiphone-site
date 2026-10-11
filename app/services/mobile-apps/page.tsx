@@ -142,13 +142,6 @@ export default function MobileAppService() {
         description: 'פיתוח אפליקציה לניהול עסקי',
         link: '#'
       }
-    ],
-    testimonials: [
-      {
-        quote: "האפליקציה שפיתחתם לנו שינתה את כל חווית השירות ללקוחות. ממליץ בחום!",
-        author: "רועי לוי",
-        company: "לוי פתרונות מובייל"
-      }
     ]
   };
 

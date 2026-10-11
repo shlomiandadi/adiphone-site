@@ -143,13 +143,6 @@ export default function CloudService() {
         description: 'הטמעת פתרונות אבטחה מתקדמים',
         link: '#'
       }
-    ],
-    testimonials: [
-      {
-        quote: "המעבר לענן עם עדי פון היה חלק ומהיר. שירות מקצועי ותמיכה מלאה.",
-        author: "איילת רוזן",
-        company: "רוזן פתרונות ענן"
-      }
     ]
   };
 

@@ -134,13 +134,6 @@ export default function UIDesignService() {
         description: 'UI/UX למערכת ניהול מתקדמת',
         link: '#'
       }
-    ],
-    testimonials: [
-      {
-        quote: "העיצוב החדש העלה את אחוזי ההמרה באתר שלנו בצורה משמעותית. תודה על עבודה מדויקת!",
-        author: "גלית בן דוד",
-        company: "חברת סטארטאפ בע\"מ"
-      }
     ]
   };
 

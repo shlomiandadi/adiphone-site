@@ -163,18 +163,6 @@ export default function SoftwareDevelopmentPage() {
           link: '#'
         }
       ]}
-      testimonials={[
-        {
-          quote: "פיתוח התוכנה היה מקצועי, מהיר ומותאם בדיוק לצרכים שלנו. ממליץ בחום!",
-          author: "יוסי מזרחי",
-          company: "מזרחי מערכות"
-        },
-        {
-          quote: "הצוות היה זמין לכל שאלה והפיתוח היה ברמה גבוהה.",
-          author: "דנה כהן",
-          company: "דיגיטל פתרונות"
-        }
-      ]}
     />
   );
 } 

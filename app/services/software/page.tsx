@@ -129,13 +129,6 @@ export default function SoftwareService() {
         description: 'פיתוח ממשקי API מתקדמים',
         link: '#'
       }
-    ],
-    testimonials: [
-      {
-        quote: "פיתוח התוכנה היה מקצועי, מהיר ומותאם בדיוק לצרכים שלנו. ממליץ בחום!",
-        author: "יוסי מזרחי",
-        company: "מזרחי מערכות"
-      }
     ]
   };
 

@@ -21,7 +21,11 @@ const organizationSchema = {
     addressLocality: 'פרדס חנה-כרכור',
     addressCountry: 'IL',
   },
-  sameAs: [FACEBOOK_URL, LINKEDIN_URL],
+  sameAs: [
+    FACEBOOK_URL,
+    LINKEDIN_URL,
+    'https://www.google.com/maps/place/Top+webStak/@32.465799,34.952319,17z/data=!3m1!4b1!4m6!3m5!1s0x67bf58e7efcb5b51:0x3e583bedf92e1661!8m2!3d32.465799!4d34.952319!16s%2Fg%2F11thcjf6qd',
+  ],
   // TODO(owner): add foundingDate, a public logo URL, and any additional VERIFIED
   // profiles (Google Business Profile, Instagram) once available — do not invent.
 };

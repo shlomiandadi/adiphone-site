@@ -3,6 +3,9 @@ import React from 'react';
 export const metadata = {
   title: 'מדיניות פרטיות | עדי פון תקשורת',
   description: 'מדיניות פרטיות בהתאם לתיקון 13 לחוק הגנת הפרטיות: מטרות עיבוד, בסיס משפטי, עוגיות, זכויות משתמשים ופרטי קשר.',
+  alternates: {
+    canonical: '/privacy-policy',
+  },
 };
 
 export default function PrivacyPolicy() {

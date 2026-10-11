@@ -17,12 +17,12 @@ export default function BlogSchema({ posts }: BlogSchemaProps) {
   const blogSchema = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "name": "Top WebStack Blog",
+    "name": "Top Webstak Blog",
     "description": "בלוג מקצועי עם טיפים, מדריכים ועדכונים מהעולם הדיגיטלי",
     "url": "https://adi-phone.co.il/blog",
     "publisher": {
       "@type": "Organization",
-      "name": "Top WebStack",
+      "name": "Top Webstak",
       "url": "https://adi-phone.co.il"
     },
     "blogPost": posts.map(post => ({
@@ -37,7 +37,7 @@ export default function BlogSchema({ posts }: BlogSchemaProps) {
       },
       "publisher": {
         "@type": "Organization",
-        "name": "Top WebStack",
+        "name": "Top Webstak",
         "url": "https://adi-phone.co.il"
       },
       "datePublished": post.createdAt,

@@ -61,6 +61,14 @@ export const BLOG_META_OVERRIDES: Record<
     relatedService: SERVICE_CANONICALS.wordpress,
     relatedLabel: 'שירות פיתוח אתרי וורדפרס',
   },
+  // Quick win: #2.3 for "בניית אתרים פרדס חנה" with 0 clicks — stronger title + CTA/phone.
+  'bnyyt-atrym-prds-chnh': {
+    metaTitle: 'בניית אתרים בפרדס חנה לעסקים | Top Webstak – 050-9159951',
+    metaDesc:
+      'בניית אתרים בפרדס חנה והסביבה: אתרי תדמית וחנויות מהירים, מותאמים לנייד וידידותיים לגוגל, מצוות מקומי. קבלו הצעת מחיר ללא התחייבות – חייגו 050-9159951.',
+    relatedService: SERVICE_CANONICALS.webDevelopment,
+    relatedLabel: 'שירות בניית אתרים',
+  },
 };
 
 export function getSiteUrl(): string {

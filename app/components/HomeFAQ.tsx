@@ -14,7 +14,7 @@ export default function HomeFAQ() {
             שאלות נפוצות
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            תשובות לשאלות הנפוצות ביותר על השירותים שלנו ב-Top WebStack
+            תשובות לשאלות הנפוצות ביותר על השירותים שלנו ב-Top Webstak
           </p>
         </div>
 

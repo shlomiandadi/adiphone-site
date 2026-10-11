@@ -216,7 +216,7 @@ export default function ClientHeader() {
   const headerShell = overHero
     ? 'bg-transparent'
     : isScrolled
-      ? 'bg-white/92 shadow-[0_8px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl border-b border-slate-200/80'
+      ? 'bg-white/95 shadow-[0_8px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl border-b border-slate-200/80'
       : 'bg-white border-b border-slate-200/80 shadow-sm';
 
   return (

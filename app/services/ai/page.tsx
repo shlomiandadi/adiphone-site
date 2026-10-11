@@ -7,6 +7,7 @@ export default function AIService() {
   const serviceData = {
     title: "פתרונות בינה מלאכותית",
     subtitle: "טכנולוגיות AI חדשניות להאצת הצמיחה העסקית",
+    intro: "פתרונות AI הם שילוב של טכנולוגיות בינה מלאכותית – כמו צ'אטבוטים ואוטומציה – בתהליכי העבודה והשירות של העסק, כדי לחסוך זמן ולשפר את חוויית הלקוח.",
     serviceType: "ai",
     description: (
       <>

@@ -8,6 +8,7 @@ export default function WebDevelopmentPage() {
     <ServiceLayout
       title="פיתוח אתרים"
       subtitle="אתרים מקצועיים ומותאמים אישית"
+      intro="בניית אתרים היא תהליך הקמת אתר מקצועי לעסק – תדמית, קטלוג או מערכת – שמהיר, מאובטח ומותאם לנייד."
       serviceType="web-development"
       description={(
         <>

@@ -131,8 +131,8 @@ export default function ClientHeader() {
       }
     };
 
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', onKeyDown, true);
+    return () => window.removeEventListener('keydown', onKeyDown, true);
   }, [isMenuOpen]);
 
   const handleSearchInput = useCallback((query: string) => {

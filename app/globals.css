@@ -415,10 +415,6 @@ body.high-contrast .accessibility-statement-btn:hover {
   transform: translateX(100%);
 }
 
-[dir='rtl'] .mobile-drawer {
-  transform: translateX(-100%);
-}
-
 .mobile-drawer-open {
   transform: translateX(0);
 }

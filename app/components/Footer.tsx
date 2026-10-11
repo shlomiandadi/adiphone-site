@@ -5,6 +5,7 @@ import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp
 
 const footerServices = [
   { href: '/services/web-development', label: 'בניית אתרים' },
+  { href: '/pricing', label: 'מחירון בניית אתרים' },
   { href: '/services/wordpress', label: 'אתרי וורדפרס' },
   { href: '/services/seo', label: 'קידום אתרים SEO' },
   { href: '/services/aeo-geo', label: 'קידום במנועי AI (AEO/GEO)' },

@@ -42,7 +42,7 @@ export default function Testimonials() {
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 className="mb-3 text-3xl font-bold text-gray-900 md:text-4xl">
-            5.0 ★ מ-25 ביקורות בגוגל
+            5.0 ★ מ-<span className="tabular-nums" data-count="25">25</span> ביקורות בגוגל
           </h2>
           <a
             href={GOOGLE_MAPS_REVIEWS_URL}
@@ -54,7 +54,7 @@ export default function Testimonials() {
           </a>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
           {reviews.map((review) => (
             <blockquote
               key={review.name}

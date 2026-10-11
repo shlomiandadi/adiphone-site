@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Breadcrumbs from './components/Breadcrumbs';
 import PageOffset from './components/PageOffset';
+import WowEffects from './components/WowEffects';
 import BreadcrumbSchema from './components/BreadcrumbSchema';
 import FloatingButtons from './components/FloatingButtons';
 import AccessibilityBar from './components/AccessibilityBar';
@@ -124,6 +125,7 @@ export default function RootLayout({
           דלג לתוכן הראשי
         </a>
         <Header />
+        <WowEffects />
         <PageOffset>
           <div className="container mx-auto px-4">
             <Breadcrumbs />

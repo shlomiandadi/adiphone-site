@@ -378,8 +378,8 @@ body.high-contrast .accessibility-statement-btn:hover {
 .nav-link::after {
   content: '';
   position: absolute;
-  right: 0.75rem;
-  left: 0.75rem;
+  right: 0.4rem;
+  left: 0.4rem;
   bottom: 0.15rem;
   height: 2px;
   transform: scaleX(0);
@@ -427,5 +427,89 @@ body.high-contrast .accessibility-statement-btn:hover {
   .site-header * {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: right center;
+  pointer-events: none;
+  background: linear-gradient(90deg, #1d4ed8, #38bdf8);
+}
+
+html.wow-ready [data-reveal] {
+  opacity: 0.001;
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+html.wow-ready [data-reveal].is-inview {
+  opacity: 1;
+  transform: none;
+}
+
+html.wow-ready [data-reveal-stagger] > * {
+  opacity: 0.001;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity 620ms ease, transform 620ms ease;
+}
+
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(1) { transition-delay: 0ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(2) { transition-delay: 70ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(3) { transition-delay: 140ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(4) { transition-delay: 210ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(5) { transition-delay: 280ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(6) { transition-delay: 350ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(7) { transition-delay: 420ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(8) { transition-delay: 490ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(n + 9) { transition-delay: 520ms; }
+
+html.wow-ready [data-reveal-stagger].is-inview > * {
+  opacity: 1;
+  transform: none;
+}
+
+html.wow-ready [data-clip-reveal] {
+  clip-path: inset(14% 10% 14% 10% round 1.25rem);
+  transform: scale(1.06);
+  transition: clip-path 800ms ease, transform 800ms ease;
+}
+
+html.wow-ready [data-clip-reveal].is-inview {
+  clip-path: inset(0% round 0);
+  transform: none;
+}
+
+[data-tilt] {
+  transform-style: preserve-3d;
+  transition: transform 180ms ease;
+}
+
+.section-parallax-bg {
+  position: absolute;
+  inset: auto -10% -20% auto;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.14), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.wow-ready [data-reveal],
+  html.wow-ready [data-reveal-stagger] > *,
+  html.wow-ready [data-clip-reveal],
+  [data-tilt],
+  [data-parallax] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
   }
 }

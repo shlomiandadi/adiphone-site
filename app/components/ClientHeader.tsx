@@ -39,6 +39,7 @@ function getIcon(iconName: string | undefined) {
 export default function ClientHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchExpanded, setSearchExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Array<{ name: string; href: string }>>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -75,6 +76,7 @@ export default function ClientHeader() {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setShowSuggestions(false);
+        setSearchExpanded(false);
       }
     }
 
@@ -239,30 +241,33 @@ export default function ClientHeader() {
       )}
 
       <header className={`w-full transition-all duration-300 ${headerShell}`}>
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="תפריט ראשי">
-          <div className={`flex items-center justify-between transition-all duration-300 ${
-            isScrolled ? 'h-14' : 'h-16 md:h-20'
+        <nav className="max-w-[90rem] mx-auto px-3 sm:px-4 xl:px-8" aria-label="תפריט ראשי">
+          <div className={`flex items-center gap-2 xl:gap-3 transition-all duration-300 ${
+            isScrolled ? 'h-14' : 'h-16 lg:h-[4.25rem]'
           }`}>
-            <Link href="/" className="flex items-center group">
-              <div className={`text-sm md:text-base font-bold transition-all duration-300 ${
-                lightText ? 'text-white' : 'text-blue-600'
-              } group-hover:scale-105 transform leading-tight`}>
+            <Link href="/" className="flex items-center group shrink-0 min-w-0">
+              <div className={`font-bold transition-all duration-300 whitespace-nowrap ${
+                isScrolled ? 'text-sm' : 'text-sm xl:text-base'
+              } ${lightText ? 'text-white' : 'text-blue-600'}`}>
                 <div>Top Webstak</div>
-                <div className="text-xs md:text-sm">בנייה וקידום אתרים</div>
-                <div className="text-xs md:text-sm">(מבית עדי פון תקשורת)</div>
+                <div className={`text-[11px] leading-tight font-medium ${
+                  isScrolled ? 'hidden' : 'hidden xl:block'
+                }`}>
+                  בנייה וקידום אתרים
+                </div>
               </div>
             </Link>
 
-            <div className="hidden md:flex items-center justify-center flex-1 mx-2 lg:mx-6">
+            <div className="hidden lg:flex items-center justify-center flex-1 min-w-0 flex-nowrap">
               {navigation.map((item) => {
                 const current = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
                 return (
-                  <div key={item.name} className="relative group px-0.5 lg:px-1">
+                  <div key={item.name} className="relative group shrink-0">
                     <Link
                       href={item.href || '#'}
                       aria-current={current ? 'page' : undefined}
                       aria-haspopup={item.submenu ? 'true' : undefined}
-                      className={`nav-link px-2 lg:px-3 py-2 text-sm font-medium transition-colors duration-300 flex items-center ${
+                      className={`nav-link px-1.5 xl:px-2.5 py-2 text-[13px] xl:text-sm font-medium whitespace-nowrap transition-colors duration-300 flex items-center ${
                         lightText
                           ? current
                             ? 'text-white'
@@ -288,7 +293,7 @@ export default function ClientHeader() {
                     </Link>
                     {item.submenu && (
                       <div className={`header-dropdown absolute right-0 top-full pt-2 z-50 ${
-                        item.submenu.length > 6 ? 'w-[480px]' : 'w-80'
+                        item.submenu.length > 6 ? 'w-[min(28rem,calc(100vw-2rem))]' : 'w-72'
                       }`}>
                         <div className="rounded-2xl border border-slate-200/80 bg-white/95 shadow-2xl shadow-slate-900/10 backdrop-blur-xl">
                           <div className={`p-3 grid gap-1 max-h-[70vh] overflow-y-auto ${
@@ -334,65 +339,80 @@ export default function ClientHeader() {
               })}
             </div>
 
-            <div className="hidden md:flex items-center gap-2 lg:gap-3">
-              <div className="relative search-container hidden xl:block">
-                <div ref={searchRef} className="relative">
-                  <form onSubmit={handleSearchSubmit}>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        placeholder="חיפוש באתר..."
-                        value={searchQuery}
-                        onChange={(e) => handleSearchInput(e.target.value)}
-                        onFocus={() => setShowSuggestions(true)}
-                        onKeyDown={handleKeyDown}
-                        className={`w-36 2xl:w-44 h-10 pr-10 pl-4 rounded-full transition-all duration-300 border focus:w-52 search-input
-                          ${lightText
-                            ? 'bg-white/10 border-white/20 text-white placeholder-white/70 focus:bg-white focus:text-gray-900 focus:border-blue-500'
-                            : 'bg-slate-100 border-slate-200 text-gray-900 placeholder-gray-500 focus:border-blue-500'
-                          } focus:outline-none`}
-                      />
-                      <button
-                        type="submit"
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
-                        aria-label="חיפוש"
-                      >
-                        <FaSearch className={lightText ? 'text-white/70' : 'text-gray-400'} size={16} />
-                      </button>
-                    </div>
-                  </form>
+            <div className="hidden lg:flex items-center gap-1.5 xl:gap-2 shrink-0">
+              <div ref={searchRef} className="relative">
+                <button
+                  type="button"
+                  className={`inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                    !isScrolled ? 'xl:hidden' : ''
+                  } ${searchExpanded ? 'hidden' : ''} ${
+                    lightText ? 'text-white/90 hover:bg-white/10' : 'text-slate-700 hover:bg-slate-100'
+                  }`}
+                  aria-label="חיפוש"
+                  aria-expanded={searchExpanded}
+                  onClick={() => setSearchExpanded(true)}
+                >
+                  <FaSearch size={15} />
+                </button>
+                <form
+                  onSubmit={handleSearchSubmit}
+                  className={searchExpanded ? 'block' : isScrolled ? 'hidden' : 'hidden xl:block'}
+                >
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="חיפוש..."
+                      value={searchQuery}
+                      onChange={(e) => handleSearchInput(e.target.value)}
+                      onFocus={() => setShowSuggestions(true)}
+                      onKeyDown={handleKeyDown}
+                      className={`w-32 2xl:w-40 h-9 pr-9 pl-3 rounded-full border text-sm focus:outline-none
+                        ${lightText
+                          ? 'bg-white/10 border-white/20 text-white placeholder-white/70 focus:bg-white focus:text-gray-900 focus:border-blue-500'
+                          : 'bg-slate-100 border-slate-200 text-gray-900 placeholder-gray-500 focus:border-blue-500'
+                        }`}
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                      aria-label="חיפוש"
+                    >
+                      <FaSearch className={lightText ? 'text-white/70' : 'text-gray-400'} size={14} />
+                    </button>
+                  </div>
+                </form>
 
-                  {showSuggestions && suggestions.length > 0 && (
-                    <>
-                      <div className="fixed inset-0 z-[100]" onClick={() => setShowSuggestions(false)} />
-                      <div className="absolute top-full right-0 mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-[101]">
-                        {suggestions.map((suggestion, index) => (
-                          <SearchResult
-                            key={suggestion.href}
-                            suggestion={suggestion}
-                            isActive={index === activeIndex}
-                            onSelect={() => handleSelect(suggestion)}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
+                {showSuggestions && suggestions.length > 0 && (
+                  <>
+                    <div className="fixed inset-0 z-[100]" onClick={() => { setShowSuggestions(false); setSearchExpanded(false); }} />
+                    <div className="absolute top-full right-0 mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-[101]">
+                      {suggestions.map((suggestion, index) => (
+                        <SearchResult
+                          key={suggestion.href}
+                          suggestion={suggestion}
+                          isActive={index === activeIndex}
+                          onSelect={() => handleSelect(suggestion)}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
 
               <a
                 href={PHONE_TEL}
-                className={`hidden lg:inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-full transition-colors duration-300 ${
+                className={`inline-flex items-center gap-1.5 h-9 px-2 xl:px-3 text-sm font-medium rounded-full transition-colors duration-300 ${
                   lightText ? 'text-white/90 hover:text-white hover:bg-white/10' : 'text-slate-700 hover:text-blue-600 hover:bg-blue-50'
                 }`}
+                aria-label={`התקשרו ${PHONE_DISPLAY}`}
               >
                 <span aria-hidden="true">📞</span>
-                <span dir="ltr">{PHONE_DISPLAY}</span>
+                <span className="hidden xl:inline" dir="ltr">{PHONE_DISPLAY}</span>
               </a>
 
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-4 lg:px-5 py-2 lg:py-2.5 text-sm font-semibold rounded-full text-white bg-gradient-to-l from-blue-700 via-blue-600 to-sky-400 shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all duration-300"
+                className="inline-flex items-center px-3 xl:px-4 h-9 text-xs xl:text-sm font-semibold rounded-full text-white bg-gradient-to-l from-blue-700 via-blue-600 to-sky-400 shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
               >
                 ייעוץ חינם
               </Link>
@@ -400,7 +420,7 @@ export default function ClientHeader() {
 
             <button
               ref={menuButtonRef}
-              className="md:hidden p-2"
+              className="lg:hidden p-2 ms-auto"
               onClick={toggleMenu}
               aria-label={isMenuOpen ? 'סגור תפריט' : 'פתח תפריט'}
               aria-expanded={isMenuOpen}
@@ -417,7 +437,7 @@ export default function ClientHeader() {
       </header>
 
       <div
-        className={`fixed inset-0 z-[60] md:hidden ${isMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+        className={`fixed inset-0 z-[60] lg:hidden ${isMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
         aria-hidden={!isMenuOpen}
       >
         <button

@@ -23,7 +23,9 @@ export default function Home() {
       <HomeSchema />
       <div className="overflow-hidden">
         <section className="hero-stage relative h-[80vh] min-h-[600px] overflow-hidden">
-          <HeroVisualLoader />
+          <div className="absolute inset-0 will-change-transform" data-parallax="0.12">
+            <HeroVisualLoader />
+          </div>
           <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/65 via-black/45 to-black/25">
             <div className="container mx-auto px-4 h-full flex items-center">
               <div className="max-w-2xl text-white">
@@ -38,39 +40,39 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="animate-slide-in">
+        <section data-reveal>
           <ProcessSteps />
         </section>
 
-        <section className="animate-slide-in">
+        <section data-reveal>
           <Technologies />
         </section>
 
-        <section className="animate-slide-in">
+        <section data-reveal>
           <Services />
         </section>
 
-        <section className="animate-slide-in">
+        <section data-reveal>
           <Portfolio />
         </section>
 
-        <section className="animate-slide-in">
+        <section data-reveal>
           <Team />
         </section>
 
-        <section className="animate-slide-in">
+        <section data-reveal>
           <Testimonials />
         </section>
 
-        <section className="animate-slide-in">
+        <section data-reveal>
           <HomeFAQ />
         </section>
 
-        <section className="animate-slide-in">
+        <section data-reveal>
           <Blog />
         </section>
 
-        <section className="animate-slide-in">
+        <section data-reveal>
           <Contact />
         </section>
       </div>

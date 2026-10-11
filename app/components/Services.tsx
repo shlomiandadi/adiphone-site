@@ -30,16 +30,17 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900">
+    <section className="relative overflow-hidden py-20 bg-gray-50 dark:bg-gray-900">
+      <div className="section-parallax-bg" data-parallax="0.08" aria-hidden="true" />
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4 dark:text-white">השירותים שלנו</h2>
           <p className="text-xl text-gray-600 dark:text-gray-300">פתרונות דיגיטל מקצה לקצה לעסק שלך</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" data-reveal-stagger>
           {services.map((service, index) => (
             <Link href={service.link} key={index} className="block group h-full">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 group-hover:-translate-y-2 flex flex-col h-full">
+              <div data-tilt className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden flex flex-col h-full">
                 <div className="relative w-full pt-[66.67%]">
                   <Image
                     src={service.image}

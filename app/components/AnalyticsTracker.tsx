@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import {
+  applyStoredConsent,
   inferCtaLocation,
   injectAttributionFields,
   isMailtoHref,
@@ -88,6 +89,7 @@ export default function AnalyticsTracker() {
   const thankYouSent = useRef(false);
 
   useEffect(() => {
+    applyStoredConsent();
     persistAttribution();
     document.addEventListener('click', handleDelegatedClick, true);
     const observer = new MutationObserver(syncFormFields);
@@ -100,6 +102,7 @@ export default function AnalyticsTracker() {
   }, []);
 
   useEffect(() => {
+    applyStoredConsent();
     persistAttribution();
     syncFormFields();
     if (lastPath.current && lastPath.current !== pathname) {

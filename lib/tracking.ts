@@ -143,6 +143,32 @@ function hasCampaignSignal(attr: Attribution) {
   );
 }
 
+export function applyStoredConsent() {
+  if (!isBrowser()) return false;
+  try {
+    const raw = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('cookie_consent_v1='));
+    if (!raw) return false;
+    const parsed = JSON.parse(decodeURIComponent(raw.slice('cookie_consent_v1='.length)));
+    const cats = parsed?.categories;
+    if (!cats) return false;
+    const analytics = cats.analytics ? 'granted' : 'denied';
+    const ad = cats.marketing ? 'granted' : 'denied';
+    window.gtag?.('consent', 'update', {
+      ad_storage: ad,
+      ad_user_data: ad,
+      ad_personalization: ad,
+      analytics_storage: analytics,
+      functionality_storage: cats.functional ? 'granted' : 'denied',
+      security_storage: 'granted',
+    });
+    return Boolean(cats.analytics);
+  } catch {
+    return false;
+  }
+}
+
 export function persistAttribution(): Attribution {
   if (!isBrowser()) return {};
   const incoming = captureFromLocation();
@@ -244,13 +270,17 @@ export function trackEvent(name: string, params: TrackingParams = {}) {
   persistAttribution();
   const payload = commonEventParams({
     send_to: GA4_MEASUREMENT_ID,
+    transport_type: 'beacon',
     ...params,
   });
-  try {
-    window.gtag?.('event', name, payload);
-  } catch {
-    // gtag not ready
-  }
+  const send = () => {
+    try {
+      window.gtag?.('event', name, payload);
+    } catch {
+      // gtag not ready
+    }
+  };
+  send();
 }
 
 export function trackGenerateLead(formName: string, extra: TrackingParams = {}) {

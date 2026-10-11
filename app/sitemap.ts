@@ -27,13 +27,20 @@ const STATIC_ROUTES = [
 /** Slugs that 301 elsewhere — must not appear in sitemap. */
 const REDIRECTED_BLOG_SLUGS = new Set(['nyhvl-kmpyynym-mmvmnym']);
 
+/**
+ * Stable last-modified date for static informational routes.
+ * Using `new Date()` here made every request emit a fresh lastmod, which Google
+ * treats as an unreliable signal. Bump this when the static pages change.
+ */
+const STATIC_LASTMOD = new Date('2026-10-11T00:00:00Z');
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getSiteUrl();
 
   const staticRoutes = STATIC_ROUTES.map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date(),
-    changeFrequency: 'daily' as const,
+    lastModified: STATIC_LASTMOD,
+    changeFrequency: 'weekly' as const,
     priority: route === '' ? 1 : 0.8,
   }));
 

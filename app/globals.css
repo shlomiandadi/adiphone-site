@@ -254,9 +254,58 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
   @apply w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg;
 }
 
-/* Navigation styles */
+/* Navigation styles — color comes from header contrast theme, never forced white. */
 .nav-link {
-  @apply px-3 lg:px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center hover:scale-105 transform text-white hover:bg-white/10 rounded-full;
+  @apply px-3 lg:px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center;
+}
+
+.site-header[data-contrast='hero'] {
+  color: #ffffff;
+}
+
+.site-header[data-contrast='hero'] .header-logo,
+.site-header[data-contrast='hero'] .header-fg,
+.site-header[data-contrast='hero'] .nav-link {
+  color: #ffffff;
+}
+
+.site-header[data-contrast='hero'] .nav-link:hover,
+.site-header[data-contrast='hero'] .nav-link:focus-visible,
+.site-header[data-contrast='hero'] .nav-link[aria-current='page'] {
+  color: #ffffff;
+}
+
+.site-header[data-contrast='light'] {
+  color: #071433;
+}
+
+.site-header[data-contrast='light'] .header-logo {
+  color: #1e3a8a;
+}
+
+.site-header[data-contrast='light'] .header-fg,
+.site-header[data-contrast='light'] .nav-link {
+  color: #071433;
+}
+
+.site-header[data-contrast='light'] .nav-link:hover,
+.site-header[data-contrast='light'] .nav-link:focus-visible,
+.site-header[data-contrast='light'] .nav-link[aria-current='page'] {
+  color: #1d4ed8;
+}
+
+.site-header .header-dropdown a,
+.site-header .header-dropdown .dropdown-title {
+  color: #071433;
+}
+
+.site-header .header-dropdown .dropdown-desc {
+  color: #334155;
+}
+
+.site-header .header-dropdown a:hover .dropdown-title,
+.site-header .header-dropdown a[aria-current='page'] .dropdown-title {
+  color: #1d4ed8;
 }
 
 .nav-dropdown {
@@ -362,4 +411,154 @@ body.high-contrast .accessibility-statement-btn {
 body.high-contrast .accessibility-statement-btn:hover {
   background: #fbbf24 !important;
   color: black !important;
+}
+
+/* Homepage hero: static brand gradient before/without the canvas (no CLS). */
+.hero-stage {
+  background:
+    radial-gradient(1200px 600px at 80% 20%, rgba(59, 130, 246, 0.35), transparent 55%),
+    linear-gradient(135deg, #071433 0%, #1e3a8a 42%, #1d4ed8 72%, #0b1f4d 100%);
+}
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  right: 0.4rem;
+  left: 0.4rem;
+  bottom: 0.15rem;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: right center;
+  background: currentColor;
+  opacity: 0.85;
+  transition: transform 220ms ease;
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
+.header-dropdown {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(0.5rem);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+}
+
+.group:hover > .header-dropdown,
+.group:focus-within > .header-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.mobile-drawer {
+  transform: translateX(100%);
+}
+
+.mobile-drawer-open {
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link::after,
+  .header-dropdown,
+  .mobile-drawer,
+  .site-header,
+  .site-header * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: right center;
+  pointer-events: none;
+  background: linear-gradient(90deg, #1d4ed8, #38bdf8);
+}
+
+html.wow-ready [data-reveal] {
+  opacity: 0.001;
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+html.wow-ready [data-reveal].is-inview {
+  opacity: 1;
+  transform: none;
+}
+
+html.wow-ready [data-reveal-stagger] > * {
+  opacity: 0.001;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity 620ms ease, transform 620ms ease;
+}
+
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(1) { transition-delay: 0ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(2) { transition-delay: 70ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(3) { transition-delay: 140ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(4) { transition-delay: 210ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(5) { transition-delay: 280ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(6) { transition-delay: 350ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(7) { transition-delay: 420ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(8) { transition-delay: 490ms; }
+html.wow-ready [data-reveal-stagger].is-inview > *:nth-child(n + 9) { transition-delay: 520ms; }
+
+html.wow-ready [data-reveal-stagger].is-inview > * {
+  opacity: 1;
+  transform: none;
+}
+
+html.wow-ready [data-clip-reveal] {
+  clip-path: inset(14% 10% 14% 10% round 1.25rem);
+  transform: scale(1.06);
+  transition: clip-path 800ms ease, transform 800ms ease;
+}
+
+html.wow-ready [data-clip-reveal].is-inview {
+  clip-path: inset(0% round 0);
+  transform: none;
+}
+
+[data-tilt] {
+  transform-style: preserve-3d;
+  transition: transform 180ms ease;
+}
+
+.section-parallax-bg {
+  position: absolute;
+  inset: auto -10% -20% auto;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.14), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.wow-ready [data-reveal],
+  html.wow-ready [data-reveal-stagger] > *,
+  html.wow-ready [data-clip-reveal],
+  [data-tilt],
+  [data-parallax] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
 }

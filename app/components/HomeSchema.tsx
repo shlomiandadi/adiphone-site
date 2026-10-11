@@ -30,6 +30,30 @@ export default function HomeSchema() {
     },
     {
       '@context': 'https://schema.org',
+      '@type': 'ProfessionalService',
+      name: 'Top Webstak בנייה וקידום אתרים',
+      alternateName: 'עדי פון תקשורת',
+      description,
+      url: siteUrl,
+      telephone: '+972-50-9159951',
+      email: 'adiphoneseo@gmail.com',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'זמיר 95',
+        addressLocality: 'פרדס חנה-כרכור',
+        addressCountry: 'IL',
+      },
+      areaServed: [
+        'פרדס חנה-כרכור',
+        'חדרה',
+        'קיסריה',
+        'זכרון יעקב',
+        'בנימינה',
+        'חיפה',
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
       '@type': 'FAQPage',
       mainEntity: homeFaqItems.map((item) => ({
         '@type': 'Question',

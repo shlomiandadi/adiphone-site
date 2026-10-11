@@ -38,7 +38,7 @@ export default function BlogPostSchema({ post }: BlogPostSchemaProps) {
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Top WebStack',
+      name: 'Top Webstak',
       url: 'https://adi-phone.co.il',
       logo: {
         '@type': 'ImageObject',

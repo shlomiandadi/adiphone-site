@@ -1,8 +1,12 @@
 import { Metadata } from 'next';
+import { absoluteUrl } from '../../../lib/seo';
 
 export const metadata: Metadata = {
   title: 'הקמת חנויות אינטרנטיות (Ecommerce) | Top Webstak | פתרונות מסחר מתקדמים',
   description: 'רוצים למכור אונליין? Top Webstak מתמחה בהקמת חנויות אינטרנטיות (איקומרס) ממירות, מאובטחות וקלות לניהול. מהקמת החנות ועד שיווק וקידום. התחילו למכור עוד היום!',
+  alternates: {
+    canonical: absoluteUrl('/services/ecommerce'),
+  },
   openGraph: {
     title: 'הקמת חנויות אינטרנטיות (Ecommerce) | Top Webstak | פתרונות מסחר מתקדמים',
     description: 'רוצים למכור אונליין? Top Webstak מתמחה בהקמת חנויות אינטרנטיות (איקומרס) ממירות, מאובטחות וקלות לניהול. מהקמת החנות ועד שיווק וקידום. התחילו למכור עוד היום!',

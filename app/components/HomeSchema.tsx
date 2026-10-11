@@ -9,7 +9,7 @@ export default function HomeSchema() {
     {
       '@context': 'https://schema.org',
       '@type': 'DigitalMarketingAgency',
-      name: 'Top WebStack בנייה וקידום אתרים',
+      name: 'Top Webstak בנייה וקידום אתרים',
       url: siteUrl,
       description,
     },
@@ -17,7 +17,7 @@ export default function HomeSchema() {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'עדי פון תקשורת',
-      alternateName: 'Top WebStack בנייה וקידום אתרים',
+      alternateName: 'Top Webstak בנייה וקידום אתרים',
       url: siteUrl,
       description,
     },
@@ -25,7 +25,7 @@ export default function HomeSchema() {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       url: siteUrl,
-      name: 'Top WebStack בנייה וקידום אתרים',
+      name: 'Top Webstak בנייה וקידום אתרים',
       description,
     },
     {

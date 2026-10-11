@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   
   if (!post) {
     return {
-      title: 'פוסט לא נמצא | Top WebStack',
+      title: 'פוסט לא נמצא | Top Webstak',
       description: 'הפוסט שחיפשת לא נמצא',
     };
   }

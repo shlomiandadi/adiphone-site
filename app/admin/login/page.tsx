@@ -128,7 +128,7 @@ export default function AdminLogin() {
 
         {/* Footer */}
         <div className="text-center text-sm text-gray-500">
-          <p>© 2024 Top WebStack. כל הזכויות שמורות.</p>
+          <p>© 2024 Top Webstak. כל הזכויות שמורות.</p>
         </div>
       </div>
     </div>

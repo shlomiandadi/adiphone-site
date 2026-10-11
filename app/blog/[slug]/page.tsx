@@ -7,6 +7,18 @@ import BlogNavigation from '../../components/BlogNavigation';
 import RelatedServiceCTA from '../../components/RelatedServiceCTA';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
 
+/**
+ * The page template already renders the single <h1> (post.title). Some DB-stored
+ * post bodies contain an additional <h1>, producing two H1s per page. Demote any
+ * in-content <h1> to <h2> so each post has exactly one H1.
+ */
+function demoteContentHeadings(html: string): string {
+  if (!html) return html;
+  return html
+    .replace(/<h1(\s[^>]*)?>/gi, '<h2$1>')
+    .replace(/<\/h1>/gi, '</h2>');
+}
+
 interface BlogPost {
   id: string;
   title: string;
@@ -173,7 +185,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             )}
             <div 
               className="prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: demoteContentHeadings(post.content) }}
             />
             <RelatedServiceCTA slug={post.slug} />
           </div>

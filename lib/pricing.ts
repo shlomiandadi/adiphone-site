@@ -97,3 +97,18 @@ export const PRICING_ADDONS = [
 export function whatsappUrl(text: string): string {
   return `${WHATSAPP_BASE}?text=${encodeURIComponent(text)}`;
 }
+
+/** Which approved website-building packages belong on a given service page. */
+const PACKAGES_FOR_SERVICE: Record<string, PricingPackageId[]> = {
+  'web-development': ['landing', 'brochure', 'store', 'custom'],
+  wordpress: ['landing', 'brochure', 'store', 'custom'],
+  ecommerce: ['store'],
+  'software-development': ['custom'],
+  software: ['custom'],
+};
+
+export function packagesForService(serviceType: string): PricingPackage[] {
+  const ids = PACKAGES_FOR_SERVICE[serviceType];
+  if (!ids) return [];
+  return PRICING_PACKAGES.filter((pkg) => ids.includes(pkg.id));
+}

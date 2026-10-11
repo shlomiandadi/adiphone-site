@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { LOCAL_WEBSITE_PAGE_PATHS } from '../lib/local-website-building';
 import { getSiteUrl } from '../lib/seo';
 
 /** Indexable static routes only (no noindex pages, no duplicate/redirect stubs). */
@@ -23,8 +24,8 @@ const STATIC_ROUTES = [
   '/services/ui-design',
   '/services/web-development',
   '/services/wordpress',
-  '/services/bniyat-atarim-pardes-hana',
-] as const;
+  ...LOCAL_WEBSITE_PAGE_PATHS,
+];
 
 /** Slugs that 301 elsewhere — must not appear in sitemap. */
 const REDIRECTED_BLOG_SLUGS = new Set([

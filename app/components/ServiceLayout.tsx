@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobileAlt, FaPaintBrush, FaBolt, FaShieldAlt, FaStar } from 'react-icons/fa';
+import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaCheck, FaLightbulb, FaRocket, FaUsers, FaCog, FaHeart, FaSearch, FaLink, FaFileAlt, FaGoogle, FaShareAlt, FaBullseye, FaMobileAlt, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { IconType } from 'react-icons';
 import TableOfContents from './TableOfContents';
@@ -35,7 +35,8 @@ interface ServiceLayoutProps {
     description: string;
     link: string;
   }>;
-  testimonials: Array<{
+  /** Deprecated: placeholder testimonials were removed. Kept optional for back-compat. */
+  testimonials?: Array<{
     quote: string;
     author: string;
     company: string;
@@ -100,7 +101,6 @@ export default function ServiceLayout({
   process,
   faq,
   portfolio,
-  testimonials
 }: ServiceLayoutProps) {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -350,55 +350,6 @@ export default function ServiceLayout({
                   >
                     לצפייה בחנות
                   </Link>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="bg-white px-4 py-16 dark:bg-gray-900">
-        <div className="container mx-auto max-w-4xl">
-          <motion.h2
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white"
-          >
-            מה לקוחות חושבים עלינו?
-          </motion.h2>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="space-y-8"
-          >
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="rounded-xl bg-gray-50 p-8 shadow-lg dark:bg-gray-800"
-              >
-                <blockquote className="mb-6 text-lg italic text-gray-700 dark:text-gray-500">
-                  "{testimonial.quote}"
-                </blockquote>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold text-gray-900 dark:text-white">
-                      {testimonial.author}
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-600">
-                      {testimonial.company}
-                    </p>
-                  </div>
-                  <div className="flex text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <FaStar key={i} className="h-5 w-5" />
-                    ))}
-                  </div>
                 </div>
               </motion.div>
             ))}

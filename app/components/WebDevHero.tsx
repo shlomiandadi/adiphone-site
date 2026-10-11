@@ -34,7 +34,8 @@ export default function WebDevHero({ title, subtitle }: Props) {
       if (cancelled) return;
       currentX += (targetX - currentX) * 0.08;
       currentY += (targetY - currentY) * 0.08;
-      scene.style.transform = `rotateX(${currentY.toFixed(2)}deg) rotateY(${currentX.toFixed(2)}deg)`;
+      scene.style.setProperty('--tilt-x', `${currentX.toFixed(2)}deg`);
+      scene.style.setProperty('--tilt-y', `${currentY.toFixed(2)}deg`);
       raf = window.requestAnimationFrame(apply);
     };
 
@@ -87,6 +88,7 @@ export default function WebDevHero({ title, subtitle }: Props) {
       <div className="webdev-hero-visual" aria-hidden="true">
         <HeroVisualLoader />
         <div ref={sceneRef} className="webdev-scene">
+          <div className="webdev-back-card" />
           <div className="webdev-laptop">
             <div className="webdev-laptop-lid">
               <div className="webdev-browser">

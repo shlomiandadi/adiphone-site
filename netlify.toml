@@ -96,6 +96,206 @@
   status = 301
   force = true
 
+# Blog cleanup: merged/deleted posts → canonical targets (content plan)
+[[redirects]]
+  from = "/blog/building-websites-for-businesses"
+  to = "/blog/bnyyt-atrym-laskym-ktnym"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/kmpyynym-mmvmnym"
+  to = "/blog/nyhvl-kmpyyn-mmvmn"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/kydvm-mmvmn-ppc"
+  to = "/services/ppc"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/top-webstack"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/kyshvrym-mhyrym"
+  to = "/blog/seo-tips-google-ranking-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/ptrvnvt-ai-mtkdmym"
+  to = "/blog/ptrvnvt-bynh-mlakvtyt"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/thlyk-habvdh-shlnv"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/ady-pvn-tkshvrt"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/mvknym-lhtchyl"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/htknvlvgyvt-shlnv"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/hchzvn-shlnv"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/shyrvty-ann"
+  to = "/services/cloud"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/avdvt-hchbrh"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/bnyyh-vkydvm-atrym-mktsvayym"
+  to = "/services/web-development"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/hshyrvtym-shlnv"
+  to = "/services"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/ai-laskym-ktnym"
+  to = "/blog/ptrvnvt-bynh-mlakvtyt"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/kydvm-atrym-laskym-ktnym"
+  to = "/blog/seo-tips-google-ranking-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/pytvch-aplyktsyvt"
+  to = "/services/mobile-apps"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/ptrvnvt-mschr-mtkdmym"
+  to = "/services/ecommerce"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/hytrvnvt-shlnv"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/anlytyks-vmdydh"
+  to = "/services/analytics"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/htsvvt-shlnv"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/3-hvravt-shymvsh"
+  to = "/blog"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/bnyyt-atry-vvrdprs"
+  to = "/services/wordpress"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/kydvm-atrym"
+  to = "/services/seo"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/3-mkvrvt-hmyda"
+  to = "/blog"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/hprvyktym-shlnv"
+  to = "/portfolio"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/kblt-hchltvt-mbvssvt-dath"
+  to = "/services/analytics"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/atrym-vprvyktym-mvtslchym"
+  to = "/portfolio"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/tknvn-hgyrh-n"
+  to = "/services/web-development"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/hvpkym-rayvn-lmtsyavt"
+  to = "/services"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/bnyyt-atrym-ktnym"
+  to = "/blog/bnyyt-atrym-laskym-ktnym"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/svknvt-kydvm-atrym"
+  to = "/services/seo"
+  status = 301
+  force = true
+
+
 [dev]
   framework = "nextjs"
   targetPort = 3000 

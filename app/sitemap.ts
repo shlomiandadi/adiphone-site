@@ -25,7 +25,42 @@ const STATIC_ROUTES = [
 ] as const;
 
 /** Slugs that 301 elsewhere — must not appear in sitemap. */
-const REDIRECTED_BLOG_SLUGS = new Set(['nyhvl-kmpyynym-mmvmnym']);
+const REDIRECTED_BLOG_SLUGS = new Set([
+  'nyhvl-kmpyynym-mmvmnym',
+  'building-websites-for-businesses',
+  'kmpyynym-mmvmnym',
+  'kydvm-mmvmn-ppc',
+  'top-webstack',
+  'kyshvrym-mhyrym',
+  'ptrvnvt-ai-mtkdmym',
+  'thlyk-habvdh-shlnv',
+  'ady-pvn-tkshvrt',
+  'mvknym-lhtchyl',
+  'htknvlvgyvt-shlnv',
+  'hchzvn-shlnv',
+  'shyrvty-ann',
+  'avdvt-hchbrh',
+  'bnyyh-vkydvm-atrym-mktsvayym',
+  'hshyrvtym-shlnv',
+  'ai-laskym-ktnym',
+  'kydvm-atrym-laskym-ktnym',
+  'pytvch-aplyktsyvt',
+  'ptrvnvt-mschr-mtkdmym',
+  'hytrvnvt-shlnv',
+  'anlytyks-vmdydh',
+  'htsvvt-shlnv',
+  '3-hvravt-shymvsh',
+  'bnyyt-atry-vvrdprs',
+  'kydvm-atrym',
+  '3-mkvrvt-hmyda',
+  'hprvyktym-shlnv',
+  'kblt-hchltvt-mbvssvt-dath',
+  'atrym-vprvyktym-mvtslchym',
+  'tknvn-hgyrh-n',
+  'hvpkym-rayvn-lmtsyavt',
+  'bnyyt-atrym-ktnym',
+  'svknvt-kydvm-atrym',
+]);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getSiteUrl();

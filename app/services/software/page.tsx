@@ -43,8 +43,8 @@ export default function SoftwareService() {
         <p><strong>צרו קשר עוד היום עם יועצי התוכנה של Top Webstak. בואו נדבר על הבעיות העסקיות שלכם, ואנחנו נמצא את הפתרון הטכנולוגי שיתאים לכם כמו כפפה ליד.</strong></p>
       </>
     ),
-    heroTheme: "software",
-    portfolioTopic: "software",
+    heroTheme: "software" as const,
+    portfolioTopic: "software" as const,
     features: [
       {
         title: "פיתוח מותאם",

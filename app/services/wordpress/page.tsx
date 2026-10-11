@@ -49,8 +49,8 @@ export default function WordPressService() {
         <p><strong>אם אתם רוצים אתר וורדפרס שנבנה על ידי מומחים, שמקפידים על הפרטים הקטנים ביותר וחושבים תמיד על ביצועים, אבטחה והתוצאות שלכם – הגעתם למקום הנכון.</strong></p>
       </>
     ),
-    heroTheme: "wordpress",
-    portfolioTopic: "wordpress",
+    heroTheme: "wordpress" as const,
+    portfolioTopic: "wordpress" as const,
     features: [
       {
         title: "פיתוח מקצועי",

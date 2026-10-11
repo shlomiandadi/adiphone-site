@@ -56,8 +56,8 @@ export default function MobileAppService() {
         <p><strong>בואו נדבר. צוות המומחים של Top Webstak ישמח לשמוע את החזון שלכם ולהפוך אותו יחד למציאות מצליחה בכף ידם של מיליוני משתמשים.</strong></p>
       </>
     ),
-    heroTheme: "apps",
-    portfolioTopic: "apps",
+    heroTheme: "apps" as const,
+    portfolioTopic: "apps" as const,
     features: [
       {
         title: "פיתוח מותאם",

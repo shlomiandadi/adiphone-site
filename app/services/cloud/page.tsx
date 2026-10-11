@@ -57,7 +57,7 @@ export default function CloudService() {
         <p><strong>צרו קשר עוד היום עם מומחי הענן של Top Webstak. בואו נתכנן יחד את המעבר שלכם לעתיד – עתיד גמיש, מאובטח וחסכוני יותר.</strong></p>
       </>
     ),
-    heroTheme: "cloud",
+    heroTheme: "cloud" as const,
     features: [
       {
         title: "תשתיות ענן",

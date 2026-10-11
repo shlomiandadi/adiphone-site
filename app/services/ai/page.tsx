@@ -52,7 +52,7 @@ export default function AIService() {
         <p><strong>צרו קשר עם מומחי ה-AI של Top Webstak עוד היום, וגלו כיצד בינה מלאכותית יכולה להפוך למנוע הצמיחה החזק ביותר של העסק שלכם.</strong></p>
       </>
     ),
-    heroTheme: "ai",
+    heroTheme: "ai" as const,
     features: [
       {
         title: "צ'אטבוטים חכמים",

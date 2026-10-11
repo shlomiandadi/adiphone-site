@@ -48,8 +48,8 @@ export default function UIDesignService() {
         <p><strong>רוצים ליצור מוצר שהלקוחות שלכם לא יפסיקו לדבר עליו? בואו נדבר. צוות המעצבים של Top Webstak כאן כדי להפוך את החזון שלכם למציאות יפהפייה ופונקציונלית.</strong></p>
       </>
     ),
-    heroTheme: "ui-design",
-    portfolioTopic: "ui",
+    heroTheme: "ui-design" as const,
+    portfolioTopic: "ui" as const,
     features: [
       {
         title: "עיצוב חדשני",

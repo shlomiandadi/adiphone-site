@@ -9,7 +9,7 @@ export default function EcommerceService() {
     subtitle: "אנחנו מקימים חנויות אונליין מהירות, מעוצבות ומותאמות למובייל, שקל לנהל וכיף לקנות בהן. אם יש לכם מוצרים מעולים, בואו נהפוך אותם למקור הכנסה דיגיטלי שעובד בשבילכם 24/7.",
     intro: "חנות אינטרנטית (איקומרס) היא אתר למכירת מוצרים או שירותים אונליין, הכולל ניהול מוצרים, עגלת קניות וסליקה מאובטחת.",
     serviceType: "ecommerce",
-    portfolioTopic: "ecommerce",
+    portfolioTopic: "ecommerce" as const,
     description: (
       <>
         <h2><strong>הקמת חנויות אינטרנטיות: לא רק אתר, אלא מכונת מכירות משומנת שעובדת 24/7</strong></h2>
@@ -54,7 +54,7 @@ export default function EcommerceService() {
         <p><strong>צרו קשר עוד היום עם מומחי האיקומרס של Top Webstak, ובואו נבנה יחד חנות אינטרנטית שלא רק מוכרת, אלא בונה מותג.</strong></p>
       </>
     ),
-    heroTheme: "ecommerce",
+    heroTheme: "ecommerce" as const,
     features: [
       {
         title: "עיצוב ייחודי",

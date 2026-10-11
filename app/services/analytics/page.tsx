@@ -64,7 +64,7 @@ export default function AnalyticsService() {
         <p><strong>צרו קשר עוד היום עם מומחי האנליטיקס של Top Webstak, ובואו נגלה יחד את ההזדמנויות החבויות בתוך הדאטה שלכם.</strong></p>
       </>
     ),
-    heroTheme: "analytics",
+    heroTheme: "analytics" as const,
     features: [
       {
         title: "הטמעת Google Analytics 4",

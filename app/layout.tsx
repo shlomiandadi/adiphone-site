@@ -37,9 +37,6 @@ export const metadata: Metadata = {
   },
   description: 'בניית אתרים, קידום בגוגל (SEO), קמפיינים ממומנים וקידום במנועי AI לעסקים. סוכנות דיגיטל מפרדס חנה. ייעוץ חינם: 050-9159951.',
   keywords: 'פיתוח אתרים, בניית אתרים, קידום אתרים, SEO, בניית חנויות, אפליקציות, שיווק דיגיטלי, Top Webstak, עדי פון תקשורת',
-  icons: {
-    icon: '/favicon.ico',
-  },
   alternates: {
     canonical: '/',
   },

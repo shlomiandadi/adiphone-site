@@ -10,13 +10,26 @@ import TableOfContents from './TableOfContents';
 import ServicePricing from './ServicePricing';
 import { buildServiceJsonLd, servicePathForType } from '../../lib/service-schema';
 
+export type ServiceOfferLink = {
+  title: string;
+  description: string;
+  href: string;
+};
+
+export type ServiceLocalLink = {
+  name: string;
+  path: string;
+};
+
 interface ServiceLayoutProps {
   title: string;
   subtitle: string;
   /** Short direct-answer paragraph shown at the top (helps AEO/GEO). */
   intro?: string;
   description: React.ReactNode;
-  heroImage: string;
+  heroImage?: string;
+  /** Custom hero (3D / HTML). When set, photo hero is skipped. */
+  heroVisual?: React.ReactNode;
   serviceType?: string; // Add service type for pricing
   /** Canonical service path for JSON-LD when it differs from serviceType. */
   servicePath?: string;
@@ -25,7 +38,9 @@ interface ServiceLayoutProps {
     description: string;
     icon: IconType;
   }>;
+  featuresHeading?: string;
   benefits: string[];
+  benefitsHeading?: string;
   process: Array<{
     title: string;
     description: string;
@@ -34,12 +49,20 @@ interface ServiceLayoutProps {
     question: string;
     answer: string;
   }>;
-  portfolio: Array<{
+  portfolio?: Array<{
     image: string;
     title: string;
     description: string;
     link: string;
   }>;
+  portfolioHeading?: string;
+  portfolioCtaLabel?: string;
+  serviceOffers?: ServiceOfferLink[];
+  serviceOffersHeading?: string;
+  localLinks?: ServiceLocalLink[];
+  localLinksHeading?: string;
+  /** Keep content visible if motion JS is late (no initial hidden). */
+  disableMotionHide?: boolean;
   /** Deprecated: placeholder testimonials were removed. Kept optional for back-compat. */
   testimonials?: Array<{
     quote: string;
@@ -101,14 +124,25 @@ export default function ServiceLayout({
   intro,
   description,
   heroImage,
+  heroVisual,
   serviceType,
   servicePath,
   features,
+  featuresHeading = 'היתרונות שלנו',
   benefits,
+  benefitsHeading = 'היתרונות שלנו',
   process,
   faq,
-  portfolio,
+  portfolio = [],
+  portfolioHeading = 'החנויות שבנינו מדברות בעד עצמן',
+  portfolioCtaLabel = 'לצפייה בחנות',
+  serviceOffers,
+  serviceOffersHeading = 'סוגי אתרים שאנחנו בונים',
+  localLinks,
+  localLinksHeading = 'בניית אתרים באזור',
+  disableMotionHide = false,
 }: ServiceLayoutProps) {
+  const motionInitial = disableMotionHide ? false : 'hidden';
   const serviceSchema = buildServiceJsonLd({
     name: title,
     description: intro || subtitle,
@@ -140,6 +174,9 @@ export default function ServiceLayout({
         />
       )}
       {/* Hero Section */}
+      {heroVisual ? (
+        heroVisual
+      ) : heroImage ? (
       <div className="relative h-[60vh] min-h-[400px] w-full">
         <Image
           src={heroImage}
@@ -152,7 +189,7 @@ export default function ServiceLayout({
         <div className="absolute inset-0 flex items-center justify-center text-center">
           <div className="px-4">
             <motion.h1
-              initial="hidden"
+              initial={motionInitial}
               animate="visible"
               variants={fadeInUp}
               className="mb-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl"
@@ -160,7 +197,7 @@ export default function ServiceLayout({
               {title}
             </motion.h1>
             <motion.p
-              initial="hidden"
+              initial={motionInitial}
               animate="visible"
               variants={fadeInUp}
               className="text-xl text-white/90 md:text-2xl"
@@ -170,9 +207,10 @@ export default function ServiceLayout({
           </div>
         </div>
       </div>
+      ) : null}
 
       {/* Description Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white px-4 py-16 dark:from-gray-900 dark:to-gray-800">
+      <section data-reveal className="bg-gradient-to-b from-gray-50 to-white px-4 py-16 dark:from-gray-900 dark:to-gray-800">
         <div className="container mx-auto max-w-6xl">
           {/* Mobile Table of Contents - At the top */}
           <div className="mb-8 lg:hidden">
@@ -183,7 +221,7 @@ export default function ServiceLayout({
             {/* Main Content */}
             <div className="flex-1">
               <motion.div
-                initial="hidden"
+                initial={motionInitial}
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeInUp}
@@ -209,19 +247,19 @@ export default function ServiceLayout({
       </section>
 
       {/* Features Section */}
-      <section className="bg-white px-4 py-16 dark:bg-gray-900">
+      <section data-reveal className="bg-white px-4 py-16 dark:bg-gray-900">
         <div className="container mx-auto max-w-6xl">
           <motion.h2
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
             className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white"
           >
-            היתרונות שלנו
+            {featuresHeading}
           </motion.h2>
           <motion.div
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerChildren}
@@ -236,7 +274,7 @@ export default function ServiceLayout({
                   className="group rounded-xl bg-gradient-to-br from-gray-50 to-white p-6 shadow-lg transition-all hover:shadow-2xl dark:from-gray-800 dark:to-gray-700 dark:hover:from-blue-900 dark:hover:to-purple-900"
                 >
                   <motion.div
-                    initial="hidden"
+                    initial={motionInitial}
                     animate="visible"
                     whileHover="hover"
                     variants={iconAnimation}
@@ -258,19 +296,19 @@ export default function ServiceLayout({
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-gray-50 px-4 py-16 dark:bg-gray-800">
+      <section data-reveal className="bg-gray-50 px-4 py-16 dark:bg-gray-800">
         <div className="container mx-auto max-w-6xl">
           <motion.h2
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
             className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white"
           >
-            היתרונות שלנו
+            {benefitsHeading}
           </motion.h2>
           <motion.div
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerChildren}
@@ -284,7 +322,7 @@ export default function ServiceLayout({
               >
                 <div className="flex items-start gap-4">
                   <motion.div
-                    initial="hidden"
+                    initial={motionInitial}
                     animate="visible"
                     whileHover="hover"
                     variants={iconAnimation}
@@ -301,10 +339,10 @@ export default function ServiceLayout({
       </section>
 
       {/* Process Section */}
-      <section className="bg-white px-4 py-16 dark:bg-gray-900">
+      <section data-reveal className="bg-white px-4 py-16 dark:bg-gray-900">
         <div className="container mx-auto max-w-6xl">
           <motion.h2
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
@@ -313,7 +351,7 @@ export default function ServiceLayout({
             תהליך העבודה שלנו
           </motion.h2>
           <motion.div
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerChildren}
@@ -326,7 +364,7 @@ export default function ServiceLayout({
                 className="group relative rounded-xl bg-gradient-to-br from-gray-50 to-white p-6 shadow-lg transition-all hover:shadow-2xl dark:from-gray-800 dark:to-gray-700"
               >
                 <motion.div
-                  initial="hidden"
+                  initial={motionInitial}
                   animate="visible"
                   whileHover="hover"
                   variants={iconAnimation}
@@ -344,20 +382,76 @@ export default function ServiceLayout({
         </div>
       </section>
 
-      {/* Portfolio Section */}
-      <section className="bg-gray-50 px-4 py-16 dark:bg-gray-800">
+      {serviceOffers && serviceOffers.length > 0 && (
+      <section data-reveal className="bg-gray-50 px-4 py-16 dark:bg-gray-800">
         <div className="container mx-auto max-w-6xl">
           <motion.h2
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
             className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white"
           >
-            החנויות שבנינו מדברות בעד עצמן
+            {serviceOffersHeading}
           </motion.h2>
           <motion.div
-            initial="hidden"
+            initial={motionInitial}
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerChildren}
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+          >
+            {serviceOffers.map((offer) => (
+              <motion.div key={offer.href + offer.title} variants={fadeInUp}>
+                <Link
+                  href={offer.href}
+                  className="block h-full rounded-xl bg-white p-6 shadow-lg transition-all hover:-translate-y-1 hover:shadow-2xl dark:bg-gray-700"
+                >
+                  <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+                    {offer.title}
+                  </h3>
+                  <p className="mb-4 text-gray-600 dark:text-gray-300">{offer.description}</p>
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">לפרטים</span>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+          {localLinks && localLinks.length > 0 && (
+            <div className="mt-12 text-center">
+              <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
+                {localLinksHeading}
+              </h3>
+              <div className="flex flex-wrap justify-center gap-3">
+                {localLinks.map((city) => (
+                  <Link
+                    key={city.path}
+                    href={city.path}
+                    className="rounded-full bg-white px-4 py-2 text-blue-700 shadow-sm ring-1 ring-blue-100 transition-colors hover:bg-blue-50 dark:bg-gray-700 dark:text-blue-300 dark:ring-gray-600"
+                  >
+                    {city.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+      )}
+
+      {portfolio.length > 0 && (
+      <section data-reveal className={`px-4 py-16 ${serviceOffers && serviceOffers.length > 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800'}`}>
+        <div className="container mx-auto max-w-6xl">
+          <motion.h2
+            initial={motionInitial}
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+            className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white"
+          >
+            {portfolioHeading}
+          </motion.h2>
+          <motion.div
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerChildren}
@@ -365,7 +459,7 @@ export default function ServiceLayout({
           >
             {portfolio.map((item, index) => (
               <motion.div
-                key={index}
+                key={item.link + index}
                 variants={fadeInUp}
                 className="group overflow-hidden rounded-xl bg-white shadow-lg transition-all hover:shadow-2xl dark:bg-gray-700"
               >
@@ -381,14 +475,16 @@ export default function ServiceLayout({
                   <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
                     {item.title}
                   </h3>
-                  <p className="mb-4 text-gray-600 dark:text-gray-600">
-                    {item.description}
-                  </p>
+                  {item.description ? (
+                    <p className="mb-4 text-gray-600 dark:text-gray-300">
+                      {item.description}
+                    </p>
+                  ) : null}
                   <Link
                     href={item.link}
                     className="inline-block rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
                   >
-                    לצפייה בחנות
+                    {portfolioCtaLabel}
                   </Link>
                 </div>
               </motion.div>
@@ -396,12 +492,13 @@ export default function ServiceLayout({
           </motion.div>
         </div>
       </section>
+      )}
 
       {/* FAQ Section */}
-      <section className="bg-white px-4 py-16 dark:bg-gray-900">
+      <section data-reveal className="bg-white px-4 py-16 dark:bg-gray-900">
         <div className="container mx-auto max-w-4xl">
           <motion.h2
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
@@ -410,7 +507,7 @@ export default function ServiceLayout({
             שאלות נפוצות
           </motion.h2>
           <motion.div
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerChildren}
@@ -437,10 +534,10 @@ export default function ServiceLayout({
       {serviceType && <ServicePricing serviceType={serviceType} />}
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-16 dark:from-blue-900 dark:to-purple-900">
+      <section data-reveal className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-16 dark:from-blue-900 dark:to-purple-900">
         <div className="container mx-auto max-w-4xl text-center">
           <motion.h2
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
@@ -449,7 +546,7 @@ export default function ServiceLayout({
             מוכנים להתחיל?
           </motion.h2>
           <motion.p
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
@@ -458,7 +555,7 @@ export default function ServiceLayout({
             צרו איתנו קשר עוד היום ונעזור לכם להגשים את החזון שלכם
           </motion.p>
           <motion.div
-            initial="hidden"
+            initial={motionInitial}
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}

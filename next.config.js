@@ -17,6 +17,10 @@ const nextConfig = {
         hostname: 'adi-phone.co.il',
       },
       {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+      {
         protocol: 'http',
         hostname: 'localhost',
       }

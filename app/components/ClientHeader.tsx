@@ -274,12 +274,12 @@ export default function ClientHeader() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center justify-center flex-1 mx-4 lg:mx-8 space-x-1 lg:space-x-2">
+            <div className="hidden md:flex items-center justify-center flex-1 mx-2 lg:mx-6 space-x-0.5 lg:space-x-1">
               {navigation.map((item) => (
-                <div key={item.name} className="relative group px-2">
+                <div key={item.name} className="relative group px-1 lg:px-2">
                   <Link
                     href={item.href || '#'}
-                    className={`px-3 lg:px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center hover:scale-105 transform ${
+                    className={`px-2 lg:px-3 py-2 text-sm font-medium transition-all duration-300 flex items-center hover:scale-105 transform ${
                       pathname === item.href || (item.href && pathname.startsWith(item.href + '/'))
                         ? isScrolled
                           ? 'text-blue-600'
@@ -303,8 +303,12 @@ export default function ClientHeader() {
                     )}
                   </Link>
                   {item.submenu && (
-                    <div className="absolute right-0 mt-2 w-[480px] bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50 backdrop-blur-sm bg-opacity-90">
-                      <div className="p-4 grid grid-cols-2 gap-3">
+                    <div className={`absolute right-0 mt-2 bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50 backdrop-blur-sm bg-opacity-90 ${
+                      item.submenu.length > 6 ? 'w-[480px]' : 'w-80'
+                    }`}>
+                      <div className={`p-4 grid gap-3 max-h-[70vh] overflow-y-auto ${
+                        item.submenu.length > 6 ? 'grid-cols-2' : 'grid-cols-1'
+                      }`}>
                         {item.submenu.map((subItem) => {
                           const Icon = getIcon(subItem.icon);
                           return (
@@ -349,8 +353,8 @@ export default function ClientHeader() {
             </div>
 
             {/* Desktop Actions */}
-            <div className="hidden md:flex items-center gap-4 lg:gap-6">
-              <div className="relative search-container">
+            <div className="hidden md:flex items-center gap-3 lg:gap-6">
+              <div className="relative search-container hidden lg:block">
                 <div ref={searchRef} className="relative">
                   <form onSubmit={handleSearchSubmit}>
                     <div className="relative">

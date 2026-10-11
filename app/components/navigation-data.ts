@@ -19,6 +19,39 @@ export interface SubMenuItem {
 }
 
 // Define navigation data
+export const serviceAreaLinks = [
+  {
+    name: "בניית אתרים בפרדס חנה",
+    href: "/services/bniyat-atarim-pardes-hana",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות בפרדס חנה-כרכור"
+  },
+  {
+    name: "בניית אתרים בחדרה",
+    href: "/services/bniyat-atarim-hadera",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות בחדרה והסביבה"
+  },
+  {
+    name: "בניית אתרים בקיסריה",
+    href: "/services/bniyat-atarim-caesarea",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות בקיסריה"
+  },
+  {
+    name: "בניית אתרים בזכרון יעקב",
+    href: "/services/bniyat-atarim-zichron-yaakov",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות בזכרון יעקב"
+  },
+  {
+    name: "בניית אתרים בחיפה",
+    href: "/services/bniyat-atarim-haifa",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות בחיפה והקריות"
+  },
+] as const;
+
 export const navigation: NavigationItem[] = [
   {
     name: "בית",
@@ -115,6 +148,17 @@ export const navigation: NavigationItem[] = [
         description: "פתרונות ענן מתקדמים"
       }
     ]
+  },
+  {
+    name: "מחירון",
+    href: "/pricing",
+    icon: "chart-line"
+  },
+  {
+    name: "אזורי שירות",
+    href: "/services/bniyat-atarim-pardes-hana",
+    icon: "globe",
+    submenu: [...serviceAreaLinks]
   },
   {
     name: "אודות",

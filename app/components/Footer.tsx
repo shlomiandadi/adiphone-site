@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
+import { serviceAreaLinks } from './navigation-data';
 
 const footerServices = [
   { href: '/services/web-development', label: 'בניית אתרים' },
@@ -24,7 +25,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* About */}
           <div>
             <h3 className="text-xl font-bold mb-4">Top Webstak - בנייה וקידום אתרים (מבית עדי פון תקשורת)</h3>
@@ -63,6 +64,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/pricing" className="text-gray-400 hover:text-white transition-colors">
+                  מחירון
+                </Link>
+              </li>
+              <li>
                 <Link href="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
                   מדיניות פרטיות
                 </Link>
@@ -83,6 +89,19 @@ export default function Footer() {
                 <li key={item.href}>
                   <Link href={item.href} className="text-gray-400 hover:text-white transition-colors">
                     {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold mb-4">אזורי שירות</h3>
+            <ul className="space-y-2">
+              {serviceAreaLinks.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-gray-400 hover:text-white transition-colors">
+                    {item.name}
                   </Link>
                 </li>
               ))}

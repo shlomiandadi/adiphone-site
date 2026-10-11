@@ -81,6 +81,172 @@ const nextConfig = {
         destination: '/services/bniyat-atarim-pardes-hana',
         permanent: true,
       },
+      // Blog cleanup: merged/deleted posts → canonical targets (content plan)
+      {
+        source: '/blog/building-websites-for-businesses',
+        destination: '/blog/bnyyt-atrym-laskym-ktnym',
+        permanent: true,
+      },
+      {
+        source: '/blog/kmpyynym-mmvmnym',
+        destination: '/blog/nyhvl-kmpyyn-mmvmn',
+        permanent: true,
+      },
+      {
+        source: '/blog/kydvm-mmvmn-ppc',
+        destination: '/services/ppc',
+        permanent: true,
+      },
+      {
+        source: '/blog/top-webstack',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/kyshvrym-mhyrym',
+        destination: '/blog/seo-tips-google-ranking-guide',
+        permanent: true,
+      },
+      {
+        source: '/blog/ptrvnvt-ai-mtkdmym',
+        destination: '/blog/ptrvnvt-bynh-mlakvtyt',
+        permanent: true,
+      },
+      {
+        source: '/blog/thlyk-habvdh-shlnv',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/ady-pvn-tkshvrt',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/mvknym-lhtchyl',
+        destination: '/contact',
+        permanent: true,
+      },
+      {
+        source: '/blog/htknvlvgyvt-shlnv',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/hchzvn-shlnv',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/shyrvty-ann',
+        destination: '/services/cloud',
+        permanent: true,
+      },
+      {
+        source: '/blog/avdvt-hchbrh',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/bnyyh-vkydvm-atrym-mktsvayym',
+        destination: '/services/web-development',
+        permanent: true,
+      },
+      {
+        source: '/blog/hshyrvtym-shlnv',
+        destination: '/services',
+        permanent: true,
+      },
+      {
+        source: '/blog/ai-laskym-ktnym',
+        destination: '/blog/ptrvnvt-bynh-mlakvtyt',
+        permanent: true,
+      },
+      {
+        source: '/blog/kydvm-atrym-laskym-ktnym',
+        destination: '/blog/seo-tips-google-ranking-guide',
+        permanent: true,
+      },
+      {
+        source: '/blog/pytvch-aplyktsyvt',
+        destination: '/services/mobile-apps',
+        permanent: true,
+      },
+      {
+        source: '/blog/ptrvnvt-mschr-mtkdmym',
+        destination: '/services/ecommerce',
+        permanent: true,
+      },
+      {
+        source: '/blog/hytrvnvt-shlnv',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/anlytyks-vmdydh',
+        destination: '/services/analytics',
+        permanent: true,
+      },
+      {
+        source: '/blog/htsvvt-shlnv',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog/3-hvravt-shymvsh',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/blog/bnyyt-atry-vvrdprs',
+        destination: '/services/wordpress',
+        permanent: true,
+      },
+      {
+        source: '/blog/kydvm-atrym',
+        destination: '/services/seo',
+        permanent: true,
+      },
+      {
+        source: '/blog/3-mkvrvt-hmyda',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/blog/hprvyktym-shlnv',
+        destination: '/portfolio',
+        permanent: true,
+      },
+      {
+        source: '/blog/kblt-hchltvt-mbvssvt-dath',
+        destination: '/services/analytics',
+        permanent: true,
+      },
+      {
+        source: '/blog/atrym-vprvyktym-mvtslchym',
+        destination: '/portfolio',
+        permanent: true,
+      },
+      {
+        source: '/blog/tknvn-hgyrh-n',
+        destination: '/services/web-development',
+        permanent: true,
+      },
+      {
+        source: '/blog/hvpkym-rayvn-lmtsyavt',
+        destination: '/services',
+        permanent: true,
+      },
+      {
+        source: '/blog/bnyyt-atrym-ktnym',
+        destination: '/blog/bnyyt-atrym-laskym-ktnym',
+        permanent: true,
+      },
+      {
+        source: '/blog/svknvt-kydvm-atrym',
+        destination: '/services/seo',
+        permanent: true,
+      },
       // Thin placeholder portfolio stubs → hub (orphan cleanup)
       {
         source: '/portfolio/project1',

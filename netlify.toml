@@ -73,8 +73,27 @@
   force = true
 
 [[redirects]]
+  from = "/services/software"
+  to = "/services/software-development"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/blog/nyhvl-kmpyynym-mmvmnym"
   to = "/blog/nyhvl-kmpyyn-mmvmn"
+  status = 301
+  force = true
+
+# Pardes Hanna location posts → consolidated local service page
+[[redirects]]
+  from = "/blog/bnyyt-atrym-prds-chnh"
+  to = "/services/bniyat-atarim-pardes-hana"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/bnyyt-atry-ayntrnt-bprds-chnh"
+  to = "/services/bniyat-atarim-pardes-hana"
   status = 301
   force = true
 

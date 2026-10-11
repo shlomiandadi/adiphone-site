@@ -59,10 +59,26 @@ const nextConfig = {
         destination: '/services/mobile-apps',
         permanent: true,
       },
+      {
+        source: '/services/software',
+        destination: '/services/software-development',
+        permanent: true,
+      },
       // Near-duplicate PPC blog posts → keep the stronger guide
       {
         source: '/blog/nyhvl-kmpyynym-mmvmnym',
         destination: '/blog/nyhvl-kmpyyn-mmvmn',
+        permanent: true,
+      },
+      // Pardes Hanna location posts → consolidated local service page
+      {
+        source: '/blog/bnyyt-atrym-prds-chnh',
+        destination: '/services/bniyat-atarim-pardes-hana',
+        permanent: true,
+      },
+      {
+        source: '/blog/bnyyt-atry-ayntrnt-bprds-chnh',
+        destination: '/services/bniyat-atarim-pardes-hana',
         permanent: true,
       },
       // Thin placeholder portfolio stubs → hub (orphan cleanup)

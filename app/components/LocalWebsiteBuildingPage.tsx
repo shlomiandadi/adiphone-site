@@ -88,6 +88,12 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
             >
               לקבלת הצעת מחיר
             </Link>
+            <Link
+              href="/pricing"
+              className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
+            >
+              למחירון בניית אתרים
+            </Link>
           </div>
         </div>
       </section>
@@ -113,7 +119,11 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
             <Link href="/services/wordpress" className="text-blue-700 underline">
               אתר וורדפרס
             </Link>
-            , נבנה לכם נכס דיגיטלי שעובד בשבילכם.
+            , נבנה לכם נכס דיגיטלי שעובד בשבילכם. מחירי פתיחה שקופים ב
+            <Link href="/pricing" className="text-blue-700 underline">
+              מחירון בניית אתרים
+            </Link>
+            .
           </p>
         </div>
       </section>
@@ -261,6 +271,13 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
               </div>
             ))}
           </div>
+          <p className="mt-8 text-center text-lg text-gray-700">
+            למחירי פתיחה לדף נחיתה, אתר תדמית, חנות ומערכת:{' '}
+            <Link href="/pricing" className="font-semibold text-blue-700 underline">
+              מחירון בניית אתרים
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
@@ -280,6 +297,12 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
               className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
             >
               צרו קשר
+            </Link>
+            <Link
+              href="/pricing"
+              className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
+            >
+              למחירון
             </Link>
           </div>
         </div>

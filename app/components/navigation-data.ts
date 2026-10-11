@@ -43,6 +43,12 @@ export const navigation: NavigationItem[] = [
         description: "פיתוח אתרי תדמית ומערכות Web"
       },
       {
+        name: "מחירון בניית אתרים",
+        href: "/pricing",
+        icon: "chart-line",
+        description: "מחירים שקופים לדף נחיתה, אתר תדמית, חנות ומערכת"
+      },
+      {
         name: "בניית אתרי וורדפרס",
         href: "/services/wordpress",
         icon: "globe",

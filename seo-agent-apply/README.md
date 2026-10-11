@@ -12,6 +12,13 @@ Set the same secret in Netlify and in the SEO Agent UI:
 SEO_AGENT_WEBHOOK_SECRET
 ```
 
+Optional Blobs fallback (only if automatic Netlify context is missing):
+
+```
+SEO_AGENT_BLOBS_SITE_ID
+SEO_AGENT_BLOBS_TOKEN
+```
+
 Webhook URL:
 
 ```

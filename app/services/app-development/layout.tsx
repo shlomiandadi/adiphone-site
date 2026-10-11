@@ -1,6 +1,7 @@
 import { metadata as serviceMetadata, viewport as serviceViewport } from './metadata';
+import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
-export const metadata = serviceMetadata;
+export const generateMetadata = createSeoAgentGenerateMetadata('/services/app-development', serviceMetadata);
 export const viewport = serviceViewport;
 
 export default function AppDevelopmentLayout({
@@ -8,5 +9,10 @@ export default function AppDevelopmentLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <SeoAgentPageExtras path="/services/app-development" />
+      {children}
+    </>
+  );
 }

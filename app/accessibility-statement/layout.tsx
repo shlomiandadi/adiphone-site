@@ -1,11 +1,14 @@
-import { metadata as accessibilityMetadata } from './page';
-
-export const metadata = accessibilityMetadata;
+import { SeoAgentPageExtras } from '@/seo-agent-apply';
 
 export default function AccessibilityStatementLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <SeoAgentPageExtras path="/accessibility-statement" />
+      {children}
+    </>
+  );
 }

@@ -1,6 +1,7 @@
 import { metadata as contactMetadata, viewport as contactViewport } from './metadata';
+import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
-export const metadata = contactMetadata;
+export const generateMetadata = createSeoAgentGenerateMetadata('/contact', contactMetadata);
 export const viewport = contactViewport;
 
 export default function ContactLayout({
@@ -8,5 +9,10 @@ export default function ContactLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <SeoAgentPageExtras path="/contact" />
+      {children}
+    </>
+  );
 }

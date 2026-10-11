@@ -1,6 +1,7 @@
 import { metadata as pageMetadata, viewport as pageViewport } from './metadata';
+import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
-export const metadata = pageMetadata;
+export const generateMetadata = createSeoAgentGenerateMetadata('/services/bniyat-atarim-hadera', pageMetadata);
 export const viewport = pageViewport;
 
 export default function BniyatAtarimHaderaLayout({
@@ -8,5 +9,10 @@ export default function BniyatAtarimHaderaLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <SeoAgentPageExtras path="/services/bniyat-atarim-hadera" />
+      {children}
+    </>
+  );
 }

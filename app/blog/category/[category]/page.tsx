@@ -4,6 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { PrismaClient } from '@prisma/client';
+import type { Metadata } from 'next';
+import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
+import { metadata as blogMetadata } from '../../metadata';
 
 const prisma = new PrismaClient();
 
@@ -31,6 +34,10 @@ interface Props {
   params: {
     category: string;
   };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return mergeSeoAgentMetadata(`/blog/category/${params.category}`, blogMetadata);
 }
 
 export default async function CategoryPage({ params }: Props) {
@@ -63,6 +70,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SeoAgentPageExtras path={`/blog/category/${params.category}`} />
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2">
           <Icon className="text-4xl text-primary" />

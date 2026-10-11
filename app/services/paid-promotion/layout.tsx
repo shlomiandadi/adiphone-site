@@ -1,6 +1,7 @@
 import { metadata as serviceMetadata, viewport as serviceViewport } from './metadata';
+import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
-export const metadata = serviceMetadata;
+export const generateMetadata = createSeoAgentGenerateMetadata('/services/paid-promotion', serviceMetadata);
 export const viewport = serviceViewport;
 
 export default function PaidPromotionLayout({
@@ -8,5 +9,10 @@ export default function PaidPromotionLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <SeoAgentPageExtras path="/services/paid-promotion" />
+      {children}
+    </>
+  );
 }

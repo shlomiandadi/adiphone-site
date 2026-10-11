@@ -6,6 +6,22 @@ import BlogPostSchema from '../../components/BlogPostSchema';
 import BlogNavigation from '../../components/BlogNavigation';
 import RelatedServiceCTA from '../../components/RelatedServiceCTA';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
+import { getPostBySlug, getPublishedPosts } from '../../../lib/posts';
+
+/** Enable ISR: pages are cached and periodically regenerated instead of SSR per request. */
+export const revalidate = 300;
+
+/** Pre-render published posts at build (when the DB is reachable); others render on demand. */
+export async function generateStaticParams() {
+  if (!process.env.DATABASE_URL) return [];
+  try {
+    const posts = await getPublishedPosts();
+    return posts.map((post) => ({ slug: post.slug }));
+  } catch (error) {
+    console.error('generateStaticParams (blog) failed:', error);
+    return [];
+  }
+}
 
 /**
  * The page template already renders the single <h1> (post.title). Some DB-stored
@@ -44,15 +60,16 @@ interface BlogPost {
 
 async function getBlogPost(slug: string) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/posts/${slug}`, {
-      next: { revalidate: 60 } // Revalidate every minute
-    });
-    
-    if (!res.ok) {
+    const post = await getPostBySlug(slug);
+    if (!post || !post.published) {
       return null;
     }
-
-    return res.json();
+    // Serialize Date fields to strings (the rest of the component treats them as strings).
+    return {
+      ...post,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString(),
+    } as any;
   } catch (error) {
     console.error('Error fetching blog post:', error);
     return null;

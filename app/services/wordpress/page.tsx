@@ -135,13 +135,6 @@ export default function WordPressService() {
         description: 'פיתוח בלוג תוכן בוורדפרס',
         link: '#'
       }
-    ],
-    testimonials: [
-      {
-        quote: "האתר החדש שלנו בוורדפרס נראה מדהים ועובד מעולה. תודה על שירות מקצועי וזמינות מלאה!",
-        author: "אורן ברק",
-        company: "ברק פתרונות דיגיטליים"
-      }
     ]
   };
 

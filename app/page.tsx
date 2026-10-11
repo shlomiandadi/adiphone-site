@@ -10,6 +10,7 @@ import ProcessSteps from './components/ProcessSteps';
 import Technologies from './components/Technologies';
 import HomeFAQ from './components/HomeFAQ';
 import HomeSchema from './components/HomeSchema';
+import Testimonials from './components/Testimonials';
 
 export const metadata: Metadata = {
   description:
@@ -61,6 +62,10 @@ export default function Home() {
 
         <section className="animate-slide-in">
           <Team />
+        </section>
+
+        <section className="animate-slide-in">
+          <Testimonials />
         </section>
 
         <section className="animate-slide-in">

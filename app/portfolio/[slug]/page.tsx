@@ -13,6 +13,8 @@ interface Project {
   descriptionRich?: string;
   technologies?: string[];
   url?: string;
+  metaTitle?: string | null;
+  metaDesc?: string | null;
 }
 
 const cloudinaryBase = 'https://res.cloudinary.com/dooxg35gj/image/upload/v1753362055/portfolio/';
@@ -38,11 +40,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const project = await fetchProject(params.slug);
   if (!project) return {};
   const description =
+    (project.metaDesc && plainTextMeta(project.metaDesc, 155)) ||
     plainTextMeta(project.descriptionRich, 155) ||
     plainTextMeta(project.description, 155) ||
     plainTextMeta(`פרויקט: ${project.name}`, 155);
   const type = inferProjectType(project);
-  const title = `${project.name} – ${type} | תיק עבודות Top Webstak`;
+  const title =
+    (project.metaTitle && project.metaTitle.trim()) ||
+    `${project.name} – ${type} | תיק עבודות Top Webstak`;
   return {
     title: { absolute: title },
     description,

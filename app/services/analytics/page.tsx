@@ -150,13 +150,6 @@ export default function AnalyticsService() {
         description: 'ניתוח התנהגות משתמשים לשיפור חווית הלקוח',
         link: '#'
       }
-    ],
-    testimonials: [
-      {
-        quote: "האנליטיקס שלכם עזר לנו להבין את הלקוחות ולשפר את הביצועים העסקיים.",
-        author: "דנה ישראלי",
-        company: "חברת שיווק דיגיטלי"
-      }
     ]
   };
 

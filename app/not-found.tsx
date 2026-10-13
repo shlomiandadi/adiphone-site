@@ -1,14 +1,11 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { createSeoAgentGenerateMetadata } from '@/seo-agent-apply';
 
-const notFoundMetadata: Metadata = {
+export const metadata: Metadata = {
   title: 'עדי פון תקשורת | עמוד 404 - הדף לא נמצא',
   description: 'מצטערים, העמוד שחיפשת לא נמצא. אנא נסה לחפש בעמוד הבית או צור איתנו קשר.',
   robots: 'noindex, follow'
 };
-
-export const generateMetadata = createSeoAgentGenerateMetadata('/404', notFoundMetadata);
 
 export default function NotFound() {
   return (

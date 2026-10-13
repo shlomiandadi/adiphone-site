@@ -1,11 +1,6 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-
-const HeroVisual = dynamic(() => import('./HeroVisual'), {
-  ssr: false,
-  loading: () => null,
-});
+import HeroVisual from './HeroVisual';
 
 export default function HeroVisualLoader() {
   return <HeroVisual />;

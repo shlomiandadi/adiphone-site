@@ -24,7 +24,7 @@ function hostnameOf(value: string): string {
 function isAllowedHost(hostname: string, request: NextRequest): boolean {
   const host = hostname.toLowerCase();
   if (STATIC_ALLOWED_HOSTS.has(host)) return true;
-  if (host.startsWith('adi-phone') && host.endsWith('.netlify.app')) return true;
+  if (host === 'adi-phone.netlify.app' || host.endsWith('--adi-phone.netlify.app')) return true;
 
   const forwarded = request.headers.get('x-forwarded-host');
   const headerHost = request.headers.get('host');

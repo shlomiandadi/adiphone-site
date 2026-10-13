@@ -42,9 +42,6 @@ const nextConfig = {
   },
   poweredByHeader: false,
   staticPageGenerationTimeout: 120,
-  generateBuildId: async () => {
-    return 'build-' + Date.now()
-  },
   async redirects() {
     return [
       // Duplicate / thin service stubs → primary service URLs (fixes cannibalization + orphans)

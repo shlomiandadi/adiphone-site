@@ -8,9 +8,30 @@ export const dynamic = 'force-dynamic';
  * Its function route is shadowed by the Next.js catch-all server handler, so
  * Next answered with its 404 page. Our pages are already server-rendered, so
  * this handler simply returns the real page HTML for the requested URL.
+ *
+ * Do not compare against request.nextUrl.host: inside the Netlify function
+ * that is an internal host, which 403'd production bots.
  */
 const BROWSER_UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
+
+const STATIC_ALLOWED_HOSTS = new Set(['adi-phone.co.il', 'www.adi-phone.co.il']);
+
+function hostnameOf(value: string): string {
+  return value.split(',')[0].trim().split(':')[0].toLowerCase();
+}
+
+function isAllowedHost(hostname: string, request: NextRequest): boolean {
+  const host = hostname.toLowerCase();
+  if (STATIC_ALLOWED_HOSTS.has(host)) return true;
+  if (host.startsWith('adi-phone') && host.endsWith('.netlify.app')) return true;
+
+  const forwarded = request.headers.get('x-forwarded-host');
+  const headerHost = request.headers.get('host');
+  if (forwarded && hostnameOf(forwarded) === host) return true;
+  if (headerHost && hostnameOf(headerHost) === host) return true;
+  return false;
+}
 
 export async function GET(request: NextRequest) {
   const target = request.nextUrl.searchParams.get('url');
@@ -27,11 +48,12 @@ export async function GET(request: NextRequest) {
   } catch {
     return new Response('Bad request', { status: 400 });
   }
-  if (url.host !== request.nextUrl.host || url.pathname.startsWith('/netlify-prerender-function')) {
+  if (!isAllowedHost(url.hostname, request) || url.pathname.startsWith('/netlify-prerender-function')) {
     return new Response('Forbidden', { status: 403 });
   }
 
-  const upstream = await fetch(url.toString(), {
+  const upstreamUrl = `https://${url.hostname}${url.pathname}${url.search}`;
+  const upstream = await fetch(upstreamUrl, {
     headers: { 'user-agent': BROWSER_UA, accept: 'text/html' },
     redirect: 'manual',
     cache: 'no-store',

@@ -24,7 +24,7 @@ export async function getPublishedPostsPage(page = 1, limit = BLOG_POSTS_PER_PAG
       skip: (safePage - 1) * limit,
       take: limit,
       include: {
-        category: { select: { name: true } },
+        category: { select: { name: true, slug: true, color: true, description: true } },
       },
     }),
     prisma.post.count({ where }),
@@ -41,9 +41,13 @@ export async function getPublishedPostsPage(page = 1, limit = BLOG_POSTS_PER_PAG
   };
 }
 
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+export async function getPostBySlug(slug: string) {
   return prisma.post.findUnique({
     where: { slug },
+    include: {
+      category: { select: { name: true, slug: true, color: true } },
+      postTags: { include: { tag: true } },
+    },
   });
 }
 

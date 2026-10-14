@@ -7,7 +7,7 @@ import { requireAdminApiAuth } from '../../../lib/adminAuth';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
-  const unauthorized = await requireAdminApiAuth();
+  const unauthorized = await requireAdminApiAuth({ role: 'ADMIN' });
   if (unauthorized) return unauthorized;
 
   try {

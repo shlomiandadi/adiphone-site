@@ -35,6 +35,7 @@ function mapPost(post: Awaited<ReturnType<typeof getPublishedPostsPage>>['posts'
     excerpt: post.excerpt,
     mainImage: post.mainImage,
     category: post.category?.name || 'כללי',
+    categoryColor: post.category?.color || null,
     createdAt: post.createdAt.toISOString(),
     tags: post.tags,
     slug: post.slug,

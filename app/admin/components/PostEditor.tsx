@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
-// Dynamic import for React Quill to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { 
+const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
   loading: () => <div className="h-64 bg-gray-100 rounded animate-pulse"></div>
 });
@@ -19,11 +18,26 @@ interface PostData {
   excerpt: string;
   mainImage: string;
   category: string;
-  tags: string;
+  tags: string[];
   metaTitle: string;
   metaDesc: string;
   published: boolean;
   slug: string;
+  canonicalUrl: string;
+  schemaMarkup: string;
+  ogImage: string;
+  robots: string;
+}
+
+interface TagOption {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
 }
 
 interface PostEditorProps {
@@ -39,21 +53,29 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
     excerpt: '',
     mainImage: '',
     category: '',
-    tags: '',
+    tags: [],
     metaTitle: '',
     metaDesc: '',
     published: false,
-    slug: ''
+    slug: '',
+    canonicalUrl: '',
+    schemaMarkup: '',
+    ogImage: '',
+    robots: '',
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [categories, setCategories] = useState<Array<{id: string, name: string, slug: string}>>([]);
+  const [categories, setCategories] = useState<Array<{ id: string; name: string; slug: string }>>([]);
+  const [availableTags, setAvailableTags] = useState<TagOption[]>([]);
+  const [newTagName, setNewTagName] = useState('');
+  const [faqItems, setFaqItems] = useState<FaqItem[]>([{ question: '', answer: '' }]);
 
   useEffect(() => {
     fetchCategories();
+    fetchTags();
     if (mode === 'edit' && postId) {
       fetchPost();
     }
@@ -61,18 +83,25 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
 
   const fetchCategories = async () => {
     try {
-      console.log('Fetching categories...');
       const response = await fetch('/api/admin/categories');
-      console.log('Response status:', response.status);
       if (response.ok) {
         const categoriesData = await response.json();
-        console.log('Fetched categories:', categoriesData);
         setCategories(categoriesData.categories || []);
-      } else {
-        console.error('Failed to fetch categories:', response.status, response.statusText);
       }
-    } catch (error) {
-      console.error('שגיאה בטעינת קטגוריות:', error);
+    } catch (fetchError) {
+      console.error('שגיאה בטעינת קטגוריות:', fetchError);
+    }
+  };
+
+  const fetchTags = async () => {
+    try {
+      const response = await fetch('/api/admin/tags');
+      if (response.ok) {
+        const data = await response.json();
+        setAvailableTags(data.tags || []);
+      }
+    } catch (fetchError) {
+      console.error('שגיאה בטעינת תגיות:', fetchError);
     }
   };
 
@@ -82,20 +111,28 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
       const response = await fetch(`/api/posts/${postId}?admin=true`);
       if (response.ok) {
         const post = await response.json();
+        const relationTags = Array.isArray(post.postTags)
+          ? post.postTags.map((item: { tag?: { name?: string } }) => item.tag?.name).filter(Boolean)
+          : [];
+        const arrayTags = Array.isArray(post.tags) ? post.tags : [];
         setPostData({
           title: post.title || '',
           content: post.content || '',
           excerpt: post.excerpt || '',
           mainImage: post.mainImage || '',
           category: post.category?.slug || '',
-          tags: Array.isArray(post.tags) ? post.tags.join(', ') : post.tags || '',
+          tags: Array.from(new Set([...arrayTags, ...relationTags])),
           metaTitle: post.metaTitle || '',
           metaDesc: post.metaDesc || '',
           published: post.published || false,
-          slug: post.slug || ''
+          slug: post.slug || '',
+          canonicalUrl: post.canonicalUrl || '',
+          schemaMarkup: post.schemaMarkup || '',
+          ogImage: post.ogImage || '',
+          robots: post.robots || '',
         });
       }
-    } catch (error) {
+    } catch {
       setError('שגיאה בטעינת הפוסט');
     } finally {
       setLoading(false);
@@ -113,15 +150,14 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    
-    setPostData(prev => ({
+
+    setPostData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
     }));
 
-    // יצירת slug אוטומטית מהכותרת
     if (name === 'title' && !postData.slug) {
-      setPostData(prev => ({
+      setPostData((prev) => ({
         ...prev,
         slug: generateSlug(value)
       }));
@@ -129,10 +165,60 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
   };
 
   const handleContentChange = (content: string) => {
-    setPostData(prev => ({
+    setPostData((prev) => ({
       ...prev,
       content
     }));
+  };
+
+  const toggleTag = (name: string) => {
+    setPostData((prev) => ({
+      ...prev,
+      tags: prev.tags.includes(name)
+        ? prev.tags.filter((tag) => tag !== name)
+        : [...prev.tags, name],
+    }));
+  };
+
+  const addNewTag = () => {
+    const name = newTagName.trim();
+    if (!name) return;
+    setAvailableTags((prev) => (
+      prev.some((tag) => tag.name === name)
+        ? prev
+        : [...prev, { id: `new-${name}`, name, slug: generateSlug(name) }]
+    ));
+    setPostData((prev) => (
+      prev.tags.includes(name) ? prev : { ...prev, tags: [...prev.tags, name] }
+    ));
+    setNewTagName('');
+  };
+
+  const applyFaqSchema = () => {
+    const questions = faqItems
+      .map((item) => ({ question: item.question.trim(), answer: item.answer.trim() }))
+      .filter((item) => item.question && item.answer);
+    if (!questions.length) {
+      setError('יש למלא לפחות שאלה ותשובה אחת');
+      return;
+    }
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: questions.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    };
+    setPostData((prev) => ({
+      ...prev,
+      schemaMarkup: JSON.stringify(schema, null, 2),
+    }));
+    setSuccess('נוצר JSON-LD מסוג FAQPage');
   };
 
   const handleSave = async (publish: boolean = false) => {
@@ -140,14 +226,32 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
     setError('');
     setSuccess('');
 
+    if (!postData.category) {
+      setError('יש לבחור קטגוריה');
+      setSaving(false);
+      return;
+    }
+
+    if (postData.schemaMarkup.trim()) {
+      try {
+        JSON.parse(postData.schemaMarkup);
+      } catch {
+        setError('schemaMarkup חייב להיות JSON תקין');
+        setSaving(false);
+        return;
+      }
+    }
+
     try {
       const finalData = {
         ...postData,
         published: publish ? true : postData.published,
-        tags: postData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+        tags: postData.tags,
+        canonicalUrl: postData.canonicalUrl.trim() || null,
+        schemaMarkup: postData.schemaMarkup.trim() || null,
+        ogImage: postData.ogImage.trim() || null,
+        robots: postData.robots.trim() || null,
       };
-
-      console.log('Sending data:', finalData);
 
       const url = mode === 'create' ? '/api/posts' : `/api/posts/${postId}`;
       const method = mode === 'create' ? 'POST' : 'PUT';
@@ -161,9 +265,7 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
       });
 
       if (response.ok) {
-        const result = await response.json();
         setSuccess(publish ? 'הפוסט פורסם בהצלחה!' : 'הפוסט נשמר כטיוטה!');
-        
         if (mode === 'create') {
           setTimeout(() => {
             router.push('/admin');
@@ -171,9 +273,9 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
         }
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'שגיאה בשמירת הפוסט');
+        setError(errorData.error || errorData.message || 'שגיאה בשמירת הפוסט');
       }
-    } catch (error) {
+    } catch {
       setError('שגיאה בחיבור לשרת');
     } finally {
       setSaving(false);
@@ -199,7 +301,6 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
@@ -209,10 +310,7 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
               </h1>
             </div>
             <div className="flex items-center space-x-4 space-x-reverse">
-              <Link
-                href="/admin"
-                className="text-gray-600 hover:text-gray-900 text-sm"
-              >
+              <Link href="/admin" className="text-gray-600 hover:text-gray-900 text-sm">
                 חזרה לדשבורד
               </Link>
             </div>
@@ -220,25 +318,21 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Editor */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Messages */}
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
                 {error}
               </div>
             )}
-            
+
             {success && (
               <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md">
                 {success}
               </div>
             )}
 
-            {/* Title */}
             <div className="bg-white rounded-lg shadow p-6">
               <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
                 כותרת הפוסט *
@@ -255,7 +349,6 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
               />
             </div>
 
-            {/* Content Editor */}
             <div className="bg-white rounded-lg shadow p-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 תוכן הפוסט *
@@ -267,10 +360,10 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                   placeholder="כתוב את תוכן הפוסט כאן..."
                   modules={{
                     toolbar: [
-                      [{ 'header': [1, 2, 3, false] }],
+                      [{ header: [1, 2, 3, false] }],
                       ['bold', 'italic', 'underline', 'strike'],
-                      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                      [{ 'color': [] }, { 'background': [] }],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      [{ color: [] }, { background: [] }],
                       ['link', 'image'],
                       ['clean']
                     ]
@@ -280,7 +373,6 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
               </div>
             </div>
 
-            {/* Excerpt */}
             <div className="bg-white rounded-lg shadow p-6">
               <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-2">
                 תקציר
@@ -296,7 +388,6 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
               />
             </div>
 
-            {/* Main Image */}
             <div className="bg-white rounded-lg shadow p-6">
               <label htmlFor="mainImage" className="block text-sm font-medium text-gray-700 mb-2">
                 תמונה ראשית
@@ -312,9 +403,9 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
               />
               {postData.mainImage && (
                 <div className="mt-2">
-                  <img 
-                    src={postData.mainImage} 
-                    alt="תמונה ראשית" 
+                  <img
+                    src={postData.mainImage}
+                    alt="תמונה ראשית"
                     className="w-32 h-32 object-cover rounded"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
@@ -323,28 +414,78 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                 </div>
               )}
             </div>
+
+            <div className="bg-white rounded-lg shadow p-6 space-y-4">
+              <h3 className="text-lg font-medium text-gray-900">Schema / FAQ</h3>
+              <textarea
+                id="schemaMarkup"
+                name="schemaMarkup"
+                value={postData.schemaMarkup}
+                onChange={handleInputChange}
+                rows={8}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono text-sm"
+                placeholder='{"@context":"https://schema.org","@type":"FAQPage"}'
+              />
+              <div className="space-y-3">
+                <p className="text-sm font-medium text-gray-700">בונה FAQ פשוט</p>
+                {faqItems.map((item, index) => (
+                  <div key={index} className="grid gap-2 md:grid-cols-2">
+                    <input
+                      value={item.question}
+                      onChange={(e) => {
+                        const next = [...faqItems];
+                        next[index] = { ...next[index], question: e.target.value };
+                        setFaqItems(next);
+                      }}
+                      className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+                      placeholder="שאלה"
+                    />
+                    <input
+                      value={item.answer}
+                      onChange={(e) => {
+                        const next = [...faqItems];
+                        next[index] = { ...next[index], answer: e.target.value };
+                        setFaqItems(next);
+                      }}
+                      className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+                      placeholder="תשובה"
+                    />
+                  </div>
+                ))}
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setFaqItems((prev) => [...prev, { question: '', answer: '' }])}
+                    className="px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  >
+                    הוסף שאלה
+                  </button>
+                  <button
+                    type="button"
+                    onClick={applyFaqSchema}
+                    className="px-3 py-2 text-sm bg-indigo-600 text-white rounded-md"
+                  >
+                    צור FAQPage JSON-LD
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Publish Settings */}
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">הגדרות פרסום</h3>
-              
               <div className="space-y-4">
-                <div>
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      name="published"
-                      checked={postData.published}
-                      onChange={handleInputChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="mr-2 text-sm text-gray-700">פרסם מיד</span>
-                  </label>
-                </div>
-
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="published"
+                    checked={postData.published}
+                    onChange={handleInputChange}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="mr-2 text-sm text-gray-700">פרסם מיד</span>
+                </label>
                 <div className="flex space-x-2 space-x-reverse">
                   <button
                     onClick={() => handleSave(false)}
@@ -353,7 +494,6 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
                   >
                     {saving ? 'שומר...' : 'שמור כטיוטה'}
                   </button>
-                  
                   <button
                     onClick={() => handleSave(true)}
                     disabled={saving}
@@ -365,96 +505,88 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
               </div>
             </div>
 
-            {/* SEO Settings */}
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">הגדרות SEO</h3>
-              
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-1">
-                    URL ידידותי
-                  </label>
-                  <input
-                    type="text"
-                    id="slug"
-                    name="slug"
-                    value={postData.slug}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    placeholder="url-ידידותי"
-                  />
+                  <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-1">URL ידידותי</label>
+                  <input type="text" id="slug" name="slug" value={postData.slug} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" />
                 </div>
-
                 <div>
-                  <label htmlFor="metaTitle" className="block text-sm font-medium text-gray-700 mb-1">
-                    כותרת Meta
-                  </label>
-                  <input
-                    type="text"
-                    id="metaTitle"
-                    name="metaTitle"
-                    value={postData.metaTitle}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    placeholder="כותרת למנועי חיפוש"
-                  />
+                  <label htmlFor="metaTitle" className="block text-sm font-medium text-gray-700 mb-1">כותרת Meta</label>
+                  <input type="text" id="metaTitle" name="metaTitle" value={postData.metaTitle} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" />
                 </div>
-
                 <div>
-                  <label htmlFor="metaDesc" className="block text-sm font-medium text-gray-700 mb-1">
-                    תיאור Meta
-                  </label>
-                  <textarea
-                    id="metaDesc"
-                    name="metaDesc"
-                    value={postData.metaDesc}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    placeholder="תיאור קצר למנועי חיפוש"
-                  />
+                  <label htmlFor="metaDesc" className="block text-sm font-medium text-gray-700 mb-1">תיאור Meta</label>
+                  <textarea id="metaDesc" name="metaDesc" value={postData.metaDesc} onChange={handleInputChange} rows={3} className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" />
                 </div>
+                <div>
+                  <label htmlFor="canonicalUrl" className="block text-sm font-medium text-gray-700 mb-1">Canonical URL</label>
+                  <input type="url" id="canonicalUrl" name="canonicalUrl" value={postData.canonicalUrl} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" placeholder="https://adi-phone.co.il/blog/..." />
+                </div>
+                <div>
+                  <label htmlFor="ogImage" className="block text-sm font-medium text-gray-700 mb-1">תמונת OG (אופציונלי)</label>
+                  <input type="url" id="ogImage" name="ogImage" value={postData.ogImage} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" />
+                </div>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={postData.robots.includes('noindex')}
+                    onChange={(e) => setPostData((prev) => ({ ...prev, robots: e.target.checked ? 'noindex, follow' : '' }))}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="mr-2 text-sm text-gray-700">noindex</span>
+                </label>
               </div>
             </div>
 
-            {/* Categories & Tags */}
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">קטגוריות ותגיות</h3>
-              
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-                    קטגוריה
-                  </label>
+                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">קטגוריה *</label>
                   <select
                     id="category"
                     name="category"
                     value={postData.category}
                     onChange={handleInputChange}
+                    required
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">בחר קטגוריה</option>
-                    {categories.map(category => (
+                    {categories.map((category) => (
                       <option key={category.id} value={category.slug}>
                         {category.name}
                       </option>
                     ))}
                   </select>
                 </div>
-
                 <div>
-                  <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
-                    תגיות
-                  </label>
-                  <input
-                    type="text"
-                    id="tags"
-                    name="tags"
-                    value={postData.tags}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    placeholder="תגיות מופרדות בפסיקים"
-                  />
+                  <p className="block text-sm font-medium text-gray-700 mb-2">תגיות</p>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {availableTags.map((tag) => (
+                      <label key={tag.id} className={`cursor-pointer rounded-full px-3 py-1 text-sm border ${postData.tags.includes(tag.name) ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300'}`}>
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={postData.tags.includes(tag.name)}
+                          onChange={() => toggleTag(tag.name)}
+                        />
+                        {tag.name}
+                      </label>
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      value={newTagName}
+                      onChange={(e) => setNewTagName(e.target.value)}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                      placeholder="תגית חדשה"
+                    />
+                    <button type="button" onClick={addNewTag} className="px-3 py-2 text-sm bg-gray-800 text-white rounded-md">
+                      הוסף
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -463,4 +595,4 @@ export default function PostEditor({ mode, postId }: PostEditorProps) {
       </div>
     </div>
   );
-} 
+}

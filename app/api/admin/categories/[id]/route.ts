@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { requireAdminApiAuth } from '../../../../../lib/adminAuth';
+import { EDITOR_ROLES, requireAdminApiAuth } from '../../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
 
@@ -8,7 +8,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const unauthorized = await requireAdminApiAuth();
+  const unauthorized = await requireAdminApiAuth({ role: [...EDITOR_ROLES] });
   if (unauthorized) return unauthorized;
 
   try {
@@ -87,7 +87,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const unauthorized = await requireAdminApiAuth();
+  const unauthorized = await requireAdminApiAuth({ role: [...EDITOR_ROLES] });
   if (unauthorized) return unauthorized;
 
   try {

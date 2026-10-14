@@ -1,11 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { revalidateBlogPaths } from '../../../../lib/revalidateContent';
-import { requireAdminApiAuth } from '../../../../lib/adminAuth';
+import {
+  POST_ROLES,
+  canManagePost,
+  requireAdminApiAuth,
+  requireAdminApiUser,
+} from '../../../../lib/adminAuth';
+import { normalizeTagNames, syncPostTags, tagPathValues } from '../../../../lib/postTags';
 
 const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
+
+function parseSchemaMarkup(value: unknown): string | null | NextResponse {
+  if (value == null || value === '') return null;
+  const text = String(value).trim();
+  if (!text) return null;
+  try {
+    JSON.parse(text);
+    return text;
+  } catch {
+    return NextResponse.json({ error: 'schemaMarkup חייב להיות JSON תקין' }, { status: 400 });
+  }
+}
+
+function extraFromPost(post: {
+  category?: { slug: string } | null;
+  tags?: string[];
+  postTags?: { tag: { name: string; slug: string } }[];
+}) {
+  return {
+    categorySlugs: [post.category?.slug],
+    tags: tagPathValues(
+      [...(post.tags || []), ...(post.postTags || []).map((item) => item.tag.name)],
+      (post.postTags || []).map((item) => item.tag.slug)
+    ),
+  };
+}
 
 export async function GET(
   request: NextRequest,
@@ -16,19 +48,21 @@ export async function GET(
     const admin = searchParams.get('admin');
 
     if (admin === 'true') {
-      const unauthorized = await requireAdminApiAuth();
+      const unauthorized = await requireAdminApiAuth({ role: [...POST_ROLES] });
       if (unauthorized) return unauthorized;
     }
 
     const where: any = { slug: params.slug };
-    
-    // אם זה לא מערכת הניהול, בדוק שרק פוסטים מפורסמים
     if (admin !== 'true') {
       where.published = true;
     }
 
     const post = await prisma.post.findUnique({
-      where
+      where,
+      include: {
+        category: true,
+        postTags: { include: { tag: true } },
+      },
     });
 
     if (!post) {
@@ -52,8 +86,8 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
-  const unauthorized = await requireAdminApiAuth();
-  if (unauthorized) return unauthorized;
+  const auth = await requireAdminApiUser({ role: [...POST_ROLES] });
+  if (!auth.ok) return auth.response;
 
   try {
     const body = await request.json();
@@ -67,10 +101,13 @@ export async function PUT(
       metaTitle,
       metaDesc,
       published,
-      slug: newSlug
+      slug: newSlug,
+      canonicalUrl,
+      schemaMarkup,
+      ogImage,
+      robots,
     } = body;
 
-    // ולידציה בסיסית
     if (!title || !content) {
       return NextResponse.json(
         { error: 'כותרת ותוכן הם שדות חובה' },
@@ -78,9 +115,22 @@ export async function PUT(
       );
     }
 
-    // בדיקה אם הפוסט קיים
+    if (!category || !String(category).trim()) {
+      return NextResponse.json(
+        { error: 'יש לבחור קטגוריה' },
+        { status: 400 }
+      );
+    }
+
+    const parsedSchema = parseSchemaMarkup(schemaMarkup);
+    if (parsedSchema instanceof NextResponse) return parsedSchema;
+
     const existingPost = await prisma.post.findUnique({
-      where: { slug: params.slug }
+      where: { slug: params.slug },
+      include: {
+        category: true,
+        postTags: { include: { tag: true } },
+      },
     });
 
     if (!existingPost) {
@@ -90,7 +140,10 @@ export async function PUT(
       );
     }
 
-    // בדיקה אם ה-slug החדש כבר קיים (אם השתנה)
+    if (!canManagePost(auth.user, existingPost.authorId)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     if (newSlug && newSlug !== params.slug) {
       const slugExists = await prisma.post.findUnique({
         where: { slug: newSlug }
@@ -104,21 +157,21 @@ export async function PUT(
       }
     }
 
-    // מציאת או יצירת קטגוריה
-    let categoryRef;
-    if (category) {
-      categoryRef = await prisma.category.findUnique({
-        where: { slug: category }
-      });
-    }
-    
+    const categoryRef = await prisma.category.findFirst({
+      where: {
+        OR: [{ slug: String(category) }, { id: String(category) }],
+      },
+    });
+
     if (!categoryRef) {
-      categoryRef = await prisma.category.findFirst({
-        where: { slug: 'seo' }
-      });
+      return NextResponse.json(
+        { error: 'קטגוריה לא נמצאה' },
+        { status: 400 }
+      );
     }
 
-    // עדכון הפוסט
+    const tagNames = normalizeTagNames(tags);
+
     const updatedPost = await prisma.post.update({
       where: { slug: params.slug },
       data: {
@@ -126,17 +179,31 @@ export async function PUT(
         content,
         excerpt: excerpt || '',
         mainImage: mainImage || '',
-        categoryId: categoryRef?.id,
-        tags: Array.isArray(tags) ? tags : [],
+        categoryId: categoryRef.id,
+        tags: tagNames,
         metaTitle: metaTitle || title,
         metaDesc: metaDesc || excerpt || '',
         published: published !== undefined ? published : existingPost.published,
         slug: newSlug || params.slug,
+        canonicalUrl: canonicalUrl || null,
+        schemaMarkup: parsedSchema,
+        ogImage: ogImage || null,
+        robots: robots || null,
         updatedAt: new Date()
-      }
+      },
+      include: {
+        category: true,
+        postTags: { include: { tag: true } },
+      },
     });
 
-    revalidateBlogPaths(updatedPost.slug, params.slug);
+    await syncPostTags(prisma, updatedPost.id, tagNames);
+
+    const previous = extraFromPost(existingPost);
+    revalidateBlogPaths(updatedPost.slug, params.slug, {
+      categorySlugs: [...previous.categorySlugs, categoryRef.slug],
+      tags: [...previous.tags, ...tagPathValues(tagNames)],
+    });
 
     return NextResponse.json({
       success: true,
@@ -157,13 +224,16 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
-  const unauthorized = await requireAdminApiAuth();
-  if (unauthorized) return unauthorized;
+  const auth = await requireAdminApiUser({ role: [...POST_ROLES] });
+  if (!auth.ok) return auth.response;
 
   try {
-    // בדיקה אם הפוסט קיים
     const existingPost = await prisma.post.findUnique({
-      where: { slug: params.slug }
+      where: { slug: params.slug },
+      include: {
+        category: true,
+        postTags: { include: { tag: true } },
+      },
     });
 
     if (!existingPost) {
@@ -173,12 +243,15 @@ export async function DELETE(
       );
     }
 
-    // מחיקת הפוסט
+    if (!canManagePost(auth.user, existingPost.authorId)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     await prisma.post.delete({
       where: { slug: params.slug }
     });
 
-    revalidateBlogPaths(params.slug);
+    revalidateBlogPaths(params.slug, null, extraFromPost(existingPost));
 
     return NextResponse.json({
       success: true,
@@ -192,4 +265,4 @@ export async function DELETE(
       { status: 500 }
     );
   }
-} 
+}

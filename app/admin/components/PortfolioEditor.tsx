@@ -26,6 +26,7 @@ interface PortfolioData {
   metaDesc: string;
   published: boolean;
   slug: string;
+  keywords: string;
 }
 
 interface PortfolioEditorProps {
@@ -47,7 +48,8 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
     metaTitle: '',
     metaDesc: '',
     published: false,
-    slug: ''
+    slug: '',
+    keywords: ''
   });
   
   const [loading, setLoading] = useState(false);
@@ -72,8 +74,9 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
           description: project.description || '',
           descriptionRich: project.descriptionRich || '',
           url: project.url || '',
-          date: project.date ? new Date(project.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          date: project.date ? new Date(project.date).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10),
           technologies: Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies || '',
+          keywords: Array.isArray(project.keywords) ? project.keywords.join(', ') : project.keywords || '',
           image: project.image || '',
           images: Array.isArray(project.images) ? project.images.join(', ') : project.images || '',
           metaTitle: project.metaTitle || '',
@@ -132,6 +135,7 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
         ...projectData,
         published: publish ? true : projectData.published,
         technologies: projectData.technologies.split(',').map(tech => tech.trim()).filter(tech => tech),
+        keywords: projectData.keywords.split(',').map(item => item.trim()).filter(item => item),
         images: projectData.images.split(',').map(img => img.trim()).filter(img => img)
       };
 
@@ -329,6 +333,21 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="React, Node.js, MongoDB (מופרדות בפסיקים)"
+              />
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <label htmlFor="keywords" className="block text-sm font-medium text-gray-700 mb-2">
+                מילות מפתח (אופציונלי)
+              </label>
+              <input
+                type="text"
+                id="keywords"
+                name="keywords"
+                value={projectData.keywords}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="מילות מפתח מופרדות בפסיקים"
               />
             </div>
 

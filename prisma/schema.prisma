@@ -39,6 +39,8 @@ model Post {
   articleStyles String? @db.Text
   schemaMarkup  String? @db.Text
   canonicalUrl  String?
+  ogImage       String?
+  robots        String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   authorId    String?
@@ -101,6 +103,7 @@ model PortfolioProject2 {
   url             String
   date            DateTime
   technologies    String[]
+  keywords        String[] @default([])
   published       Boolean  @default(false)
   metaTitle       String?
   metaDesc        String?

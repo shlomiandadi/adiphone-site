@@ -42,12 +42,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const category = params.category.toUpperCase() as Category;
-
-  if (!Object.keys(categoryTitles).includes(category)) {
-    notFound();
-  }
-
-  // קודם נמצא את הקטגוריה לפי slug
   const categoryRecord = await prisma.category.findUnique({
     where: { slug: params.category }
   });
@@ -66,7 +60,9 @@ export default async function CategoryPage({ params }: Props) {
     },
   });
 
-  const Icon = categoryIcons[category];
+  const Icon = categoryIcons[category] || FaBlog;
+  const title = categoryTitles[category] || categoryRecord.name;
+  const description = categoryRecord.description?.trim() || '';
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -74,8 +70,11 @@ export default async function CategoryPage({ params }: Props) {
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2">
           <Icon className="text-4xl text-primary" />
-          <h1 className="text-4xl font-bold">{categoryTitles[category]}</h1>
+          <h1 className="text-4xl font-bold">{title}</h1>
         </div>
+        {description ? (
+          <p className="mt-4 mx-auto max-w-2xl text-gray-600">{description}</p>
+        ) : null}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post) => (

@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 const STATUSES = new Set<string>(Object.values(ContactStatus));
 
 export async function GET(request: NextRequest) {
-  const unauthorized = await requireAdminApiAuth();
+  const unauthorized = await requireAdminApiAuth({ role: 'ADMIN' });
   if (unauthorized) return unauthorized;
 
   try {

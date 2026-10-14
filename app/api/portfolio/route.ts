@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { revalidatePortfolioPaths } from '../../../lib/revalidateContent';
-import { requireAdminApiAuth } from '../../../lib/adminAuth';
+import { EDITOR_ROLES, requireAdminApiAuth } from '../../../lib/adminAuth';
+import { dateOnlyUtcNoon } from '../../../lib/dateOnly';
+import { normalizeTagNames } from '../../../lib/postTags';
 
 const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
-  const unauthorized = await requireAdminApiAuth();
+  const unauthorized = await requireAdminApiAuth({ role: [...EDITOR_ROLES] });
   if (unauthorized) return unauthorized;
 
   try {
@@ -25,7 +27,8 @@ export async function POST(request: NextRequest) {
       metaTitle,
       metaDesc,
       published,
-      slug
+      slug,
+      keywords
     } = body;
 
     // ולידציה בסיסית
@@ -54,8 +57,9 @@ export async function POST(request: NextRequest) {
       description,
       descriptionRich: descriptionRich || '',
       url: url || '',
-      date: date ? new Date(date) : new Date(),
+      date: dateOnlyUtcNoon(date),
       technologies: Array.isArray(technologies) ? technologies : [],
+      keywords: normalizeTagNames(keywords),
       image: image || '',
       images: Array.isArray(images) ? images : [],
       metaTitle: metaTitle || name,
@@ -94,7 +98,7 @@ export async function GET(request: NextRequest) {
     const admin = searchParams.get('admin'); // פרמטר מיוחד למערכת הניהול
 
     if (admin === 'true' || published === 'false') {
-      const unauthorized = await requireAdminApiAuth();
+      const unauthorized = await requireAdminApiAuth({ role: [...EDITOR_ROLES] });
       if (unauthorized) return unauthorized;
     }
 
@@ -135,7 +139,8 @@ export async function GET(request: NextRequest) {
           createdAt: true,
           updatedAt: true,
           metaTitle: true,
-          metaDesc: true
+          metaDesc: true,
+          keywords: true
         }
       }),
       prisma.portfolioProject2.count({ where })
@@ -157,7 +162,8 @@ export async function GET(request: NextRequest) {
       createdAt: project.createdAt,
       updatedAt: project.updatedAt,
       metaTitle: project.metaTitle,
-      metaDesc: project.metaDesc
+      metaDesc: project.metaDesc,
+      keywords: Array.isArray(project.keywords) ? project.keywords : []
     }));
 
     return NextResponse.json({

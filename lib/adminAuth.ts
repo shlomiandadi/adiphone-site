@@ -40,24 +40,53 @@ export async function getAdminUser(): Promise<AdminUser | null> {
   return verifyAdminToken(token);
 }
 
-/** JSON 401/403 for API routes. Uses the same admin-token cookie as /admin pages. */
-export async function requireAdminApiAuth(options?: {
+export const ADMIN_ROLES = ['ADMIN'] as const;
+export const EDITOR_ROLES = ['ADMIN', 'EDITOR'] as const;
+export const POST_ROLES = ['ADMIN', 'EDITOR', 'AUTHOR'] as const;
+
+export function adminRole(user: AdminUser): string {
+  return String(user.role).toUpperCase();
+}
+
+export function isAuthorRole(user: AdminUser): boolean {
+  return adminRole(user) === 'AUTHOR';
+}
+
+export function canManagePost(user: AdminUser, authorId?: string | null): boolean {
+  const role = adminRole(user);
+  if (role === 'ADMIN' || role === 'EDITOR') return true;
+  if (role === 'AUTHOR') return Boolean(authorId) && authorId === user.id;
+  return false;
+}
+
+export type AdminAuthSuccess = { ok: true; user: AdminUser };
+export type AdminAuthFailure = { ok: false; response: NextResponse };
+export type AdminAuthResult = AdminAuthSuccess | AdminAuthFailure;
+
+export async function requireAdminApiUser(options?: {
   role?: string | string[];
-}): Promise<NextResponse | null> {
+}): Promise<AdminAuthResult> {
   const user = await getAdminUser();
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return { ok: false, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) };
   }
 
   if (options?.role) {
     const allowed = Array.isArray(options.role) ? options.role : [options.role];
-    const role = String(user.role).toUpperCase();
-    if (!allowed.some((allowedRole) => allowedRole.toUpperCase() === role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!allowed.some((allowedRole) => allowedRole.toUpperCase() === adminRole(user))) {
+      return { ok: false, response: NextResponse.json({ error: 'Forbidden' }, { status: 403 }) };
     }
   }
 
-  return null;
+  return { ok: true, user };
+}
+
+/** JSON 401/403 for API routes. Uses the same admin-token cookie as /admin pages. */
+export async function requireAdminApiAuth(options?: {
+  role?: string | string[];
+}): Promise<NextResponse | null> {
+  const result = await requireAdminApiUser(options);
+  return result.ok ? null : result.response;
 }
 
 export async function requireAdminAuth(request: NextRequest): Promise<NextResponse | null> {

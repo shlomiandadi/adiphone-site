@@ -75,23 +75,32 @@ export function stripTitleTemplateSuffix(title: string): string {
   return next;
 }
 
-/** Pages with a string title, `{ default }`, or no title inherit the root `%s | Top Webstak` template. */
+/**
+ * True only when the root `%s | Top Webstak` template will append the suffix.
+ * `{ absolute }` titles and string titles that already include ` | Top Webstak`
+ * are complete document titles — do not strip or re-template them.
+ */
 export function usesTitleTemplate(base: Metadata): boolean {
   const title = base.title;
   if (title && typeof title === 'object' && 'absolute' in title && title.absolute) {
+    return false;
+  }
+  if (typeof title === 'string' && title.includes(TITLE_TEMPLATE_SUFFIX)) {
     return false;
   }
   return true;
 }
 
 /**
- * Apply a CMS title so either stored form (with or without ` | Top Webstak`) renders once.
- * Templated pages strip a trailing suffix before the root template is applied.
- * Absolute-title pages keep the stored string as-is.
+ * Apply a CMS title so either stored form renders once.
+ * Templated pages: strip a trailing ` | Top Webstak` so the root template adds it once.
+ * Absolute pages: apply the CMS title exactly as stored (`{ absolute }`).
  */
 export function applyCmsTitle(base: Metadata, cmsTitle: string): Metadata['title'] {
-  const title = usesTitleTemplate(base) ? stripTitleTemplateSuffix(cmsTitle) : cmsTitle;
-  return withTitle(base, title);
+  if (!usesTitleTemplate(base)) {
+    return { absolute: cmsTitle };
+  }
+  return withTitle(base, stripTitleTemplateSuffix(cmsTitle));
 }
 
 export function exactPathKeys(path: string): string[] {

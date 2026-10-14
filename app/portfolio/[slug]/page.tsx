@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import ProjectPageClient from './ProjectPageClient';
-import { plainTextMeta } from '../../../lib/seo';
+import CreativeWorkSchema from '../../components/CreativeWorkSchema';
+import { getSiteUrl, plainTextMeta } from '../../../lib/seo';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
 interface Project {
@@ -14,6 +15,8 @@ interface Project {
   descriptionRich?: string;
   technologies?: string[];
   url?: string;
+  date?: string | Date | null;
+  keywords?: string[] | null;
   metaTitle?: string | null;
   metaDesc?: string | null;
 }
@@ -67,9 +70,25 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function Page({ params }: { params: { slug: string } }) {
   const project = await fetchProject(params.slug);
   if (!project) return notFound();
+  const siteUrl = getSiteUrl();
+  const description =
+    plainTextMeta(project.descriptionRich, 300) ||
+    plainTextMeta(project.description, 300) ||
+    '';
+  const keywords = (project.keywords && project.keywords.length)
+    ? project.keywords
+    : (project.technologies || []);
   return (
     <>
       <SeoAgentPageExtras path={`/portfolio/${project.slug}`} />
+      <CreativeWorkSchema
+        name={project.name}
+        description={description}
+        image={project.images && project.images.length ? project.images : project.image}
+        url={`${siteUrl}/portfolio/${project.slug}`}
+        dateCreated={project.date || null}
+        keywords={keywords}
+      />
       <ProjectPageClient project={project} />
     </>
   );

@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { revalidatePortfolioPaths } from '../../../../lib/revalidateContent';
-import { requireAdminApiAuth } from '../../../../lib/adminAuth';
+import { EDITOR_ROLES, requireAdminApiAuth } from '../../../../lib/adminAuth';
+import { dateOnlyUtcNoon } from '../../../../lib/dateOnly';
+import { normalizeTagNames } from '../../../../lib/postTags';
 
 const prisma = new PrismaClient();
 
@@ -16,7 +18,7 @@ export async function GET(
     const admin = searchParams.get('admin');
 
     if (admin === 'true') {
-      const unauthorized = await requireAdminApiAuth();
+      const unauthorized = await requireAdminApiAuth({ role: [...EDITOR_ROLES] });
       if (unauthorized) return unauthorized;
     }
 
@@ -52,7 +54,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
-  const unauthorized = await requireAdminApiAuth();
+  const unauthorized = await requireAdminApiAuth({ role: [...EDITOR_ROLES] });
   if (unauthorized) return unauthorized;
 
   try {
@@ -69,7 +71,8 @@ export async function PUT(
       metaTitle,
       metaDesc,
       published,
-      slug: newSlug
+      slug: newSlug,
+      keywords
     } = body;
 
     // ולידציה בסיסית
@@ -114,7 +117,8 @@ export async function PUT(
         description,
         descriptionRich: descriptionRich || '',
         url: url || '',
-        date: date ? new Date(date) : existingProject.date,
+        date: date ? dateOnlyUtcNoon(date) : existingProject.date,
+        keywords: keywords !== undefined ? normalizeTagNames(keywords) : existingProject.keywords,
         technologies: Array.isArray(technologies) ? technologies : [],
         image: image || '',
         images: Array.isArray(images) ? images : [],
@@ -147,7 +151,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
-  const unauthorized = await requireAdminApiAuth();
+  const unauthorized = await requireAdminApiAuth({ role: [...EDITOR_ROLES] });
   if (unauthorized) return unauthorized;
 
   try {

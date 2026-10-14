@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidateBlogPaths } from '../../../../lib/revalidateContent';
+import { syncPostTags } from '../../../../lib/postTags';
 import { getSiteUrl, normalizeCanonicalUrl } from '../../../../lib/seo';
 import {
   applySeoAgentPayload,
@@ -160,6 +161,7 @@ async function saveArticle(article: SeoAgentArticle) {
       article.canonical?.trim(),
       `${getSiteUrl()}/blog/${slug}`
     ),
+    ogImage: article.ogImage?.trim() || null,
     published,
     authorName: resolveAuthorName(article),
     authorEmail: 'info@adi-phone.co.il',
@@ -172,6 +174,7 @@ async function saveArticle(article: SeoAgentArticle) {
     create: postData,
   });
 
+  await syncPostTags(prisma, post.id, tags);
   return post;
 }
 
@@ -203,7 +206,13 @@ export async function POST(request: NextRequest) {
       const article = payload as SeoAgentArticle;
       const post = await saveArticle(article);
       const url = `${getSiteUrl()}/blog/${post.slug}`;
-      revalidateBlogPaths(post.slug);
+      const category = post.categoryId
+        ? await prisma.category.findUnique({ where: { id: post.categoryId }, select: { slug: true } })
+        : null;
+      revalidateBlogPaths(post.slug, null, {
+        categorySlugs: [category?.slug],
+        tags: Array.isArray(article.tags) ? article.tags : [],
+      });
 
       return NextResponse.json({
         success: true,

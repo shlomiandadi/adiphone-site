@@ -44,10 +44,12 @@ export default async function TagPage({ params }: Props) {
   
   const posts = await prisma.post.findMany({
     where: {
-      tags: {
-        has: decodedTag,
-      },
       published: true,
+      OR: [
+        { tags: { has: decodedTag } },
+        { postTags: { some: { tag: { slug: decodedTag } } } },
+        { postTags: { some: { tag: { name: decodedTag } } } },
+      ],
     },
     include: {
       category: true,

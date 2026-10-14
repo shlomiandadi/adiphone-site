@@ -7,6 +7,7 @@ interface BlogPost {
   excerpt: string;
   mainImage: string;
   category: string;
+  categoryColor?: string | null;
   createdAt: string;
   tags: string[];
   slug: string;
@@ -45,7 +46,10 @@ export default function BlogCard({ post }: BlogCardProps) {
             className="object-contain"
           />
           <div className="absolute top-4 right-4">
-            <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+            <span
+              className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium"
+              style={post.categoryColor ? { backgroundColor: post.categoryColor } : undefined}
+            >
               {post.category}
             </span>
           </div>

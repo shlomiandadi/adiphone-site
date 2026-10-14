@@ -57,6 +57,9 @@ interface BlogPost {
   articleStyles?: string | null;
   schemaMarkup?: string | null;
   canonicalUrl?: string | null;
+  ogImage?: string | null;
+  robots?: string | null;
+  categoryColor?: string | null;
 }
 
 async function getBlogPost(slug: string) {
@@ -65,9 +68,21 @@ async function getBlogPost(slug: string) {
     if (!post || !post.published) {
       return null;
     }
-    // Serialize Date fields to strings (the rest of the component treats them as strings).
+    const categoryName = typeof post.category === 'string'
+      ? post.category
+      : post.category?.name || '';
+    const categoryColor = typeof post.category === 'object' && post.category
+      ? post.category.color
+      : null;
+    const tagNames = [
+      ...(Array.isArray(post.tags) ? post.tags : []),
+      ...((post as any).postTags || []).map((item: { tag?: { name?: string } }) => item.tag?.name).filter(Boolean),
+    ];
     return {
       ...post,
+      category: categoryName,
+      categoryColor,
+      tags: Array.from(new Set(tagNames)),
       createdAt: post.createdAt.toISOString(),
       updatedAt: post.updatedAt.toISOString(),
     } as any;
@@ -96,11 +111,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     `${siteUrl}/blog/${post.slug}`
   );
 
+  const ogImage = post.ogImage || post.mainImage;
   return mergeSeoAgentMetadata(`/blog/${post.slug}`, {
     title,
     description,
     keywords: post.tags?.join(', '),
     authors: [{ name: post.authorName }],
+    robots: post.robots || undefined,
     alternates: {
       canonical,
     },
@@ -114,7 +131,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       authors: [post.authorName],
       images: [
         {
-          url: post.mainImage,
+          url: ogImage,
           width: 1200,
           height: 630,
           alt: post.title,
@@ -125,7 +142,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       card: 'summary_large_image',
       title,
       description,
-      images: [post.mainImage],
+      images: [ogImage],
     },
   });
 }
@@ -172,7 +189,10 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center">
-            <span className="inline-block bg-blue-500 text-white px-4 py-2 rounded-full text-sm mb-4">
+            <span
+              className="inline-block bg-blue-500 text-white px-4 py-2 rounded-full text-sm mb-4"
+              style={post.categoryColor ? { backgroundColor: post.categoryColor } : undefined}
+            >
               {post.category}
             </span>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>

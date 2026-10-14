@@ -1,18 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { revalidateBlogPaths } from '../../../lib/revalidateContent';
-import { requireAdminApiAuth } from '../../../lib/adminAuth';
+import {
+  POST_ROLES,
+  isAuthorRole,
+  requireAdminApiUser,
+} from '../../../lib/adminAuth';
+import { normalizeTagNames, syncPostTags, tagPathValues } from '../../../lib/postTags';
 
 const prisma = new PrismaClient();
 
+function parseSchemaMarkup(value: unknown): string | null | NextResponse {
+  if (value == null || value === '') return null;
+  const text = String(value).trim();
+  if (!text) return null;
+  try {
+    JSON.parse(text);
+    return text;
+  } catch {
+    return NextResponse.json({ error: 'schemaMarkup חייב להיות JSON תקין' }, { status: 400 });
+  }
+}
+
 export async function POST(request: NextRequest) {
-  const unauthorized = await requireAdminApiAuth();
-  if (unauthorized) return unauthorized;
+  const auth = await requireAdminApiUser({ role: [...POST_ROLES] });
+  if (!auth.ok) return auth.response;
 
   try {
     const body = await request.json();
-    console.log('Received POST data:', body);
-    
     const {
       title,
       content,
@@ -23,10 +38,13 @@ export async function POST(request: NextRequest) {
       metaTitle,
       metaDesc,
       published,
-      slug
+      slug,
+      canonicalUrl,
+      schemaMarkup,
+      ogImage,
+      robots,
     } = body;
 
-    // ולידציה בסיסית
     if (!title || !content) {
       return NextResponse.json(
         { error: 'כותרת ותוכן הם שדות חובה' },
@@ -34,9 +52,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // בדיקה אם ה-slug כבר קיים
+    if (!category || !String(category).trim()) {
+      return NextResponse.json(
+        { error: 'יש לבחור קטגוריה' },
+        { status: 400 }
+      );
+    }
+
+    const parsedSchema = parseSchemaMarkup(schemaMarkup);
+    if (parsedSchema instanceof NextResponse) return parsedSchema;
+
+    const postSlug = slug || title.toLowerCase().replace(/[^\u0590-\u05FFa-z0-9\s-]/g, '').replace(/\s+/g, '-');
     const existingPost = await prisma.post.findUnique({
-      where: { slug: slug || title.toLowerCase().replace(/\s+/g, '-') }
+      where: { slug: postSlug }
     });
 
     if (existingPost) {
@@ -46,47 +74,53 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // מציאת או יצירת קטגוריה
-    let categoryRef;
-    if (category) {
-      categoryRef = await prisma.category.findUnique({
-        where: { slug: category }
-      });
-    }
-    
-    if (!categoryRef) {
-      categoryRef = await prisma.category.findFirst({
-        where: { slug: 'seo' }
-      });
-    }
-
-    // יצירת הפוסט
-    const postData: any = {
-      title,
-      content,
-      excerpt: excerpt || '',
-      mainImage: mainImage || '',
-      tags: Array.isArray(tags) ? tags : [],
-      metaTitle: metaTitle || title,
-      metaDesc: metaDesc || excerpt || '',
-      published: published || false,
-      slug: slug || title.toLowerCase().replace(/[^\u0590-\u05FFa-z0-9\s-]/g, '').replace(/\s+/g, '-'),
-      authorName: 'מנהל האתר',
-      authorEmail: 'admin@example.com',
-      views: 0,
-      likes: 0
-    };
-
-    // הוספת categoryId רק אם יש קטגוריה
-    if (categoryRef?.id) {
-      postData.categoryId = categoryRef.id;
-    }
-
-    const post = await prisma.post.create({
-      data: postData
+    const categoryRef = await prisma.category.findFirst({
+      where: {
+        OR: [{ slug: String(category) }, { id: String(category) }],
+      },
     });
 
-    revalidateBlogPaths(post.slug);
+    if (!categoryRef) {
+      return NextResponse.json(
+        { error: 'קטגוריה לא נמצאה' },
+        { status: 400 }
+      );
+    }
+
+    const tagNames = normalizeTagNames(tags);
+
+    const post = await prisma.post.create({
+      data: {
+        title,
+        content,
+        excerpt: excerpt || '',
+        mainImage: mainImage || '',
+        tags: tagNames,
+        metaTitle: metaTitle || title,
+        metaDesc: metaDesc || excerpt || '',
+        published: published || false,
+        slug: postSlug,
+        authorId: auth.user.id,
+        authorName: auth.user.username,
+        authorEmail: auth.user.email,
+        categoryId: categoryRef.id,
+        canonicalUrl: canonicalUrl || null,
+        schemaMarkup: parsedSchema,
+        ogImage: ogImage || null,
+        robots: robots || null,
+      },
+      include: {
+        category: true,
+        postTags: { include: { tag: true } },
+      },
+    });
+
+    await syncPostTags(prisma, post.id, tagNames);
+
+    revalidateBlogPaths(post.slug, null, {
+      categorySlugs: [categoryRef.slug],
+      tags: tagPathValues(tagNames, []),
+    });
 
     return NextResponse.json({
       success: true,
@@ -110,29 +144,32 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10');
     const published = searchParams.get('published');
     const category = searchParams.get('category');
-    const admin = searchParams.get('admin'); // פרמטר מיוחד למערכת הניהול
+    const admin = searchParams.get('admin');
 
+    let authorIdFilter: string | null = null;
     if (admin === 'true' || published === 'false') {
-      const unauthorized = await requireAdminApiAuth();
-      if (unauthorized) return unauthorized;
+      const auth = await requireAdminApiUser({ role: [...POST_ROLES] });
+      if (!auth.ok) return auth.response;
+      if (isAuthorRole(auth.user)) {
+        authorIdFilter = auth.user.id;
+      }
     }
 
     const skip = (page - 1) * limit;
-
-    // בניית תנאי החיפוש
     const where: any = {};
-    
-    // אם זה מערכת הניהול, הראה את כל הפוסטים
+
     if (admin === 'true') {
       if (published !== null) {
         where.published = published === 'true';
       }
-      // אם לא צוין published, הראה את כל הפוסטים
     } else {
-      // Unauthenticated (and non-admin) callers only ever see published posts
       where.published = true;
     }
-    
+
+    if (authorIdFilter) {
+      where.authorId = authorIdFilter;
+    }
+
     if (category) {
       where.category = {
         slug: category
@@ -156,7 +193,8 @@ export async function GET(request: NextRequest) {
               id: true,
               name: true,
               slug: true,
-              color: true
+              color: true,
+              description: true,
             }
           },
           published: true,
@@ -164,17 +202,24 @@ export async function GET(request: NextRequest) {
           updatedAt: true,
           authorName: true,
           authorEmail: true,
+          authorId: true,
           views: true,
           likes: true,
           metaTitle: true,
           metaDesc: true,
-          tags: true
+          tags: true,
+          canonicalUrl: true,
+          schemaMarkup: true,
+          ogImage: true,
+          robots: true,
+          postTags: {
+            include: { tag: true },
+          },
         }
       }),
       prisma.post.count({ where })
     ]);
 
-    // עיבוד הפוסטים לפורמט הנכון
     const formattedPosts = posts.map(post => ({
       id: post.id,
       title: post.title,
@@ -189,11 +234,17 @@ export async function GET(request: NextRequest) {
       updatedAt: post.updatedAt,
       authorName: post.authorName,
       authorEmail: post.authorEmail,
+      authorId: post.authorId,
       views: post.views,
       likes: post.likes,
       metaTitle: post.metaTitle,
       metaDesc: post.metaDesc,
-      tags: Array.isArray(post.tags) ? post.tags : []
+      tags: Array.isArray(post.tags) ? post.tags : [],
+      canonicalUrl: post.canonicalUrl,
+      schemaMarkup: post.schemaMarkup,
+      ogImage: post.ogImage,
+      robots: post.robots,
+      postTags: post.postTags,
     }));
 
     return NextResponse.json({

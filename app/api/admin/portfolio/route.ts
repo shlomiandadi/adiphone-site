@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { revalidatePortfolioPaths } from '../../../../lib/revalidateContent';
-import { requireAdminApiAuth } from '../../../../lib/adminAuth';
+import { EDITOR_ROLES, requireAdminApiAuth } from '../../../../lib/adminAuth';
+import { dateOnlyUtcNoon } from '../../../../lib/dateOnly';
+import { normalizeTagNames } from '../../../../lib/postTags';
 
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
-  const unauthorized = await requireAdminApiAuth();
+  const unauthorized = await requireAdminApiAuth({ role: [...EDITOR_ROLES] });
   if (unauthorized) return unauthorized;
 
   try {
@@ -66,7 +68,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const unauthorized = await requireAdminApiAuth();
+  const unauthorized = await requireAdminApiAuth({ role: [...EDITOR_ROLES] });
   if (unauthorized) return unauthorized;
 
   try {
@@ -82,7 +84,8 @@ export async function POST(request: NextRequest) {
       technologies,
       metaTitle,
       metaDesc,
-      published
+      published,
+      keywords
     } = body;
 
     // ולידציה בסיסית
@@ -123,8 +126,9 @@ export async function POST(request: NextRequest) {
         image: image || '',
         images: Array.isArray(images) ? images : [],
         url: url || '',
-        date: date ? new Date(date) : new Date(),
+        date: dateOnlyUtcNoon(date),
         technologies: Array.isArray(technologies) ? technologies : [],
+        keywords: normalizeTagNames(keywords),
         metaTitle: metaTitle || name,
         metaDesc: metaDesc || description,
         published: published || false

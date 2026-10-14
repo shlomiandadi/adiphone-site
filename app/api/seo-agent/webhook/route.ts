@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidateBlogPaths } from '../../../../lib/revalidateContent';
 import { getSiteUrl, normalizeCanonicalUrl } from '../../../../lib/seo';
 import {
   applySeoAgentPayload,
@@ -203,13 +203,7 @@ export async function POST(request: NextRequest) {
       const article = payload as SeoAgentArticle;
       const post = await saveArticle(article);
       const url = `${getSiteUrl()}/blog/${post.slug}`;
-      try {
-        revalidatePath(`/blog/${post.slug}`);
-        revalidatePath('/blog');
-        revalidatePath('/');
-      } catch {
-        // ignore
-      }
+      revalidateBlogPaths(post.slug);
 
       return NextResponse.json({
         success: true,

@@ -3,13 +3,24 @@ import { cookies } from 'next/headers';
 import { sign } from 'jsonwebtoken';
 import { compare } from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
+import { getJwtSecret } from '../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-
 export async function POST(request: NextRequest) {
   try {
+    const jwtSecret = getJwtSecret();
+    if (!jwtSecret) {
+      console.error('JWT_SECRET is not configured');
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'שגיאה בשרת'
+        },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const { username, password } = body;
 
@@ -62,7 +73,7 @@ export async function POST(request: NextRequest) {
         role: user.role,
         exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // 24 שעות
       },
-      JWT_SECRET
+      jwtSecret
     );
 
     // הגדרת cookie

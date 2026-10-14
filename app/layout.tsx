@@ -14,6 +14,10 @@ import Script from 'next/script';
 import CookieConsent from './components/CookieConsent';
 import ChatbotWidget from './components/ChatbotWidget';
 import AnalyticsTracker from './components/AnalyticsTracker';
+import TopStrip from './components/TopStrip';
+import { getActiveTopStrip } from '../lib/cms/topStrip';
+import { getTrackingIds, GTM_CONTAINER_ID } from '../lib/cms/siteSettings';
+import { GA4_MEASUREMENT_ID } from '../lib/tracking';
 
 const heebo = Heebo({ 
   subsets: ['hebrew', 'latin'],
@@ -61,11 +65,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const tracking = await getTrackingIds();
+  const topStrip = await getActiveTopStrip();
+  const gaId = tracking.ga || GA4_MEASUREMENT_ID;
+  const gtmId = tracking.gtm || GTM_CONTAINER_ID;
+
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
       <head>
@@ -92,12 +101,12 @@ export default function RootLayout({
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-NHQ4DRWX');
+            })(window,document,'script','dataLayer','${gtmId}');
           `}
         </Script>
         {/* End Google Tag Manager */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-QMC63HG6SD"
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -107,7 +116,7 @@ export default function RootLayout({
             if (!window.__TW_GA4_CONFIGURED) {
               window.__TW_GA4_CONFIGURED = true;
               gtag('js', new Date());
-              gtag('config', 'G-QMC63HG6SD', {
+              gtag('config', '${gaId}', {
                 send_page_view: true,
                 anonymize_ip: true,
                 allow_google_signals: true,
@@ -116,12 +125,25 @@ export default function RootLayout({
             }
           `}
         </Script>
+        {tracking.pixel ? (
+          <Script id="facebook-pixel" strategy="afterInteractive">
+            {`
+              !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+              n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '${tracking.pixel}');
+              fbq('track', 'PageView');
+            `}
+          </Script>
+        ) : null}
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 
-            src="https://www.googletagmanager.com/ns.html?id=GTM-NHQ4DRWX"
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
             height="0" 
             width="0" 
             style={{display:'none',visibility:'hidden'}}
@@ -131,6 +153,15 @@ export default function RootLayout({
         <a href="#main-content" className="skip-to-main">
           דלג לתוכן הראשי
         </a>
+        {topStrip ? (
+          <TopStrip
+            text={topStrip.text}
+            backgroundColor={topStrip.backgroundColor}
+            textColor={topStrip.textColor}
+            linkUrl={topStrip.linkUrl}
+            linkText={topStrip.linkText}
+          />
+        ) : null}
         <Header />
         <WowEffects />
         <PageOffset>

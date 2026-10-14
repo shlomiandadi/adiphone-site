@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getBreadcrumbMap } from '../../../lib/cms/breadcrumbs';
+import { getBreadcrumbMap } from '../../../../lib/cms/breadcrumbs';
 
 export const revalidate = 3600;
 

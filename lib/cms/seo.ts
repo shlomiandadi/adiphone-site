@@ -1,35 +1,45 @@
 import type { Metadata } from 'next';
 import prisma from '../prisma';
+import { normalizeCanonicalUrl } from '../seo';
 import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
-import { seoLookupKeys } from './liveSeo';
+import {
+  exactPathKeys,
+  mergeOpenGraph,
+  metadataKeywords,
+  metadataTitle,
+  nonEmpty,
+  rowMatchesExactPath,
+  shouldApplyRobots,
+  withTitle,
+} from './seoMerge';
 
-export const getCmsSeo = cmsCache('cms-seo', async (pageKeyOrPath: string) => {
+export const getCmsSeo = cmsCache('cms-seo', async (path: string) => {
   return cmsRead(async () => {
-    const keys = seoLookupKeys(pageKeyOrPath);
+    const keys = exactPathKeys(path);
     const row = await prisma.seoPage.findFirst({
       where: { page: { in: keys } },
     });
-    if (!row || !isCmsEnabled(row)) return null;
+    if (!row || !isCmsEnabled(row) || !rowMatchesExactPath(row.page, path)) return null;
     return row;
   });
 });
 
 export const getCmsCanonical = cmsCache('cms-canonical', async (path: string) => {
   return cmsRead(async () => {
-    const keys = seoLookupKeys(path);
+    const keys = exactPathKeys(path);
     const row = await prisma.canonicalTag.findFirst({
       where: { pageSlug: { in: keys }, isActive: true },
     });
-    if (!row || !isCmsEnabled(row)) return null;
+    if (!row || !isCmsEnabled(row) || !rowMatchesExactPath(row.pageSlug, path)) return null;
     return row.canonicalUrl;
   });
 });
 
 /**
- * CMS metadata applies only when a row exists for this path AND cmsEnabled is true.
- * Wired through createSeoAgentGenerateMetadata / mergeSeoAgentMetadata on core pages
- * so static generation stays cached (unstable_cache, no headers()/cookies()).
+ * CMS metadata applies only when a row exists for this exact path AND cmsEnabled.
+ * Robots / OG / Twitter are patched field-by-field; implicit defaults are left alone
+ * so enabling an imported row does not rewrite 48 pages.
  */
 export async function mergeCmsMetadata(path: string, base: Metadata): Promise<Metadata> {
   const [seo, canonical] = await Promise.all([getCmsSeo(path), getCmsCanonical(path)]);
@@ -37,28 +47,45 @@ export async function mergeCmsMetadata(path: string, base: Metadata): Promise<Me
 
   const next: Metadata = { ...base };
   if (seo) {
-    next.title = typeof base.title === 'object' && base.title && 'absolute' in base.title
-      ? { absolute: seo.title }
-      : seo.title;
-    next.description = seo.description;
-    next.keywords = seo.keywords;
-    if (seo.robots) next.robots = seo.robots;
-    const ogTitle = seo.ogTitle || seo.title;
-    const ogDescription = seo.ogDescription || seo.description;
-    next.openGraph = {
-      ...(typeof base.openGraph === 'object' ? base.openGraph : {}),
-      title: ogTitle,
-      description: ogDescription,
-      ...(seo.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
-      ...(seo.canonicalUrl ? { url: seo.canonicalUrl } : {}),
-    };
+    if (nonEmpty(seo.title) && seo.title !== metadataTitle(base)) {
+      next.title = withTitle(base, seo.title);
+    }
+    if (nonEmpty(seo.description) && seo.description !== (base.description || '')) {
+      next.description = seo.description;
+    }
+    if (nonEmpty(seo.keywords) && metadataKeywords(base) && seo.keywords !== metadataKeywords(base)) {
+      next.keywords = seo.keywords;
+    }
+    if (shouldApplyRobots(seo.robots, base)) {
+      next.robots = seo.robots;
+    }
+
+    const openGraph = mergeOpenGraph(base, {
+      title: seo.ogTitle && seo.ogTitle !== metadataTitle(base) ? seo.ogTitle : null,
+      description:
+        seo.ogDescription && seo.ogDescription !== (base.description || '') ? seo.ogDescription : null,
+      image: seo.ogImage,
+    });
+    if (openGraph) next.openGraph = openGraph;
   }
-  const canonicalUrl = seo?.canonicalUrl || canonical;
-  if (canonicalUrl) {
-    next.alternates = {
-      ...(base.alternates || {}),
-      canonical: canonicalUrl,
-    };
+
+  const canonicalUrl = nonEmpty(seo?.canonicalUrl) ? seo!.canonicalUrl : canonical;
+  if (nonEmpty(canonicalUrl)) {
+    const currentCanonical = typeof base.alternates?.canonical === 'string' ? base.alternates.canonical : null;
+    const currentNorm = normalizeCanonicalUrl(currentCanonical, path);
+    const incomingNorm = normalizeCanonicalUrl(canonicalUrl, path);
+    if (incomingNorm !== currentNorm) {
+      next.alternates = {
+        ...(base.alternates || {}),
+        canonical: canonicalUrl,
+      };
+    }
   }
   return next;
 }
+
+export {
+  exactPathKeys,
+  shouldApplyRobots,
+  mergeOpenGraph,
+} from './seoMerge';

@@ -13,7 +13,7 @@ type Row = {
   ogDescription: string | null;
   ogImage: string | null;
   canonicalUrl: string | null;
-  robots: string;
+  robots: string | null;
   cmsEnabled: boolean | null;
 };
 
@@ -39,7 +39,7 @@ export default function SeoPagesAdmin() {
     ogDescription: draft.ogDescription ?? selected?.ogDescription ?? live?.ogDescription ?? '',
     ogImage: draft.ogImage ?? selected?.ogImage ?? '',
     canonicalUrl: draft.canonicalUrl ?? selected?.canonicalUrl ?? live?.canonicalUrl ?? '',
-    robots: draft.robots ?? selected?.robots ?? 'index, follow',
+    robots: draft.robots ?? selected?.robots ?? live?.robots ?? '',
     cmsEnabled: draft.cmsEnabled ?? selected?.cmsEnabled ?? false,
     id: selected?.id,
   };
@@ -49,7 +49,7 @@ export default function SeoPagesAdmin() {
   return (
     <CmsShell
       title="SEO לפי עמוד"
-      hint="השורות הישנות ב-DB הן כותרות מ-2025. לא מופעלות עד cmsEnabled. לחצו «טען ערכים חיים» כדי למלא מהמטא-דאטה הנוכחי של האתר, לא מהשורה הישנה."
+      hint="ייבוא שומר null בשדות שזהים לברירת המחדל של הקוד (robots/OG). cmsEnabled משנה מטא רק בשדות שמילאתם במפורש לנתיב הזה."
       error={error}
       message={message}
     >

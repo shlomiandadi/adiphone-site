@@ -36,6 +36,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
   const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
+  const [contacts, setContacts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchPosts = async () => {
@@ -100,6 +101,16 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
     }
   };
 
+  const fetchContacts = async () => {
+    try {
+      const response = await fetch('/api/admin/contacts');
+      const data = await response.json();
+      setContacts(data.contacts || []);
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
+    }
+  };
+
   const handleDeletePost = async (postSlug: string) => {
     if (confirm('האם אתה בטוח שברצונך למחוק פוסט זה?')) {
       try {
@@ -123,7 +134,8 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
         fetchProjects(),
         fetchCategories(),
         fetchTags(),
-        fetchUsers()
+        fetchUsers(),
+        fetchContacts()
       ]);
       setLoading(false);
     };
@@ -199,6 +211,12 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
         >
           ניהול תגיות
         </Link>
+        <Link
+          href="/admin/contacts"
+          className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+        >
+          ניהול פניות
+        </Link>
         {user.role === 'ADMIN' && (
           <Link
             href="/admin/users"
@@ -210,7 +228,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-6 mb-8">
         <Link href="/admin/posts" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
           <div className="flex items-center">
             <div className="p-2 bg-blue-100 rounded-lg">
@@ -285,7 +303,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <Link href="/admin/tags" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
           <div className="flex items-center">
             <div className="p-2 bg-pink-100 rounded-lg">
               <svg className="h-6 w-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -297,7 +315,21 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
               <p className="text-2xl font-bold text-gray-900">{tags.length}</p>
             </div>
           </div>
-        </div>
+        </Link>
+
+        <Link href="/admin/contacts" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="flex items-center">
+            <div className="p-2 bg-orange-100 rounded-lg">
+              <svg className="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div className="mr-4">
+              <p className="text-sm font-medium text-gray-600">פניות</p>
+              <p className="text-2xl font-bold text-gray-900">{contacts.length}</p>
+            </div>
+          </div>
+        </Link>
 
         {user.role === 'ADMIN' && (
           <Link href="/admin/users" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">

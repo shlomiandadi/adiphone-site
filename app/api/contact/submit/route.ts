@@ -1,15 +1,35 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { ContactService } from '@prisma/client';
+import prisma from '@/lib/prisma';
+import { LEAD_PLACEHOLDER_EMAIL } from '@/lib/lead-form';
+import { mapContactService } from '@/lib/mapContactService';
 import { formatAttributionEmailHtml, normalizeAttribution } from '@/lib/tracking';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-// Only create Resend instance if API key is available
+const CORS_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization',
+};
+
+function json(body: unknown, status = 200) {
+  return new NextResponse(JSON.stringify(body), { status, headers: CORS_HEADERS });
+}
+
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-// פונקציה לשליחת מייל ללקוח
-const sendCustomerEmail = async (data: any) => {
+const sendCustomerEmail = async (data: {
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  message: string;
+  [key: string]: unknown;
+}) => {
   if (!resend) {
     throw new Error('Resend API key not configured');
   }
@@ -42,8 +62,14 @@ const sendCustomerEmail = async (data: any) => {
   });
 };
 
-// פונקציה לשליחת מייל למנהל
-const sendAdminEmail = async (data: any) => {
+const sendAdminEmail = async (data: {
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  message: string;
+  [key: string]: unknown;
+}) => {
   if (!resend) {
     throw new Error('Resend API key not configured');
   }
@@ -51,7 +77,7 @@ const sendAdminEmail = async (data: any) => {
   return resend.emails.send({
     from: 'AdiPhone <noreply@adi-phone.co.il>',
     to: 'shlomiandadi@gmail.com',
-    replyTo: data.email && data.email !== PLACEHOLDER_EMAIL ? data.email : 'shlomiandadi@gmail.com',
+    replyTo: data.email && data.email !== LEAD_PLACEHOLDER_EMAIL ? data.email : 'shlomiandadi@gmail.com',
     subject: 'פנייה חדשה - טופס יצירת קשר',
     html: `
       <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
@@ -75,8 +101,6 @@ const sendAdminEmail = async (data: any) => {
   });
 };
 
-const PLACEHOLDER_EMAIL = 'lead@adi-phone.co.il';
-
 const validateContactData = (data: any): { isValid: boolean; error?: string } => {
   if (!data) {
     return { isValid: false, error: 'לא נשלחו נתונים' };
@@ -90,143 +114,127 @@ const validateContactData = (data: any): { isValid: boolean; error?: string } =>
     return { isValid: false, error: 'נדרש מספר טלפון' };
   }
 
-  if (!data.service?.trim()) {
+  if (!data.service?.trim() && !data.service_key?.trim()) {
     return { isValid: false, error: 'סוג השירות לא תקין' };
   }
 
-  if (data.email?.trim() && data.email !== PLACEHOLDER_EMAIL && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+  if (data.email?.trim() && data.email !== LEAD_PLACEHOLDER_EMAIL && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
     return { isValid: false, error: 'נדרש כתובת אימייל תקינה' };
   }
 
   return { isValid: true };
 };
 
+async function saveContactLead(payload: {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  service: ContactService;
+}) {
+  return prisma.contact.create({
+    data: {
+      name: payload.name,
+      email: payload.email,
+      phone: payload.phone,
+      message: payload.message,
+      service: payload.service,
+      status: 'NEW',
+    },
+  });
+}
+
 export async function GET() {
-  return new NextResponse(JSON.stringify({ 
+  return json({
     message: 'Contact API is working',
-    timestamp: new Date().toISOString()
-  }), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-    }
+    timestamp: new Date().toISOString(),
   });
 }
 
 export async function POST(request: Request) {
   try {
-    console.log('POST request received to /api/contact/submit');
-    
     const data = await request.json();
-    console.log('Request data:', data);
 
     const validation = validateContactData(data);
     if (!validation.isValid) {
-      console.log('Validation failed:', validation.error);
-      return new NextResponse(JSON.stringify({ error: validation.error }), {
-        status: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-        }
-      });
+      return json({ error: validation.error }, 400);
     }
 
-    // בדיקה שהגדרות המייל קיימות
-    if (!process.env.RESEND_API_KEY) {
-      console.error('Resend API key missing');
-      return new NextResponse(JSON.stringify({ 
-        error: 'Email service not configured properly'
-      }), {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-        }
-      });
-    }
-
-    console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? '***' + process.env.RESEND_API_KEY.slice(-4) : undefined);
+    const email = data.email?.trim() && data.email !== LEAD_PLACEHOLDER_EMAIL
+      ? data.email.trim()
+      : LEAD_PLACEHOLDER_EMAIL;
+    const name = String(data.name).trim();
+    const phone = String(data.phone).trim();
+    const serviceLabel = String(data.service || data.service_key || '').trim();
+    const mappedService = mapContactService(data.service_key, data.service);
+    const message = data.message?.trim() || `פנייה חדשה בנושא: ${serviceLabel || mappedService}`;
 
     const payload = {
       ...data,
-      email: data.email?.trim() && data.email !== PLACEHOLDER_EMAIL ? data.email.trim() : PLACEHOLDER_EMAIL,
-      message: data.message?.trim() || `פנייה חדשה בנושא: ${data.service}`,
+      name,
+      phone,
+      email,
+      message,
+      service: serviceLabel || mappedService,
     };
 
-    // שליחת מיילים
+    let saved = false;
+    let contactId: string | null = null;
+    try {
+      const contact = await saveContactLead({
+        name,
+        email,
+        phone,
+        message,
+        service: mappedService,
+      });
+      saved = true;
+      contactId = contact.id;
+    } catch (dbError) {
+      console.error('Error saving contact lead:', dbError);
+    }
+
     let emailSuccess = false;
     try {
+      if (!resend) {
+        throw new Error('Resend API key not configured');
+      }
       const jobs = [sendAdminEmail(payload)];
-      if (payload.email && payload.email !== PLACEHOLDER_EMAIL) {
+      if (email && email !== LEAD_PLACEHOLDER_EMAIL) {
         jobs.push(sendCustomerEmail(payload));
       }
       await Promise.all(jobs);
       emailSuccess = true;
-      console.log('Emails sent successfully');
     } catch (emailError) {
       console.error('Error sending emails:', emailError);
-      // נחזיר שגיאה למשתמש אם שליחת המיילים נכשלה
-      return new NextResponse(JSON.stringify({ 
-        error: 'שגיאה בשליחת המייל. אנא נסה שוב מאוחר יותר.',
-        details: emailError instanceof Error ? emailError.message : 'Email sending failed'
-      }), {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-        }
+    }
+
+    if (saved || emailSuccess) {
+      return json({
+        success: true,
+        message: 'Contact form submitted successfully',
+        saved,
+        emailSent: emailSuccess,
+        contactId,
       });
     }
 
-    console.log('Contact form submitted successfully');
-    return new NextResponse(JSON.stringify({ 
-      success: true,
-      message: 'Contact form submitted successfully',
-      emailSent: emailSuccess
-    }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-      }
-    });
-
+    return json({
+      error: 'Failed to submit contact form',
+      details: 'Both database save and email delivery failed',
+    }, 500);
   } catch (error) {
     console.error('Error submitting contact form:', error);
-    return new NextResponse(JSON.stringify({ 
+    return json({
       error: 'Failed to submit contact form',
-      details: error instanceof Error ? error.message : 'Internal server error'
-    }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-      }
-    });
+      details: error instanceof Error ? error.message : 'Internal server error',
+    }, 500);
   }
 }
 
-export async function OPTIONS(request: Request) {
+export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization'
-    }
+    headers: CORS_HEADERS,
   });
-} 
+}

@@ -177,7 +177,7 @@ export default async function RootLayout({
         <main id="main-content" className="flex-grow w-full">
           {children}
         </main>
-        <Footer cmsFooter={cms.footer} siteSettings={cms.siteSettings} />
+        <Footer cmsFooter={cms.footer} />
         <FloatingButtons />
         <AccessibilityBar />
         <CookieConsent />

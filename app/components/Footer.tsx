@@ -1,202 +1,114 @@
 import Link from 'next/link';
 import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
-import { serviceAreaLinks } from './navigation-data';
-import type { LayoutCms } from '../../lib/cms/layoutData';
+import { footerCopyrightLine, HARDCODED_FOOTER, type FooterLinkView, type FooterView } from '../../lib/cms/footerData';
 
-const footerServices = [
-  { href: '/services/web-development', label: 'בניית אתרים' },
-  { href: '/pricing', label: 'מחירון בניית אתרים' },
-  { href: '/services/wordpress', label: 'אתרי וורדפרס' },
-  { href: '/services/seo', label: 'קידום אתרים SEO' },
-  { href: '/services/aeo-geo', label: 'קידום במנועי AI (AEO/GEO)' },
-  { href: '/services/ppc', label: 'קידום ממומן PPC' },
-  { href: '/services/ecommerce', label: 'חנויות אונליין' },
-  { href: '/services/mobile-apps', label: 'פיתוח אפליקציות' },
-  { href: '/services/ui-design', label: 'עיצוב UI/UX' },
-  { href: '/services/software-development', label: 'פיתוח תוכנה' },
-  { href: '/services/analytics', label: 'אנליטיקס' },
-  { href: '/services/ai', label: 'פתרונות AI' },
-  { href: '/services/cloud', label: 'שירותי ענן' },
-  { href: '/blog', label: 'בלוג' },
-  { href: '/blog/kama-oleh-bniyat-atar-2026', label: 'כמה עולה בניית אתר ב-2026' },
-];
+const SOCIAL_ICONS = {
+  facebook: FaFacebook,
+  whatsapp: FaWhatsapp,
+  linkedin: FaLinkedin,
+} as const;
 
-function HardcodedFooter() {
+const DETAIL_ICONS = {
+  phone: FaPhone,
+  envelope: FaEnvelope,
+  'map-marker': FaMapMarkerAlt,
+} as const;
+
+function DetailRow({ link }: { link: FooterLinkView }) {
+  const Icon = DETAIL_ICONS[link.icon as keyof typeof DETAIL_ICONS];
+  const content = (
+    <>
+      {Icon ? <Icon className="ml-2" /> : null}
+      {link.url ? (
+        <a href={link.url} className="hover:text-white transition-colors">
+          {link.title}
+        </a>
+      ) : (
+        <span>{link.title}</span>
+      )}
+    </>
+  );
+  return <p className="flex items-center">{content}</p>;
+}
+
+function LinkColumn({ title, links, services }: { title: string; links: FooterLinkView[]; services?: boolean }) {
+  return (
+    <div>
+      <h3 className="text-xl font-bold mb-4">{title}</h3>
+      <ul className={services ? 'space-y-2 columns-1' : 'space-y-2'}>
+        {links.map((link) => (
+          <li key={link.id || `${link.title}-${link.url}`}>
+            <Link href={link.url || '/'} className="text-gray-400 hover:text-white transition-colors">
+              {link.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ContactColumn({ title, links }: { title: string; links: FooterLinkView[] }) {
+  const details = links.filter((link) => !link.icon || link.icon in DETAIL_ICONS);
+  const socials = links.filter((link) => link.icon && link.icon in SOCIAL_ICONS);
+  return (
+    <div>
+      <h3 className="text-xl font-bold mb-4">{title}</h3>
+      <div className="mt-8 space-y-2">
+        {details.map((link) => (
+          <DetailRow key={link.id || `${link.icon}-${link.title}`} link={link} />
+        ))}
+      </div>
+      <div className="flex space-x-4 mt-4">
+        {socials.map((link) => {
+          const Icon = SOCIAL_ICONS[link.icon as keyof typeof SOCIAL_ICONS];
+          return (
+            <a
+              key={link.id || link.icon || link.title}
+              href={link.url}
+              className="text-gray-400 hover:text-white transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {Icon ? <Icon size={24} /> : link.title}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function FooterMarkup({ data }: { data: FooterView }) {
   return (
     <footer className="bg-gray-900 text-white" data-cta-location="footer">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* About */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Top Webstak - בנייה וקידום אתרים (מבית עדי פון תקשורת)</h3>
-            <p className="text-gray-400">
-              פתרונות דיגיטל מתקדמים לעסקים. בניית אתרים, קידום אתרים ופיתוח אפליקציות.
-            </p>
+            <h3 className="text-xl font-bold mb-4">{data.name}</h3>
+            <p className="text-gray-400">{data.description}</p>
           </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">קישורים מהירים</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-gray-400 hover:text-white transition-colors">
-                  דף הבית
-                </Link>
-              </li>
-              <li>
-                <Link href="/services" className="text-gray-400 hover:text-white transition-colors">
-                  שירותים
-                </Link>
-              </li>
-              <li>
-                <Link href="/portfolio" className="text-gray-400 hover:text-white transition-colors">
-                  פורטפוליו
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
-                  אודות
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
-                  צור קשר
-                </Link>
-              </li>
-              <li>
-                <Link href="/pricing" className="text-gray-400 hover:text-white transition-colors">
-                  מחירון
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
-                  מדיניות פרטיות
-                </Link>
-              </li>
-              <li>
-                <Link href="/accessibility-statement" className="text-gray-400 hover:text-white transition-colors">
-                  הצהרת נגישות
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Services — crawlable internal links (reduces orphan pages) */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">השירותים שלנו</h3>
-            <ul className="space-y-2 columns-1">
-              {footerServices.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-gray-400 hover:text-white transition-colors">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-bold mb-4">אזורי שירות</h3>
-            <ul className="space-y-2">
-              {serviceAreaLinks.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-gray-400 hover:text-white transition-colors">
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">צור קשר</h3>
-            <div className="mt-8 space-y-2">
-              <p className="flex items-center">
-                <FaPhone className="ml-2" />
-                <a href="tel:0509159951" className="hover:text-white transition-colors">0509159951</a>
-              </p>
-              <p className="flex items-center">
-                <FaEnvelope className="ml-2" />
-                <a href="mailto:adiphoneseo@gmail.com" className="hover:text-white transition-colors">adiphoneseo@gmail.com</a>
-              </p>
-              <p className="flex items-center">
-                <FaMapMarkerAlt className="ml-2" />
-                <span>זמיר 95, פרדס חנה</span>
-              </p>
-            </div>
-            <div className="flex space-x-4 mt-4">
-              <a href="https://www.facebook.com/profile.php?id=61578707397365" className="text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
-                <FaFacebook size={24} />
-              </a>
-              <a href="https://wa.me/972509159951?text=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%9F%20%D7%91%D7%A9%D7%99%D7%A8%D7%95%D7%AA%20%D7%91%D7%A0%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%D7%99%D7%9D%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%A9%D7%AA%D7%97%D7%96%D7%A8%D7%95%20%D7%90%D7%9C%D7%99" className="text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
-                <FaWhatsapp size={24} />
-              </a>
-              <a href="https://www.linkedin.com/in/shlomi-malfuf-709961221/" className="text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
-                <FaLinkedin size={24} />
-              </a>
-            </div>
-          </div>
+          {data.columns.map((column) =>
+            column.kind === 'contact' ? (
+              <ContactColumn key={column.id || column.title} title={column.title} links={column.links} />
+            ) : (
+              <LinkColumn
+                key={column.id || column.title}
+                title={column.title}
+                links={column.links}
+                services={column.kind === 'services'}
+              />
+            )
+          )}
         </div>
-
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>© {new Date().getFullYear()} Top Webstak - בנייה וקידום אתרים (מבית עדי פון תקשורת). כל הזכויות שמורות.</p>
+          <p>{footerCopyrightLine(data.copyrightText)}</p>
         </div>
       </div>
     </footer>
   );
 }
 
-export default function Footer({
-  cmsFooter,
-  siteSettings,
-}: {
-  cmsFooter?: LayoutCms['footer'];
-  siteSettings?: LayoutCms['siteSettings'];
-}) {
-  if (!cmsFooter) {
-    return <HardcodedFooter />;
-  }
-
-  const name = siteSettings?.siteName || cmsFooter.logoAlt || 'Top Webstak';
-  const description = siteSettings?.siteDescription || cmsFooter.description || '';
-
-  return (
-    <footer
-      className="text-white"
-      data-cta-location="footer"
-      style={{ backgroundColor: cmsFooter.backgroundColor || '#111827', color: cmsFooter.textColor || '#ffffff' }}
-    >
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-xl font-bold mb-4">{name}</h3>
-            {description ? <p className="text-gray-400">{description}</p> : null}
-          </div>
-          {cmsFooter.columns.map((column) => (
-            <div key={column.id}>
-              <h3 className="text-xl font-bold mb-4">{column.title}</h3>
-              <ul className="space-y-2">
-                {column.links.map((link) => (
-                  <li key={link.id}>
-                    <Link
-                      href={link.url || '/'}
-                      className="text-gray-400 hover:text-white transition-colors"
-                      target={link.openInNewTab ? '_blank' : undefined}
-                      rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
-                    >
-                      {link.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>{cmsFooter.copyrightText}</p>
-        </div>
-      </div>
-    </footer>
-  );
+export default function Footer({ cmsFooter }: { cmsFooter?: FooterView | null }) {
+  return <FooterMarkup data={cmsFooter || HARDCODED_FOOTER} />;
 }

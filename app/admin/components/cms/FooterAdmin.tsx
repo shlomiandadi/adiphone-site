@@ -29,7 +29,7 @@ export default function FooterAdmin() {
   return (
     <CmsShell
       title="פוטר"
-      hint="footer_links ריק ב-DB — האתר נשאר עם הפוטר החי עד ייבוא + cmsEnabled."
+      hint="ייבוא מעתיק את כל העמודות, הקישורים ואמצעי הקשר החיים. cmsEnabled מציג את אותו markup בדיוק."
       error={error}
       message={message}
     >

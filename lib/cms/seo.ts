@@ -2,21 +2,13 @@ import type { Metadata } from 'next';
 import prisma from '../prisma';
 import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
-
-const PAGE_KEY_BY_PATH: Record<string, string> = {
-  '/': 'home',
-  '/about': 'about',
-  '/services': 'services',
-  '/portfolio': 'portfolio',
-  '/blog': 'blog',
-  '/contact': 'contact',
-};
+import { seoLookupKeys } from './liveSeo';
 
 export const getCmsSeo = cmsCache('cms-seo', async (pageKeyOrPath: string) => {
   return cmsRead(async () => {
-    const key = PAGE_KEY_BY_PATH[pageKeyOrPath] || pageKeyOrPath.replace(/^\//, '') || 'home';
+    const keys = seoLookupKeys(pageKeyOrPath);
     const row = await prisma.seoPage.findFirst({
-      where: { page: key },
+      where: { page: { in: keys } },
     });
     if (!row || !isCmsEnabled(row)) return null;
     return row;
@@ -25,14 +17,20 @@ export const getCmsSeo = cmsCache('cms-seo', async (pageKeyOrPath: string) => {
 
 export const getCmsCanonical = cmsCache('cms-canonical', async (path: string) => {
   return cmsRead(async () => {
+    const keys = seoLookupKeys(path);
     const row = await prisma.canonicalTag.findFirst({
-      where: { pageSlug: path, isActive: true },
+      where: { pageSlug: { in: keys }, isActive: true },
     });
     if (!row || !isCmsEnabled(row)) return null;
     return row.canonicalUrl;
   });
 });
 
+/**
+ * CMS metadata applies only when a row exists for this path AND cmsEnabled is true.
+ * Wired through createSeoAgentGenerateMetadata / mergeSeoAgentMetadata on core pages
+ * so static generation stays cached (unstable_cache, no headers()/cookies()).
+ */
 export async function mergeCmsMetadata(path: string, base: Metadata): Promise<Metadata> {
   const [seo, canonical] = await Promise.all([getCmsSeo(path), getCmsCanonical(path)]);
   if (!seo && !canonical) return base;

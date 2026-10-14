@@ -70,13 +70,22 @@ export default function SeoPagesAdmin() {
           ))}
         </select>
       </label>
-      <button
-        type="button"
-        className="mb-4 text-sm bg-gray-800 text-white px-3 py-2 rounded"
-        onClick={() => live && setDraft({ ...live, cmsEnabled: form.cmsEnabled, id: selected?.id })}
-      >
-        טען ערכים חיים
-      </button>
+      <div className="flex flex-wrap gap-3 mb-4">
+        <button
+          type="button"
+          className="text-sm bg-gray-800 text-white px-3 py-2 rounded"
+          onClick={() => live && setDraft({ ...live, cmsEnabled: form.cmsEnabled, id: selected?.id })}
+        >
+          טען ערכים חיים
+        </button>
+        <button
+          type="button"
+          className="text-sm bg-gray-800 text-white px-3 py-2 rounded"
+          onClick={() => mutate('POST')}
+        >
+          ייבא את ה-SEO החי לכל העמודים
+        </button>
+      </div>
       <div className="bg-white rounded shadow p-4">
         <Field label="title" value={form.title} onChange={(v) => setDraft({ ...form, title: v })} />
         <Area label="description" value={form.description} onChange={(v) => setDraft({ ...form, description: v })} />

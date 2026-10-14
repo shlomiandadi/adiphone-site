@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import prisma from '../../../../../lib/prisma';
 import { stamp, touch, revalidateLayout } from '../../../../../lib/cms/admin';
 import { cmsGet, cmsWrite } from '../../../../../lib/cms/adminHandler';
+import { importLiveSeoAndCanonicals } from '../../../../../lib/cms/importLiveSeo';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,5 +38,13 @@ export async function DELETE(request: NextRequest) {
     await prisma.canonicalTag.delete({ where: { id: String(id) } });
     revalidateLayout();
     return { ok: true };
+  });
+}
+
+export async function POST() {
+  return cmsWrite(async () => {
+    const result = await importLiveSeoAndCanonicals();
+    revalidateLayout();
+    return { ok: true, ...result };
   });
 }

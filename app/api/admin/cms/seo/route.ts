@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import prisma from '../../../../../lib/prisma';
 import { LIVE_SEO, stamp, touch, revalidateLayout } from '../../../../../lib/cms/admin';
 import { cmsGet, cmsWrite } from '../../../../../lib/cms/adminHandler';
+import { importLiveSeoAndCanonicals } from '../../../../../lib/cms/importLiveSeo';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,5 +36,13 @@ export async function PUT(request: NextRequest) {
       : await prisma.seoPage.create({ data: { ...payload, ...stamp() } });
     revalidateLayout();
     return { row };
+  });
+}
+
+export async function POST() {
+  return cmsWrite(async () => {
+    const result = await importLiveSeoAndCanonicals();
+    revalidateLayout();
+    return { ok: true, ...result };
   });
 }

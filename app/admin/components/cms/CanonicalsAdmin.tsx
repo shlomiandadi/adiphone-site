@@ -26,6 +26,13 @@ export default function CanonicalsAdmin() {
 
   return (
     <CmsShell title="קנוניקל" hint="חל רק כש-cmsEnabled מסומן. אחרת נשאר ה-canonical הנוכחי של העמוד." error={error} message={message}>
+      <button
+        type="button"
+        className="bg-gray-800 text-white px-4 py-2 rounded text-sm mb-4"
+        onClick={() => mutate('POST')}
+      >
+        ייבא קנוניקל חיים
+      </button>
       <div className="bg-white rounded shadow p-4 mb-6">
         <Field label="נתיב" value={String(draft.pageSlug || '')} onChange={(v) => setDraft({ ...draft, pageSlug: v })} />
         <Field label="canonical URL" value={String(draft.canonicalUrl || '')} onChange={(v) => setDraft({ ...draft, canonicalUrl: v })} />

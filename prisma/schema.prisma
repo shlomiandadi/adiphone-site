@@ -311,6 +311,7 @@ model MenuItem {
   isActive     Boolean
   openInNewTab Boolean
   icon         String?
+  description  String?
   cssClass     String?
   createdAt    DateTime
   updatedAt    DateTime

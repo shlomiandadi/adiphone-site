@@ -12,6 +12,8 @@ type Item = {
   openInNewTab: boolean;
   parentId: string | null;
   menuId: string;
+  icon?: string | null;
+  description?: string | null;
   children?: Item[];
 };
 
@@ -77,6 +79,8 @@ export default function NavigationAdmin() {
         <h2 className="font-semibold mb-3">פריט תפריט</h2>
         <Field label="כותרת" value={String(item.title || '')} onChange={(v) => setItem({ ...item, title: v })} />
         <Field label="URL" value={String(item.url || '')} onChange={(v) => setItem({ ...item, url: v })} />
+        <Field label="icon" value={String(item.icon || '')} onChange={(v) => setItem({ ...item, icon: v })} />
+        <Field label="description" value={String(item.description || '')} onChange={(v) => setItem({ ...item, description: v })} />
         <Field label="סדר" type="number" value={Number(item.order || 0)} onChange={(v) => setItem({ ...item, order: Number(v) })} />
         <label className="block mb-3 text-sm">
           הורה

@@ -3,6 +3,34 @@ import type { NavigationItem } from '../../app/components/navigation-data';
 import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
 
+function toNavItem(item: {
+  title: string;
+  url: string | null;
+  icon: string | null;
+  description?: string | null;
+  children?: Array<{
+    title: string;
+    url: string | null;
+    icon: string | null;
+    description?: string | null;
+  }>;
+}): NavigationItem {
+  return {
+    name: item.title,
+    href: item.url || '/',
+    icon: item.icon || undefined,
+    description: item.description || undefined,
+    submenu: item.children?.length
+      ? item.children.map((child) => ({
+          name: child.title,
+          href: child.url || '/',
+          icon: child.icon || undefined,
+          description: child.description || undefined,
+        }))
+      : undefined,
+  };
+}
+
 export const getHeaderMenu = cmsCache('cms-header-menu', async (): Promise<NavigationItem[] | null> => {
   return cmsRead(async () => {
     const menu = await prisma.menu.findFirst({
@@ -22,16 +50,7 @@ export const getHeaderMenu = cmsCache('cms-header-menu', async (): Promise<Navig
     });
     if (!menu || !isCmsEnabled(menu) || menu.items.length === 0) return null;
 
-    return menu.items.map((item) => ({
-      name: item.title,
-      href: item.url || '/',
-      submenu: item.children.length
-        ? item.children.map((child) => ({
-            name: child.title,
-            href: child.url || '/',
-          }))
-        : undefined,
-    }));
+    return menu.items.map(toNavItem);
   });
 });
 

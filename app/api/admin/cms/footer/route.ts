@@ -87,7 +87,7 @@ export async function POST() {
       footer = await prisma.footerSetting.create({
         data: {
           logo: '/logo.png',
-          logoAlt: 'Top Webstak',
+          logoAlt: FOOTER_IMPORT.logoAlt,
           logoWidth: 120,
           logoHeight: 40,
           description: FOOTER_IMPORT.description,
@@ -107,6 +107,15 @@ export async function POST() {
         },
       });
     }
+    await prisma.footerSetting.update({
+      where: { id: footer.id },
+      data: {
+        logoAlt: FOOTER_IMPORT.logoAlt,
+        description: FOOTER_IMPORT.description,
+        copyrightText: FOOTER_IMPORT.copyrightText,
+        ...touch(),
+      },
+    });
     const columns = await prisma.footerColumn.findMany({ where: { footerId: footer.id } });
     for (const column of columns) {
       await prisma.footerLink.deleteMany({ where: { columnId: column.id } });
@@ -132,7 +141,8 @@ export async function POST() {
             url: link.url,
             order: linkOrder++,
             isActive: true,
-            openInNewTab: false,
+            openInNewTab: Boolean(link.openInNewTab),
+            icon: link.icon || null,
             columnId: created.id,
             cmsEnabled: false,
             ...stamp(),

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { requireAdminApiAuth } from '../../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
 
@@ -7,6 +8,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const unauthorized = await requireAdminApiAuth();
+  if (unauthorized) return unauthorized;
+
   try {
     const body = await request.json();
     const { name, description, color } = body;
@@ -83,6 +87,9 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const unauthorized = await requireAdminApiAuth();
+  if (unauthorized) return unauthorized;
+
   try {
     // בדיקה אם הקטגוריה קיימת
     const existingCategory = await prisma.category.findUnique({

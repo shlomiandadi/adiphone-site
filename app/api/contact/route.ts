@@ -2,10 +2,14 @@ import { NextRequest } from 'next/server';
 import prisma from '../../../lib/prisma';
 import { sendContactEmail } from '../../../lib/emailService';
 import { ContactService } from '@prisma/client';
+import { requireAdminApiAuth } from '../../../lib/adminAuth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
+  const unauthorized = await requireAdminApiAuth();
+  if (unauthorized) return unauthorized;
+
   try {
     await prisma.$connect();
     console.log('Database connection successful');

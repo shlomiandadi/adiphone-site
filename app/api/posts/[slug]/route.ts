@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { requireAdminApiAuth } from '../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
 
@@ -12,6 +13,11 @@ export async function GET(
   try {
     const { searchParams } = new URL(request.url);
     const admin = searchParams.get('admin');
+
+    if (admin === 'true') {
+      const unauthorized = await requireAdminApiAuth();
+      if (unauthorized) return unauthorized;
+    }
 
     const where: any = { slug: params.slug };
     
@@ -45,6 +51,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
+  const unauthorized = await requireAdminApiAuth();
+  if (unauthorized) return unauthorized;
+
   try {
     const body = await request.json();
     const {
@@ -145,6 +154,9 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
+  const unauthorized = await requireAdminApiAuth();
+  if (unauthorized) return unauthorized;
+
   try {
     // בדיקה אם הפוסט קיים
     const existingPost = await prisma.post.findUnique({

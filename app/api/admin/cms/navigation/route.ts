@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import prisma from '../../../../../lib/prisma';
-import { stamp, touch, revalidateLayout } from '../../../../../lib/cms/admin';
+import { parseMenuLocation, stamp, touch, revalidateLayout } from '../../../../../lib/cms/admin';
 import { cmsGet, cmsWrite } from '../../../../../lib/cms/adminHandler';
 import { navigation } from '../../../../../app/components/navigation-data';
 
@@ -54,7 +54,7 @@ export async function PUT(request: NextRequest) {
     if (body.kind === 'menu') {
       const payload = {
         name: String(body.name || ''),
-        location: body.location || 'HEADER_MAIN',
+        location: parseMenuLocation(body.location),
         isActive: Boolean(body.isActive),
         cmsEnabled: Boolean(body.cmsEnabled),
       };

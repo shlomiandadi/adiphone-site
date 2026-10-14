@@ -1,6 +1,29 @@
 import { NextResponse } from 'next/server';
 import { requireAdminApiAuth } from '../adminAuth';
+import { revalidateCmsTag } from './cache';
 import { revalidateSitePaths } from '../revalidateContent';
+
+export const PAGE_TEMPLATES = ['GENERAL', 'SERVICE', 'ABOUT', 'CONTACT', 'LANDING', 'BLOG'] as const;
+export const MENU_LOCATIONS = [
+  'HEADER_MAIN',
+  'HEADER_SECONDARY',
+  'FOOTER_MAIN',
+  'FOOTER_SECONDARY',
+  'MOBILE',
+] as const;
+
+export type PageTemplateValue = (typeof PAGE_TEMPLATES)[number];
+export type MenuLocationValue = (typeof MENU_LOCATIONS)[number];
+
+export function parsePageTemplate(value: unknown): PageTemplateValue {
+  const next = String(value || '');
+  return (PAGE_TEMPLATES as readonly string[]).includes(next) ? (next as PageTemplateValue) : 'GENERAL';
+}
+
+export function parseMenuLocation(value: unknown): MenuLocationValue {
+  const next = String(value || '');
+  return (MENU_LOCATIONS as readonly string[]).includes(next) ? (next as MenuLocationValue) : 'HEADER_MAIN';
+}
 
 export const CMS_ROLES = ['ADMIN', 'EDITOR'];
 
@@ -22,6 +45,7 @@ export function touch() {
 }
 
 export function revalidateLayout() {
+  revalidateCmsTag();
   revalidateSitePaths(['/'], true);
 }
 

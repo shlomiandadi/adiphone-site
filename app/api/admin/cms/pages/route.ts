@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import prisma from '../../../../../lib/prisma';
-import { stamp, touch, revalidateLayout } from '../../../../../lib/cms/admin';
+import { parsePageTemplate, stamp, touch, revalidateLayout } from '../../../../../lib/cms/admin';
 import { cmsGet, cmsWrite } from '../../../../../lib/cms/adminHandler';
 
 export const dynamic = 'force-dynamic';
@@ -20,7 +20,7 @@ export async function PUT(request: NextRequest) {
       slug: String(body.slug || '').replace(/^\//, ''),
       content: String(body.content || ''),
       excerpt: body.excerpt ? String(body.excerpt) : null,
-      template: body.template || 'DEFAULT',
+      template: parsePageTemplate(body.template),
       published: Boolean(body.published),
       order: Number(body.order || 0),
       metaTitle: body.metaTitle ? String(body.metaTitle) : null,

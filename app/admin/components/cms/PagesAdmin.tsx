@@ -24,7 +24,7 @@ export default function PagesAdmin() {
     slug: '',
     content: '',
     published: false,
-    template: 'DEFAULT',
+    template: 'GENERAL',
     cmsEnabled: false,
   });
 
@@ -44,10 +44,10 @@ export default function PagesAdmin() {
           template enum
           <select
             className="w-full border rounded px-3 py-2 mt-1"
-            value={String(draft.template || 'DEFAULT')}
+            value={String(draft.template || 'GENERAL')}
             onChange={(e) => setDraft({ ...draft, template: e.target.value })}
           >
-            {['DEFAULT', 'HOME', 'ABOUT', 'SERVICE', 'LANDING', 'CONTACT', 'BLOG', 'CUSTOM'].map((value) => (
+            {['GENERAL', 'SERVICE', 'ABOUT', 'CONTACT', 'LANDING', 'BLOG'].map((value) => (
               <option key={value} value={value}>
                 {value}
               </option>

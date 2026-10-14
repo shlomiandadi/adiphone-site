@@ -90,6 +90,16 @@ export default async function Blog({
       <div data-reveal className="container mx-auto px-4 py-16">
         <div className="grid lg:grid-cols-3 gap-8">
           <div id="blog-posts" className="lg:col-span-2 scroll-mt-28">
+            <Link
+              href="/blog/kama-oleh-bniyat-atar-2026"
+              className="mb-8 block rounded-2xl border border-blue-100 bg-blue-50 p-6 text-right shadow-sm transition-colors hover:bg-blue-100"
+            >
+              <p className="mb-1 text-sm font-semibold text-blue-700">מדריך מעודכן ל-2026</p>
+              <h2 className="mb-2 text-2xl font-bold text-gray-900">כמה עולה בניית אתר ב-2026</h2>
+              <p className="text-gray-700">
+                טבלת מחירים לדף נחיתה, אתר תדמית, חנות ומערכת – לפי המחירון באתר, בלי מספרים סותרים.
+              </p>
+            </Link>
             {posts.length === 0 ? (
               <div className="text-center py-12">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">

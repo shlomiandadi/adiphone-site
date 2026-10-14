@@ -50,6 +50,36 @@ export const serviceAreaLinks = [
     icon: "globe",
     description: "אתרי תדמית, חנויות ומערכות בחיפה והקריות"
   },
+  {
+    name: "בניית אתרים בנתניה",
+    href: "/services/bniyat-atarim-netanya",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות בנתניה והשרון"
+  },
+  {
+    name: "בניית אתרים באור עקיבא",
+    href: "/services/bniyat-atarim-or-akiva",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות באור עקיבא"
+  },
+  {
+    name: "בניית אתרים בבנימינה",
+    href: "/services/bniyat-atarim-binyamina",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות בבנימינה וגבעת עדה"
+  },
+  {
+    name: "בניית אתרים ביוקנעם",
+    href: "/services/bniyat-atarim-yokneam",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות ביוקנעם עילית"
+  },
+  {
+    name: "בניית אתרים בעפולה",
+    href: "/services/bniyat-atarim-afula",
+    icon: "globe",
+    description: "אתרי תדמית, חנויות ומערכות בעפולה ובעמק יזרעאל"
+  },
 ] as const;
 
 export const navigation: NavigationItem[] = [
@@ -168,7 +198,15 @@ export const navigation: NavigationItem[] = [
   {
     name: "בלוג",
     href: "/blog",
-    icon: "blog"
+    icon: "blog",
+    submenu: [
+      {
+        name: "כמה עולה בניית אתר ב-2026",
+        href: "/blog/kama-oleh-bniyat-atar-2026",
+        icon: "blog",
+        description: "טווחי מחירים לדף נחיתה, אתר תדמית, חנות ומערכת"
+      }
+    ]
   },
   {
     name: "פרוייקטים",

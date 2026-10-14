@@ -9,7 +9,7 @@ export const BASE_LLMS_TXT = `# Top Webstak (מבית עדי פון תקשורת
 - כתובת: זמיר 95, פרדס חנה-כרכור, ישראל
 - טלפון: +972-50-9159951
 - דוא"ל: adiphoneseo@gmail.com
-- אזורי שירות: פרדס חנה-כרכור, חדרה, קיסריה, זכרון יעקב, בנימינה, חריש, עמק חפר, חיפה (ובפריסה ארצית מרחוק)
+- אזורי שירות: פרדס חנה-כרכור, חדרה, קיסריה, זכרון יעקב, בנימינה, אור עקיבא, נתניה, יוקנעם, עפולה, השרון, חיפה והקריות, הצפון (ובפריסה ארצית מרחוק)
 - שפה: עברית
 
 ## עמודי מפתח
@@ -17,6 +17,8 @@ export const BASE_LLMS_TXT = `# Top Webstak (מבית עדי פון תקשורת
 - [אודות](https://adi-phone.co.il/about): מי אנחנו
 - [צור קשר](https://adi-phone.co.il/contact): טלפון, דוא"ל וטופס פנייה
 - [בלוג](https://adi-phone.co.il/blog): מדריכים וטיפים בנושאי דיגיטל
+- [כמה עולה בניית אתר ב-2026](https://adi-phone.co.il/blog/kama-oleh-bniyat-atar-2026): טווחי מחירים לדף נחיתה, אתר תדמית, חנות ומערכת
+- [מחירון בניית אתרים](https://adi-phone.co.il/pricing): מחירי פתיחה שקופים
 
 ## שירותים
 - [בניית אתרים](https://adi-phone.co.il/services/web-development): אתרי תדמית, קטלוג ומערכות Web
@@ -34,4 +36,13 @@ export const BASE_LLMS_TXT = `# Top Webstak (מבית עדי פון תקשורת
 
 ## עמודי שירות מקומיים
 - [בניית אתרים בפרדס חנה](https://adi-phone.co.il/services/bniyat-atarim-pardes-hana)
+- [בניית אתרים בחדרה](https://adi-phone.co.il/services/bniyat-atarim-hadera)
+- [בניית אתרים בקיסריה](https://adi-phone.co.il/services/bniyat-atarim-caesarea)
+- [בניית אתרים בזכרון יעקב](https://adi-phone.co.il/services/bniyat-atarim-zichron-yaakov)
+- [בניית אתרים בחיפה](https://adi-phone.co.il/services/bniyat-atarim-haifa)
+- [בניית אתרים בנתניה](https://adi-phone.co.il/services/bniyat-atarim-netanya)
+- [בניית אתרים באור עקיבא](https://adi-phone.co.il/services/bniyat-atarim-or-akiva)
+- [בניית אתרים בבנימינה](https://adi-phone.co.il/services/bniyat-atarim-binyamina)
+- [בניית אתרים ביוקנעם](https://adi-phone.co.il/services/bniyat-atarim-yokneam)
+- [בניית אתרים בעפולה](https://adi-phone.co.il/services/bniyat-atarim-afula)
 `;

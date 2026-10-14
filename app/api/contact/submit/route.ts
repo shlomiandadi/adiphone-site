@@ -51,7 +51,7 @@ const sendAdminEmail = async (data: any) => {
   return resend.emails.send({
     from: 'AdiPhone <noreply@adi-phone.co.il>',
     to: 'shlomiandadi@gmail.com',
-    replyTo: data.email,
+    replyTo: data.email && data.email !== PLACEHOLDER_EMAIL ? data.email : 'shlomiandadi@gmail.com',
     subject: 'פנייה חדשה - טופס יצירת קשר',
     html: `
       <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
@@ -75,6 +75,8 @@ const sendAdminEmail = async (data: any) => {
   });
 };
 
+const PLACEHOLDER_EMAIL = 'lead@adi-phone.co.il';
+
 const validateContactData = (data: any): { isValid: boolean; error?: string } => {
   if (!data) {
     return { isValid: false, error: 'לא נשלחו נתונים' };
@@ -84,20 +86,16 @@ const validateContactData = (data: any): { isValid: boolean; error?: string } =>
     return { isValid: false, error: 'נדרש שם מלא' };
   }
 
-  if (!data.email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-    return { isValid: false, error: 'נדרש כתובת אימייל תקינה' };
-  }
-
   if (!data.phone?.trim()) {
     return { isValid: false, error: 'נדרש מספר טלפון' };
   }
 
-  if (!data.message?.trim()) {
-    return { isValid: false, error: 'נדרשת הודעה' };
-  }
-
   if (!data.service?.trim()) {
     return { isValid: false, error: 'סוג השירות לא תקין' };
+  }
+
+  if (data.email?.trim() && data.email !== PLACEHOLDER_EMAIL && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    return { isValid: false, error: 'נדרש כתובת אימייל תקינה' };
   }
 
   return { isValid: true };
@@ -157,13 +155,20 @@ export async function POST(request: Request) {
 
     console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? '***' + process.env.RESEND_API_KEY.slice(-4) : undefined);
 
+    const payload = {
+      ...data,
+      email: data.email?.trim() && data.email !== PLACEHOLDER_EMAIL ? data.email.trim() : PLACEHOLDER_EMAIL,
+      message: data.message?.trim() || `פנייה חדשה בנושא: ${data.service}`,
+    };
+
     // שליחת מיילים
     let emailSuccess = false;
     try {
-      await Promise.all([
-        sendCustomerEmail(data),
-        sendAdminEmail(data)
-      ]);
+      const jobs = [sendAdminEmail(payload)];
+      if (payload.email && payload.email !== PLACEHOLDER_EMAIL) {
+        jobs.push(sendCustomerEmail(payload));
+      }
+      await Promise.all(jobs);
       emailSuccess = true;
       console.log('Emails sent successfully');
     } catch (emailError) {

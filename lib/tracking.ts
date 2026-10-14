@@ -63,6 +63,12 @@ const SERVICE_NAMES: Record<string, string> = {
   '/services/bniyat-atarim-caesarea': 'בניית אתרים בקיסריה',
   '/services/bniyat-atarim-zichron-yaakov': 'בניית אתרים בזכרון יעקב',
   '/services/bniyat-atarim-haifa': 'בניית אתרים בחיפה',
+  '/services/bniyat-atarim-netanya': 'בניית אתרים בנתניה',
+  '/services/bniyat-atarim-or-akiva': 'בניית אתרים באור עקיבא',
+  '/services/bniyat-atarim-binyamina': 'בניית אתרים בבנימינה',
+  '/services/bniyat-atarim-yokneam': 'בניית אתרים ביוקנעם',
+  '/services/bniyat-atarim-afula': 'בניית אתרים בעפולה',
+  '/blog/kama-oleh-bniyat-atar-2026': 'כמה עולה בניית אתר ב-2026',
 };
 
 const CTA_LABELS = [
@@ -73,6 +79,11 @@ const CTA_LABELS = [
   'לייעוץ ראשוני',
   'דברו איתנו',
   'חייגו עכשיו',
+  'הצעת מחיר',
+  'התקשרו',
+  'קבעו שיחת ייעוץ',
+  'וואטסאפ עכשיו',
+  'שלחו ואחזור',
 ];
 
 function isBrowser() {

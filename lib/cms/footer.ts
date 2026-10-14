@@ -1,7 +1,8 @@
 import prisma from '../prisma';
+import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
 
-export async function getFooter() {
+export const getFooter = cmsCache('cms-footer', async () => {
   return cmsRead(async () => {
     const row = await prisma.footerSetting.findFirst({
       include: {
@@ -22,4 +23,4 @@ export async function getFooter() {
     if (!hasLinks) return null;
     return row;
   });
-}
+});

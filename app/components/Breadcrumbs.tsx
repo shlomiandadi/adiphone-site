@@ -1,41 +1,51 @@
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { headers } from 'next/headers';
+import { usePathname } from 'next/navigation';
 import {
   breadcrumbJsonLd,
   fallbackBreadcrumbItems,
-  getCmsBreadcrumbs,
+  lookupCmsBreadcrumbs,
   type CmsBreadcrumbItem,
-} from '../../lib/cms/breadcrumbs';
-import { getSiteUrl } from '../../lib/seo';
+} from '../../lib/cms/breadcrumbShared';
 
-function fallbackJsonLd(items: CmsBreadcrumbItem[]) {
-  const siteUrl = getSiteUrl();
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      item: {
-        '@id': `${siteUrl}${item.url}`,
-        name: item.title,
-      },
-    })),
-  };
-}
+type BreadcrumbsProps = {
+  cmsByPath?: Record<string, CmsBreadcrumbItem[]>;
+};
 
-export default async function Breadcrumbs() {
-  const headerList = await headers();
-  const pathname = headerList.get('x-pathname') || '/';
-  const cmsItems = await getCmsBreadcrumbs(pathname);
-  const usingCms = Array.isArray(cmsItems) && cmsItems.length > 0;
-  const trail = usingCms ? cmsItems : fallbackBreadcrumbItems(pathname);
+export default function Breadcrumbs({ cmsByPath }: BreadcrumbsProps) {
+  const pathname = usePathname() || '/';
+  const [fetchedMap, setFetchedMap] = useState<Record<string, CmsBreadcrumbItem[]> | null>(null);
+
+  useEffect(() => {
+    if (cmsByPath) return;
+    let cancelled = false;
+    fetch('/api/cms/breadcrumbs')
+      .then((response) => (response.ok ? response.json() : {}))
+      .then((data) => {
+        if (!cancelled && data && typeof data === 'object') {
+          setFetchedMap(data as Record<string, CmsBreadcrumbItem[]>);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setFetchedMap({});
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [cmsByPath]);
+
+  const trail = useMemo(() => {
+    const cmsItems = lookupCmsBreadcrumbs(pathname, cmsByPath) || lookupCmsBreadcrumbs(pathname, fetchedMap);
+    return cmsItems && cmsItems.length > 0 ? cmsItems : fallbackBreadcrumbItems(pathname);
+  }, [pathname, cmsByPath, fetchedMap]);
 
   if (trail.length === 0) return null;
 
   const homeIsFirst = trail[0]?.url === '/';
   const rest = homeIsFirst ? trail.slice(1) : trail;
-  const schema = usingCms ? breadcrumbJsonLd(trail) : fallbackJsonLd(trail);
+  const schema = breadcrumbJsonLd(homeIsFirst ? trail : [{ url: '/', title: 'דף הבית' }, ...trail]);
 
   return (
     <nav className="py-4" aria-label="Breadcrumb">

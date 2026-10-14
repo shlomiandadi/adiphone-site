@@ -1,8 +1,9 @@
 import prisma from '../prisma';
 import type { NavigationItem } from '../../app/components/navigation-data';
+import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
 
-export async function getHeaderMenu(): Promise<NavigationItem[] | null> {
+export const getHeaderMenu = cmsCache('cms-header-menu', async (): Promise<NavigationItem[] | null> => {
   return cmsRead(async () => {
     const menu = await prisma.menu.findFirst({
       where: { location: 'HEADER_MAIN', isActive: true },
@@ -32,12 +33,12 @@ export async function getHeaderMenu(): Promise<NavigationItem[] | null> {
         : undefined,
     }));
   });
-}
+});
 
-export async function getHeaderSetting() {
+export const getHeaderSetting = cmsCache('cms-header-setting', async () => {
   return cmsRead(async () => {
     const row = await prisma.headerSetting.findFirst();
     if (!row || !isCmsEnabled(row)) return null;
     return row;
   });
-}
+});

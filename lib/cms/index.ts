@@ -6,5 +6,7 @@ export { getSitemapSettings } from './sitemap';
 export { getHeaderMenu, getHeaderSetting } from './navigation';
 export { getFooter } from './footer';
 export { getActiveTopStrip } from './topStrip';
-export { getCmsBreadcrumbs, fallbackBreadcrumbItems, breadcrumbJsonLd } from './breadcrumbs';
+export { getCmsBreadcrumbs, getBreadcrumbMap, fallbackBreadcrumbItems, breadcrumbJsonLd } from './breadcrumbs';
 export { getCmsPageBySlug, getTemplateSections } from './pages';
+export { CMS_CACHE_TAG, revalidateCmsTag } from './cache';
+export { getLayoutCms } from './layoutData';

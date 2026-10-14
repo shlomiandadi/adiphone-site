@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 import { serviceAreaLinks } from './navigation-data';
-import { getFooter } from '../../lib/cms/footer';
-import { getSiteSettings } from '../../lib/cms/siteSettings';
+import type { LayoutCms } from '../../lib/cms/layoutData';
 
 const footerServices = [
   { href: '/services/web-development', label: 'בניית אתרים' },
@@ -148,8 +147,13 @@ function HardcodedFooter() {
   );
 }
 
-export default async function Footer() {
-  const [cmsFooter, siteSettings] = await Promise.all([getFooter(), getSiteSettings()]);
+export default function Footer({
+  cmsFooter,
+  siteSettings,
+}: {
+  cmsFooter?: LayoutCms['footer'];
+  siteSettings?: LayoutCms['siteSettings'];
+}) {
   if (!cmsFooter) {
     return <HardcodedFooter />;
   }

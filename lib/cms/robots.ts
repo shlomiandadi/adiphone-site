@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import prisma from '../prisma';
 import { getSiteUrl } from '../seo';
+import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
 
 const BLOCKED = ['/', '/_next', '/_next/', '/_next/*'];
@@ -17,7 +18,7 @@ export function isSafeRobotsConfig(disallowPaths: string[] | null | undefined, a
   return true;
 }
 
-export async function getValidatedRobots(): Promise<MetadataRoute.Robots | null> {
+export const getValidatedRobots = cmsCache('cms-robots', async (): Promise<MetadataRoute.Robots | null> => {
   return cmsRead(async () => {
     const row = await prisma.robotsSetting.findFirst({
       where: { isActive: true },
@@ -39,4 +40,4 @@ export async function getValidatedRobots(): Promise<MetadataRoute.Robots | null>
       sitemap,
     };
   });
-}
+});

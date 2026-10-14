@@ -15,8 +15,8 @@ import CookieConsent from './components/CookieConsent';
 import ChatbotWidget from './components/ChatbotWidget';
 import AnalyticsTracker from './components/AnalyticsTracker';
 import TopStrip from './components/TopStrip';
-import { getActiveTopStrip } from '../lib/cms/topStrip';
-import { getTrackingIds, GTM_CONTAINER_ID } from '../lib/cms/siteSettings';
+import { FALLBACK_LAYOUT_CMS, getLayoutCms } from '../lib/cms/layoutData';
+import { GTM_CONTAINER_ID } from '../lib/cms/siteSettings';
 import { GA4_MEASUREMENT_ID } from '../lib/tracking';
 
 const heebo = Heebo({ 
@@ -70,10 +70,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const tracking = await getTrackingIds();
-  const topStrip = await getActiveTopStrip();
-  const gaId = tracking.ga || GA4_MEASUREMENT_ID;
-  const gtmId = tracking.gtm || GTM_CONTAINER_ID;
+  let cms = FALLBACK_LAYOUT_CMS;
+  try {
+    cms = await getLayoutCms();
+  } catch (error) {
+    console.warn('Root layout CMS fallback (DB unavailable):', error);
+  }
+  const gaId = cms.tracking.ga || GA4_MEASUREMENT_ID;
+  const gtmId = cms.tracking.gtm || GTM_CONTAINER_ID;
+  const pixelId = cms.tracking.pixel;
 
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
@@ -125,7 +130,7 @@ export default async function RootLayout({
             }
           `}
         </Script>
-        {tracking.pixel ? (
+        {pixelId ? (
           <Script id="facebook-pixel" strategy="afterInteractive">
             {`
               !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -133,7 +138,7 @@ export default async function RootLayout({
               n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
               t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${tracking.pixel}');
+              fbq('init', '${pixelId}');
               fbq('track', 'PageView');
             `}
           </Script>
@@ -153,26 +158,26 @@ export default async function RootLayout({
         <a href="#main-content" className="skip-to-main">
           דלג לתוכן הראשי
         </a>
-        {topStrip ? (
+        {cms.topStrip ? (
           <TopStrip
-            text={topStrip.text}
-            backgroundColor={topStrip.backgroundColor}
-            textColor={topStrip.textColor}
-            linkUrl={topStrip.linkUrl}
-            linkText={topStrip.linkText}
+            text={cms.topStrip.text}
+            backgroundColor={cms.topStrip.backgroundColor}
+            textColor={cms.topStrip.textColor}
+            linkUrl={cms.topStrip.linkUrl}
+            linkText={cms.topStrip.linkText}
           />
         ) : null}
-        <Header />
+        <Header items={cms.headerMenu} />
         <WowEffects />
         <PageOffset>
           <div className="container mx-auto px-4">
-            <Breadcrumbs />
+            <Breadcrumbs cmsByPath={cms.breadcrumbs} />
           </div>
         </PageOffset>
         <main id="main-content" className="flex-grow w-full">
           {children}
         </main>
-        <Footer />
+        <Footer cmsFooter={cms.footer} siteSettings={cms.siteSettings} />
         <FloatingButtons />
         <AccessibilityBar />
         <CookieConsent />

@@ -6,11 +6,7 @@ export async function middleware(request: NextRequest) {
   const seoRedirect = await applySeoAgentRedirects(request);
   if (seoRedirect) return seoRedirect;
 
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-pathname', request.nextUrl.pathname);
-  const response = NextResponse.next({
-    request: { headers: requestHeaders },
-  });
+  const response = NextResponse.next();
 
   if (request.nextUrl.pathname.startsWith('/api')) {
     response.headers.set('Access-Control-Allow-Origin', '*');

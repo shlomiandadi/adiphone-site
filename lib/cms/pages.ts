@@ -1,7 +1,8 @@
 import prisma from '../prisma';
+import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
 
-export async function getCmsPageBySlug(slug: string) {
+export const getCmsPageBySlug = cmsCache('cms-page-by-slug', async (slug: string) => {
   return cmsRead(async () => {
     const normalized = slug.startsWith('/') ? slug : `/${slug}`;
     const row = await prisma.cmsPage.findFirst({
@@ -16,9 +17,9 @@ export async function getCmsPageBySlug(slug: string) {
     if (!row || !isCmsEnabled(row)) return null;
     return row;
   });
-}
+});
 
-export async function getTemplateSections(templateId: string) {
+export const getTemplateSections = cmsCache('cms-template-sections', async (templateId: string) => {
   return cmsRead(async () => {
     const template = await prisma.template.findUnique({
       where: { id: templateId },
@@ -27,4 +28,4 @@ export async function getTemplateSections(templateId: string) {
     if (!template || !isCmsEnabled(template)) return null;
     return template.sections;
   });
-}
+});

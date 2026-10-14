@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import prisma from '../prisma';
+import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
 
 const PAGE_KEY_BY_PATH: Record<string, string> = {
@@ -11,7 +12,7 @@ const PAGE_KEY_BY_PATH: Record<string, string> = {
   '/contact': 'contact',
 };
 
-export async function getCmsSeo(pageKeyOrPath: string) {
+export const getCmsSeo = cmsCache('cms-seo', async (pageKeyOrPath: string) => {
   return cmsRead(async () => {
     const key = PAGE_KEY_BY_PATH[pageKeyOrPath] || pageKeyOrPath.replace(/^\//, '') || 'home';
     const row = await prisma.seoPage.findFirst({
@@ -20,9 +21,9 @@ export async function getCmsSeo(pageKeyOrPath: string) {
     if (!row || !isCmsEnabled(row)) return null;
     return row;
   });
-}
+});
 
-export async function getCmsCanonical(path: string) {
+export const getCmsCanonical = cmsCache('cms-canonical', async (path: string) => {
   return cmsRead(async () => {
     const row = await prisma.canonicalTag.findFirst({
       where: { pageSlug: path, isActive: true },
@@ -30,7 +31,7 @@ export async function getCmsCanonical(path: string) {
     if (!row || !isCmsEnabled(row)) return null;
     return row.canonicalUrl;
   });
-}
+});
 
 export async function mergeCmsMetadata(path: string, base: Metadata): Promise<Metadata> {
   const [seo, canonical] = await Promise.all([getCmsSeo(path), getCmsCanonical(path)]);

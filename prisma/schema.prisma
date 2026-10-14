@@ -131,23 +131,22 @@ enum ContactService {
   OTHER
 }
 
-// Maps onto existing PostgreSQL USER-DEFINED enums. Do not migrate or db push.
+// Maps onto existing PostgreSQL USER-DEFINED enums exactly. Do not migrate or db push.
 enum MenuLocation {
   HEADER_MAIN
   HEADER_SECONDARY
-  FOOTER
-  SIDEBAR
+  FOOTER_MAIN
+  FOOTER_SECONDARY
+  MOBILE
 }
 
 enum PageTemplate {
-  DEFAULT
-  HOME
-  ABOUT
+  GENERAL
   SERVICE
-  LANDING
+  ABOUT
   CONTACT
+  LANDING
   BLOG
-  CUSTOM
 }
 
 model Breadcrumb {

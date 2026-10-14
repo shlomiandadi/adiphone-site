@@ -1,4 +1,5 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { CMS_CACHE_TAG } from './cms/cache';
 
 function safeRevalidate(paths: string[]) {
   try {
@@ -45,6 +46,7 @@ export function revalidatePortfolioPaths(slug: string, previousSlug?: string | n
 
 export function revalidateSitePaths(paths: string[], layout = false) {
   try {
+    revalidateTag(CMS_CACHE_TAG);
     for (const path of paths) {
       if (layout) {
         revalidatePath(path, 'layout');

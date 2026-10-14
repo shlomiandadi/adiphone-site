@@ -1,8 +1,7 @@
-'use client';
-
 import Link from 'next/link';
 import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 import { serviceAreaLinks } from './navigation-data';
+import type { LayoutCms } from '../../lib/cms/layoutData';
 
 const footerServices = [
   { href: '/services/web-development', label: 'בניית אתרים' },
@@ -22,7 +21,7 @@ const footerServices = [
   { href: '/blog/kama-oleh-bniyat-atar-2026', label: 'כמה עולה בניית אתר ב-2026' },
 ];
 
-export default function Footer() {
+function HardcodedFooter() {
   return (
     <footer className="bg-gray-900 text-white" data-cta-location="footer">
       <div className="container mx-auto px-4 py-12">
@@ -142,6 +141,60 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
           <p>© {new Date().getFullYear()} Top Webstak - בנייה וקידום אתרים (מבית עדי פון תקשורת). כל הזכויות שמורות.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default function Footer({
+  cmsFooter,
+  siteSettings,
+}: {
+  cmsFooter?: LayoutCms['footer'];
+  siteSettings?: LayoutCms['siteSettings'];
+}) {
+  if (!cmsFooter) {
+    return <HardcodedFooter />;
+  }
+
+  const name = siteSettings?.siteName || cmsFooter.logoAlt || 'Top Webstak';
+  const description = siteSettings?.siteDescription || cmsFooter.description || '';
+
+  return (
+    <footer
+      className="text-white"
+      data-cta-location="footer"
+      style={{ backgroundColor: cmsFooter.backgroundColor || '#111827', color: cmsFooter.textColor || '#ffffff' }}
+    >
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div>
+            <h3 className="text-xl font-bold mb-4">{name}</h3>
+            {description ? <p className="text-gray-400">{description}</p> : null}
+          </div>
+          {cmsFooter.columns.map((column) => (
+            <div key={column.id}>
+              <h3 className="text-xl font-bold mb-4">{column.title}</h3>
+              <ul className="space-y-2">
+                {column.links.map((link) => (
+                  <li key={link.id}>
+                    <Link
+                      href={link.url || '/'}
+                      className="text-gray-400 hover:text-white transition-colors"
+                      target={link.openInNewTab ? '_blank' : undefined}
+                      rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
+                    >
+                      {link.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+          <p>{cmsFooter.copyrightText}</p>
         </div>
       </div>
     </footer>

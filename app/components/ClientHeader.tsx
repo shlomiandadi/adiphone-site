@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { FaTimes, FaSearch, FaTag, FaHome, FaCode, FaMobile, FaGlobe, FaChartLine, FaEnvelope, FaBars, FaUsers, FaBlog, FaShoppingCart, FaPaintBrush } from 'react-icons/fa';
 import React from 'react';
 import SearchResult from './SearchResult';
-import { navigation, promotions } from './navigation-data';
+import { navigation, promotions, type NavigationItem } from './navigation-data';
 import { IconType } from 'react-icons';
 
 interface SubMenuItem {
@@ -36,7 +36,8 @@ function getIcon(iconName: string | undefined) {
   return iconMap[iconName || ''] || FaCode;
 }
 
-export default function ClientHeader() {
+export default function ClientHeader({ items }: { items?: NavigationItem[] | null }) {
+  const navItems = items && items.length > 0 ? items : navigation;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
@@ -56,7 +57,7 @@ export default function ClientHeader() {
   const lightText = overHero;
 
   const allPages = React.useMemo(() => {
-    return navigation.reduce((pages: { name: string; href: string }[], item) => {
+    return navItems.reduce((pages: { name: string; href: string }[], item) => {
       pages.push({ name: item.name, href: item.href });
       if (item.submenu) {
         pages.push(...item.submenu.map((sub) => ({
@@ -66,7 +67,7 @@ export default function ClientHeader() {
       }
       return pages;
     }, []);
-  }, []);
+  }, [navItems]);
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -265,7 +266,7 @@ export default function ClientHeader() {
             </Link>
 
             <div className="hidden lg:flex items-center justify-center flex-1 min-w-0 flex-nowrap">
-              {navigation.map((item) => {
+              {navItems.map((item) => {
                 const current = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
                 return (
                   <div key={item.name} className="relative group shrink-0">
@@ -493,7 +494,7 @@ export default function ClientHeader() {
             </form>
 
             <nav className="space-y-1" aria-label="ניווט נייד">
-              {navigation.map((item) => (
+              {navItems.map((item) => (
                 <div key={item.name}>
                   <Link
                     href={item.href || '#'}

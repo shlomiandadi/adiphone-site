@@ -14,6 +14,10 @@ import Script from 'next/script';
 import CookieConsent from './components/CookieConsent';
 import ChatbotWidget from './components/ChatbotWidget';
 import AnalyticsTracker from './components/AnalyticsTracker';
+import TopStrip from './components/TopStrip';
+import { FALLBACK_LAYOUT_CMS, getLayoutCms } from '../lib/cms/layoutData';
+import { GTM_CONTAINER_ID } from '../lib/cms/siteSettings';
+import { GA4_MEASUREMENT_ID } from '../lib/tracking';
 
 const heebo = Heebo({ 
   subsets: ['hebrew', 'latin'],
@@ -61,11 +65,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  let cms = FALLBACK_LAYOUT_CMS;
+  try {
+    cms = await getLayoutCms();
+  } catch (error) {
+    console.warn('Root layout CMS fallback (DB unavailable):', error);
+  }
+  const gaId = cms.tracking.ga || GA4_MEASUREMENT_ID;
+  const gtmId = cms.tracking.gtm || GTM_CONTAINER_ID;
+  const pixelId = cms.tracking.pixel;
+
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
       <head>
@@ -92,12 +106,12 @@ export default function RootLayout({
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-NHQ4DRWX');
+            })(window,document,'script','dataLayer','${gtmId}');
           `}
         </Script>
         {/* End Google Tag Manager */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-QMC63HG6SD"
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -107,7 +121,7 @@ export default function RootLayout({
             if (!window.__TW_GA4_CONFIGURED) {
               window.__TW_GA4_CONFIGURED = true;
               gtag('js', new Date());
-              gtag('config', 'G-QMC63HG6SD', {
+              gtag('config', '${gaId}', {
                 send_page_view: true,
                 anonymize_ip: true,
                 allow_google_signals: true,
@@ -116,12 +130,25 @@ export default function RootLayout({
             }
           `}
         </Script>
+        {pixelId ? (
+          <Script id="facebook-pixel" strategy="afterInteractive">
+            {`
+              !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+              n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '${pixelId}');
+              fbq('track', 'PageView');
+            `}
+          </Script>
+        ) : null}
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 
-            src="https://www.googletagmanager.com/ns.html?id=GTM-NHQ4DRWX"
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
             height="0" 
             width="0" 
             style={{display:'none',visibility:'hidden'}}
@@ -131,17 +158,26 @@ export default function RootLayout({
         <a href="#main-content" className="skip-to-main">
           דלג לתוכן הראשי
         </a>
-        <Header />
+        {cms.topStrip ? (
+          <TopStrip
+            text={cms.topStrip.text}
+            backgroundColor={cms.topStrip.backgroundColor}
+            textColor={cms.topStrip.textColor}
+            linkUrl={cms.topStrip.linkUrl}
+            linkText={cms.topStrip.linkText}
+          />
+        ) : null}
+        <Header items={cms.headerMenu} />
         <WowEffects />
         <PageOffset>
           <div className="container mx-auto px-4">
-            <Breadcrumbs />
+            <Breadcrumbs cmsByPath={cms.breadcrumbs} />
           </div>
         </PageOffset>
         <main id="main-content" className="flex-grow w-full">
           {children}
         </main>
-        <Footer />
+        <Footer cmsFooter={cms.footer} siteSettings={cms.siteSettings} />
         <FloatingButtons />
         <AccessibilityBar />
         <CookieConsent />

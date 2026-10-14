@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { getValidatedRobots } from '../lib/cms/robots';
 import { getSiteUrl } from '../lib/seo';
 
-export default function robots(): MetadataRoute.Robots {
+function defaultRobots(): MetadataRoute.Robots {
   const siteUrl = getSiteUrl();
   return {
     rules: {
@@ -11,4 +12,9 @@ export default function robots(): MetadataRoute.Robots {
     },
     sitemap: `${siteUrl}/sitemap.xml`,
   };
+}
+
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const fromCms = await getValidatedRobots();
+  return fromCms || defaultRobots();
 }

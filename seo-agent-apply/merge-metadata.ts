@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { mergeCmsMetadata } from '../lib/cms/seo';
 import { getSeoAgentPageOverride, hasPageOverride } from './store';
 import type { SeoAgentPageOverride } from './types';
 
@@ -66,11 +67,15 @@ export function applySeoAgentOverride(
   return next;
 }
 
-/** Returns `base` unchanged when the store has no override for `path`. */
+/**
+ * Returns `base` unchanged when neither the SEO-agent store nor an explicitly
+ * cmsEnabled row applies. Legacy `seo` / `canonical_tags` rows are ignored
+ * until cmsEnabled is set in the admin — they must never overwrite live titles.
+ */
 export async function mergeSeoAgentMetadata(path: string, base: Metadata): Promise<Metadata> {
   const override = await getSeoAgentPageOverride(path);
-  if (!override) return base;
-  return applySeoAgentOverride(base, override);
+  const withAgent = override ? applySeoAgentOverride(base, override) : base;
+  return mergeCmsMetadata(path, withAgent);
 }
 
 export function createSeoAgentGenerateMetadata(path: string, base: Metadata) {

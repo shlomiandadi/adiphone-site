@@ -81,7 +81,6 @@ export default function AdminLayout({ children, user }: AdminLayoutProps) {
             </Link>
           )}
           <div className="px-6 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase">CMS</div>
-          <Link href="/admin/breadcrumbs" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">פירורי לחם</Link>
           <Link href="/admin/seo/canonicals" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">קנוניקל</Link>
           <Link href="/admin/seo/pages" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">SEO עמודים</Link>
           <Link href="/admin/settings/general" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">הגדרות כלליות</Link>
@@ -90,8 +89,6 @@ export default function AdminLayout({ children, user }: AdminLayoutProps) {
           <Link href="/admin/navigation" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">ניווט</Link>
           <Link href="/admin/footer" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">פוטר</Link>
           <Link href="/admin/announcement" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">סרט הודעות</Link>
-          <Link href="/admin/sections" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">סקשנים</Link>
-          <Link href="/admin/pages" className="flex items-center px-6 py-2 text-gray-700 hover:bg-gray-100">עמודי CMS</Link>
         </nav>
       </div>
 

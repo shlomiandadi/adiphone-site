@@ -1,5 +1,4 @@
 import { GA4_MEASUREMENT_ID } from '../tracking';
-import { getBreadcrumbMap, type CmsBreadcrumbItem } from './breadcrumbs';
 import { cmsCache } from './cache';
 import { getFooter } from './footer';
 import { getHeaderMenu } from './navigation';
@@ -12,7 +11,6 @@ export type LayoutCms = {
   headerMenu: Awaited<ReturnType<typeof getHeaderMenu>>;
   footer: Awaited<ReturnType<typeof getFooter>>;
   siteSettings: Awaited<ReturnType<typeof getSiteSettings>>;
-  breadcrumbs: Record<string, CmsBreadcrumbItem[]>;
 };
 
 export const FALLBACK_LAYOUT_CMS: LayoutCms = {
@@ -21,20 +19,18 @@ export const FALLBACK_LAYOUT_CMS: LayoutCms = {
   headerMenu: null,
   footer: null,
   siteSettings: null,
-  breadcrumbs: {},
 };
 
 async function loadLayoutCmsUncached(): Promise<LayoutCms> {
   try {
-    const [tracking, topStrip, headerMenu, footer, siteSettings, breadcrumbs] = await Promise.all([
+    const [tracking, topStrip, headerMenu, footer, siteSettings] = await Promise.all([
       getTrackingIds(),
       getActiveTopStrip(),
       getHeaderMenu(),
       getFooter(),
       getSiteSettings(),
-      getBreadcrumbMap(),
     ]);
-    return { tracking, topStrip, headerMenu, footer, siteSettings, breadcrumbs };
+    return { tracking, topStrip, headerMenu, footer, siteSettings };
   } catch (error) {
     console.warn('Layout CMS read failed, using hardcoded fallbacks:', error);
     return FALLBACK_LAYOUT_CMS;

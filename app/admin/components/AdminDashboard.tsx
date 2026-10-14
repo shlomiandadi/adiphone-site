@@ -343,10 +343,6 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
           </div>
         </Link>
 
-        <Link href="/admin/breadcrumbs" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
-          <p className="text-sm font-medium text-gray-600">היררכיה / breadcrumbs</p>
-          <p className="text-2xl font-bold text-gray-900">{cmsCounts.hierarchy ?? 0} / {cmsCounts.breadcrumbs ?? 0}</p>
-        </Link>
         <Link href="/admin/seo/pages" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
           <p className="text-sm font-medium text-gray-600">SEO / canonicals</p>
           <p className="text-2xl font-bold text-gray-900">{cmsCounts.seo ?? 0} / {cmsCounts.canonicals ?? 0}</p>
@@ -358,14 +354,6 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
         <Link href="/admin/footer" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
           <p className="text-sm font-medium text-gray-600">קישורי פוטר</p>
           <p className="text-2xl font-bold text-gray-900">{cmsCounts.footerLinks ?? 0}</p>
-        </Link>
-        <Link href="/admin/sections" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
-          <p className="text-sm font-medium text-gray-600">תבניות / סקשנים</p>
-          <p className="text-2xl font-bold text-gray-900">{cmsCounts.templates ?? 0} / {cmsCounts.sections ?? 0}</p>
-        </Link>
-        <Link href="/admin/pages" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
-          <p className="text-sm font-medium text-gray-600">עמודי CMS</p>
-          <p className="text-2xl font-bold text-gray-900">{cmsCounts.pages ?? 0}</p>
         </Link>
         {user.role === 'ADMIN' && (
           <Link href="/admin/users" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">

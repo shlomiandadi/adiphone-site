@@ -1,45 +1,13 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  breadcrumbJsonLd,
-  fallbackBreadcrumbItems,
-  lookupCmsBreadcrumbs,
-  type CmsBreadcrumbItem,
-} from '../../lib/cms/breadcrumbShared';
+import { breadcrumbJsonLd, fallbackBreadcrumbItems } from '../../lib/cms/breadcrumbShared';
 
-type BreadcrumbsProps = {
-  cmsByPath?: Record<string, CmsBreadcrumbItem[]>;
-};
-
-export default function Breadcrumbs({ cmsByPath }: BreadcrumbsProps) {
+export default function Breadcrumbs() {
   const pathname = usePathname() || '/';
-  const [fetchedMap, setFetchedMap] = useState<Record<string, CmsBreadcrumbItem[]> | null>(null);
-
-  useEffect(() => {
-    if (cmsByPath) return;
-    let cancelled = false;
-    fetch('/api/cms/breadcrumbs')
-      .then((response) => (response.ok ? response.json() : {}))
-      .then((data) => {
-        if (!cancelled && data && typeof data === 'object') {
-          setFetchedMap(data as Record<string, CmsBreadcrumbItem[]>);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setFetchedMap({});
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [cmsByPath]);
-
-  const trail = useMemo(() => {
-    const cmsItems = lookupCmsBreadcrumbs(pathname, cmsByPath) || lookupCmsBreadcrumbs(pathname, fetchedMap);
-    return cmsItems && cmsItems.length > 0 ? cmsItems : fallbackBreadcrumbItems(pathname);
-  }, [pathname, cmsByPath, fetchedMap]);
+  const trail = useMemo(() => fallbackBreadcrumbItems(pathname), [pathname]);
 
   if (trail.length === 0) return null;
 

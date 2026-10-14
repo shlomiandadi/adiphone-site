@@ -171,7 +171,7 @@ export default async function RootLayout({
         <WowEffects />
         <PageOffset>
           <div className="container mx-auto px-4">
-            <Breadcrumbs cmsByPath={cms.breadcrumbs} />
+            <Breadcrumbs />
           </div>
         </PageOffset>
         <main id="main-content" className="flex-grow w-full">

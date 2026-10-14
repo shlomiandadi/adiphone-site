@@ -19,11 +19,12 @@ describe('CMS title suffix', () => {
     );
   });
 
-  test('usesTitleTemplate is true for string, default, and missing titles', () => {
+  test('usesTitleTemplate is true only for template segments', () => {
     assert.equal(usesTitleTemplate({ title: 'קידום אתרים' }), true);
     assert.equal(usesTitleTemplate({ title: { default: 'בית' } }), true);
     assert.equal(usesTitleTemplate({}), true);
     assert.equal(usesTitleTemplate({ title: { absolute: 'אודות | Top Webstak' } }), false);
+    assert.equal(usesTitleTemplate({ title: 'קידום במנועי AI – AEO ו-GEO לעסקים | Top Webstak' }), false);
   });
 
   test('templated page: stored title with trailing suffix applies once (no double suffix)', () => {
@@ -33,11 +34,36 @@ describe('CMS title suffix', () => {
     assert.equal(typeof applied, 'string');
   });
 
-  test('templated page: rendered document title is stripped back to the template segment', () => {
-    const pageTitle = 'קידום אתרים אורגני SEO | Top Webstak | דירוגים שמביאים לקוחות';
-    const base: Metadata = { title: pageTitle };
-    const applied = applyCmsTitle(base, `${pageTitle} | Top Webstak`);
-    assert.equal(applied, pageTitle);
+  test('/services/aeo-geo: absolute title keeps the stored suffix', () => {
+    const cms = 'קידום במנועי AI – AEO ו-GEO לעסקים | Top Webstak';
+    const base: Metadata = { title: cms };
+    assert.equal(usesTitleTemplate(base), false);
+    const applied = applyCmsTitle(base, cms);
+    assert.deepEqual(applied, { absolute: cms });
+    assert.equal(metadataTitle({ title: applied }), cms);
+  });
+
+  test('/services/web-development: absolute title keeps the stored suffix', () => {
+    const cms = 'בניית אתרים | Top Webstak | פיתוח אתרי תדמית, קטלוג ומערכות Web';
+    const base: Metadata = { title: cms };
+    assert.equal(usesTitleTemplate(base), false);
+    const applied = applyCmsTitle(base, cms);
+    assert.deepEqual(applied, { absolute: cms });
+    assert.equal(metadataTitle({ title: applied }), cms);
+  });
+
+  test('/pricing: templated title strips suffix so it appears once', () => {
+    const base: Metadata = { title: 'מחירון בניית אתרים' };
+    assert.equal(usesTitleTemplate(base), true);
+    const applied = applyCmsTitle(base, 'מחירון בניית אתרים | Top Webstak');
+    assert.equal(applied, 'מחירון בניית אתרים');
+  });
+
+  test('/accessibility-statement: templated title strips suffix so it appears once', () => {
+    const base: Metadata = { title: 'הצהרת נגישות' };
+    assert.equal(usesTitleTemplate(base), true);
+    const applied = applyCmsTitle(base, 'הצהרת נגישות | Top Webstak');
+    assert.equal(applied, 'הצהרת נגישות');
   });
 
   test('templated page: stored title without suffix is used as the template segment', () => {

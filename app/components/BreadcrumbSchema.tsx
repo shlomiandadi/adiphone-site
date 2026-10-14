@@ -9,6 +9,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   services: 'שירותים',
   portfolio: 'תיק עבודות',
   blog: 'בלוג',
+  pricing: 'מחירון',
   contact: 'צור קשר',
   'privacy-policy': 'מדיניות פרטיות',
   'accessibility-statement': 'הצהרת נגישות',
@@ -28,6 +29,16 @@ const SEGMENT_LABELS: Record<string, string> = {
   software: 'פתרונות תוכנה',
   'software-development': 'פיתוח תוכנה',
   'bniyat-atarim-pardes-hana': 'בניית אתרים בפרדס חנה',
+  'bniyat-atarim-hadera': 'בניית אתרים בחדרה',
+  'bniyat-atarim-caesarea': 'בניית אתרים בקיסריה',
+  'bniyat-atarim-zichron-yaakov': 'בניית אתרים בזכרון יעקב',
+  'bniyat-atarim-haifa': 'בניית אתרים בחיפה',
+  'bniyat-atarim-netanya': 'בניית אתרים בנתניה',
+  'bniyat-atarim-or-akiva': 'בניית אתרים באור עקיבא',
+  'bniyat-atarim-binyamina': 'בניית אתרים בבנימינה',
+  'bniyat-atarim-yokneam': 'בניית אתרים ביוקנעם',
+  'bniyat-atarim-afula': 'בניית אתרים בעפולה',
+  'kama-oleh-bniyat-atar-2026': 'כמה עולה בניית אתר ב-2026',
 };
 
 function labelFor(segment: string): string {

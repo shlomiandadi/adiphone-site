@@ -10,6 +10,7 @@ export default function WordPressService() {
     intro: "אתר וורדפרס הוא אתר הבנוי על מערכת הניהול וורדפרס, המאפשרת לכם לעדכן תכנים בעצמכם בקלות, בגמישות ובעלות נוחה.",
     serviceType: "web-development",
     servicePath: "/services/wordpress",
+    portfolioTopic: "wordpress" as const,
     description: (
       <>
         <h2><strong>פיתוח אתרי וורדפרס: הכלי החזק בעולם, בידיים של המומחים הנכונים</strong></h2>

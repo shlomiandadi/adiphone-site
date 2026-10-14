@@ -25,6 +25,7 @@ const STATIC_ROUTES = [
   '/services/ui-design',
   '/services/web-development',
   '/services/wordpress',
+  '/blog/kama-oleh-bniyat-atar-2026',
   ...LOCAL_WEBSITE_PAGE_PATHS,
 ];
 
@@ -73,7 +74,7 @@ const REDIRECTED_BLOG_SLUGS = new Set([
  * Using `new Date()` here made every request emit a fresh lastmod, which Google
  * treats as an unreliable signal. Bump this when the static pages change.
  */
-const STATIC_LASTMOD = new Date('2026-10-11T00:00:00Z');
+const STATIC_LASTMOD = new Date('2026-10-14T00:00:00Z');
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getSiteUrl();

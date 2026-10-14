@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { getSiteUrl } from '../../../lib/seo';
+import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
+import ServiceCtaBanner from '../../components/ServiceCtaBanner';
 
 const PHONE_DISPLAY = '050-9159951';
 const PHONE_TEL = '+972509159951';
@@ -62,7 +64,9 @@ const FAQ = [
   },
 ];
 
-export default function PpcServicePage() {
+export default async function PpcServicePage() {
+  const projects = await getPublishedPortfolioProjects('seo', 1);
+  const projectImage = projects.find((project) => project.image && !project.image.endsWith('.svg'))?.image;
   const siteUrl = getSiteUrl();
   const pageUrl = `${siteUrl}/services/ppc`;
 
@@ -211,28 +215,14 @@ export default function PpcServicePage() {
         </div>
       </section>
 
-      {/* Related + CTA */}
-      <section data-reveal className="bg-orange-600 px-4 py-16 text-white">
-        <div className="container mx-auto max-w-3xl text-center">
-          <h2 className="mb-4 text-3xl font-bold">רוצים לקוחות כבר השבוע?</h2>
-          <p className="mb-6 text-lg text-white/90">
-            נבנה יחד קמפיין ממומן שמתאים ליעדים ולתקציב של העסק שלכם.
-          </p>
-          <p className="mb-8 text-white/80">
-            קשור:{' '}
-            <Link href="/services/seo" className="underline">קידום אורגני (SEO)</Link> ·{' '}
-            <Link href="/services/aeo-geo" className="underline">קידום במנועי AI (AEO/GEO)</Link>
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a href={`tel:${PHONE_TEL}`} className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-orange-600 transition-colors hover:bg-orange-50">
-              חייגו: {PHONE_DISPLAY}
-            </a>
-            <Link href="/contact" data-cta="true" data-cta-location="service-page" className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10">
-              צרו קשר
-            </Link>
-          </div>
-        </div>
+      <section data-reveal className="px-4 pb-4 text-center">
+        <p className="text-gray-600">
+          קשור:{' '}
+          <Link href="/services/seo" className="underline">קידום אורגני (SEO)</Link> ·{' '}
+          <Link href="/services/aeo-geo" className="underline">קידום במנועי AI (AEO/GEO)</Link>
+        </p>
       </section>
+      <ServiceCtaBanner serviceKey="ppc" image={projectImage} imageAlt="פרויקט קידום ממומן" />
     </div>
   );
 }

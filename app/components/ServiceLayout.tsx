@@ -12,6 +12,8 @@ import Hero3D from './hero3d/Hero3D';
 import type { HeroCta, HeroTheme } from './hero3d/types';
 import { buildServiceJsonLd, servicePathForType } from '../../lib/service-schema';
 import { matchesPortfolioTopic, type PortfolioTopic, type PublishedProject } from '../../lib/website-projects';
+import { getServiceCta } from '../../lib/service-cta';
+import ServiceCtaBanner from './ServiceCtaBanner';
 
 export type ServiceOfferLink = {
   title: string;
@@ -71,6 +73,9 @@ interface ServiceLayoutProps {
   localLinksHeading?: string;
   /** Keep content visible if motion JS is late (no initial hidden). */
   disableMotionHide?: boolean;
+  ctaTitle?: string;
+  ctaText?: string;
+  ctaWhatsappText?: string;
   /** Deprecated: placeholder testimonials were removed. Kept optional for back-compat. */
   testimonials?: Array<{
     quote: string;
@@ -153,6 +158,9 @@ export default function ServiceLayout({
   localLinks,
   localLinksHeading = 'בניית אתרים באזור',
   disableMotionHide = true,
+  ctaTitle,
+  ctaText,
+  ctaWhatsappText,
 }: ServiceLayoutProps) {
   const motionInitial = disableMotionHide ? false : 'hidden';
   const [topicPortfolio, setTopicPortfolio] = useState(portfolioTopic ? [] : portfolio);
@@ -188,6 +196,8 @@ export default function ServiceLayout({
   }, [portfolio, portfolioTopic]);
 
   const visiblePortfolio = portfolioTopic ? topicPortfolio : portfolio;
+  const serviceCta = getServiceCta(servicePath || serviceType);
+  const ctaImage = visiblePortfolio.find((item) => item.image && !item.image.endsWith('.svg'))?.image;
   const serviceSchema = buildServiceJsonLd({
     name: title,
     description: intro || subtitle,
@@ -589,49 +599,14 @@ export default function ServiceLayout({
       {/* Pricing Section */}
       {serviceType && <ServicePricing serviceType={serviceType} />}
 
-      {/* CTA Section */}
-      <section data-reveal className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-16 dark:from-blue-900 dark:to-purple-900">
-        <div className="container mx-auto max-w-4xl text-center">
-          <motion.h2
-            initial={motionInitial}
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="mb-6 text-3xl font-bold text-white"
-          >
-            מוכנים להתחיל?
-          </motion.h2>
-          <motion.p
-            initial={motionInitial}
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="mb-8 text-xl text-white/90"
-          >
-            צרו איתנו קשר עוד היום ונעזור לכם להגשים את החזון שלכם
-          </motion.p>
-          <motion.div
-            initial={motionInitial}
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-          >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                href="/contact"
-                data-cta="true"
-                data-cta-location="service-page"
-                className="inline-block rounded-full bg-white px-8 py-4 text-lg font-semibold text-blue-600 shadow-lg transition-all hover:bg-blue-50 hover:shadow-xl dark:bg-gray-900 dark:text-blue-400 dark:hover:bg-gray-800"
-              >
-                דברו איתנו
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      <ServiceCtaBanner
+        serviceKey={servicePath || serviceType}
+        title={ctaTitle || serviceCta.title}
+        text={ctaText || serviceCta.text}
+        whatsappText={ctaWhatsappText || serviceCta.whatsappText}
+        image={ctaImage}
+        imageAlt={visiblePortfolio[0]?.title || title}
+      />
     </div>
   );
 } 

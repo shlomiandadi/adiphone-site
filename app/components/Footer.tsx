@@ -19,6 +19,7 @@ const footerServices = [
   { href: '/services/ai', label: 'פתרונות AI' },
   { href: '/services/cloud', label: 'שירותי ענן' },
   { href: '/blog', label: 'בלוג' },
+  { href: '/blog/kama-oleh-bniyat-atar-2026', label: 'כמה עולה בניית אתר ב-2026' },
 ];
 
 export default function Footer() {

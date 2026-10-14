@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     console.log('Received form data:', { name, email, phone, service });
 
     // Validate required fields
-    if (!name || !email || !message) {
+    if (!name || !phone) {
       console.log('Missing required fields');
       return new Response(JSON.stringify({ error: 'Missing required fields' }), {
         status: 400,
@@ -62,9 +62,12 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Validate email format
+    const resolvedEmail = email && email !== 'lead@adi-phone.co.il' ? email : 'lead@adi-phone.co.il';
+    const resolvedMessage = message?.trim() || `פנייה חדשה בנושא: ${service || 'כללי'}`;
+
+    // Validate email format only when a real address was provided
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (resolvedEmail !== 'lead@adi-phone.co.il' && !emailRegex.test(resolvedEmail)) {
       console.log('Invalid email format:', email);
       return new Response(JSON.stringify({ error: 'Invalid email format' }), {
         status: 400,
@@ -100,9 +103,9 @@ export async function POST(request: NextRequest) {
       const contact = await prisma.contact.create({
         data: {
           name,
-          email,
+          email: resolvedEmail,
           phone: phone || '',
-          message,
+          message: resolvedMessage,
           service: mappedService,
           status: 'NEW'
         }
@@ -114,10 +117,10 @@ export async function POST(request: NextRequest) {
         console.log('Sending email notification...');
         await sendContactEmail({
           name,
-          email,
+          email: resolvedEmail,
           phone: phone || '',
           service: service || 'אחר',
-          message
+          message: resolvedMessage
         });
         console.log('Email sent successfully');
       } catch (emailError) {

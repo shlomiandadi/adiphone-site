@@ -53,6 +53,11 @@ export const LOCAL_WEBSITE_PAGES: readonly LocalCityLink[] = [
   { path: '/services/bniyat-atarim-caesarea', name: 'קיסריה' },
   { path: '/services/bniyat-atarim-zichron-yaakov', name: 'זכרון יעקב' },
   { path: '/services/bniyat-atarim-haifa', name: 'חיפה' },
+  { path: '/services/bniyat-atarim-netanya', name: 'נתניה' },
+  { path: '/services/bniyat-atarim-or-akiva', name: 'אור עקיבא' },
+  { path: '/services/bniyat-atarim-binyamina', name: 'בנימינה' },
+  { path: '/services/bniyat-atarim-yokneam', name: 'יוקנעם' },
+  { path: '/services/bniyat-atarim-afula', name: 'עפולה' },
 ] as const;
 
 export const LOCAL_WEBSITE_PAGE_PATHS = LOCAL_WEBSITE_PAGES.map((page) => page.path);

@@ -8,6 +8,7 @@ import { FaSearch, FaWordpress, FaShoppingCart, FaMobileAlt, FaPaintBrush, FaBul
 import { AGENCY_PROVIDER, SERVICES_HUB_ITEMS, buildServiceJsonLd } from '../../lib/service-schema';
 import { absoluteUrl } from '../../lib/seo';
 import Hero3D from '../components/hero3d/Hero3D';
+import ServiceCtaBanner from '../components/ServiceCtaBanner';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -223,41 +224,7 @@ export default function ServicesPage() {
         </motion.div>
       </div>
 
-      {/* CTA Section */}
-      <div data-reveal className="bg-gradient-to-r from-blue-600 to-blue-800 py-16">
-        <div className="container mx-auto px-4 text-center">
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold text-white mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            מוכנים להתחיל?
-          </motion.h2>
-          <motion.p 
-            className="text-xl text-white/90 mb-8 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            צרו איתנו קשר עוד היום ונעזור לכם להגשים את החזון הדיגיטלי שלכם
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Link 
-              href="/contact"
-              data-cta="true"
-              data-cta-location="service-page"
-              className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300"
-            >
-              דברו איתנו
-            </Link>
-          </motion.div>
-        </div>
-      </div>
+      <ServiceCtaBanner serviceKey="services" />
     </div>
   );
 } 

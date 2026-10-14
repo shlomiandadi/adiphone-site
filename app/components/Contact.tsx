@@ -1,77 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaWhatsapp, FaFacebook, FaLinkedin } from 'react-icons/fa';
-import { useRouter } from 'next/navigation';
-import { attachAttribution, trackGenerateLead } from '../../lib/tracking';
+import LeadForm from './LeadForm';
 
 export default function Contact() {
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-    service: 'other',
-    newsletter: true
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-    
-    try {
-      const response = await fetch('/api/contact/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(attachAttribution({ ...formData, form_name: 'homepage_contact' })),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'שגיאה בשליחת הטופס');
-      }
-
-      trackGenerateLead('homepage_contact', { service_name: formData.service });
-      setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        message: '',
-        service: 'other',
-        newsletter: true
-      });
-      router.push('/thank-you');
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.checked
-    }));
-  };
 
   return (
     <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-900">
@@ -156,150 +88,13 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Contact Form */}
           <div className="lg:col-span-2 h-full">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 h-full">
-              <form onSubmit={handleSubmit} data-form-name="homepage_contact" className="h-full flex flex-col">
-                <div className="flex-grow space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        שם מלא
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        טלפון
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      דוא"ל
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="service" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      שירות
-                    </label>
-                    <select
-                      id="service"
-                      name="service"
-                      value={formData.service}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    >
-                      <option value="web-development">פיתוח אתרים</option>
-                      <option value="seo">קידום אתרים</option>
-                      <option value="ppc">פרסום ממומן</option>
-                      <option value="other">אחר</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      הודעה
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      rows={4}
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
-                    />
-                  </div>
-
-                  <div className="flex items-start space-x-3 space-x-reverse">
-                    <input
-                      type="checkbox"
-                      id="newsletter"
-                      name="newsletter"
-                      checked={formData.newsletter}
-                      onChange={handleCheckboxChange}
-                      className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <label htmlFor="newsletter" className="text-sm text-gray-700 dark:text-gray-300">
-                      אני מעוניין/ת לקבל עדכונים, טיפים מקצועיים וחומרים שיווקיים על שירותי עדי פון תקשורת
-                    </label>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  {submitStatus === 'error' && (
-                    <div className="animate-fade-in rounded-lg border border-red-500 bg-red-50 dark:bg-red-900/30 p-4 flex items-center space-x-3 rtl:space-x-reverse mb-4">
-                      <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <div className="text-red-700 dark:text-red-200">
-                        אירעה שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר בטלפון.
-                      </div>
-                    </div>
-                  )}
-
-                  {submitStatus === 'success' && (
-                    <div className="animate-fade-in rounded-lg border border-green-500 bg-green-50 dark:bg-green-900/30 p-4 flex items-center space-x-3 rtl:space-x-reverse mb-4">
-                      <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <div className="text-green-700 dark:text-green-200">
-                        הטופס נשלח בהצלחה! נציג יצור איתך קשר בהקדם.
-                      </div>
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 ${
-                      isSubmitting
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-blue-600 hover:bg-blue-700 transform hover:scale-105'
-                    } text-white shadow-lg`}
-                  >
-                    {isSubmitting ? 'שולח...' : 'שלח הודעה'}
-                  </button>
-                </div>
-              </form>
+              <LeadForm formName="homepage_contact" />
             </div>
           </div>
         </div>
       </div>
     </section>
   );
-} 
+}

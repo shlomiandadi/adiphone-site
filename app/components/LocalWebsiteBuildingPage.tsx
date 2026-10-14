@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { getSiteUrl } from '../../lib/seo';
+import { buildLocalBusinessJsonLd } from '../../lib/local-business-schema';
+import { getPublishedPortfolioProjects } from '../../lib/website-projects';
+import { getServiceCta } from '../../lib/service-cta';
 import Hero3D from './hero3d/Hero3D';
+import ServiceCtaBanner from './ServiceCtaBanner';
 import {
   LOCAL_WEBSITE_PAGES,
   PHONE_DISPLAY,
@@ -16,10 +20,17 @@ type Props = {
   content: LocalCityContent;
 };
 
-export default function LocalWebsiteBuildingPage({ content }: Props) {
+export default async function LocalWebsiteBuildingPage({ content }: Props) {
   const siteUrl = getSiteUrl();
   const pageUrl = `${siteUrl}${content.path}`;
   const h1 = `בניית אתרים ב${content.cityName}`;
+  const localCta = getServiceCta('local');
+  const projects = await getPublishedPortfolioProjects('websites', 1);
+  const projectImage = projects.find((project) => project.image && !project.image.endsWith('.svg'))?.image;
+  const localBusinessSchema = buildLocalBusinessJsonLd({
+    url: pageUrl,
+    extraAreaServed: content.areaServed,
+  });
 
   const serviceSchema = {
     '@context': 'https://schema.org',
@@ -68,6 +79,10 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
 
       <Hero3D
@@ -266,34 +281,14 @@ export default function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
-      <section data-reveal className="bg-blue-700 px-4 py-16 text-white">
-        <div className="container mx-auto max-w-3xl text-center">
-          <h2 className="mb-4 text-3xl font-bold">{content.ctaTitle}</h2>
-          <p className="mb-8 text-lg text-white/90">{content.ctaText}</p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-blue-700 transition-colors hover:bg-blue-50"
-            >
-              חייגו: {PHONE_DISPLAY}
-            </a>
-            <Link
-              href="/contact"
-              data-cta="true"
-              data-cta-location="service-page"
-              className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              צרו קשר
-            </Link>
-            <Link
-              href="/pricing"
-              className="rounded-full border border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              למחירון
-            </Link>
-          </div>
-        </div>
-      </section>
+      <ServiceCtaBanner
+        serviceKey="local"
+        title={content.ctaTitle || localCta.title}
+        text={`${content.ctaText} שיחת ייעוץ של 15 דקות – בחינם.`}
+        whatsappText={`שלום, אשמח לקבוע שיחת ייעוץ לבניית אתר ב${content.cityName}.`}
+        image={projectImage}
+        imageAlt={`פרויקט אתר לעסק באזור ${content.cityName}`}
+      />
     </div>
   );
 }

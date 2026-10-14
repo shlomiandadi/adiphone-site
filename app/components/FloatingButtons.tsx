@@ -25,6 +25,9 @@ export default function FloatingButtons() {
   const [isMobile, setIsMobile] = useState(false);
   const [chatbotOpen, setChatbotOpen] = useState(false);
   const [accessibilityOpen, setAccessibilityOpen] = useState(false);
+  // Hide the left utility stack until cookie consent exists so those
+  // widgets do not sit on top of the first-visit cookie banner.
+  const [cookieSettled, setCookieSettled] = useState(false);
   const openCookieSettings = () => {
     try {
       window.dispatchEvent(new Event('open-cookie-settings'));
@@ -53,8 +56,15 @@ export default function FloatingButtons() {
     
     checkMobile();
     window.addEventListener('resize', checkMobile);
+    const hasConsent = document.cookie.split('; ').some((row) => row.startsWith('cookie_consent_v1='));
+    setCookieSettled(hasConsent);
+    const onConsent = () => setCookieSettled(true);
+    window.addEventListener('cookie-consent-changed', onConsent);
     
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('cookie-consent-changed', onConsent);
+    };
   }, []);
 
   // Load saved accessibility preferences from localStorage
@@ -372,7 +382,9 @@ export default function FloatingButtons() {
           </div>
         )}
 
-        {/* Utility widgets sit above the CRO bar so they are not covered and do not compete with lead actions */}
+        {/* Utility widgets sit above the CRO bar so they are not covered and do not compete with lead actions.
+            Hidden until cookie consent so they do not overlap the first-visit cookie banner. */}
+        {cookieSettled && (
         <div
           className="fixed left-3 z-[99998] flex flex-col gap-2 md:hidden"
           style={{ bottom: 'calc(4.75rem + env(safe-area-inset-bottom, 0px) + 0.75rem)' }}
@@ -401,6 +413,7 @@ export default function FloatingButtons() {
             <FaWheelchair className="h-5 w-5" />
           </button>
         </div>
+        )}
 
         <nav
           aria-label="פעולות יצירת קשר"

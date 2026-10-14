@@ -4,6 +4,7 @@ import { normalizeCanonicalUrl } from '../seo';
 import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
 import {
+  applyCmsTitle,
   exactPathKeys,
   mergeOpenGraph,
   metadataKeywords,
@@ -11,7 +12,6 @@ import {
   nonEmpty,
   rowMatchesExactPath,
   shouldApplyRobots,
-  withTitle,
 } from './seoMerge';
 
 export const getCmsSeo = cmsCache('cms-seo', async (path: string) => {
@@ -47,8 +47,11 @@ export async function mergeCmsMetadata(path: string, base: Metadata): Promise<Me
 
   const next: Metadata = { ...base };
   if (seo) {
-    if (nonEmpty(seo.title) && seo.title !== metadataTitle(base)) {
-      next.title = withTitle(base, seo.title);
+    if (nonEmpty(seo.title)) {
+      const title = applyCmsTitle(base, seo.title);
+      if (metadataTitle({ title }) !== metadataTitle(base)) {
+        next.title = title;
+      }
     }
     if (nonEmpty(seo.description) && seo.description !== (base.description || '')) {
       next.description = seo.description;
@@ -85,7 +88,9 @@ export async function mergeCmsMetadata(path: string, base: Metadata): Promise<Me
 }
 
 export {
+  applyCmsTitle,
   exactPathKeys,
-  shouldApplyRobots,
   mergeOpenGraph,
+  shouldApplyRobots,
+  stripTitleTemplateSuffix,
 } from './seoMerge';

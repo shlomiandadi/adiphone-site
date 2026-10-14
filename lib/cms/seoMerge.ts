@@ -2,11 +2,8 @@ import type { Metadata } from 'next';
 
 const DEFAULT_ROBOTS = 'index, follow';
 
-export const LAYOUT_OG_DEFAULTS = {
-  type: 'website' as const,
-  locale: 'he_IL',
-  siteName: 'Top Webstak',
-};
+/** Root layout title.template is `%s | Top Webstak`. */
+export const TITLE_TEMPLATE_SUFFIX = ' | Top Webstak';
 
 export function nonEmpty(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
@@ -70,6 +67,33 @@ export function withTitle(base: Metadata, title: string): Metadata['title'] {
   return title;
 }
 
+export function stripTitleTemplateSuffix(title: string): string {
+  let next = title.trimEnd();
+  while (next.endsWith(TITLE_TEMPLATE_SUFFIX) && next.length > TITLE_TEMPLATE_SUFFIX.length) {
+    next = next.slice(0, -TITLE_TEMPLATE_SUFFIX.length).trimEnd();
+  }
+  return next;
+}
+
+/** Pages with a string title, `{ default }`, or no title inherit the root `%s | Top Webstak` template. */
+export function usesTitleTemplate(base: Metadata): boolean {
+  const title = base.title;
+  if (title && typeof title === 'object' && 'absolute' in title && title.absolute) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Apply a CMS title so either stored form (with or without ` | Top Webstak`) renders once.
+ * Templated pages strip a trailing suffix before the root template is applied.
+ * Absolute-title pages keep the stored string as-is.
+ */
+export function applyCmsTitle(base: Metadata, cmsTitle: string): Metadata['title'] {
+  const title = usesTitleTemplate(base) ? stripTitleTemplateSuffix(cmsTitle) : cmsTitle;
+  return withTitle(base, title);
+}
+
 export function exactPathKeys(path: string): string[] {
   const normalized = path === '/' ? '/' : path.replace(/\/+$/, '') || '/';
   if (normalized === '/') return ['/', 'home'];
@@ -91,23 +115,56 @@ function patchRecord(patch: Record<string, unknown>) {
   return next;
 }
 
+function firstOgImageUrl(images: unknown): string | null {
+  if (images == null) return null;
+  const first = Array.isArray(images) ? images[0] : images;
+  if (first == null) return null;
+  if (typeof first === 'string') return first;
+  if (typeof first === 'object' && 'url' in first) {
+    const url = (first as { url: unknown }).url;
+    if (typeof url === 'string') return url;
+    if (url != null) return String(url);
+  }
+  return null;
+}
+
+/**
+ * Patch the page's own openGraph only. Never inject layout locale/site_name/type/url,
+ * and keep existing image alt/width/height when the CMS image URL is unchanged.
+ */
 export function mergeOpenGraph(
   base: Metadata,
   patch: { title?: string | null; description?: string | null; image?: string | null; url?: string | null }
 ): Metadata['openGraph'] | undefined {
-  const extra = patchRecord({
-    title: patch.title,
-    description: patch.description,
-    url: patch.url,
-    ...(nonEmpty(patch.image) ? { images: [{ url: patch.image }] } : {}),
-  });
-  if (Object.keys(extra).length === 0) return undefined;
-  const baseOg = typeof base.openGraph === 'object' && base.openGraph ? base.openGraph : {};
-  return {
-    ...LAYOUT_OG_DEFAULTS,
-    ...baseOg,
-    ...extra,
-  };
+  const baseOg =
+    base.openGraph && typeof base.openGraph === 'object' ? { ...base.openGraph } : {};
+
+  const next: Record<string, unknown> = { ...baseOg };
+  let changed = false;
+
+  if (nonEmpty(patch.title)) {
+    next.title = patch.title;
+    changed = true;
+  }
+  if (nonEmpty(patch.description)) {
+    next.description = patch.description;
+    changed = true;
+  }
+  if (nonEmpty(patch.image)) {
+    const currentUrl = firstOgImageUrl('images' in baseOg ? baseOg.images : undefined);
+    if (currentUrl !== patch.image) {
+      next.images = [{ url: patch.image }];
+      changed = true;
+    }
+  }
+  // Only update url when the page already rendered one — never add it.
+  if (nonEmpty(patch.url) && 'url' in baseOg && baseOg.url != null) {
+    next.url = patch.url;
+    changed = true;
+  }
+
+  if (!changed) return undefined;
+  return next as Metadata['openGraph'];
 }
 
 export function mergeTwitter(

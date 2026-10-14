@@ -49,7 +49,7 @@ export default function SeoPagesAdmin() {
   return (
     <CmsShell
       title="SEO לפי עמוד"
-      hint="ייבוא שומר null בשדות שזהים לברירת המחדל של הקוד (robots/OG). cmsEnabled משנה מטא רק בשדות שמילאתם במפורש לנתיב הזה."
+      hint="ייבוא שומר null בשדות שזהים לברירת המחדל של הקוד (robots/OG). cmsEnabled משנה מטא רק בשדות שמילאתם במפורש לנתיב הזה. בשדה title אפשר לשמור עם או בלי הסיומת « | Top Webstak » — בעמודי תבנית הסיומת תוצג פעם אחת בלבד."
       error={error}
       message={message}
     >
@@ -88,6 +88,9 @@ export default function SeoPagesAdmin() {
       </div>
       <div className="bg-white rounded shadow p-4">
         <Field label="title" value={form.title} onChange={(v) => setDraft({ ...form, title: v })} />
+        <p className="text-xs text-gray-500 -mt-2 mb-3">
+          עמודים שמשתמשים בתבנית הכותרת של האתר (%s | Top Webstak) יסירו סיומת « | Top Webstak » לפני ההחלה, כדי שלא תופיע פעמיים. עמודי כותרת absolute נשארים כמו שנשמר.
+        </p>
         <Area label="description" value={form.description} onChange={(v) => setDraft({ ...form, description: v })} />
         <Area label="keywords" value={form.keywords} onChange={(v) => setDraft({ ...form, keywords: v })} rows={2} />
         <Field label="ogTitle" value={String(form.ogTitle || '')} onChange={(v) => setDraft({ ...form, ogTitle: v })} />

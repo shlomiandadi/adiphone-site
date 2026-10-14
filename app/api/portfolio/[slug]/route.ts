@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { revalidatePortfolioPaths } from '../../../../lib/revalidateContent';
 import { requireAdminApiAuth } from '../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
@@ -125,6 +126,8 @@ export async function PUT(
       }
     });
 
+    revalidatePortfolioPaths(updatedProject.slug, params.slug);
+
     return NextResponse.json({
       success: true,
       message: published ? 'הפרויקט פורסם בהצלחה!' : 'הפרויקט נשמר כטיוטה!',
@@ -164,6 +167,8 @@ export async function DELETE(
     await prisma.portfolioProject2.delete({
       where: { slug: params.slug }
     });
+
+    revalidatePortfolioPaths(params.slug);
 
     return NextResponse.json({
       success: true,

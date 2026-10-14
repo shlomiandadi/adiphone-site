@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { revalidateBlogPaths } from '../../../lib/revalidateContent';
 import { requireAdminApiAuth } from '../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
@@ -84,6 +85,8 @@ export async function POST(request: NextRequest) {
     const post = await prisma.post.create({
       data: postData
     });
+
+    revalidateBlogPaths(post.slug);
 
     return NextResponse.json({
       success: true,

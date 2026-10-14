@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { revalidateBlogPaths } from '../../../../lib/revalidateContent';
 import { requireAdminApiAuth } from '../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
@@ -135,6 +136,8 @@ export async function PUT(
       }
     });
 
+    revalidateBlogPaths(updatedPost.slug, params.slug);
+
     return NextResponse.json({
       success: true,
       message: published ? 'הפוסט פורסם בהצלחה!' : 'הפוסט נשמר כטיוטה!',
@@ -174,6 +177,8 @@ export async function DELETE(
     await prisma.post.delete({
       where: { slug: params.slug }
     });
+
+    revalidateBlogPaths(params.slug);
 
     return NextResponse.json({
       success: true,

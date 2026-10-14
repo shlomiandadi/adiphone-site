@@ -2,6 +2,8 @@ import { MetadataRoute } from 'next';
 import { LOCAL_WEBSITE_PAGE_PATHS } from '../lib/local-website-building';
 import { getSiteUrl } from '../lib/seo';
 
+export const revalidate = 3600;
+
 /** Indexable static routes only (no noindex pages, no duplicate/redirect stubs). */
 const STATIC_ROUTES = [
   '',

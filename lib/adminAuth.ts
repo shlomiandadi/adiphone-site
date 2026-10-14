@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verify } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+export function getJwtSecret(): string | null {
+  const secret = process.env.JWT_SECRET;
+  return secret ? secret : null;
+}
 
 export interface AdminUser {
   id: string;
@@ -13,8 +16,13 @@ export interface AdminUser {
 }
 
 export function verifyAdminToken(token: string): AdminUser | null {
+  const jwtSecret = getJwtSecret();
+  if (!jwtSecret) {
+    return null;
+  }
+
   try {
-    const decoded = verify(token, JWT_SECRET) as AdminUser;
+    const decoded = verify(token, jwtSecret) as AdminUser;
     return decoded;
   } catch (error) {
     return null;

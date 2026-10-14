@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { revalidatePortfolioPaths } from '../../../../lib/revalidateContent';
 import { requireAdminApiAuth } from '../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
@@ -129,6 +130,8 @@ export async function POST(request: NextRequest) {
         published: published || false
       }
     });
+
+    revalidatePortfolioPaths(project.slug);
 
     return NextResponse.json({
       success: true,

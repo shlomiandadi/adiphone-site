@@ -37,6 +37,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
   const [tags, setTags] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [contacts, setContacts] = useState<any[]>([]);
+  const [cmsCounts, setCmsCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
 
   const fetchPosts = async () => {
@@ -111,6 +112,16 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
     }
   };
 
+  const fetchCmsCounts = async () => {
+    try {
+      const response = await fetch('/api/admin/cms/counts');
+      const data = await response.json();
+      setCmsCounts(data || {});
+    } catch (error) {
+      console.error('Error fetching CMS counts:', error);
+    }
+  };
+
   const handleDeletePost = async (postSlug: string) => {
     if (confirm('האם אתה בטוח שברצונך למחוק פוסט זה?')) {
       try {
@@ -135,7 +146,8 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
         fetchCategories(),
         fetchTags(),
         fetchUsers(),
-        fetchContacts()
+        fetchContacts(),
+        fetchCmsCounts()
       ]);
       setLoading(false);
     };
@@ -331,6 +343,30 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
           </div>
         </Link>
 
+        <Link href="/admin/breadcrumbs" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
+          <p className="text-sm font-medium text-gray-600">היררכיה / breadcrumbs</p>
+          <p className="text-2xl font-bold text-gray-900">{cmsCounts.hierarchy ?? 0} / {cmsCounts.breadcrumbs ?? 0}</p>
+        </Link>
+        <Link href="/admin/seo/pages" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
+          <p className="text-sm font-medium text-gray-600">SEO / canonicals</p>
+          <p className="text-2xl font-bold text-gray-900">{cmsCounts.seo ?? 0} / {cmsCounts.canonicals ?? 0}</p>
+        </Link>
+        <Link href="/admin/navigation" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
+          <p className="text-sm font-medium text-gray-600">פריטי תפריט</p>
+          <p className="text-2xl font-bold text-gray-900">{cmsCounts.menus ?? 0}</p>
+        </Link>
+        <Link href="/admin/footer" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
+          <p className="text-sm font-medium text-gray-600">קישורי פוטר</p>
+          <p className="text-2xl font-bold text-gray-900">{cmsCounts.footerLinks ?? 0}</p>
+        </Link>
+        <Link href="/admin/sections" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
+          <p className="text-sm font-medium text-gray-600">תבניות / סקשנים</p>
+          <p className="text-2xl font-bold text-gray-900">{cmsCounts.templates ?? 0} / {cmsCounts.sections ?? 0}</p>
+        </Link>
+        <Link href="/admin/pages" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
+          <p className="text-sm font-medium text-gray-600">עמודי CMS</p>
+          <p className="text-2xl font-bold text-gray-900">{cmsCounts.pages ?? 0}</p>
+        </Link>
         {user.role === 'ADMIN' && (
           <Link href="/admin/users" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
             <div className="flex items-center">

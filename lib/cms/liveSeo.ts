@@ -40,12 +40,12 @@ export type LiveSeoRow = {
   path: string;
   title: string;
   description: string;
-  keywords: string;
-  ogTitle: string;
-  ogDescription: string;
-  ogImage: string;
-  canonicalUrl: string;
-  robots: string;
+  keywords: string | null;
+  ogTitle: string | null;
+  ogDescription: string | null;
+  ogImage: string | null;
+  canonicalUrl: string | null;
+  robots: string | null;
 };
 
 function titleOf(meta: Metadata): string {
@@ -65,43 +65,52 @@ function keywordsOf(meta: Metadata): string {
   return '';
 }
 
-function ogTitleOf(meta: Metadata, fallback: string): string {
-  const og = meta.openGraph && typeof meta.openGraph === 'object' ? meta.openGraph : null;
-  return (og && 'title' in og && og.title ? String(og.title) : fallback);
+function explicitText(value: unknown): string | null {
+  if (typeof value === 'string' && value.trim()) return value;
+  return null;
 }
 
-function ogDescriptionOf(meta: Metadata, fallback: string): string {
+function ogTitleOf(meta: Metadata): string | null {
   const og = meta.openGraph && typeof meta.openGraph === 'object' ? meta.openGraph : null;
-  return (og && 'description' in og && og.description ? String(og.description) : fallback);
+  return og && 'title' in og ? explicitText(og.title) : null;
 }
 
-function ogImageOf(meta: Metadata): string {
+function ogDescriptionOf(meta: Metadata): string | null {
+  const og = meta.openGraph && typeof meta.openGraph === 'object' ? meta.openGraph : null;
+  return og && 'description' in og ? explicitText(og.description) : null;
+}
+
+function ogImageOf(meta: Metadata): string | null {
   const og = meta.openGraph && typeof meta.openGraph === 'object' ? meta.openGraph : null;
   const images = og && 'images' in og ? og.images : undefined;
   if (Array.isArray(images) && images[0]) {
     const first = images[0];
-    if (typeof first === 'string') return first;
-    if (first && typeof first === 'object' && 'url' in first) return String(first.url);
+    if (typeof first === 'string') return first || null;
+    if (first && typeof first === 'object' && 'url' in first) return String(first.url) || null;
   }
-  if (typeof images === 'string') return images;
-  return '';
+  if (typeof images === 'string' && images.trim()) return images;
+  return null;
 }
 
-function robotsOf(meta: Metadata): string {
-  const robots = meta.robots;
-  if (typeof robots === 'string') return robots;
-  if (robots && typeof robots === 'object') {
-    const index = 'index' in robots && robots.index === false ? 'noindex' : 'index';
-    const follow = 'follow' in robots && robots.follow === false ? 'nofollow' : 'follow';
-    return `${index}, ${follow}`;
+function robotsOf(meta: Metadata): string | null {
+  if (meta.robots == null) return null;
+  if (typeof meta.robots === 'string') {
+    const value = meta.robots.trim();
+    return !value || value.toLowerCase() === 'index, follow' ? null : value;
   }
-  return 'index, follow';
+  if (typeof meta.robots === 'object') {
+    const index = 'index' in meta.robots && meta.robots.index === false ? 'noindex' : 'index';
+    const follow = 'follow' in meta.robots && meta.robots.follow === false ? 'nofollow' : 'follow';
+    const value = `${index}, ${follow}`;
+    return value === 'index, follow' ? null : value;
+  }
+  return null;
 }
 
-function canonicalOf(path: string, meta: Metadata): string {
+function canonicalOf(path: string, meta: Metadata): string | null {
   const raw = meta.alternates?.canonical;
-  const value = typeof raw === 'string' ? raw : '';
-  return normalizeCanonicalUrl(value, path);
+  if (typeof raw !== 'string' || !raw.trim()) return null;
+  return normalizeCanonicalUrl(raw, path);
 }
 
 function pageKey(path: string): string {
@@ -111,15 +120,19 @@ function pageKey(path: string): string {
 export function flattenLiveMetadata(path: string, meta: Metadata): LiveSeoRow {
   const title = titleOf(meta);
   const description = typeof meta.description === 'string' ? meta.description : '';
+  const keywords = keywordsOf(meta) || null;
+  const ogTitle = ogTitleOf(meta);
+  const ogDescription = ogDescriptionOf(meta);
+  const ogImage = ogImageOf(meta) || null;
   return {
     page: pageKey(path),
     path,
     title,
     description,
-    keywords: keywordsOf(meta),
-    ogTitle: ogTitleOf(meta, title),
-    ogDescription: ogDescriptionOf(meta, description),
-    ogImage: ogImageOf(meta),
+    keywords,
+    ogTitle: ogTitle && ogTitle !== title ? ogTitle : null,
+    ogDescription: ogDescription && ogDescription !== description ? ogDescription : null,
+    ogImage,
     canonicalUrl: canonicalOf(path, meta),
     robots: robotsOf(meta),
   };
@@ -199,11 +212,7 @@ export const LIVE_SEO: Record<string, LiveSeoRow> = Object.fromEntries(
   })
 );
 
-export function seoLookupKeys(path: string): string[] {
-  const keys = [path, path.replace(/^\//, ''), pageKey(path)];
-  if (path === '/') keys.push('home');
-  return Array.from(new Set(keys.filter(Boolean)));
-}
+export { exactPathKeys as seoLookupKeys } from './seoMerge';
 
 export function absoluteCanonical(path: string): string {
   return normalizeCanonicalUrl(null, path === '/' ? '/' : path);

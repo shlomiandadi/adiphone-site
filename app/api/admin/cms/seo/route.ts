@@ -25,7 +25,7 @@ export async function PUT(request: NextRequest) {
       ogDescription: body.ogDescription ? String(body.ogDescription) : null,
       ogImage: body.ogImage ? String(body.ogImage) : null,
       canonicalUrl: body.canonicalUrl ? String(body.canonicalUrl) : null,
-      robots: String(body.robots || 'index, follow'),
+      robots: body.robots ? String(body.robots) : null,
       cmsEnabled: Boolean(body.cmsEnabled),
     };
     const row = body.id

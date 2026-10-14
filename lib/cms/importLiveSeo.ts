@@ -12,12 +12,12 @@ export async function importLiveSeoAndCanonicals() {
       page: live.page,
       title: live.title,
       description: live.description,
-      keywords: live.keywords,
-      ogTitle: live.ogTitle || null,
-      ogDescription: live.ogDescription || null,
-      ogImage: live.ogImage || null,
-      canonicalUrl: live.canonicalUrl || null,
-      robots: live.robots || 'index, follow',
+      keywords: live.keywords || '',
+      ogTitle: live.ogTitle,
+      ogDescription: live.ogDescription,
+      ogImage: live.ogImage,
+      canonicalUrl: live.canonicalUrl,
+      robots: live.robots ?? '',
     };
     if (existingSeo) {
       await prisma.seoPage.update({
@@ -30,6 +30,8 @@ export async function importLiveSeoAndCanonicals() {
       });
     }
     seoCount += 1;
+
+    if (!live.canonicalUrl) continue;
 
     const existingCanon = await prisma.canonicalTag.findFirst({ where: { pageSlug: live.path } });
     const canonPayload = {

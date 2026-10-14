@@ -7,11 +7,11 @@ export function cmsCache<Args extends unknown[], Result>(
   key: string,
   fn: (...args: Args) => Promise<Result>
 ): (...args: Args) => Promise<Result> {
-  const cached = unstable_cache(fn, [key], {
-    tags: [CMS_CACHE_TAG],
-    revalidate: CMS_REVALIDATE_SECONDS,
-  });
-  return (...args: Args) => cached(...args);
+  return (...args: Args) =>
+    unstable_cache(fn, [key, ...args.map((value) => JSON.stringify(value))], {
+      tags: [CMS_CACHE_TAG],
+      revalidate: CMS_REVALIDATE_SECONDS,
+    })(...args);
 }
 
 export function revalidateCmsTag() {

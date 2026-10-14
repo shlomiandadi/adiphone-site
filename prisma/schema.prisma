@@ -201,7 +201,7 @@ model SeoPage {
   ogDescription String?
   ogImage       String?
   canonicalUrl  String?
-  robots        String
+  robots        String?
   createdAt     DateTime
   updatedAt     DateTime
   cmsEnabled    Boolean?

@@ -1,28 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { getAdminUser } from '../../../../lib/adminAuth';
+import { requireAdminApiAuth } from '../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
 import { hash } from 'bcryptjs';
 
 export async function GET() {
-  try {
-    // בדיקת הרשאות
-    const user = await getAdminUser();
-    if (!user) {
-      return NextResponse.json(
-        { error: 'לא מורשה' },
-        { status: 401 }
-      );
-    }
+  const unauthorized = await requireAdminApiAuth({ role: 'ADMIN' });
+  if (unauthorized) return unauthorized;
 
-    // רק מנהלים יכולים לראות משתמשים
-    if (user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { error: 'אין הרשאה' },
-        { status: 403 }
-      );
-    }
+  try {
 
     const users = await prisma.user.findMany({
       include: {
@@ -62,24 +49,10 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const unauthorized = await requireAdminApiAuth({ role: 'ADMIN' });
+  if (unauthorized) return unauthorized;
+
   try {
-    // בדיקת הרשאות
-    const user = await getAdminUser();
-    if (!user) {
-      return NextResponse.json(
-        { error: 'לא מורשה' },
-        { status: 401 }
-      );
-    }
-
-    // רק מנהלים יכולים ליצור משתמשים
-    if (user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { error: 'אין הרשאה' },
-        { status: 403 }
-      );
-    }
-
     const body = await request.json();
     const { username, email, password, role, isActive } = body;
 

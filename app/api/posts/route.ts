@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { requireAdminApiAuth } from '../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
+  const unauthorized = await requireAdminApiAuth();
+  if (unauthorized) return unauthorized;
+
   try {
     const body = await request.json();
     console.log('Received POST data:', body);
@@ -105,6 +109,11 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category');
     const admin = searchParams.get('admin'); // פרמטר מיוחד למערכת הניהול
 
+    if (admin === 'true' || published === 'false') {
+      const unauthorized = await requireAdminApiAuth();
+      if (unauthorized) return unauthorized;
+    }
+
     const skip = (page - 1) * limit;
 
     // בניית תנאי החיפוש
@@ -117,12 +126,8 @@ export async function GET(request: NextRequest) {
       }
       // אם לא צוין published, הראה את כל הפוסטים
     } else {
-      // ברירת מחדל: רק פוסטים מפורסמים
-      if (published !== null) {
-        where.published = published === 'true';
-      } else {
-        where.published = true;
-      }
+      // Unauthenticated (and non-admin) callers only ever see published posts
+      where.published = true;
     }
     
     if (category) {

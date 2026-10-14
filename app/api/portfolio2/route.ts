@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { requireAdminApiAuth } from '../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,10 @@ export async function GET(req: NextRequest) {
       });
       if (!project) {
         return NextResponse.json({ error: 'Not found' }, { status: 404 });
+      }
+      if (!project.published) {
+        const unauthorized = await requireAdminApiAuth();
+        if (unauthorized) return unauthorized;
       }
       return NextResponse.json(project);
     } else {

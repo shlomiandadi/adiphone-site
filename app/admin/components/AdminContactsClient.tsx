@@ -22,7 +22,7 @@ export default function AdminContactsClient() {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const response = await fetch('/api/contact');
+        const response = await fetch('/api/contact', { credentials: 'same-origin' });
         if (!response.ok) {
           throw new Error('Failed to fetch contacts');
         }

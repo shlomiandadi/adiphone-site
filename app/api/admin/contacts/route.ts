@@ -1,23 +1,16 @@
 import { NextRequest } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { requireAdminApiAuth } from '../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
-import { auth } from '../../../../lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
+  const unauthorized = await requireAdminApiAuth();
+  if (unauthorized) return unauthorized;
+
   try {
-    const session = await auth();
-    
-    if (!session) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    }
 
     const contacts = await prisma.contact.findMany({
       orderBy: {

@@ -32,6 +32,26 @@ export async function getAdminUser(): Promise<AdminUser | null> {
   return verifyAdminToken(token);
 }
 
+/** JSON 401/403 for API routes. Uses the same admin-token cookie as /admin pages. */
+export async function requireAdminApiAuth(options?: {
+  role?: string | string[];
+}): Promise<NextResponse | null> {
+  const user = await getAdminUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (options?.role) {
+    const allowed = Array.isArray(options.role) ? options.role : [options.role];
+    const role = String(user.role).toUpperCase();
+    if (!allowed.some((allowedRole) => allowedRole.toUpperCase() === role)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+  }
+
+  return null;
+}
+
 export async function requireAdminAuth(request: NextRequest): Promise<NextResponse | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get('admin-token')?.value;

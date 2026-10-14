@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { requireAdminApiAuth } from '../../../../../lib/adminAuth';
 
 const prisma = new PrismaClient();
 import { hash } from 'bcryptjs';
@@ -8,6 +9,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const unauthorized = await requireAdminApiAuth({ role: 'ADMIN' });
+  if (unauthorized) return unauthorized;
+
   try {
     const body = await request.json();
     const { username, email, password, role, isActive } = body;
@@ -93,6 +97,9 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const unauthorized = await requireAdminApiAuth({ role: 'ADMIN' });
+  if (unauthorized) return unauthorized;
+
   try {
     // בדיקה אם המשתמש קיים
     const existingUser = await prisma.user.findUnique({

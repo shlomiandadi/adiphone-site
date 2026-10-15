@@ -4,6 +4,7 @@ import { revalidatePortfolioPaths } from '../../../../lib/revalidateContent';
 import { EDITOR_ROLES, requireAdminApiAuth } from '../../../../lib/adminAuth';
 import { dateOnlyUtcNoon } from '../../../../lib/dateOnly';
 import { normalizeTagNames } from '../../../../lib/postTags';
+import { bodyHasCaseStudy, readPortfolioCaseStudy, writePortfolioCaseStudy } from '../../../../lib/portfolioCaseStudy';
 
 const prisma = new PrismaClient();
 
@@ -40,7 +41,13 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(project);
+    const caseStudy = await readPortfolioCaseStudy(prisma, project.slug);
+    return NextResponse.json({
+      ...project,
+      challenge: caseStudy?.challenge || '',
+      solution: caseStudy?.solution || '',
+      result: caseStudy?.result || '',
+    });
   } catch (error) {
     console.error('Error fetching portfolio project:', error);
     return NextResponse.json(
@@ -132,9 +139,16 @@ export async function PUT(
 
     revalidatePortfolioPaths(updatedProject.slug, params.slug);
 
+    let warning: string | undefined;
+    if (bodyHasCaseStudy(body)) {
+      const written = await writePortfolioCaseStudy(prisma, updatedProject.slug, body);
+      if (!written.saved) warning = written.warning;
+    }
+
     return NextResponse.json({
       success: true,
       message: published ? 'הפרויקט פורסם בהצלחה!' : 'הפרויקט נשמר כטיוטה!',
+      warning,
       project: updatedProject
     });
 

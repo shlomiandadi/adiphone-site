@@ -27,6 +27,7 @@ const STATIC_ROUTES = [
   '/services/software-development',
   '/services/ui-design',
   '/services/web-development',
+  '/services/website-tadmit',
   '/services/wordpress',
   '/blog/kama-oleh-bniyat-atar-2026',
   ...LOCAL_WEBSITE_PAGE_PATHS,

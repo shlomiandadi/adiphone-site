@@ -7,6 +7,7 @@ interface CreativeWorkSchemaProps {
   url: string;
   dateCreated?: string | Date | null;
   keywords?: string[] | null;
+  text?: string | null;
 }
 
 export default function CreativeWorkSchema({
@@ -16,6 +17,7 @@ export default function CreativeWorkSchema({
   url,
   dateCreated,
   keywords,
+  text,
 }: CreativeWorkSchemaProps) {
   const siteUrl = getSiteUrl();
   const images = Array.isArray(image) ? image.filter(Boolean) : image ? [image] : [];
@@ -34,6 +36,7 @@ export default function CreativeWorkSchema({
       ? (typeof dateCreated === 'string' ? dateCreated : dateCreated.toISOString())
       : undefined,
     keywords: keywords && keywords.length ? keywords.join(', ') : undefined,
+    text: text || undefined,
   };
 
   return (

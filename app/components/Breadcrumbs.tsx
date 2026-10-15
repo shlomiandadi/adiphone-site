@@ -14,13 +14,17 @@ export default function Breadcrumbs() {
   const homeIsFirst = trail[0]?.url === '/';
   const rest = homeIsFirst ? trail.slice(1) : trail;
   const schema = breadcrumbJsonLd(homeIsFirst ? trail : [{ url: '/', title: 'דף הבית' }, ...trail]);
+  // /contact already publishes a Hebrew BreadcrumbList ("צור קשר"). Skip the English "Contact" one.
+  const skipJsonLd = pathname === '/contact';
 
   return (
     <nav className="py-4" aria-label="Breadcrumb">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+      {skipJsonLd ? null : (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      )}
       <ol className="inline-flex items-center space-x-2 rtl:space-x-reverse text-sm md:text-base">
         <li>
           <Link

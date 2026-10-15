@@ -4,6 +4,7 @@ import { revalidatePortfolioPaths } from '../../../lib/revalidateContent';
 import { EDITOR_ROLES, requireAdminApiAuth } from '../../../lib/adminAuth';
 import { dateOnlyUtcNoon } from '../../../lib/dateOnly';
 import { normalizeTagNames } from '../../../lib/postTags';
+import { bodyHasCaseStudy, writePortfolioCaseStudy } from '../../../lib/portfolioCaseStudy';
 
 const prisma = new PrismaClient();
 
@@ -74,9 +75,16 @@ export async function POST(request: NextRequest) {
 
     revalidatePortfolioPaths(project.slug);
 
+    let warning: string | undefined;
+    if (bodyHasCaseStudy(body)) {
+      const written = await writePortfolioCaseStudy(prisma, project.slug, body);
+      if (!written.saved) warning = written.warning;
+    }
+
     return NextResponse.json({
       success: true,
       message: published ? 'הפרויקט פורסם בהצלחה!' : 'הפרויקט נשמר כטיוטה!',
+      warning,
       project
     });
 

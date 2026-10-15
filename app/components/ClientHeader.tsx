@@ -36,8 +36,26 @@ function getIcon(iconName: string | undefined) {
   return iconMap[iconName || ''] || FaCode;
 }
 
+const WEBSITE_TADMIT_LINK = {
+  name: 'בניית אתר תדמית',
+  href: '/services/website-tadmit',
+  icon: 'globe',
+  description: 'אתר תדמית שמציג את העסק ומביא פניות',
+};
+
+function withWebsiteTadmit(items: NavigationItem[]): NavigationItem[] {
+  return items.map((item) => {
+    if (!item.submenu?.some((child) => child.href === '/services/web-development')) return item;
+    if (item.submenu.some((child) => child.href === WEBSITE_TADMIT_LINK.href)) return item;
+    const submenu = [...item.submenu];
+    const index = submenu.findIndex((child) => child.href === '/services/web-development');
+    submenu.splice(index + 1, 0, WEBSITE_TADMIT_LINK);
+    return { ...item, submenu };
+  });
+}
+
 export default function ClientHeader({ items }: { items?: NavigationItem[] | null }) {
-  const navItems = items && items.length > 0 ? items : navigation;
+  const navItems = withWebsiteTadmit(items && items.length > 0 ? items : navigation);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);

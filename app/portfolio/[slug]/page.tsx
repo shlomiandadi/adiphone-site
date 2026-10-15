@@ -3,6 +3,8 @@ import { Metadata } from 'next';
 import ProjectPageClient from './ProjectPageClient';
 import CreativeWorkSchema from '../../components/CreativeWorkSchema';
 import { getSiteUrl, plainTextMeta } from '../../../lib/seo';
+import prisma from '../../../lib/prisma';
+import { caseStudyText, readPortfolioCaseStudy } from '../../../lib/portfolioCaseStudy';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
 interface Project {
@@ -78,6 +80,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const keywords = (project.keywords && project.keywords.length)
     ? project.keywords
     : (project.technologies || []);
+  const caseStudy = await readPortfolioCaseStudy(prisma, project.slug);
   return (
     <>
       <SeoAgentPageExtras path={`/portfolio/${project.slug}`} />
@@ -88,8 +91,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
         url={`${siteUrl}/portfolio/${project.slug}`}
         dateCreated={project.date || null}
         keywords={keywords}
+        text={caseStudy ? caseStudyText(caseStudy) : undefined}
       />
-      <ProjectPageClient project={project} />
+      <ProjectPageClient project={project} caseStudy={caseStudy} />
     </>
   );
 } 

@@ -15,7 +15,19 @@ interface Project {
   url?: string;
 }
 
-export default function ProjectPageClient({ project }: { project: Project }) {
+type CaseStudy = {
+  challenge: string;
+  solution: string;
+  result: string;
+};
+
+export default function ProjectPageClient({
+  project,
+  caseStudy = null,
+}: {
+  project: Project;
+  caseStudy?: CaseStudy | null;
+}) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -87,6 +99,30 @@ export default function ProjectPageClient({ project }: { project: Project }) {
             />
           )}
         </div>
+      )}
+
+      {caseStudy && (caseStudy.challenge || caseStudy.solution || caseStudy.result) && (
+        <section className="mb-8 rounded-xl bg-white/80 p-6 shadow" aria-label="סיפור מקרה">
+          <h2 className="text-xl font-semibold mb-4">סיפור המקרה</h2>
+          {caseStudy.challenge ? (
+            <div className="mb-4">
+              <h3 className="font-semibold text-gray-900 mb-1">האתגר</h3>
+              <p className="text-gray-700 whitespace-pre-line">{caseStudy.challenge}</p>
+            </div>
+          ) : null}
+          {caseStudy.solution ? (
+            <div className="mb-4">
+              <h3 className="font-semibold text-gray-900 mb-1">הפתרון</h3>
+              <p className="text-gray-700 whitespace-pre-line">{caseStudy.solution}</p>
+            </div>
+          ) : null}
+          {caseStudy.result ? (
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-1">התוצאה</h3>
+              <p className="text-gray-700 whitespace-pre-line">{caseStudy.result}</p>
+            </div>
+          ) : null}
+        </section>
       )}
 
       {/* Description */}

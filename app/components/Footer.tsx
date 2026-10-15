@@ -109,6 +109,22 @@ function FooterMarkup({ data }: { data: FooterView }) {
   );
 }
 
+function withWebsiteTadmit(data: FooterView): FooterView {
+  return {
+    ...data,
+    columns: data.columns.map((column) => {
+      if (column.kind !== 'services') return column;
+      if (column.links.some((link) => link.url === '/services/website-tadmit')) return column;
+      const links = [...column.links];
+      const index = links.findIndex((link) => link.url === '/services/web-development');
+      const item = { title: 'בניית אתר תדמית', url: '/services/website-tadmit' };
+      if (index >= 0) links.splice(index + 1, 0, item);
+      else links.unshift(item);
+      return { ...column, links };
+    }),
+  };
+}
+
 export default function Footer({ cmsFooter }: { cmsFooter?: FooterView | null }) {
-  return <FooterMarkup data={cmsFooter || HARDCODED_FOOTER} />;
+  return <FooterMarkup data={withWebsiteTadmit(cmsFooter || HARDCODED_FOOTER)} />;
 }

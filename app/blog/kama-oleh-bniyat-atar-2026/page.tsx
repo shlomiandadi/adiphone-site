@@ -67,7 +67,15 @@ export default function WebsiteCostGuidePage() {
           : דף נחיתה מתחיל מ-2,500 ₪, אתר תדמית מ-6,500 ₪, חנות אונליין מ-12,000 ₪, ומערכת מותאמת מ-20,000 ₪.
         </p>
         <p className="mb-10 text-lg leading-relaxed text-gray-700">
-          אלה מחירי פתיחה, לא הצעת סגירה. האתר של קליניקה עם ארבעה עמודים לא עולה כמו חנות עם סליקה, מלאי ומשלוחים. בהמשך העמוד יש טבלה, מה מייקר או מוזיל, ומה כדאי לשאול לפני שחותמים.
+          אלה מחירי פתיחה, לא הצעת סגירה. האתר של קליניקה עם ארבעה עמודים לא עולה כמו חנות עם סליקה, מלאי ומשלוחים. בהמשך העמוד יש טבלה, מה מייקר או מוזיל, ומה כדאי לשאול לפני שחותמים. לפירוט השירות:{' '}
+          <Link href="/services/web-development" className="font-semibold text-blue-700 underline">
+            בניית אתרים
+          </Link>
+          {' '}ו{' '}
+          <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline">
+            בניית אתר תדמית
+          </Link>
+          .
         </p>
 
         <h2 className="mb-4 text-3xl font-bold text-gray-900">טבלת מחירים לבניית אתר ב-2026</h2>

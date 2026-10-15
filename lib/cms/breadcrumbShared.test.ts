@@ -20,6 +20,13 @@ describe('fallbackBreadcrumbItems', () => {
     ]);
   });
 
+  test('website-tadmit uses the Hebrew service name', () => {
+    assert.deepEqual(fallbackBreadcrumbItems('/services/website-tadmit'), [
+      { url: '/services', title: 'Services', isActive: false },
+      { url: '/services/website-tadmit', title: 'בניית אתר תדמית', isActive: true },
+    ]);
+  });
+
   test('aeo-geo path is unchanged from URL fallback', () => {
     assert.deepEqual(fallbackBreadcrumbItems('/services/aeo-geo'), [
       { url: '/services', title: 'Services', isActive: false },

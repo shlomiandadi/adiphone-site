@@ -14,6 +14,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   'privacy-policy': 'מדיניות פרטיות',
   'accessibility-statement': 'הצהרת נגישות',
   'web-development': 'בניית אתרים',
+  'website-tadmit': 'בניית אתר תדמית',
   wordpress: 'וורדפרס',
   ecommerce: 'חנויות אינטרנט',
   'mobile-apps': 'פיתוח אפליקציות',

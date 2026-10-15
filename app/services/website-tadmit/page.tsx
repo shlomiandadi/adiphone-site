@@ -1,9 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getSiteUrl } from '../../../lib/seo';
 import { getWebsitePortfolioProjects } from '../../../lib/website-projects';
 import { buildServiceJsonLd } from '../../../lib/service-schema';
-import { breadcrumbJsonLd } from '../../../lib/cms/breadcrumbShared';
 import Hero3D from '../../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
 
@@ -44,21 +42,13 @@ export default async function WebsiteTadmitPage() {
   const projects = await getWebsitePortfolioProjects();
   const examples = projects.filter((project) => project.slug && project.name).slice(0, 3);
   const projectImage = examples.find((project) => project.image && !project.image.endsWith('.svg'))?.image;
-  const siteUrl = getSiteUrl();
-  const pageUrl = `${siteUrl}/services/website-tadmit`;
 
   const serviceSchema = buildServiceJsonLd({
-    name: 'בניית אתר תדמית',
+    name: 'אתרי תדמית לעסקים',
     description:
-      'בניית אתר תדמית ובניית אתרי תדמית לעסקים: אתר שמציג את השירותים, מייצר פניות, ומותאם לנייד.',
+      'אתרי תדמית לעסקים: מחירים, תהליך העבודה ודוגמאות. אתר שמציג את השירותים, מייצר פניות, ומותאם לנייד.',
     path: '/services/website-tadmit',
   });
-
-  const breadcrumbSchema = breadcrumbJsonLd([
-    { url: '/', title: 'דף הבית' },
-    { url: '/services', title: 'שירותים' },
-    { url: '/services/website-tadmit', title: 'בניית אתר תדמית' },
-  ]);
 
   const faqSchema = {
     '@context': 'https://schema.org',
@@ -73,12 +63,11 @@ export default async function WebsiteTadmitPage() {
   return (
     <div className="min-h-screen bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <Hero3D
         theme="web-development"
-        title="בניית אתר תדמית"
+        title="אתרי תדמית לעסקים"
         subtitle="אתר שמסביר את העסק, נראה מקצועי בטלפון, ומביא פנייה – בלי חנות ובלי מערכת מיותרת."
         ctas={[
           { href: '/contact#contact-form', label: 'שיחת ייעוץ של 15 דקות' },
@@ -87,6 +76,12 @@ export default async function WebsiteTadmitPage() {
       />
 
       <article className="container mx-auto max-w-3xl px-4 py-16 text-right text-lg leading-relaxed text-gray-700">
+        <p className="mb-8 text-xl font-semibold text-gray-900">
+          <Link href="/services/web-development" className="text-blue-700 underline">
+            בניית אתר תדמית
+          </Link>
+          {' '}נמצאת בעמוד בניית האתרים, עם התהליך, מה כלול באתר והקישור למדריך העלות.
+        </p>
         <p className="mb-5">
           בניית אתר תדמית היא העבודה הנפוצה ביותר שאנחנו עושים לעסקים קטנים ובינוניים. לא חנות, לא אפליקציה ולא מערכת הזמנות. אתר שמחליף את הכרטיס ביקור, את מצגת השירות ואת התשובה החוזרת בוואטסאפ: מי אתם, מה אתם מציעים, למי זה מתאים, ואיך מתקדמים לשיחה.
         </p>

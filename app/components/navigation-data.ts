@@ -112,7 +112,7 @@ export const navigation: NavigationItem[] = [
         description: "פיתוח אתרי תדמית ומערכות Web"
       },
       {
-        name: "בניית אתר תדמית",
+        name: "אתרי תדמית לעסקים",
         href: "/services/website-tadmit",
         icon: "globe",
         description: "אתר תדמית שמציג את העסק ומביא פניות"

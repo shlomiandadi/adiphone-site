@@ -6,7 +6,7 @@ export type CmsBreadcrumbItem = {
 
 /** Hebrew labels for segments added after the capitalized-slug fallback. */
 const SEGMENT_TITLES: Record<string, string> = {
-  'website-tadmit': 'בניית אתר תדמית',
+  'website-tadmit': 'אתרי תדמית לעסקים',
 };
 
 function segmentTitle(path: string): string {

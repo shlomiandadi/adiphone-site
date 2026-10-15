@@ -14,8 +14,10 @@ export default function Breadcrumbs() {
   const homeIsFirst = trail[0]?.url === '/';
   const rest = homeIsFirst ? trail.slice(1) : trail;
   const schema = breadcrumbJsonLd(homeIsFirst ? trail : [{ url: '/', title: 'דף הבית' }, ...trail]);
-  // /contact already publishes a Hebrew BreadcrumbList ("צור קשר"). Skip the English "Contact" one.
-  const skipJsonLd = pathname === '/contact';
+  // These paths already publish one Hebrew BreadcrumbList from BreadcrumbSchema.
+  // Skip this trail so /contact does not add "Contact", and /services/website-tadmit
+  // does not add a second list whose parent crumb is the English "Services".
+  const skipJsonLd = pathname === '/contact' || pathname === '/services/website-tadmit';
 
   return (
     <nav className="py-4" aria-label="Breadcrumb">

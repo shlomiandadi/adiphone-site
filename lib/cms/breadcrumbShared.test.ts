@@ -23,7 +23,7 @@ describe('fallbackBreadcrumbItems', () => {
   test('website-tadmit uses the Hebrew service name', () => {
     assert.deepEqual(fallbackBreadcrumbItems('/services/website-tadmit'), [
       { url: '/services', title: 'Services', isActive: false },
-      { url: '/services/website-tadmit', title: 'בניית אתר תדמית', isActive: true },
+      { url: '/services/website-tadmit', title: 'אתרי תדמית לעסקים', isActive: true },
     ]);
   });
 

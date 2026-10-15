@@ -38,7 +38,7 @@ export const FOOTER_QUICK_LINKS: FooterLinkView[] = [
 
 export const FOOTER_SERVICE_LINKS: FooterLinkView[] = [
   { title: 'בניית אתרים', url: '/services/web-development' },
-  { title: 'בניית אתר תדמית', url: '/services/website-tadmit' },
+  { title: 'אתרי תדמית לעסקים', url: '/services/website-tadmit' },
   { title: 'מחירון בניית אתרים', url: '/pricing' },
   { title: 'אתרי וורדפרס', url: '/services/wordpress' },
   { title: 'קידום אתרים SEO', url: '/services/seo' },

@@ -13,7 +13,7 @@ Top Webstak היא סוכנות דיגיטל מבית עדי פון תקשורת
 
 ## שירותים (תיאור)
 - בניית אתרים: אתרי תדמית, קטלוג ומערכות Web, מהירים, מאובטחים ומותאמים לנייד. https://adi-phone.co.il/services/web-development
-- בניית אתר תדמית: אתר תדמית לעסק, בלי חנות ובלי מערכת. https://adi-phone.co.il/services/website-tadmit
+- אתרי תדמית לעסקים: מחירים, תהליך ודוגמאות לאתר תדמית, בלי חנות ובלי מערכת. https://adi-phone.co.il/services/website-tadmit
 - בניית אתרי וורדפרס: אתרים על מערכת וורדפרס עם ממשק ניהול נוח. https://adi-phone.co.il/services/wordpress
 - חנויות אונליין (איקומרס): חנויות למכירה אונליין עם ניהול מוצרים וסליקה. https://adi-phone.co.il/services/ecommerce
 - קידום אתרים אורגני (SEO): שיפור הדירוג בתוצאות החיפוש הטבעיות של גוגל. https://adi-phone.co.il/services/seo

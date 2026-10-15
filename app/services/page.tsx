@@ -41,7 +41,7 @@ export default function ServicesPage() {
       features: ["אתר תדמית", "דף נחיתה", "חנות אונליין", "וורדפרס"]
     },
     {
-      title: "בניית אתר תדמית",
+      title: "אתרי תדמית לעסקים",
       description: "אתר שמציג את העסק, השירותים והדרך לפנות – בלי חנות ובלי מערכת",
       icon: <FaCode className="w-8 h-8 text-blue-600" />,
       image: "/images/services/web-development.svg",

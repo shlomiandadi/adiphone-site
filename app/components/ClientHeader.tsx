@@ -37,7 +37,7 @@ function getIcon(iconName: string | undefined) {
 }
 
 const WEBSITE_TADMIT_LINK = {
-  name: 'בניית אתר תדמית',
+  name: 'אתרי תדמית לעסקים',
   href: '/services/website-tadmit',
   icon: 'globe',
   description: 'אתר תדמית שמציג את העסק ומביא פניות',

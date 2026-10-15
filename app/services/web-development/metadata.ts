@@ -1,12 +1,28 @@
 import type { Metadata } from 'next';
 import { absoluteUrl } from '../../../lib/seo';
 
+const title = 'בניית אתר תדמית לעסקים | בהתאמה אישית | Top Webstak';
+const description =
+  'זקוקים לאתר תדמית מקצועי? אנו ב-Top Webstak מתמחים בבניית אתרים בהתאמה אישית לעסקים, המעוצבים בקפידה ומותאמים לצרכים הייחודיים שלכם. צרו קשר עוד היום!';
+
 export const metadata: Metadata = {
-  title: { absolute: 'בניית אתרים ואתרי תדמית | Top Webstak' },
-  description:
-    'בניית אתרים ואתרי תדמית לעסקים: תהליך עבודה, מה כלול באתר, וקישור למדריך העלות ל-2026. אתר מהיר ומותאם לנייד. שיחת ייעוץ של 15 דקות.',
+  title: { absolute: title },
+  description,
   alternates: {
     canonical: absoluteUrl('/services/web-development'),
+  },
+  openGraph: {
+    title,
+    description,
+    url: absoluteUrl('/services/web-development'),
+    type: 'website',
+    locale: 'he_IL',
+    siteName: 'Top Webstak',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
   },
 };
 

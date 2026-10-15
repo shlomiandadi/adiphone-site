@@ -276,6 +276,15 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
             <Link href="/pricing" className="font-semibold text-blue-700 underline">
               מחירון בניית אתרים
             </Link>
+            .{' '}
+            לעמוד הארצי:{' '}
+            <Link href="/services/web-development" className="font-semibold text-blue-700 underline">
+              בניית אתרים
+            </Link>
+            {' '}ולעמוד{' '}
+            <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline">
+              בניית אתר תדמית
+            </Link>
             .
           </p>
         </div>

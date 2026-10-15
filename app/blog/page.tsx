@@ -101,6 +101,17 @@ export default async function Blog({
                 טבלת מחירים לדף נחיתה, אתר תדמית, חנות ומערכת – לפי המחירון באתר, בלי מספרים סותרים.
               </p>
             </Link>
+            <p className="mb-8 text-right text-gray-700 dark:text-gray-300">
+              לעבודת בניית האתר עצמה:{' '}
+              <Link href="/services/web-development" className="font-semibold text-blue-700 underline">
+                בניית אתרים
+              </Link>
+              {' '}ו{' '}
+              <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline">
+                בניית אתר תדמית
+              </Link>
+              .
+            </p>
             {posts.length === 0 ? (
               <div className="text-center py-12">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">

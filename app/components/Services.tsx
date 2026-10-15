@@ -64,6 +64,17 @@ export default function Services() {
             </Link>
           ))}
         </div>
+        <p className="mt-10 text-center text-lg text-gray-700 dark:text-gray-300">
+          מחפשים{' '}
+          <Link href="/services/web-development" className="font-semibold text-blue-700 underline dark:text-blue-400">
+            בניית אתרים
+          </Link>
+          {' '}או{' '}
+          <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline dark:text-blue-400">
+            בניית אתר תדמית
+          </Link>
+          ?
+        </p>
         <div className="text-center mt-12">
           <Link 
             href="/services" 

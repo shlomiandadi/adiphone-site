@@ -10,7 +10,7 @@ export default function Contact() {
       <Hero3D
         theme="contact"
         title="צור קשר"
-        subtitle="מוכנים להתחיל את הפרויקט הבא שלכם? צרו איתנו קשר ונחזור אליכם בהקדם"
+        subtitle="שיחת ייעוץ של 15 דקות – בחינם. ספרו מה העסק צריך ונחזור עם כיוון ברור, בלי התחייבות."
         align="center"
         ctas={[
           { href: 'tel:+972509159951', label: 'חייגו: 050-9159951' },

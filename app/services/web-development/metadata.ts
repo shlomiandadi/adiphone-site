@@ -1,17 +1,28 @@
 import type { Metadata } from 'next';
-import { absoluteUrl, DEFAULT_OG_IMAGE } from '../../../lib/seo';
+import { absoluteUrl } from '../../../lib/seo';
+
+const title = 'בניית אתר תדמית לעסקים | בהתאמה אישית | Top Webstak';
+const description =
+  'זקוקים לאתר תדמית מקצועי? אנו ב-Top Webstak מתמחים בבניית אתרים בהתאמה אישית לעסקים, המעוצבים בקפידה ומותאמים לצרכים הייחודיים שלכם. צרו קשר עוד היום!';
 
 export const metadata: Metadata = {
-  title: 'בניית אתרים | Top Webstak | פיתוח אתרי תדמית, קטלוג ומערכות Web',
-  description: 'זקוקים לאתר אינטרנט שמייצג אתכם בכבוד ומביא תוצאות? Top Webstak מתמחה בבניית אתרים מהירים, מאובטחים ומותאמים אישית. בואו נבנה יחד את הנוכחות הדיגיטלית שלכם.',
+  title: { absolute: title },
+  description,
   alternates: {
     canonical: absoluteUrl('/services/web-development'),
   },
   openGraph: {
-    images: [DEFAULT_OG_IMAGE],
+    title,
+    description,
+    url: absoluteUrl('/services/web-development'),
+    type: 'website',
+    locale: 'he_IL',
+    siteName: 'Top Webstak',
   },
   twitter: {
-    images: [DEFAULT_OG_IMAGE.url],
+    card: 'summary_large_image',
+    title,
+    description,
   },
 };
 

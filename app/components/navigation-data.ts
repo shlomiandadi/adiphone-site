@@ -112,6 +112,12 @@ export const navigation: NavigationItem[] = [
         description: "פיתוח אתרי תדמית ומערכות Web"
       },
       {
+        name: "אתרי תדמית לעסקים",
+        href: "/services/website-tadmit",
+        icon: "globe",
+        description: "אתר תדמית שמציג את העסק ומביא פניות"
+      },
+      {
         name: "מחירון בניית אתרים",
         href: "/pricing",
         icon: "chart-line",

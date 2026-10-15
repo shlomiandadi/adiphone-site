@@ -27,6 +27,9 @@ interface PortfolioData {
   published: boolean;
   slug: string;
   keywords: string;
+  challenge: string;
+  solution: string;
+  result: string;
 }
 
 interface PortfolioEditorProps {
@@ -49,7 +52,10 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
     metaDesc: '',
     published: false,
     slug: '',
-    keywords: ''
+    keywords: '',
+    challenge: '',
+    solution: '',
+    result: ''
   });
   
   const [loading, setLoading] = useState(false);
@@ -82,7 +88,10 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
           metaTitle: project.metaTitle || '',
           metaDesc: project.metaDesc || '',
           published: project.published || false,
-          slug: project.slug || ''
+          slug: project.slug || '',
+          challenge: project.challenge || '',
+          solution: project.solution || '',
+          result: project.result || ''
         });
       }
     } catch (error) {
@@ -154,7 +163,8 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
 
       if (response.ok) {
         const result = await response.json();
-        setSuccess(publish ? 'הפרויקט פורסם בהצלחה!' : 'הפרויקט נשמר כטיוטה!');
+        const saved = publish ? 'הפרויקט פורסם בהצלחה!' : 'הפרויקט נשמר כטיוטה!';
+        setSuccess(result.warning ? `${saved} ${result.warning}` : saved);
         
         if (mode === 'create') {
           setTimeout(() => {
@@ -262,6 +272,25 @@ export default function PortfolioEditor({ mode, projectId }: PortfolioEditorProp
                 placeholder="תיאור קצר של הפרויקט..."
                 required
               />
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6 space-y-4">
+              <h2 className="text-lg font-semibold text-gray-900">סיפור מקרה (רשות)</h2>
+              <p className="text-sm text-gray-600">
+                מלאו רק נתונים אמיתיים מהלקוח. אם אין אתגר, פתרון או תוצאה – השאירו ריק. הסעיף לא יוצג באתר כשהשדות ריקים.
+              </p>
+              <div>
+                <label htmlFor="challenge" className="block text-sm font-medium text-gray-700 mb-2">האתגר</label>
+                <textarea id="challenge" name="challenge" value={projectData.challenge} onChange={handleInputChange} rows={3} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label htmlFor="solution" className="block text-sm font-medium text-gray-700 mb-2">הפתרון</label>
+                <textarea id="solution" name="solution" value={projectData.solution} onChange={handleInputChange} rows={3} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label htmlFor="result" className="block text-sm font-medium text-gray-700 mb-2">התוצאה</label>
+                <textarea id="result" name="result" value={projectData.result} onChange={handleInputChange} rows={3} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
             </div>
 
             {/* Rich Description */}

@@ -22,6 +22,7 @@ export const BASE_LLMS_TXT = `# Top Webstak (מבית עדי פון תקשורת
 
 ## שירותים
 - [בניית אתרים](https://adi-phone.co.il/services/web-development): אתרי תדמית, קטלוג ומערכות Web
+- [אתרי תדמית לעסקים](https://adi-phone.co.il/services/website-tadmit): מחירים, תהליך ודוגמאות לאתר תדמית, בלי חנות ובלי מערכת
 - [בניית אתרי וורדפרס](https://adi-phone.co.il/services/wordpress)
 - [חנויות אונליין (איקומרס)](https://adi-phone.co.il/services/ecommerce)
 - [קידום אתרים אורגני (SEO)](https://adi-phone.co.il/services/seo)

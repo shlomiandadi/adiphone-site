@@ -27,8 +27,8 @@ const SERVICE_CTA_BY_KEY: Record<string, ServiceCtaCopy> = {
     topic: 'ecommerce',
   },
   seo: {
-    title: 'נבדוק מה עוצר את האתר בגוגל – בשיחה של 15 דקות',
-    text: 'ייעוץ חינם, בלי התחייבות. נסביר מה כדאי לתקן קודם ומה אפשר לדחות.',
+    title: 'נבדוק מה עוצר את האתר בגוגל',
+    text: 'שיחת ייעוץ של 15 דקות – בחינם. נסביר מה כדאי לתקן קודם ומה אפשר לדחות, בלי התחייבות.',
     whatsappText: 'שלום, אשמח לשיחת ייעוץ על קידום אורגני.',
     topic: 'seo',
   },
@@ -57,10 +57,16 @@ const SERVICE_CTA_BY_KEY: Record<string, ServiceCtaCopy> = {
     topic: 'seo',
   },
   'mobile-apps': {
-    title: 'אפיון אפליקציה בשיחת ייעוץ של 15 דקות – בחינם',
-    text: 'נבין אם צריך אפליקציה, אתר, או משהו קטן יותר – לפני שמתחילים לפתח.',
+    title: 'אפיון אפליקציה לפני שמתחילים לפתח',
+    text: 'שיחת ייעוץ של 15 דקות – בחינם. נבין אם צריך אפליקציה, אתר, או משהו קטן יותר.',
     whatsappText: 'שלום, אשמח לשיחת ייעוץ על פיתוח אפליקציה.',
     topic: 'apps',
+  },
+  'website-tadmit': {
+    title: 'אתר תדמית מוכן תוך 14–21 יום',
+    text: 'שיחת ייעוץ של 15 דקות – בחינם. נבין את העסק ונחזור עם מבנה והצעה ברורה, בלי התחייבות.',
+    whatsappText: 'שלום, אשמח לקבוע שיחת ייעוץ לבניית אתר תדמית.',
+    topic: 'websites',
   },
   'software-development': {
     title: 'מערכת מותאמת לפי תהליך העסק – לא תבנית גנרית',
@@ -96,6 +102,7 @@ const SERVICE_CTA_BY_KEY: Record<string, ServiceCtaCopy> = {
 
 const PATH_TO_KEY: Record<string, string> = {
   '/services/web-development': 'web-development',
+  '/services/website-tadmit': 'website-tadmit',
   '/services/wordpress': 'wordpress',
   '/services/ecommerce': 'ecommerce',
   '/services/seo': 'seo',

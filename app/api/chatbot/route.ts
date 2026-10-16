@@ -1,35 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { handleChatRequest } from '@/lib/chatbot/handle';
+import { clientIpFromHeaders, MESSAGES, type ChatCompletionRequest } from '@/lib/chatbot/policy';
+import { neonUsageStore } from '@/lib/chatbot/store';
+import { verifyTurnstileToken } from '@/lib/chatbot/turnstile';
 
-export async function POST(req: NextRequest) {
-  const { message } = await req.json();
-  const apiKey = process.env.OPENAI_API_KEY;
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
-  if (!apiKey) {
-    return NextResponse.json({ error: 'Missing OpenAI API key' }, { status: 500 });
-  }
-
+async function completeWithOpenAI(apiKey: string, request: ChatCompletionRequest): Promise<string> {
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${apiKey}`,
+      Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      messages: [
-        { role: 'system', content: 'אתה עוזר חכם, מקצועי, מסביר בעברית פשוטה על בניית אתרים, קידום אתרים, אוטומציות, AI, ושיווק דיגיטלי.' },
-        { role: 'user', content: message }
-      ],
-      max_tokens: 500,
-      temperature: 0.7,
-    }),
+    body: JSON.stringify(request),
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    return NextResponse.json({ error }, { status: 500 });
+    throw new Error('openai request failed');
   }
 
   const data = await response.json();
-  return NextResponse.json({ answer: data.choices?.[0]?.message?.content || 'לא התקבלה תשובה מהבוט.' });
-} 
+  const answer = data?.choices?.[0]?.message?.content;
+  if (typeof answer !== 'string') {
+    return MESSAGES.emptyAnswer;
+  }
+  return answer;
+}
+
+export async function POST(req: NextRequest) {
+  let body: unknown = null;
+  try {
+    body = await req.json();
+  } catch {
+    body = null;
+  }
+
+  const result = await handleChatRequest({
+    userAgent: req.headers.get('user-agent'),
+    body,
+    ip: clientIpFromHeaders((name) => req.headers.get(name)),
+    env: process.env,
+    store: neonUsageStore,
+    verifyTurnstile: verifyTurnstileToken,
+    complete: completeWithOpenAI,
+  });
+
+  return NextResponse.json(result.body, { status: result.status });
+}

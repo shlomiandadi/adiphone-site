@@ -1,5 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import ChatbotHoneypot from "./ChatbotHoneypot";
+import { chatbotReplyText, chatbotRequestBody, readTurnstileToken } from "@/lib/chatbot/policy";
 
 function RobotIcon() {
   // אייקון רובוט מודרני, לבן על רקע כחול עגול
@@ -23,28 +25,50 @@ export default function ChatbotWidget() {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatOpenedAtRef = useRef(0);
+
+  useEffect(() => {
+    chatOpenedAtRef.current = Date.now();
+  }, []);
 
   useEffect(() => {
     if (open) messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open]);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
-    setMessages((msgs) => [...msgs, { role: "user", content: input }]);
-    setLoading(true);
-    const res = await fetch("/api/chatbot", {
-      method: "POST",
-      body: JSON.stringify({ message: input }),
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await res.json();
-    setMessages((msgs) => [
-      ...msgs,
-      { role: "bot", content: data.answer }
-    ]);
+    const text = input.trim();
+    if (!text || loading) return;
+    const history = messages.slice(-6);
+    setMessages((msgs) => [...msgs, { role: "user", content: text }]);
     setInput("");
-    setLoading(false);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(chatbotRequestBody({
+          message: text,
+          history,
+          openedAt: chatOpenedAtRef.current,
+          company: honeypot,
+          turnstileToken: readTurnstileToken(),
+        })),
+      });
+      const data = await res.json().catch(() => null);
+      setMessages((msgs) => [
+        ...msgs,
+        { role: "bot", content: chatbotReplyText(data) },
+      ]);
+    } catch {
+      setMessages((msgs) => [
+        ...msgs,
+        { role: "bot", content: chatbotReplyText(null) },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,6 +87,7 @@ export default function ChatbotWidget() {
       {/* חלונית הצ'אט */}
       {open && (
         <div className="fixed bottom-20 right-4 w-80 bg-white shadow-2xl rounded-2xl p-4 z-50 border border-gray-200 flex flex-col" style={{ minHeight: 420, maxHeight: 520 }}>
+          <ChatbotHoneypot id="chatbot-hp-widget" value={honeypot} onChange={setHoneypot} />
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <RobotIcon />
@@ -89,6 +114,7 @@ export default function ChatbotWidget() {
               onKeyDown={e => e.key === "Enter" && sendMessage()}
               placeholder="כתוב שאלה..."
               disabled={loading}
+              maxLength={500}
               autoFocus
             />
             <button className="ml-2 bg-blue-600 text-white px-4 py-1 rounded disabled:opacity-50" onClick={sendMessage} disabled={loading}>

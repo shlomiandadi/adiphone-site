@@ -11,7 +11,6 @@ export default function BlogNewsletterForm() {
     phone: '',
     message: 'מתעניין/ת בניוזלטר',
     service: ContactService.OTHER,
-    newsletter: true,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState('');
@@ -39,7 +38,6 @@ export default function BlogNewsletterForm() {
         phone: '',
         message: 'מתעניין/ת בניוזלטר',
         service: ContactService.OTHER,
-        newsletter: true,
       });
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -54,13 +52,6 @@ export default function BlogNewsletterForm() {
       ...formData,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.checked,
-    }));
   };
 
   return (
@@ -117,20 +108,6 @@ export default function BlogNewsletterForm() {
           />
         </div>
 
-        <div className="flex items-start space-x-3 space-x-reverse">
-          <input
-            type="checkbox"
-            id="newsletter"
-            name="newsletter"
-            checked={formData.newsletter}
-            onChange={handleCheckboxChange}
-            className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-          />
-          <label htmlFor="newsletter" className="text-sm text-gray-700 dark:text-gray-300">
-            אני מעוניין/ת לקבל עדכונים, טיפים מקצועיים וחומרים שיווקיים על שירותי עדי פון תקשורת
-          </label>
-        </div>
-
         {status && (
           <div className={`p-4 rounded-lg text-center text-sm font-medium ${
             status.includes('תודה')
@@ -141,17 +118,25 @@ export default function BlogNewsletterForm() {
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 ${
-            isSubmitting
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700 transform hover:scale-105'
-          } text-white shadow-lg`}
-        >
-          {isSubmitting ? 'שולח...' : 'הרשמה לניוזלטר'}
-        </button>
+        <div className="space-y-3">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            בשליחת הטופס אני מאשר/ת את{' '}
+            <a href="/privacy-policy" className="text-blue-600 hover:underline">
+              מדיניות הפרטיות
+            </a>
+          </p>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 ${
+              isSubmitting
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 transform hover:scale-105'
+            } text-white shadow-lg`}
+          >
+            {isSubmitting ? 'שולח...' : 'הרשמה לניוזלטר'}
+          </button>
+        </div>
       </form>
     </div>
   );

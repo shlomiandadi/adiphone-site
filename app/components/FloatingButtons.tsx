@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
 import { FaWheelchair, FaTimes, FaFont, FaEye } from 'react-icons/fa';
+import ChatbotHoneypot from './ChatbotHoneypot';
+import { chatbotReplyText, chatbotRequestBody, readTurnstileToken } from '@/lib/chatbot/policy';
 
 // Robot Icon Component for Chatbot
 function RobotIcon() {
@@ -40,7 +42,9 @@ export default function FloatingButtons() {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatOpenedAtRef = useRef(0);
   
   // Accessibility states
   const [fontSize, setFontSize] = useState(16);
@@ -50,6 +54,7 @@ export default function FloatingButtons() {
 
   useEffect(() => {
     setMounted(true);
+    chatOpenedAtRef.current = Date.now();
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -98,21 +103,37 @@ export default function FloatingButtons() {
   }, [messages, chatbotOpen]);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
-    setMessages((msgs) => [...msgs, { role: "user", content: input }]);
-    setLoading(true);
-    const res = await fetch("/api/chatbot", {
-      method: "POST",
-      body: JSON.stringify({ message: input }),
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await res.json();
-    setMessages((msgs) => [
-      ...msgs,
-      { role: "bot", content: data.answer }
-    ]);
+    const text = input.trim();
+    if (!text || loading) return;
+    const history = messages.slice(-6);
+    setMessages((msgs) => [...msgs, { role: "user", content: text }]);
     setInput("");
-    setLoading(false);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(chatbotRequestBody({
+          message: text,
+          history,
+          openedAt: chatOpenedAtRef.current,
+          company: honeypot,
+          turnstileToken: readTurnstileToken(),
+        })),
+      });
+      const data = await res.json().catch(() => null);
+      setMessages((msgs) => [
+        ...msgs,
+        { role: "bot", content: chatbotReplyText(data) },
+      ]);
+    } catch {
+      setMessages((msgs) => [
+        ...msgs,
+        { role: "bot", content: chatbotReplyText(null) },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Accessibility functions
@@ -202,6 +223,7 @@ export default function FloatingButtons() {
               onClick={() => setChatbotOpen(false)}
             />
             <div className="relative bg-white rounded-t-xl shadow-2xl w-full max-w-sm max-h-[70vh] overflow-y-auto" dir="rtl">
+              <ChatbotHoneypot id="chatbot-hp-mobile" value={honeypot} onChange={setHoneypot} />
               <div className="flex items-center justify-between p-4 border-b border-gray-200">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
@@ -237,6 +259,7 @@ export default function FloatingButtons() {
                     onKeyDown={e => e.key === "Enter" && sendMessage()}
                     placeholder="כתוב שאלה..."
                     disabled={loading}
+                    maxLength={500}
                     autoFocus
                   />
                   <button className="ml-2 bg-purple-600 text-white px-4 py-1 rounded disabled:opacity-50" onClick={sendMessage} disabled={loading}>
@@ -637,6 +660,7 @@ export default function FloatingButtons() {
             onClick={() => setChatbotOpen(false)}
           />
           <div className="relative bg-white rounded-t-xl shadow-2xl w-full max-w-sm max-h-[80vh] overflow-y-auto" dir="rtl">
+            <ChatbotHoneypot id="chatbot-hp-desktop" value={honeypot} onChange={setHoneypot} />
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
@@ -672,6 +696,7 @@ export default function FloatingButtons() {
                   onKeyDown={e => e.key === "Enter" && sendMessage()}
                   placeholder="כתוב שאלה..."
                   disabled={loading}
+                  maxLength={500}
                   autoFocus
                 />
                 <button className="ml-2 bg-purple-600 text-white px-4 py-1 rounded disabled:opacity-50" onClick={sendMessage} disabled={loading}>

@@ -22,7 +22,6 @@ export default function LeadForm({ formName, className = '', compact = false }: 
     name: '',
     phone: '',
     service: '',
-    newsletter: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -72,7 +71,6 @@ export default function LeadForm({ formName, className = '', compact = false }: 
             service_key: formData.service,
             email: LEAD_PLACEHOLDER_EMAIL,
             message: defaultLeadMessage(serviceLabel),
-            newsletter: formData.newsletter,
             form_name: formName,
           })
         ),
@@ -85,7 +83,7 @@ export default function LeadForm({ formName, className = '', compact = false }: 
 
       trackGenerateLead(formName, { service_name: serviceLabel });
       setSuccess('הטופס נשלח בהצלחה!');
-      setFormData({ name: '', phone: '', service: '', newsletter: false });
+      setFormData({ name: '', phone: '', service: '' });
       router.push('/thank-you');
     } catch (submitError) {
       console.error('Error submitting form:', submitError);
@@ -155,17 +153,6 @@ export default function LeadForm({ formName, className = '', compact = false }: 
         </select>
       </div>
 
-      <label className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
-        <input
-          type="checkbox"
-          name="newsletter"
-          checked={formData.newsletter}
-          onChange={(e) => setFormData((prev) => ({ ...prev, newsletter: e.target.checked }))}
-          className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-        />
-        <span>אפשר לשלוח לי עדכונים (לא חובה)</span>
-      </label>
-
       {error && (
         <div className="p-4 rounded-lg text-center font-medium bg-red-100 text-red-700 border border-red-500">
           {error}
@@ -178,16 +165,24 @@ export default function LeadForm({ formName, className = '', compact = false }: 
         </div>
       )}
 
-      <button
-        type="submit"
-        data-cta="true"
-        disabled={isSubmitting}
-        className={`w-full py-3.5 rounded-lg font-semibold transition-colors ${
-          isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-800'
-        } text-white`}
-      >
-        {isSubmitting ? 'שולח...' : 'שלחו ואחזור אליכם עוד היום ←'}
-      </button>
+      <div className="space-y-3">
+        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+          בשליחת הטופס אני מאשר/ת את{' '}
+          <a href="/privacy-policy" className="text-blue-600 hover:underline">
+            מדיניות הפרטיות
+          </a>
+        </p>
+        <button
+          type="submit"
+          data-cta="true"
+          disabled={isSubmitting}
+          className={`w-full py-3.5 rounded-lg font-semibold transition-colors ${
+            isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-800'
+          } text-white`}
+        >
+          {isSubmitting ? 'שולח...' : 'שלחו ואחזור אליכם עוד היום ←'}
+        </button>
+      </div>
 
       <p className="text-center text-sm text-gray-600 dark:text-gray-400">
         ללא התחייבות · 500+ לקוחות מרוצים · ⭐ ביקורות גוגל

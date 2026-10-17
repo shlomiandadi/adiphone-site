@@ -12,6 +12,7 @@ import FloatingButtons from './components/FloatingButtons';
 import AccessibilityBar from './components/AccessibilityBar';
 import Script from 'next/script';
 import CookieConsent from './components/CookieConsent';
+import DeferredTags from './components/DeferredTags';
 import ChatbotWidget from './components/ChatbotWidget';
 import AnalyticsTracker from './components/AnalyticsTracker';
 import TopStrip from './components/TopStrip';
@@ -83,11 +84,21 @@ export default async function RootLayout({
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
       <head>
-        {/* Default deny until consent. This prevents accidental data collection before consent */}
+        <Script id="cookie-consent-prepaint" strategy="beforeInteractive">
+          {`
+            try {
+              if (document.cookie.indexOf('cookie_consent_v1=') !== -1) {
+                document.documentElement.classList.add('has-consent');
+              }
+            } catch (e) {}
+          `}
+        </Script>
+        {/* Default deny until consent. dataLayer and gtag exist immediately so later events queue. */}
         <Script id="gtag-default-consent" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);} 
+            function gtag(){dataLayer.push(arguments);}
+            window.gtag = window.gtag || gtag;
             gtag('consent', 'default', {
               'ad_storage': 'denied',
               'ad_user_data': 'denied',
@@ -99,50 +110,6 @@ export default async function RootLayout({
           `}
         </Script>
         <BreadcrumbSchema />
-        {/* Google Tag Manager */}
-        <Script id="google-tag-manager" strategy="afterInteractive">
-          {`
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','${gtmId}');
-          `}
-        </Script>
-        {/* End Google Tag Manager */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            if (!window.__TW_GA4_CONFIGURED) {
-              window.__TW_GA4_CONFIGURED = true;
-              gtag('js', new Date());
-              gtag('config', '${gaId}', {
-                send_page_view: true,
-                anonymize_ip: true,
-                allow_google_signals: true,
-                allow_ad_personalization_signals: false
-              });
-            }
-          `}
-        </Script>
-        {pixelId ? (
-          <Script id="facebook-pixel" strategy="afterInteractive">
-            {`
-              !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-              n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${pixelId}');
-              fbq('track', 'PageView');
-            `}
-          </Script>
-        ) : null}
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>
         {/* Google Tag Manager (noscript) */}
@@ -181,6 +148,7 @@ export default async function RootLayout({
         <FloatingButtons />
         <AccessibilityBar />
         <CookieConsent />
+        <DeferredTags gaId={gaId} gtmId={gtmId} pixelId={pixelId} />
         <AnalyticsTracker />
         <ChatbotWidget />
       </body>

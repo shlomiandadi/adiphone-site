@@ -10,5 +10,7 @@ declare global {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
     __TW_GA4_CONFIGURED?: boolean;
+    __TW_TAGS_LOADED?: boolean;
+    __TW_PIXEL_LOADED?: boolean;
   }
 } 

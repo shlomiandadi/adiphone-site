@@ -10,7 +10,6 @@ export default function HeroVisual() {
     if (!host) return;
 
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (motion.matches) return;
 
     let cancelled = false;
     let cleanup: (() => void) | undefined;
@@ -18,34 +17,38 @@ export default function HeroVisual() {
     let timeoutId: number | undefined;
 
     const start = () => {
-      if (cancelled || !hostRef.current) return;
+      if (cancelled || motion.matches || !hostRef.current) return;
       import('./hero-particles').then(({ startHeroParticles }) => {
-        if (cancelled || !hostRef.current) return;
+        if (cancelled || motion.matches || !hostRef.current) return;
         cleanup = startHeroParticles(hostRef.current);
       });
     };
 
-    const afterPaint = () => {
+    const arm = () => {
+      if (cancelled || motion.matches) return;
       if (typeof window.requestIdleCallback === 'function') {
-        idleId = window.requestIdleCallback(start, { timeout: 500 });
+        idleId = window.requestIdleCallback(start, { timeout: 2000 });
       } else {
-        timeoutId = window.setTimeout(start, 80);
+        timeoutId = window.setTimeout(start, 1);
       }
     };
 
-    const raf = window.requestAnimationFrame(afterPaint);
+    if (document.readyState === 'complete') arm();
+    else window.addEventListener('load', arm, { once: true });
 
     const onMotionChange = () => {
       if (motion.matches) {
         cleanup?.();
         cleanup = undefined;
+        return;
       }
+      arm();
     };
     motion.addEventListener?.('change', onMotionChange);
 
     return () => {
       cancelled = true;
-      window.cancelAnimationFrame(raf);
+      window.removeEventListener('load', arm);
       if (idleId !== undefined && 'cancelIdleCallback' in window) {
         window.cancelIdleCallback(idleId);
       }

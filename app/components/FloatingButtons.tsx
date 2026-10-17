@@ -452,6 +452,7 @@ export default function FloatingButtons() {
           <div className="grid grid-cols-3 gap-2 px-2 py-2">
             <Link
               href="tel:0509159951"
+              prefetch={false}
               data-cta="true"
               className="flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl bg-blue-700 px-2 py-2 text-white"
               aria-label="התקשרו: 050-9159951"
@@ -463,6 +464,7 @@ export default function FloatingButtons() {
             </Link>
             <Link
               href="https://wa.me/972509159951"
+              prefetch={false}
               target="_blank"
               rel="noopener noreferrer"
               data-cta="true"
@@ -476,6 +478,7 @@ export default function FloatingButtons() {
             </Link>
             <Link
               href="/contact#contact-form"
+              prefetch={false}
               data-cta="true"
               className="flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl bg-sky-400 px-2 py-2 text-slate-950"
               aria-label="הצעת מחיר"
@@ -510,6 +513,7 @@ export default function FloatingButtons() {
         <div className="absolute -inset-1 bg-gradient-to-r from-green-600 to-green-400 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-200"></div>
         <Link
           href="https://wa.me/972509159951"
+          prefetch={false}
           target="_blank"
           rel="noopener noreferrer"
           className="relative flex items-center justify-center w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full shadow-lg transition-colors duration-200"
@@ -546,6 +550,7 @@ export default function FloatingButtons() {
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-200"></div>
         <Link
           href="tel:0509159951"
+          prefetch={false}
           className="relative flex items-center justify-center w-14 h-14 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg transition-colors duration-200"
           aria-label="התקשר אלינו"
         >

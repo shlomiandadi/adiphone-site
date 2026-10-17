@@ -362,6 +362,11 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
   }
 }
 
+/* Returning visitors: hide the server-rendered banner before paint. */
+html.has-consent .cookie-banner {
+  display: none;
+}
+
 /* Marquee styles */
 .marquee-container {
   @apply overflow-hidden;

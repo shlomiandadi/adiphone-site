@@ -29,66 +29,85 @@ export default function Hero3D({
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (motion.matches) return;
 
-    const simplify = window.matchMedia('(max-width: 767px)').matches;
+    const narrow = window.matchMedia('(max-width: 767px)');
+    const coarse = window.matchMedia('(pointer: coarse)');
+    const skipTilt = () => narrow.matches || coarse.matches;
     let cancelled = false;
     let raf = 0;
-    let idleId: number | undefined;
-    let timeoutId: number | undefined;
+    let inView = true;
     let targetX = 0;
     let targetY = 0;
     let currentX = 0;
     let currentY = 0;
 
+    const stop = () => {
+      if (!raf) return;
+      window.cancelAnimationFrame(raf);
+      raf = 0;
+    };
+
     const apply = () => {
-      if (cancelled) return;
+      raf = 0;
+      if (cancelled || !inView || skipTilt()) return;
       currentX += (targetX - currentX) * 0.08;
       currentY += (targetY - currentY) * 0.08;
       scene.style.setProperty('--tilt-x', `${currentX.toFixed(2)}deg`);
       scene.style.setProperty('--tilt-y', `${currentY.toFixed(2)}deg`);
+      if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01) {
+        raf = window.requestAnimationFrame(apply);
+      }
+    };
+
+    const kick = () => {
+      if (cancelled || !inView || raf || skipTilt()) return;
       raf = window.requestAnimationFrame(apply);
     };
 
     const onMove = (event: PointerEvent) => {
+      if (skipTilt()) return;
       const rect = root.getBoundingClientRect();
       const px = (event.clientX - rect.left) / rect.width - 0.5;
       const py = (event.clientY - rect.top) / rect.height - 0.5;
+      const simplify = narrow.matches;
       targetX = px * (simplify ? 8 : 14);
       targetY = -py * (simplify ? 6 : 10);
+      kick();
     };
+
     const onScroll = () => {
       const rect = root.getBoundingClientRect();
       const progress = Math.max(-1, Math.min(1, -rect.top / Math.max(rect.height, 1)));
+      const simplify = narrow.matches;
       scene.style.setProperty('--scroll-shift', `${(progress * (simplify ? 16 : 28)).toFixed(1)}px`);
     };
 
-    const start = () => {
-      if (cancelled || !rootRef.current || !sceneRef.current) return;
-      raf = window.requestAnimationFrame(apply);
-      root.addEventListener('pointermove', onMove);
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
+    const onMotion = () => {
+      if (!motion.matches) return;
+      cancelled = true;
+      stop();
+      scene.style.setProperty('--tilt-x', '0deg');
+      scene.style.setProperty('--tilt-y', '0deg');
     };
 
-    const afterPaint = () => {
-      if (typeof window.requestIdleCallback === 'function') {
-        idleId = window.requestIdleCallback(start, { timeout: 500 });
-      } else {
-        timeoutId = window.setTimeout(start, 80);
-      }
-    };
+    const intersection = new IntersectionObserver(([entry]) => {
+      inView = Boolean(entry?.isIntersecting);
+      if (!inView) stop();
+      else kick();
+    }, { threshold: 0.05 });
+    intersection.observe(root);
 
-    const paintRaf = window.requestAnimationFrame(afterPaint);
+    if (!skipTilt()) root.addEventListener('pointermove', onMove);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    motion.addEventListener?.('change', onMotion);
+    onScroll();
 
     return () => {
       cancelled = true;
-      window.cancelAnimationFrame(paintRaf);
-      window.cancelAnimationFrame(raf);
-      if (idleId !== undefined && 'cancelIdleCallback' in window) {
-        window.cancelIdleCallback(idleId);
-      }
-      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+      stop();
+      intersection.disconnect();
       root.removeEventListener('pointermove', onMove);
       window.removeEventListener('scroll', onScroll);
+      motion.removeEventListener?.('change', onMotion);
     };
   }, []);
 

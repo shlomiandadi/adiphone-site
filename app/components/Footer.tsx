@@ -38,7 +38,7 @@ function LinkColumn({ title, links, services }: { title: string; links: FooterLi
       <ul className={services ? 'space-y-2 columns-1' : 'space-y-2'}>
         {links.map((link) => (
           <li key={link.id || `${link.title}-${link.url}`}>
-            <Link href={link.url || '/'} className="text-gray-400 hover:text-white transition-colors">
+            <Link href={link.url || '/'} prefetch={false} className="text-gray-400 hover:text-white transition-colors">
               {link.title}
             </Link>
           </li>

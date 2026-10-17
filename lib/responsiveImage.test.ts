@@ -51,6 +51,31 @@ test('local files, svg and gif are not rewritten', () => {
   );
 });
 
+test('crop option is a srcset-safe center 16:9 fill and does not change the default transform', () => {
+  const cropped = cloudinaryUrl(ORIGINAL, 480, { ar: '16:9' });
+  assert.equal(cropped.includes(','), false);
+  assert.equal(
+    cropped,
+    'https://res.cloudinary.com/dooxg35gj/image/upload/f_auto/q_auto/c_fill%2Car_16%3A9%2Cg_center/w_480/v1753362055/portfolio/child-disability.jpg'
+  );
+  assert.equal(cloudinaryUrl(cropped, 480, { ar: '16:9' }), cropped);
+  assert.match(cloudinaryUrl(cropped, 320), /c_limit\/w_320/);
+
+  const thumbs = responsiveAttributes(ORIGINAL, {
+    sizes: '(max-width: 768px) 50vw, 280px',
+    widths: [320, 480],
+    crop: { ar: '16:9' },
+    fetchPriority: 'low',
+  });
+  assert.equal(thumbs.loading, 'lazy');
+  assert.equal(thumbs.fetchPriority, 'low');
+  const candidates = (thumbs.srcSet || '').split(', ');
+  assert.equal(candidates.length, 2);
+  assert.equal(candidates.every((candidate) => !candidate.slice(0, candidate.lastIndexOf(' ')).includes(',')), true);
+  assert.match(candidates[0], /c_fill%2Car_16%3A9%2Cg_center\/w_320/);
+  assert.match(candidates[1], / 480w$/);
+});
+
 test('priority images are eager and high priority; other images are lazy with a srcset', () => {
   const lcp = responsiveAttributes(ORIGINAL, {
     sizes: '(max-width: 896px) 100vw, 896px',
@@ -81,6 +106,7 @@ test('cms html images are resized and lazy, and non-photo images are left alone'
   assert.match(next, /src="[^"]*w_768[^"]*"/);
   assert.match(next, /srcset="[^"]*480w/);
   assert.match(next, /loading="lazy"/);
+  assert.match(next, /fetchpriority="low"/);
   assert.match(next, /alt="cover"/);
   assert.match(next, /class="prose-img"/);
   assert.match(next, /src="\/images\/logo\.svg"/);

@@ -1,14 +1,21 @@
 import React from 'react';
 import Image from 'next/image';
+import ReactDOM from 'react-dom';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import BlogPostSchema from '../../components/BlogPostSchema';
 import BlogNavigation from '../../components/BlogNavigation';
 import RelatedServiceCTA from '../../components/RelatedServiceCTA';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
-import { getPostBySlug, getPublishedPosts } from '../../../lib/posts';
+import { getPostBySlug, getPublishedNavPosts, getPublishedPosts } from '../../../lib/posts';
+import { adjacentBlogPosts } from '../../../lib/blogNav';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
-import { optimizeContentImages } from '../../../lib/responsiveImage';
+import {
+  isOptimizableImageUrl,
+  optimizeContentImages,
+  responsiveAttributes,
+  type ResponsiveImageAttrs,
+} from '../../../lib/responsiveImage';
 
 /** Enable ISR: pages are cached and periodically regenerated instead of SSR per request. */
 export const revalidate = 300;
@@ -35,6 +42,44 @@ function demoteContentHeadings(html: string): string {
   return html
     .replace(/<h1(\s[^>]*)?>/gi, '<h2$1>')
     .replace(/<\/h1>/gi, '</h2>');
+}
+
+/** Hero is full-bleed. Eager + high priority, and no fake srcset for hosts we cannot resize. */
+function blogHeroImage(src: string): ResponsiveImageAttrs {
+  if (!isOptimizableImageUrl(src)) {
+    return {
+      src,
+      loading: 'eager',
+      fetchPriority: 'high',
+      decoding: 'async',
+    };
+  }
+  return responsiveAttributes(src, {
+    sizes: '100vw',
+    widths: [640, 750, 828, 1080, 1200, 1600],
+    priority: true,
+  });
+}
+
+function preloadHero(image: ResponsiveImageAttrs) {
+  const preload = (ReactDOM as unknown as {
+    preload?: (
+      href: string,
+      options: {
+        as: 'image';
+        fetchPriority?: 'high';
+        imageSrcSet?: string;
+        imageSizes?: string;
+      }
+    ) => void;
+  }).preload;
+  if (typeof preload !== 'function') return;
+  preload(image.src, {
+    as: 'image',
+    fetchPriority: 'high',
+    imageSrcSet: image.srcSet,
+    imageSizes: image.sizes,
+  });
 }
 
 interface BlogPost {
@@ -164,6 +209,10 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     });
   };
 
+  const heroImage = post.mainImage ? blogHeroImage(post.mainImage) : null;
+  if (heroImage) preloadHero(heroImage);
+  const { previousPost, nextPost } = adjacentBlogPosts(await getPublishedNavPosts(), post.slug);
+
   return (
     <main className="pt-24">
       <SeoAgentPageExtras path={`/blog/${post.slug}`} />
@@ -174,15 +223,22 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       {/* Hero Section */}
       <section className="relative h-[500px] flex items-center justify-center text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
-          {post.mainImage ? (
-            <Image
-              src={post.mainImage}
-              alt={post.title}
-              fill
-              className="object-cover"
-              priority
-              sizes="100vw"
-            />
+          {heroImage ? (
+            <>
+              <link
+                rel="preload"
+                as="image"
+                href={heroImage.srcSet ? undefined : heroImage.src}
+                imageSrcSet={heroImage.srcSet}
+                imageSizes={heroImage.sizes}
+                fetchPriority="high"
+              />
+              <img
+                alt={post.title}
+                className="absolute inset-0 h-full w-full object-cover"
+                {...heroImage}
+              />
+            </>
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-blue-600 to-purple-700" />
           )}
@@ -220,6 +276,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                   height={400}
                   sizes="(max-width: 768px) 100vw, 768px"
                   className="w-full h-auto rounded-lg shadow-lg"
+                  loading="lazy"
+                  fetchPriority="low"
+                  unoptimized={!isOptimizableImageUrl(post.mainImage)}
                 />
               </div>
             )}
@@ -233,7 +292,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       </section>
 
       {/* Blog Navigation */}
-      <BlogNavigation currentSlug={params.slug} />
+      <BlogNavigation previousPost={previousPost} nextPost={nextPost} />
     </main>
   );
 } 

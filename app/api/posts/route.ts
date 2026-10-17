@@ -156,6 +156,38 @@ export async function GET(request: NextRequest) {
     }
 
     const skip = (page - 1) * limit;
+
+    if (searchParams.get('fields') === 'nav' && admin !== 'true') {
+      const where = { published: true as const };
+      const [posts, total] = await Promise.all([
+        prisma.post.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip,
+          take: limit,
+          select: {
+            title: true,
+            slug: true,
+            category: { select: { name: true } },
+          },
+        }),
+        prisma.post.count({ where }),
+      ]);
+      return NextResponse.json({
+        posts: posts.map((post) => ({
+          title: post.title,
+          slug: post.slug,
+          category: post.category?.name || 'כללי',
+        })),
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) || 1,
+        },
+      });
+    }
+
     const where: any = {};
 
     if (admin === 'true') {

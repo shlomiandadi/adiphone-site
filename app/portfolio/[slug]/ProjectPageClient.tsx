@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, type ComponentType } from 'react';
-import { optimizedImageUrl, responsiveAttributes } from '../../../lib/responsiveImage';
+import { lightboxImageUrl, responsiveAttributes } from '../../../lib/responsiveImage';
 
 interface Project {
   id: string;
@@ -30,9 +30,16 @@ export default function ProjectPageClient({
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [Lightbox, setLightbox] = useState<ComponentType<Record<string, unknown>> | null>(null);
+  const [originalFallback, setOriginalFallback] = useState<Record<string, true>>({});
 
   const images = project.images || [];
-  const lightboxSrc = (src: string) => optimizedImageUrl(src, 1600);
+  const lightboxSrc = (src: string) => (originalFallback[src] ? src : lightboxImageUrl(src, 1600));
+
+  const handleImageLoadError = (imageSrc: string) => {
+    const original = images.find((img) => img === imageSrc || lightboxImageUrl(img, 1600) === imageSrc);
+    if (!original || original === imageSrc || originalFallback[original]) return;
+    setOriginalFallback((prev) => (prev[original] ? prev : { ...prev, [original]: true }));
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -128,6 +135,7 @@ export default function ProjectPageClient({
               imageTitle={project.name}
               imageCaption={project.description}
               enableZoom={true}
+              onImageLoadError={handleImageLoadError}
             />
           )}
         </div>

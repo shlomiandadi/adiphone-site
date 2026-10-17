@@ -11,6 +11,7 @@ export default function PortfolioLayout({
 }) {
   return (
     <>
+      <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
       <SeoAgentPageExtras path="/portfolio" />
       {children}
     </>

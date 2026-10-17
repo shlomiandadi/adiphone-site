@@ -8,6 +8,7 @@ import React from 'react';
 import SearchResult from './SearchResult';
 import { navigation, promotions, type NavigationItem } from './navigation-data';
 import { IconType } from 'react-icons';
+import BrandLogo from './BrandLogo';
 
 interface SubMenuItem {
   name: string;
@@ -270,17 +271,8 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
           <div className={`flex items-center gap-2 xl:gap-3 transition-all duration-300 ${
             isScrolled ? 'h-14' : 'h-16 lg:h-[4.25rem]'
           }`}>
-            <Link href="/" prefetch={false} className="flex items-center group shrink-0 min-w-0">
-              <div className={`header-logo font-bold transition-all duration-300 whitespace-nowrap ${
-                isScrolled ? 'text-sm' : 'text-sm xl:text-base'
-              }`}>
-                <div>Top Webstak</div>
-                <div className={`text-[11px] leading-tight font-medium ${
-                  isScrolled ? 'hidden' : 'hidden xl:block'
-                }`}>
-                  בנייה וקידום אתרים
-                </div>
-              </div>
+            <Link href="/" prefetch={false} className="flex items-center shrink-0">
+              <BrandLogo height={36} />
             </Link>
 
             <div className="hidden lg:flex items-center justify-center flex-1 min-w-0 flex-nowrap">
@@ -484,10 +476,10 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
         >
           <div className="px-4 py-6">
             <div className="flex justify-between items-center mb-6">
-              <div className="text-base font-bold text-blue-600 leading-tight">
-                <div>Top Webstak</div>
-                <div className="text-sm">בנייה וקידום אתרים</div>
-                <div className="text-sm">(מבית עדי פון תקשורת)</div>
+              <div className="min-w-0 text-blue-600 leading-tight">
+                <BrandLogo height={32} />
+                <div className="mt-1 text-sm font-bold">בנייה וקידום אתרים</div>
+                <div className="text-sm font-bold">(מבית עדי פון תקשורת)</div>
               </div>
               <button
                 ref={closeButtonRef}

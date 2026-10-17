@@ -63,6 +63,11 @@ export default function ProjectPageClient({
               sizes: '(max-width: 896px) calc(100vw - 2rem), 864px',
               widths: [480, 640, 720, 828, 1200, 1600],
               priority: true,
+              // h-80 is 320px tall. 4:5 is the object-cover window at a 288px
+              // viewport (256px content). Taller screenshots are cut to that
+              // center band; every wider box then shows the same slice as the
+              // full image. Wider originals skip the crop and stay c_limit.
+              coverIfTallerThan: '4:5',
             })}
           />
         )}

@@ -21,6 +21,13 @@ export type ResponsiveImageOptions = {
   priority?: boolean;
   quality?: number;
   crop?: ImageCrop;
+  /**
+   * For a fixed-height object-cover box: if the source is taller than this
+   * aspect, crop to that center band. Wider sources stay on c_limit, unchanged.
+   * The band is the object-cover window of the narrowest viewport we still
+   * match, so every wider viewport shows the same pixels as the full image.
+   */
+  coverIfTallerThan?: string;
   /** Set on gallery thumbs so an in-view lazy image does not compete with the hero. */
   fetchPriority?: 'high' | 'low' | 'auto';
 };
@@ -73,7 +80,12 @@ function cloudinaryCropSegment(crop: ImageCrop) {
   return `c_fill,ar_${crop.ar},g_${gravity}`.replace(/,/g, '%2C').replace(/:/g, '%3A');
 }
 
-export function cloudinaryUrl(src: string, width: number, crop?: ImageCrop) {
+function cloudinaryCoverIfTallerSegment(ar: string) {
+  const encodedAr = ar.replace(/:/g, '%3A');
+  return `if_ar_lt_${encodedAr}/${cloudinaryCropSegment({ ar })}/if_end`;
+}
+
+export function cloudinaryUrl(src: string, width: number, crop?: ImageCrop, coverIfTallerThan?: string) {
   const index = src.indexOf(CLOUDINARY_MARKER);
   if (index === -1) return src;
   const prefix = src.slice(0, index + CLOUDINARY_MARKER.length);
@@ -93,7 +105,9 @@ export function cloudinaryUrl(src: string, width: number, crop?: ImageCrop) {
   // would also break srcset, which splits candidates on raw commas.
   const transform = crop?.ar
     ? `f_auto/q_auto/${cloudinaryCropSegment(crop)}/w_${safeWidth}`
-    : `f_auto/q_auto/c_limit/w_${safeWidth}`;
+    : coverIfTallerThan
+      ? `f_auto/q_auto/${cloudinaryCoverIfTallerSegment(coverIfTallerThan)}/c_limit/w_${safeWidth}`
+      : `f_auto/q_auto/c_limit/w_${safeWidth}`;
   return `${prefix}${transform}/${segments.join('/')}${query}${hash}`;
 }
 
@@ -106,9 +120,15 @@ export function unsplashUrl(src: string, width: number, quality = 75) {
   return url.toString();
 }
 
-export function optimizedImageUrl(src: string, width: number, quality = 75, crop?: ImageCrop) {
+export function optimizedImageUrl(
+  src: string,
+  width: number,
+  quality = 75,
+  crop?: ImageCrop,
+  coverIfTallerThan?: string,
+) {
   if (!isOptimizableImageUrl(src)) return src;
-  if (isCloudinaryUpload(src)) return cloudinaryUrl(src, width, crop);
+  if (isCloudinaryUpload(src)) return cloudinaryUrl(src, width, crop, coverIfTallerThan);
   if (isUnsplashImage(src)) return unsplashUrl(src, width, quality);
   return src;
 }
@@ -122,7 +142,8 @@ export function responsiveAttributes(src: string, options: ResponsiveImageOption
   const loading = priority ? 'eager' : 'lazy';
   const decoding = priority ? 'auto' : 'async';
   const fetchPriority = options.fetchPriority ?? (priority ? 'high' : undefined);
-  const urlFor = (width: number) => optimizedImageUrl(src, width, options.quality, options.crop);
+  const urlFor = (width: number) =>
+    optimizedImageUrl(src, width, options.quality, options.crop, options.coverIfTallerThan);
   if (!isOptimizableImageUrl(src) || widths.length === 0) {
     return {
       src,

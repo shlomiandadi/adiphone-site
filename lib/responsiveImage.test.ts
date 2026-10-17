@@ -76,6 +76,31 @@ test('crop option is a srcset-safe center 16:9 fill and does not change the defa
   assert.match(candidates[1], / 480w$/);
 });
 
+test('coverIfTallerThan crops only sources taller than the hero box and stays srcset-safe', () => {
+  const url = cloudinaryUrl(ORIGINAL, 720, undefined, '4:5');
+  assert.equal(url.includes(','), false);
+  assert.equal(
+    url,
+    'https://res.cloudinary.com/dooxg35gj/image/upload/f_auto/q_auto/if_ar_lt_4%3A5/c_fill%2Car_4%3A5%2Cg_center/if_end/c_limit/w_720/v1753362055/portfolio/child-disability.jpg'
+  );
+  assert.equal(cloudinaryUrl(url, 720, undefined, '4:5'), url);
+  assert.match(cloudinaryUrl(url, 480), /c_limit\/w_480/);
+  assert.equal(cloudinaryUrl(url, 480).includes('if_ar'), false);
+
+  const hero = responsiveAttributes(ORIGINAL, {
+    sizes: '(max-width: 896px) calc(100vw - 2rem), 864px',
+    widths: [640, 720],
+    priority: true,
+    coverIfTallerThan: '4:5',
+  });
+  assert.equal(hero.loading, 'eager');
+  assert.equal(hero.fetchPriority, 'high');
+  const candidates = (hero.srcSet || '').split(', ');
+  assert.equal(candidates.length, 2);
+  assert.equal(candidates.every((candidate) => !candidate.slice(0, candidate.lastIndexOf(' ')).includes(',')), true);
+  assert.match(candidates[0], /if_ar_lt_4%3A5\/c_fill%2Car_4%3A5%2Cg_center\/if_end\/c_limit\/w_640/);
+});
+
 test('priority images are eager and high priority; other images are lazy with a srcset', () => {
   const lcp = responsiveAttributes(ORIGINAL, {
     sizes: '(max-width: 896px) 100vw, 896px',

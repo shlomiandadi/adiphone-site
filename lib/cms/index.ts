@@ -2,7 +2,7 @@ export { isCmsEnabled, cmsRead } from './enabled';
 export { getValidatedRobots, isSafeRobotsConfig } from './robots';
 export { getCmsSeo, getCmsCanonical, mergeCmsMetadata, exactPathKeys, shouldApplyRobots } from './seo';
 export { LIVE_SEO } from './liveSeo';
-export { getSiteSettings, getTrackingIds, GTM_CONTAINER_ID } from './siteSettings';
+export { getSiteSettings, getTrackingIds } from './siteSettings';
 export { getSitemapSettings } from './sitemap';
 export { getHeaderMenu, getHeaderSetting } from './navigation';
 export { getFooter } from './footer';

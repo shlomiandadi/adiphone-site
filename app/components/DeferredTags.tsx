@@ -3,13 +3,21 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { ensureGa4Config } from '../../lib/deferredTags';
+import { flushMetaLead } from '../../lib/tracking';
+import {
+  AHREFS_ANALYTICS_KEY,
+  AHREFS_ANALYTICS_SRC,
+  readConsentFlags,
+  resolveMetaPixelId,
+  shouldLoadAhrefs,
+  shouldLoadMetaPixel,
+} from '../../lib/thirdPartyTags';
 
 const INTERACTION_EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'] as const;
 const TIMEOUT_MS = 7000;
 
 type Props = {
   gaId: string;
-  gtmId: string;
   pixelId?: string;
 };
 
@@ -26,7 +34,7 @@ function injectScript(src: string) {
   document.head.appendChild(script);
 }
 
-function loadTags(gaId: string, gtmId: string, pixelId?: string) {
+function loadGa4(gaId: string) {
   if (window.__TW_TAGS_LOADED) return;
   window.__TW_TAGS_LOADED = true;
 
@@ -45,15 +53,9 @@ function loadTags(gaId: string, gtmId: string, pixelId?: string) {
   );
 
   injectScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`);
+}
 
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-  const firstScript = document.getElementsByTagName('script')[0];
-  const gtm = document.createElement('script');
-  gtm.async = true;
-  gtm.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`;
-  firstScript?.parentNode?.insertBefore(gtm, firstScript);
-
+function loadMetaPixel(pixelId: string) {
   if (!pixelId || window.__TW_PIXEL_LOADED) return;
   window.__TW_PIXEL_LOADED = true;
   const boot = document.createElement('script');
@@ -69,11 +71,49 @@ function loadTags(gaId: string, gtmId: string, pixelId?: string) {
   document.head.appendChild(boot);
 }
 
-export default function DeferredTags({ gaId, gtmId, pixelId }: Props) {
+function loadAhrefs() {
+  if (window.__TW_AHREFS_LOADED) return;
+  if (document.querySelector(`script[src="${AHREFS_ANALYTICS_SRC}"]`)) {
+    window.__TW_AHREFS_LOADED = true;
+    return;
+  }
+  window.__TW_AHREFS_LOADED = true;
+  const script = document.createElement('script');
+  script.src = AHREFS_ANALYTICS_SRC;
+  script.async = true;
+  script.setAttribute('data-key', AHREFS_ANALYTICS_KEY);
+  document.head.appendChild(script);
+}
+
+function loadConsentGatedTags(pixelId?: string) {
+  const consent = readConsentFlags(document.cookie);
+  const hostname = window.location.hostname;
+  if (shouldLoadMetaPixel(hostname, consent)) {
+    loadMetaPixel(resolveMetaPixelId(pixelId));
+  }
+  if (shouldLoadAhrefs(hostname, consent)) {
+    loadAhrefs();
+  }
+  flushMetaLead();
+}
+
+export default function DeferredTags({ gaId, pixelId }: Props) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (window.__TW_TAGS_LOADED) return;
+    const onConsent = () => {
+      if (!window.__TW_TAGS_LOADED) return;
+      loadConsentGatedTags(pixelId);
+    };
+    window.addEventListener('cookie-consent-changed', onConsent);
+    return () => window.removeEventListener('cookie-consent-changed', onConsent);
+  }, [pixelId]);
+
+  useEffect(() => {
+    if (window.__TW_TAGS_LOADED) {
+      loadConsentGatedTags(pixelId);
+      return;
+    }
 
     let idleId = 0;
     let timerId = 0;
@@ -82,7 +122,8 @@ export default function DeferredTags({ gaId, gtmId, pixelId }: Props) {
     const run = () => {
       if (cancelled || window.__TW_TAGS_LOADED) return;
       detach();
-      loadTags(gaId, gtmId, pixelId);
+      loadGa4(gaId);
+      loadConsentGatedTags(pixelId);
     };
 
     const onInteract = (event: Event) => {
@@ -131,7 +172,7 @@ export default function DeferredTags({ gaId, gtmId, pixelId }: Props) {
       cancelled = true;
       detach();
     };
-  }, [gaId, gtmId, pathname, pixelId]);
+  }, [gaId, pathname, pixelId]);
 
   return null;
 }

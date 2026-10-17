@@ -1,3 +1,12 @@
+import {
+  META_LEAD_STATE_KEY,
+  isMetaContactEvent,
+  nextMetaLeadState,
+  readConsentFlags,
+  shouldFlushMetaLead,
+  shouldLoadMetaPixel,
+} from './thirdPartyTags';
+
 export const GA4_MEASUREMENT_ID = 'G-QMC63HG6SD';
 
 const FIRST_TOUCH_KEY = 'tw_first_touch_v1';
@@ -276,6 +285,59 @@ export function commonEventParams(extra: TrackingParams = {}): TrackingParams {
   };
 }
 
+function isMetaPixelReady() {
+  if (!isBrowser()) return false;
+  if (!window.__TW_PIXEL_LOADED || typeof window.fbq !== 'function') return false;
+  return shouldLoadMetaPixel(window.location.hostname, readConsentFlags(document.cookie));
+}
+
+export function trackMetaContact() {
+  if (!isMetaPixelReady()) return;
+  try {
+    window.fbq?.('track', 'Contact');
+  } catch {
+    // pixel not available
+  }
+}
+
+export function trackMetaLead() {
+  if (!isBrowser()) return;
+  const next = nextMetaLeadState(isMetaPixelReady());
+  try {
+    window.sessionStorage.setItem(META_LEAD_STATE_KEY, next);
+  } catch {
+    if (next !== 'sent') return;
+  }
+  if (next !== 'sent') return;
+  try {
+    window.fbq?.('track', 'Lead');
+  } catch {
+    // pixel not available
+  }
+}
+
+export function flushMetaLead() {
+  if (!isBrowser()) return;
+  const ready = isMetaPixelReady();
+  let state: string | null = null;
+  try {
+    state = window.sessionStorage.getItem(META_LEAD_STATE_KEY);
+  } catch {
+    return;
+  }
+  if (!shouldFlushMetaLead(state, ready)) return;
+  try {
+    window.sessionStorage.setItem(META_LEAD_STATE_KEY, 'sent');
+  } catch {
+    return;
+  }
+  try {
+    window.fbq?.('track', 'Lead');
+  } catch {
+    // pixel not available
+  }
+}
+
 export function trackEvent(name: string, params: TrackingParams = {}) {
   if (!isBrowser()) return;
   persistAttribution();
@@ -292,10 +354,12 @@ export function trackEvent(name: string, params: TrackingParams = {}) {
     }
   };
   send();
+  if (isMetaContactEvent(name)) trackMetaContact();
 }
 
 export function trackGenerateLead(formName: string, extra: TrackingParams = {}) {
   trackEvent('generate_lead', { form_name: formName, ...extra });
+  trackMetaLead();
 }
 
 export function trackPageView() {

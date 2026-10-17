@@ -16,7 +16,7 @@ import ChatbotWidget from './components/ChatbotWidget';
 import AnalyticsTracker from './components/AnalyticsTracker';
 import TopStrip from './components/TopStrip';
 import { FALLBACK_LAYOUT_CMS, getLayoutCms } from '../lib/cms/layoutData';
-import { GTM_CONTAINER_ID } from '../lib/cms/siteSettings';
+import { META_PIXEL_ID } from '../lib/thirdPartyTags';
 import { GA4_MEASUREMENT_ID } from '../lib/tracking';
 
 const heebo = Heebo({ 
@@ -77,8 +77,7 @@ export default async function RootLayout({
     console.warn('Root layout CMS fallback (DB unavailable):', error);
   }
   const gaId = cms.tracking.ga || GA4_MEASUREMENT_ID;
-  const gtmId = cms.tracking.gtm || GTM_CONTAINER_ID;
-  const pixelId = cms.tracking.pixel;
+  const pixelId = cms.tracking.pixel || META_PIXEL_ID;
 
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
@@ -92,16 +91,6 @@ export default async function RootLayout({
         <BreadcrumbSchema />
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe 
-            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
-            height="0" 
-            width="0" 
-            style={{display:'none',visibility:'hidden'}}
-          />
-        </noscript>
-        {/* End Google Tag Manager (noscript) */}
         <a href="#main-content" className="skip-to-main">
           דלג לתוכן הראשי
         </a>
@@ -128,7 +117,7 @@ export default async function RootLayout({
         <FloatingButtons />
         <AccessibilityBar />
         <CookieConsent />
-        <DeferredTags gaId={gaId} gtmId={gtmId} pixelId={pixelId} />
+        <DeferredTags gaId={gaId} pixelId={pixelId} />
         <AnalyticsTracker />
         <ChatbotWidget />
       </body>

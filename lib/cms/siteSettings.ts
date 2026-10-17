@@ -1,9 +1,8 @@
 import prisma from '../prisma';
+import { META_PIXEL_ID } from '../thirdPartyTags';
 import { GA4_MEASUREMENT_ID } from '../tracking';
 import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
-
-export const GTM_CONTAINER_ID = 'GTM-NHQ4DRWX';
 
 export const getSiteSettings = cmsCache('cms-site-settings', async () => {
   return cmsRead(async () => {
@@ -16,11 +15,10 @@ export const getSiteSettings = cmsCache('cms-site-settings', async () => {
 export const getTrackingIds = cmsCache('cms-tracking-ids', async () => {
   const settings = await getSiteSettings();
   const pixelId = settings?.facebookPixelId?.trim() || '';
-  // Pixel only when site_settings is cmsEnabled AND the ID is non-empty.
-  const pixel = settings && isCmsEnabled(settings) && pixelId ? pixelId : '';
+  // CMS pixel overrides the built-in id. An empty CMS value keeps the default.
+  const pixel = settings && isCmsEnabled(settings) && pixelId ? pixelId : META_PIXEL_ID;
   return {
     ga: settings?.googleAnalyticsId?.trim() || GA4_MEASUREMENT_ID,
-    gtm: settings?.googleTagManagerId?.trim() || GTM_CONTAINER_ID,
     pixel,
   };
 });

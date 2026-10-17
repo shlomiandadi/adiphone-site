@@ -1,12 +1,13 @@
+import { META_PIXEL_ID } from '../thirdPartyTags';
 import { GA4_MEASUREMENT_ID } from '../tracking';
 import { cmsCache } from './cache';
 import { getFooter } from './footer';
 import { getHeaderMenu } from './navigation';
-import { getSiteSettings, getTrackingIds, GTM_CONTAINER_ID } from './siteSettings';
+import { getSiteSettings, getTrackingIds } from './siteSettings';
 import { getActiveTopStrip } from './topStrip';
 
 export type LayoutCms = {
-  tracking: { ga: string; gtm: string; pixel: string };
+  tracking: { ga: string; pixel: string };
   topStrip: Awaited<ReturnType<typeof getActiveTopStrip>>;
   headerMenu: Awaited<ReturnType<typeof getHeaderMenu>>;
   footer: Awaited<ReturnType<typeof getFooter>>;
@@ -14,7 +15,7 @@ export type LayoutCms = {
 };
 
 export const FALLBACK_LAYOUT_CMS: LayoutCms = {
-  tracking: { ga: GA4_MEASUREMENT_ID, gtm: GTM_CONTAINER_ID, pixel: '' },
+  tracking: { ga: GA4_MEASUREMENT_ID, pixel: META_PIXEL_ID },
   topStrip: null,
   headerMenu: null,
   footer: null,

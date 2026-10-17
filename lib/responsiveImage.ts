@@ -9,6 +9,21 @@ const CLOUDINARY_MARKER = '/upload/';
 const TRANSFORM_PARAM =
   /^(?:c|w|h|f|q|g|e|b|r|a|o|x|y|z|t|l|u|p|d|if|fl|ar|bo|dpr|so|eo|pg|vc|ac|af|dn|dl|sp|vs)_/i;
 
+/**
+ * Cloudinary returns HTTP 400 when a derived image is over 25 megapixels.
+ * Stay one pixel under that check.
+ */
+const CLOUDINARY_MAX_PIXELS = 25_000_000;
+
+export type CloudinaryUrlOptions = {
+  /**
+   * Lightbox delivery. Extremely tall screenshots (aspect under 1:10) use one
+   * c_limit box that stays under 25MP, so the full frame is returned at its
+   * native size. Every other image keeps a width scale.
+   */
+  lightbox?: boolean;
+};
+
 /** Center crop that matches `object-cover` + `object-position: center` for one aspect ratio. */
 export type ImageCrop = {
   ar: string;
@@ -85,7 +100,23 @@ function cloudinaryCoverIfTallerSegment(ar: string) {
   return `if_ar_lt_${encodedAr}/${cloudinaryCropSegment({ ar })}/if_end`;
 }
 
-export function cloudinaryUrl(src: string, width: number, crop?: ImageCrop, coverIfTallerThan?: string) {
+function cloudinaryLightboxTransform(width: number) {
+  const safeWidth = Math.max(16, Math.round(width));
+  const safeHeight = Math.max(16, Math.floor((CLOUDINARY_MAX_PIXELS - 1) / safeWidth));
+  // One component: a slash between c_limit and w_ is a second step, and a
+  // width-only scale of a ~375×11000 screenshot asks for 50–80MP.
+  const limit = `c_limit%2Cw_${safeWidth}%2Ch_${safeHeight}`;
+  const scale = `c_scale%2Cw_${safeWidth}`;
+  return `f_auto/q_auto/if_ar_lt_1%3A10/${limit}/if_else/${scale}/if_end`;
+}
+
+export function cloudinaryUrl(
+  src: string,
+  width: number,
+  crop?: ImageCrop,
+  coverIfTallerThan?: string,
+  options?: CloudinaryUrlOptions,
+) {
   const index = src.indexOf(CLOUDINARY_MARKER);
   if (index === -1) return src;
   const prefix = src.slice(0, index + CLOUDINARY_MARKER.length);
@@ -107,8 +138,17 @@ export function cloudinaryUrl(src: string, width: number, crop?: ImageCrop, cove
     ? `f_auto/q_auto/${cloudinaryCropSegment(crop)}/w_${safeWidth}`
     : coverIfTallerThan
       ? `f_auto/q_auto/${cloudinaryCoverIfTallerSegment(coverIfTallerThan)}/c_limit/w_${safeWidth}`
-      : `f_auto/q_auto/c_limit/w_${safeWidth}`;
+      : options?.lightbox
+        ? cloudinaryLightboxTransform(safeWidth)
+        : `f_auto/q_auto/c_limit/w_${safeWidth}`;
   return `${prefix}${transform}/${segments.join('/')}${query}${hash}`;
+}
+
+/** Lightbox src. Non-Cloudinary URLs keep the normal optimizer. */
+export function lightboxImageUrl(src: string, width = 1600) {
+  if (!isOptimizableImageUrl(src)) return src;
+  if (isCloudinaryUpload(src)) return cloudinaryUrl(src, width, undefined, undefined, { lightbox: true });
+  return optimizedImageUrl(src, width);
 }
 
 export function unsplashUrl(src: string, width: number, quality = 75) {

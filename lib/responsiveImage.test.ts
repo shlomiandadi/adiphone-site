@@ -3,6 +3,7 @@ import test from 'node:test';
 import {
   cloudinaryUrl,
   isOptimizableImageUrl,
+  lightboxImageUrl,
   optimizeContentImages,
   optimizedImageUrl,
   responsiveAttributes,
@@ -99,6 +100,33 @@ test('coverIfTallerThan crops only sources taller than the hero box and stays sr
   assert.equal(candidates.length, 2);
   assert.equal(candidates.every((candidate) => !candidate.slice(0, candidate.lastIndexOf(' ')).includes(',')), true);
   assert.match(candidates[0], /if_ar_lt_4%3A5\/c_fill%2Car_4%3A5%2Cg_center\/if_end\/c_limit\/w_640/);
+});
+
+test('lightbox urls keep a width scale, and cap very tall frames under 25MP', () => {
+  const url = lightboxImageUrl(ORIGINAL, 1600);
+  assert.equal(url.includes(','), false);
+  assert.equal(
+    url,
+    'https://res.cloudinary.com/dooxg35gj/image/upload/f_auto/q_auto/if_ar_lt_1%3A10/c_limit%2Cw_1600%2Ch_15624/if_else/c_scale%2Cw_1600/if_end/v1753362055/portfolio/child-disability.jpg'
+  );
+  assert.equal(1600 * 15624 < 25_000_000, true);
+  assert.equal(lightboxImageUrl(url, 1600), url);
+  assert.match(cloudinaryUrl(url, 480), /c_limit\/w_480/);
+  assert.equal(cloudinaryUrl(url, 480).includes('if_ar_lt_1'), false);
+
+  const thumbs = responsiveAttributes(ORIGINAL, {
+    sizes: '(max-width: 768px) 50vw, 280px',
+    widths: [320, 480],
+    crop: { ar: '16:9' },
+  });
+  assert.match(thumbs.src, /c_fill%2Car_16%3A9%2Cg_center\/w_480/);
+  assert.equal(thumbs.src.includes('if_ar_lt_1%3A10'), false);
+
+  assert.equal(lightboxImageUrl('/images/logo.svg', 1600), '/images/logo.svg');
+  assert.equal(
+    lightboxImageUrl('https://res.cloudinary.com/dooxg35gj/image/upload/v1/anim.gif', 1600),
+    'https://res.cloudinary.com/dooxg35gj/image/upload/v1/anim.gif'
+  );
 });
 
 test('priority images are eager and high priority; other images are lazy with a srcset', () => {

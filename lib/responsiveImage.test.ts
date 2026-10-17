@@ -3,9 +3,11 @@ import test from 'node:test';
 import {
   cloudinaryUrl,
   isOptimizableImageUrl,
+  isSeoAgentImage,
   optimizeContentImages,
   optimizedImageUrl,
   responsiveAttributes,
+  seoAgentImageUrl,
   unsplashUrl,
 } from './responsiveImage.ts';
 
@@ -138,11 +140,73 @@ test('cms html images are resized and lazy, and non-photo images are left alone'
   assert.equal(next.includes(ORIGINAL), false);
 });
 
-test('content images we cannot resize stay on the same url and do not compete with the hero', () => {
+test('seo-agent image urls resize through the netlify image cdn with an explicit format', () => {
+  const src = 'https://seo-agent-tools.netlify.app/api/images/hero.webp?v=1';
+  assert.equal(isSeoAgentImage(src), true);
+  assert.equal(isOptimizableImageUrl(src), true);
+  assert.equal(isSeoAgentImage('https://seo-agent-tools.netlify.app/logo.png'), false);
+  assert.equal(
+    seoAgentImageUrl(src, 828, 'avif', 50),
+    'https://seo-agent-tools.netlify.app/.netlify/images?url=%2Fapi%2Fimages%2Fhero.webp%3Fv%3D1&w=828&fm=avif&q=50'
+  );
+  assert.equal(
+    seoAgentImageUrl(src, 1200, 'webp', 75),
+    'https://seo-agent-tools.netlify.app/.netlify/images?url=%2Fapi%2Fimages%2Fhero.webp%3Fv%3D1&w=1200&fm=webp&q=75'
+  );
+
+  const hero = responsiveAttributes(src, {
+    sizes: '100vw',
+    widths: [640, 828, 1080, 1200],
+    priority: true,
+    quality: 50,
+    format: 'avif',
+  });
+  assert.equal(hero.loading, 'eager');
+  assert.equal(hero.fetchPriority, 'high');
+  assert.match(hero.src, /fm=avif/);
+  assert.match(hero.src, /q=50/);
+  assert.match(hero.src, /w=828/);
+  const candidates = (hero.srcSet || '').split(', ');
+  assert.deepEqual(
+    candidates.map((candidate) => candidate.slice(candidate.lastIndexOf(' ') + 1)),
+    ['640w', '828w', '1080w', '1200w']
+  );
+  assert.equal(
+    candidates.every((candidate) => !candidate.slice(0, candidate.lastIndexOf(' ')).includes(',')),
+    true
+  );
+  assert.match(candidates[0], /fm=avif/);
+  assert.equal(hero.srcSet?.includes('1600w'), false);
+
+  const unsplash = optimizedImageUrl(
+    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600',
+    640,
+    75,
+    undefined,
+    undefined,
+    'avif'
+  );
+  assert.equal(unsplash.includes('netlify'), false);
+  assert.match(unsplash, /images\.unsplash\.com/);
+});
+
+test('hosts we still cannot resize stay on the same url and do not compete with the hero', () => {
+  const src = 'https://image.pollinations.ai/prompt/a-website';
+  const html = `<img src="${src}" alt="section" width="800" height="450" loading="lazy" title="keep" />`;
+  const next = optimizeContentImages(html);
+  assert.match(next, /src="https:\/\/image\.pollinations\.ai\/prompt\/a-website"/);
+  assert.match(next, /loading="lazy"/);
+  assert.match(next, /fetchpriority="low"/);
+  assert.equal((next.match(/loading=/g) || []).length, 1);
+});
+
+test('seo-agent content images get a real webp srcset and stay below the hero', () => {
   const src = 'https://seo-agent-tools.netlify.app/api/images/hero.webp?v=1';
   const html = `<img src="${src}" alt="section" width="800" height="450" loading="lazy" title="keep" />`;
   const next = optimizeContentImages(html);
-  assert.match(next, new RegExp(`src="${src.replace(/[?]/g, '\\?')}"`));
+  assert.match(next, /fm=webp/);
+  assert.match(next, /q=75/);
+  assert.match(next, /srcset="[^"]*480w/);
   assert.match(next, /alt="section"/);
   assert.match(next, /width="800"/);
   assert.match(next, /height="450"/);
@@ -150,5 +214,6 @@ test('content images we cannot resize stay on the same url and do not compete wi
   assert.match(next, /fetchpriority="low"/);
   assert.match(next, /decoding="async"/);
   assert.match(next, /title="keep"/);
+  assert.equal(next.includes(src), false);
   assert.equal((next.match(/loading=/g) || []).length, 1);
 });

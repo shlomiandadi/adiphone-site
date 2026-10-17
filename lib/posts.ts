@@ -1,4 +1,5 @@
 import { PrismaClient, Post } from '@prisma/client';
+import type { BlogNavPost } from './blogNav';
 
 const prisma = new PrismaClient();
 
@@ -12,6 +13,55 @@ export async function getPublishedPosts({ limit }: { limit?: number } = {}): Pro
     orderBy: { createdAt: 'desc' },
     take: limit,
   });
+}
+
+const NAV_POST_LIMIT = 100;
+
+function navCategoryName(category: unknown) {
+  if (typeof category === 'string') return category;
+  if (category && typeof category === 'object' && 'name' in category) {
+    const name = (category as { name?: unknown }).name;
+    if (typeof name === 'string' && name) return name;
+  }
+  return '';
+}
+
+async function fallbackNavPosts(): Promise<BlogNavPost[]> {
+  const data = await fetchFallbackJson(`/api/posts?limit=${NAV_POST_LIMIT}&fields=nav`);
+  const rows = Array.isArray(data?.posts) ? data.posts : [];
+  return rows.map((post: { title?: string; slug?: string; category?: unknown }) => ({
+    title: String(post.title || ''),
+    slug: String(post.slug || ''),
+    category: navCategoryName(post.category) || 'כללי',
+  }));
+}
+
+/** Titles and slugs only, same 100-post window the nav used to fetch in the browser. */
+export async function getPublishedNavPosts(): Promise<BlogNavPost[]> {
+  if (!process.env.DATABASE_URL && contentFallbackOrigin) {
+    return fallbackNavPosts();
+  }
+  try {
+    const posts = await prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: 'desc' },
+      take: NAV_POST_LIMIT,
+      select: {
+        title: true,
+        slug: true,
+        category: { select: { name: true } },
+      },
+    });
+    return posts.map((post) => ({
+      title: post.title,
+      slug: post.slug,
+      category: post.category?.name || 'כללי',
+    }));
+  } catch (error) {
+    if (!contentFallbackOrigin) throw error;
+    console.warn('Nav posts DB read failed, using content fallback:', error);
+    return fallbackNavPosts();
+  }
 }
 
 const contentFallbackOrigin = (process.env.CONTENT_FALLBACK_ORIGIN || '').replace(/\/$/, '');

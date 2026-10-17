@@ -1,60 +1,12 @@
-'use client';
-
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-
-interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  mainImage: string;
-  category: string;
-}
+import type { BlogNavPost } from '../../lib/blogNav';
 
 interface BlogNavigationProps {
-  currentSlug: string;
+  previousPost: BlogNavPost | null;
+  nextPost: BlogNavPost | null;
 }
 
-export default function BlogNavigation({ currentSlug }: BlogNavigationProps) {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        // Fetch enough posts so prev/next covers the full blog graph (orphan reduction)
-        const response = await fetch('/api/posts?limit=100');
-        if (response.ok) {
-          const data = await response.json();
-          setPosts(data.posts || []);
-        }
-      } catch (error) {
-        console.error('Error fetching posts for navigation:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="border-t border-gray-200 py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
-            <div className="w-1/2 h-20 bg-gray-200 rounded animate-pulse"></div>
-            <div className="w-1/2 h-20 bg-gray-200 rounded animate-pulse"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const currentIndex = posts.findIndex(post => post.slug === currentSlug);
-  const previousPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
-  const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
-
+export default function BlogNavigation({ previousPost, nextPost }: BlogNavigationProps) {
   if (!previousPost && !nextPost) {
     return null;
   }
@@ -124,4 +76,4 @@ export default function BlogNavigation({ currentSlug }: BlogNavigationProps) {
       </div>
     </div>
   );
-} 
+}

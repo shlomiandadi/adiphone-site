@@ -56,11 +56,18 @@ export default function ProjectPageClient({
         {project.image && (
           <img
             alt={project.name}
+            width={864}
+            height={320}
             className="w-full h-80 object-cover"
             {...responsiveAttributes(project.image, {
-              sizes: '(max-width: 896px) 100vw, 896px',
-              widths: [480, 828, 1200, 1600],
+              sizes: '(max-width: 896px) calc(100vw - 2rem), 864px',
+              widths: [480, 640, 720, 828, 1200, 1600],
               priority: true,
+              // h-80 is 320px tall. 4:5 is the object-cover window at a 288px
+              // viewport (256px content). Taller screenshots are cut to that
+              // center band; every wider box then shows the same slice as the
+              // full image. Wider originals skip the crop and stay c_limit.
+              coverIfTallerThan: '4:5',
             })}
           />
         )}
@@ -97,10 +104,14 @@ export default function ProjectPageClient({
               <img
                 key={i}
                 alt={project.name + ' image ' + (i + 1)}
+                width={480}
+                height={270}
                 className="rounded-lg w-full object-cover aspect-video shadow hover:scale-105 transition-transform cursor-pointer"
                 {...responsiveAttributes(img, {
                   sizes: '(max-width: 768px) 50vw, 280px',
                   widths: [320, 480, 640, 960],
+                  crop: { ar: '16:9' },
+                  fetchPriority: 'low',
                 })}
                 onClick={() => { setIndex(i); setOpen(true); }}
               />

@@ -9,11 +9,27 @@ const CLOUDINARY_MARKER = '/upload/';
 const TRANSFORM_PARAM =
   /^(?:c|w|h|f|q|g|e|b|r|a|o|x|y|z|t|l|u|p|d|if|fl|ar|bo|dpr|so|eo|pg|vc|ac|af|dn|dl|sp|vs)_/i;
 
+/** Center crop that matches `object-cover` + `object-position: center` for one aspect ratio. */
+export type ImageCrop = {
+  ar: string;
+  gravity?: string;
+};
+
 export type ResponsiveImageOptions = {
   widths?: number[];
   sizes: string;
   priority?: boolean;
   quality?: number;
+  crop?: ImageCrop;
+  /**
+   * For a fixed-height object-cover box: if the source is taller than this
+   * aspect, crop to that center band. Wider sources stay on c_limit, unchanged.
+   * The band is the object-cover window of the narrowest viewport we still
+   * match, so every wider viewport shows the same pixels as the full image.
+   */
+  coverIfTallerThan?: string;
+  /** Set on gallery thumbs so an in-view lazy image does not compete with the hero. */
+  fetchPriority?: 'high' | 'low' | 'auto';
 };
 
 export type ResponsiveImageAttrs = {
@@ -21,7 +37,7 @@ export type ResponsiveImageAttrs = {
   srcSet?: string;
   sizes?: string;
   loading: 'eager' | 'lazy';
-  fetchPriority?: 'high' | 'auto';
+  fetchPriority?: 'high' | 'low' | 'auto';
   decoding: 'async' | 'auto';
 };
 
@@ -57,7 +73,19 @@ function isTransformSegment(segment: string) {
   return path.split(',').every((part) => TRANSFORM_PARAM.test(part));
 }
 
-export function cloudinaryUrl(src: string, width: number) {
+function cloudinaryCropSegment(crop: ImageCrop) {
+  // Commas and colons are percent-encoded. srcset splits candidates on raw commas,
+  // and Cloudinary requires c_fill + ar + g in one component.
+  const gravity = crop.gravity || 'center';
+  return `c_fill,ar_${crop.ar},g_${gravity}`.replace(/,/g, '%2C').replace(/:/g, '%3A');
+}
+
+function cloudinaryCoverIfTallerSegment(ar: string) {
+  const encodedAr = ar.replace(/:/g, '%3A');
+  return `if_ar_lt_${encodedAr}/${cloudinaryCropSegment({ ar })}/if_end`;
+}
+
+export function cloudinaryUrl(src: string, width: number, crop?: ImageCrop, coverIfTallerThan?: string) {
   const index = src.indexOf(CLOUDINARY_MARKER);
   if (index === -1) return src;
   const prefix = src.slice(0, index + CLOUDINARY_MARKER.length);
@@ -73,9 +101,13 @@ export function cloudinaryUrl(src: string, width: number) {
     segments.shift();
   }
   const safeWidth = Math.max(16, Math.round(width));
-  // Slash-separated so f_auto still negotiates WebP/AVIF. A comma in the URL
+  // Slash-separated so f_auto still negotiates WebP/AVIF. A raw comma in the URL
   // would also break srcset, which splits candidates on raw commas.
-  const transform = `f_auto/q_auto/c_limit/w_${safeWidth}`;
+  const transform = crop?.ar
+    ? `f_auto/q_auto/${cloudinaryCropSegment(crop)}/w_${safeWidth}`
+    : coverIfTallerThan
+      ? `f_auto/q_auto/${cloudinaryCoverIfTallerSegment(coverIfTallerThan)}/c_limit/w_${safeWidth}`
+      : `f_auto/q_auto/c_limit/w_${safeWidth}`;
   return `${prefix}${transform}/${segments.join('/')}${query}${hash}`;
 }
 
@@ -88,9 +120,15 @@ export function unsplashUrl(src: string, width: number, quality = 75) {
   return url.toString();
 }
 
-export function optimizedImageUrl(src: string, width: number, quality = 75) {
+export function optimizedImageUrl(
+  src: string,
+  width: number,
+  quality = 75,
+  crop?: ImageCrop,
+  coverIfTallerThan?: string,
+) {
   if (!isOptimizableImageUrl(src)) return src;
-  if (isCloudinaryUpload(src)) return cloudinaryUrl(src, width);
+  if (isCloudinaryUpload(src)) return cloudinaryUrl(src, width, crop, coverIfTallerThan);
   if (isUnsplashImage(src)) return unsplashUrl(src, width, quality);
   return src;
 }
@@ -103,11 +141,14 @@ export function responsiveAttributes(src: string, options: ResponsiveImageOption
     .sort((a, b) => a - b);
   const loading = priority ? 'eager' : 'lazy';
   const decoding = priority ? 'auto' : 'async';
+  const fetchPriority = options.fetchPriority ?? (priority ? 'high' : undefined);
+  const urlFor = (width: number) =>
+    optimizedImageUrl(src, width, options.quality, options.crop, options.coverIfTallerThan);
   if (!isOptimizableImageUrl(src) || widths.length === 0) {
     return {
       src,
       loading,
-      fetchPriority: priority ? 'high' : undefined,
+      fetchPriority,
       decoding,
     };
   }
@@ -115,11 +156,11 @@ export function responsiveAttributes(src: string, options: ResponsiveImageOption
     ? widths.find((width) => width >= 828) || widths[widths.length - 1]
     : widths[Math.min(1, widths.length - 1)];
   return {
-    src: optimizedImageUrl(src, fallback, options.quality),
-    srcSet: widths.map((width) => `${optimizedImageUrl(src, width, options.quality)} ${width}w`).join(', '),
+    src: urlFor(fallback),
+    srcSet: widths.map((width) => `${urlFor(width)} ${width}w`).join(', '),
     sizes: options.sizes,
     loading,
-    fetchPriority: priority ? 'high' : undefined,
+    fetchPriority,
     decoding,
   };
 }
@@ -138,12 +179,25 @@ function escapeAttr(value: string) {
   return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 }
 
+function withLowPriority(rawAttrs: string) {
+  let attrs = rawAttrs;
+  if (!readAttr(attrs, 'loading')) attrs += ' loading="lazy"';
+  if (!readAttr(attrs, 'fetchpriority')) attrs += ' fetchpriority="low"';
+  if (!readAttr(attrs, 'decoding')) attrs += ' decoding="async"';
+  return attrs;
+}
+
 /** Rewrite <img> tags inside CMS HTML. Content images are below the hero, so they stay lazy. */
 export function optimizeContentImages(html: string) {
   if (!html || !/<img\b/i.test(html)) return html;
   return html.replace(/<img\b([^>]*?)\/?>/gi, (full, rawAttrs: string) => {
     const src = readAttr(rawAttrs, 'src');
-    if (!src || !isOptimizableImageUrl(src)) return full;
+    if (!src) return full;
+    // Hosts we cannot resize still must not compete with the hero.
+    if (!isOptimizableImageUrl(src)) {
+      const attrs = withLowPriority(rawAttrs);
+      return `<img${attrs}>`;
+    }
     let attrs = rawAttrs;
     for (const name of ['src', 'srcset', 'sizes', 'loading', 'fetchpriority', 'decoding']) {
       attrs = stripAttr(attrs, name);
@@ -154,6 +208,6 @@ export function optimizeContentImages(html: string) {
       priority: false,
     });
     const tail = attrs.trim() ? ` ${attrs.trim()}` : '';
-    return `<img src="${escapeAttr(image.src)}" srcset="${escapeAttr(image.srcSet || '')}" sizes="${escapeAttr(image.sizes || '')}" loading="lazy" decoding="async"${tail}>`;
+    return `<img src="${escapeAttr(image.src)}" srcset="${escapeAttr(image.srcSet || '')}" sizes="${escapeAttr(image.sizes || '')}" loading="lazy" fetchpriority="low" decoding="async"${tail}>`;
   });
 }

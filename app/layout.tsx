@@ -10,7 +10,6 @@ import WowEffects from './components/WowEffects';
 import BreadcrumbSchema from './components/BreadcrumbSchema';
 import FloatingButtons from './components/FloatingButtons';
 import AccessibilityBar from './components/AccessibilityBar';
-import Script from 'next/script';
 import CookieConsent from './components/CookieConsent';
 import DeferredTags from './components/DeferredTags';
 import ChatbotWidget from './components/ChatbotWidget';
@@ -84,31 +83,12 @@ export default async function RootLayout({
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
       <head>
-        <Script id="cookie-consent-prepaint" strategy="beforeInteractive">
-          {`
-            try {
-              if (document.cookie.indexOf('cookie_consent_v1=') !== -1) {
-                document.documentElement.classList.add('has-consent');
-              }
-            } catch (e) {}
-          `}
-        </Script>
-        {/* Default deny until consent. dataLayer and gtag exist immediately so later events queue. */}
-        <Script id="gtag-default-consent" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            window.gtag = window.gtag || gtag;
-            gtag('consent', 'default', {
-              'ad_storage': 'denied',
-              'ad_user_data': 'denied',
-              'ad_personalization': 'denied',
-              'analytics_storage': 'denied',
-              'functionality_storage': 'denied',
-              'security_storage': 'granted'
-            });
-          `}
-        </Script>
+        <script
+          id="consent-bootstrap"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(document.cookie.indexOf('cookie_consent_v1=')!==-1){document.documentElement.classList.add('has-consent');}}catch(e){}})();window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'denied','security_storage':'granted'});`,
+          }}
+        />
         <BreadcrumbSchema />
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>

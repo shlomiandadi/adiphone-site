@@ -7,7 +7,7 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --experimental-strip-types --experimental-detect-module --test lib/cms/*.test.ts lib/chatbot/*.test.ts",
+    "test": "node --experimental-strip-types --experimental-detect-module --test lib/*.test.ts lib/cms/*.test.ts lib/chatbot/*.test.ts",
     "postinstall": "prisma generate",
     "create-admin": "node scripts/create-admin.js",
     "fix-categories": "node scripts/fix-posts-categories.js",

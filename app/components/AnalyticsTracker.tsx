@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   applyStoredConsent,
+  flushMetaLead,
   inferCtaLocation,
   injectAttributionFields,
   isMailtoHref,
@@ -115,6 +116,7 @@ export default function AnalyticsTracker() {
         thankYouSent.current = true;
         trackEvent('thank_you', { form_name: 'thank_you' });
       }
+      flushMetaLead();
     } else {
       thankYouSent.current = false;
     }

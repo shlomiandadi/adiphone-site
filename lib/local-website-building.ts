@@ -99,5 +99,5 @@ export function buildLocalCityMetadata({
 export const localCityViewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#2563eb',
+  themeColor: '#03173A',
 };

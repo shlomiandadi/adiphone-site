@@ -4,18 +4,9 @@ import ChatbotHoneypot from "./ChatbotHoneypot";
 import { chatbotReplyText, chatbotRequestBody, readTurnstileToken } from "@/lib/chatbot/policy";
 
 function RobotIcon() {
-  // אייקון רובוט מודרני, לבן על רקע כחול עגול
   return (
-    <span className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-600">
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="16" r="16" fill="#2563eb"/>
-        <rect x="8" y="13" width="16" height="10" rx="5" fill="white"/>
-        <circle cx="13" cy="18" r="1.5" fill="#2563eb"/>
-        <circle cx="19" cy="18" r="1.5" fill="#2563eb"/>
-        <rect x="15" y="7" width="2" height="5" rx="1" fill="white"/>
-        <rect x="11" y="11" width="2" height="2" rx="1" fill="white"/>
-        <rect x="19" y="11" width="2" height="2" rx="1" fill="white"/>
-      </svg>
+    <span className="flex items-center justify-center w-12 h-12 rounded-full bg-[#010A26]">
+      <img src="/icon-32.png" alt="" width={32} height={32} decoding="async" />
     </span>
   );
 }

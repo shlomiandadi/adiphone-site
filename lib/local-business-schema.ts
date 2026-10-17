@@ -1,5 +1,5 @@
 import { GOOGLE_MAPS_REVIEWS_URL, GOOGLE_RATING } from './reviews';
-import { getSiteUrl } from './seo';
+import { getSiteUrl, organizationLogo } from './seo';
 
 export const BUSINESS_NAME = 'Top Webstak בנייה וקידום אתרים';
 export const BUSINESS_ALTERNATE_NAME = 'עדי פון תקשורת';
@@ -54,6 +54,7 @@ export function buildLocalBusinessJsonLd(options: BuildOptions = {}) {
     name: BUSINESS_NAME,
     alternateName: BUSINESS_ALTERNATE_NAME,
     url: pageUrl,
+    logo: organizationLogo(siteUrl),
     telephone: BUSINESS_PHONE,
     email: BUSINESS_EMAIL,
     openingHours: 'Su-Th 09:00-18:00',

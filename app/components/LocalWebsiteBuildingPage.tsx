@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getSiteUrl } from '../../lib/seo';
+import { getSiteUrl, organizationLogo } from '../../lib/seo';
 import { buildLocalBusinessJsonLd } from '../../lib/local-business-schema';
 import { getPublishedPortfolioProjects } from '../../lib/website-projects';
 import { getServiceCta } from '../../lib/service-cta';
@@ -54,6 +54,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
         addressCountry: 'IL',
       },
       url: siteUrl,
+      logo: organizationLogo(siteUrl),
     },
   };
 

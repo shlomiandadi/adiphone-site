@@ -68,6 +68,8 @@ export default function BlogPostSchema({ post }: BlogPostSchemaProps) {
       logo: {
         '@type': 'ImageObject',
         url: 'https://adi-phone.co.il/logo.png',
+        width: 1024,
+        height: 1024,
       },
     },
     datePublished: post.createdAt,

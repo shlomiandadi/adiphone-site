@@ -1,4 +1,5 @@
 import { homeFaqItems } from '../data/homeFaq';
+import { organizationLogo } from '../../lib/seo';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://adi-phone.co.il';
 const GOOGLE_MAPS_URL =
@@ -13,6 +14,7 @@ export default function HomeSchema() {
       '@type': 'DigitalMarketingAgency',
       name: 'Top Webstak בנייה וקידום אתרים',
       url: siteUrl,
+      logo: organizationLogo(siteUrl),
       description,
     },
     {
@@ -21,6 +23,7 @@ export default function HomeSchema() {
       name: 'עדי פון תקשורת',
       alternateName: 'Top Webstak בנייה וקידום אתרים',
       url: siteUrl,
+      logo: organizationLogo(siteUrl),
       description,
     },
     {
@@ -37,6 +40,7 @@ export default function HomeSchema() {
       alternateName: 'עדי פון תקשורת',
       description,
       url: siteUrl,
+      logo: organizationLogo(siteUrl),
       telephone: '+972-50-9159951',
       email: 'adiphoneseo@gmail.com',
       openingHours: 'Su-Th 09:00-18:00',

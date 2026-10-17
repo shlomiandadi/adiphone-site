@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getSiteUrl } from '../../lib/seo';
+import { getSiteUrl, organizationLogo } from '../../lib/seo';
 import Hero3D from '../components/hero3d/Hero3D';
 import {
   PHONE_DISPLAY,
@@ -103,6 +103,7 @@ export default function PricingPage() {
         addressCountry: 'IL',
       },
       url: siteUrl,
+      logo: organizationLogo(siteUrl),
     },
     offers: PRICING_PACKAGES.map((pkg) => ({
       '@type': 'Offer',

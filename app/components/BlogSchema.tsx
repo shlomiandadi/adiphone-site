@@ -1,3 +1,5 @@
+import { organizationLogo } from '../../lib/seo';
+
 interface BlogSchemaProps {
   posts: Array<{
     id: string;
@@ -23,7 +25,8 @@ export default function BlogSchema({ posts }: BlogSchemaProps) {
     "publisher": {
       "@type": "Organization",
       "name": "Top Webstak",
-      "url": "https://adi-phone.co.il"
+      "url": "https://adi-phone.co.il",
+      "logo": organizationLogo()
     },
     "blogPost": posts.map(post => ({
       "@type": "BlogPosting",
@@ -38,7 +41,8 @@ export default function BlogSchema({ posts }: BlogSchemaProps) {
       "publisher": {
         "@type": "Organization",
         "name": "Top Webstak",
-        "url": "https://adi-phone.co.il"
+        "url": "https://adi-phone.co.il",
+        "logo": organizationLogo()
       },
       "datePublished": post.createdAt,
       "dateModified": post.updatedAt,

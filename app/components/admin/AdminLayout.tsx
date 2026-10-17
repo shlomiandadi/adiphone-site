@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AdminUser } from '../../../lib/adminAuth';
+import BrandLogo from '../BrandLogo';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -18,7 +19,10 @@ export default function AdminLayout({ children, user }: AdminLayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
+              <div className="flex-shrink-0 flex items-center gap-3">
+                <Link href="/" className="flex items-center">
+                  <BrandLogo height={28} />
+                </Link>
                 <span className="text-xl font-semibold">מערכת ניהול</span>
               </div>
             </div>

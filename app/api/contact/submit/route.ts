@@ -4,6 +4,7 @@ import { ContactService } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import { LEAD_PLACEHOLDER_EMAIL } from '@/lib/lead-form';
 import { mapContactService } from '@/lib/mapContactService';
+import { brandLogoEmailHtml } from '@/lib/emailService';
 import { formatAttributionEmailHtml, normalizeAttribution } from '@/lib/tracking';
 
 export const dynamic = 'force-dynamic';
@@ -42,6 +43,7 @@ const sendCustomerEmail = async (data: {
     html: `
       <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
         <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          ${brandLogoEmailHtml()}
           <h2 style="color: #333; margin-bottom: 20px;">שלום ${data.name},</h2>
           <p style="color: #666; line-height: 1.6;">תודה שפנית אלינו. קיבלנו את פנייתך ונחזור אליך בהקדם.</p>
           <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -82,6 +84,7 @@ const sendAdminEmail = async (data: {
     html: `
       <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
         <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          ${brandLogoEmailHtml()}
           <h2 style="color: #333; margin-bottom: 20px;">פנייה חדשה התקבלה</h2>
           <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="color: #333; margin-bottom: 15px;">פרטי הפונה:</h3>

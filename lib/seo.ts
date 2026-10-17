@@ -76,6 +76,16 @@ export function getSiteUrl(): string {
   return raw.replace(/\/$/, '').replace(/^http:\/\//i, 'https://');
 }
 
+/** Square brand symbol served at /logo.png (the approved Top Webstak mark). */
+export function organizationLogo(siteUrl = getSiteUrl()) {
+  return {
+    '@type': 'ImageObject' as const,
+    url: `${siteUrl}/logo.png`,
+    width: 1024,
+    height: 1024,
+  };
+}
+
 /**
  * Force a safe self-referencing HTTPS canonical.
  * Fixes Ahrefs "Non-canonical in Sitemap" + "Canonical to Redirect" when DB stores http://.

@@ -63,8 +63,12 @@ async function loadFonts() {
 }
 
 export async function serviceOgImage(title: string) {
-  const { hebrew, latin } = await loadFonts();
+  const [{ hebrew, latin }, mark] = await Promise.all([
+    loadFonts(),
+    readFile(join(process.cwd(), 'lib/og/brand-mark.png')),
+  ]);
   const titleSize = title.length > 22 ? 64 : 76;
+  const markSrc = `data:image/png;base64,${mark.toString('base64')}`;
 
   return new ImageResponse(
     (
@@ -83,18 +87,7 @@ export async function serviceOgImage(title: string) {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div
-            style={{
-              display: 'flex',
-              fontFamily: 'HeeboLatin',
-              fontSize: 34,
-              fontWeight: 700,
-              letterSpacing: 0.4,
-              color: '#7dd3fc',
-            }}
-          >
-            Top Webstak
-          </div>
+          <img src={markSrc} width={186} height={48} alt="Top Webstak" />
           <div
             style={{
               display: 'flex',

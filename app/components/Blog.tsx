@@ -124,6 +124,7 @@ export default function Blog() {
                   src={post.mainImage || '/images/blog/nextjs-guide.jpg'}
                   alt={post.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-contain"
                 />
               </div>

@@ -9,11 +9,13 @@ import PageOffset from './components/PageOffset';
 import WowEffects from './components/WowEffects';
 import BreadcrumbSchema from './components/BreadcrumbSchema';
 import FloatingButtons from './components/FloatingButtons';
-import AccessibilityBar from './components/AccessibilityBar';
 import CookieConsent from './components/CookieConsent';
 import DeferredTags from './components/DeferredTags';
-import ChatbotWidget from './components/ChatbotWidget';
-import AnalyticsTracker from './components/AnalyticsTracker';
+import {
+  DeferredAccessibilityBar,
+  DeferredAnalyticsTracker,
+  DeferredChatbotWidget,
+} from './components/DeferredWidgets';
 import TopStrip from './components/TopStrip';
 import { FALLBACK_LAYOUT_CMS, getLayoutCms } from '../lib/cms/layoutData';
 import { META_PIXEL_ID } from '../lib/thirdPartyTags';
@@ -23,6 +25,8 @@ const heebo = Heebo({
   subsets: ['hebrew', 'latin'],
   weight: ['300', '400', '500', '700', '900'],
   display: 'swap',
+  adjustFontFallback: true,
+  preload: true,
   variable: '--font-heebo',
 });
 
@@ -100,9 +104,16 @@ export default async function RootLayout({
         <BreadcrumbSchema />
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>
+        <script
+          id="a11y-restore"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var fs=localStorage.getItem('accessibility-fontSize');if(fs)document.documentElement.style.fontSize=fs+'px';var b=document.body;if(!b)return;if(localStorage.getItem('accessibility-highContrast')==='true')b.classList.add('high-contrast');if(localStorage.getItem('accessibility-highlightLinks')==='true')b.classList.add('highlight-links');var c=localStorage.getItem('accessibility-cursorSize');if(c)b.classList.add('cursor-'+c);}catch(e){}})();`,
+          }}
+        />
         <a href="#main-content" className="skip-to-main">
           דלג לתוכן הראשי
         </a>
+        <CookieConsent />
         {cms.topStrip ? (
           <TopStrip
             text={cms.topStrip.text}
@@ -124,11 +135,10 @@ export default async function RootLayout({
         </main>
         <Footer cmsFooter={cms.footer} />
         <FloatingButtons />
-        <AccessibilityBar />
-        <CookieConsent />
+        <DeferredAccessibilityBar />
         <DeferredTags gaId={gaId} pixelId={pixelId} />
-        <AnalyticsTracker />
-        <ChatbotWidget />
+        <DeferredAnalyticsTracker />
+        <DeferredChatbotWidget />
       </body>
     </html>
   );

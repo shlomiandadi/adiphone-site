@@ -1,16 +1,18 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import Services from './components/Services';
 import Portfolio from './components/Portfolio';
-import Blog from './components/Blog';
 import Team from './components/Team';
 import Contact from './components/Contact';
 import ProcessSteps from './components/ProcessSteps';
 import Technologies from './components/Technologies';
-import HomeFAQ from './components/HomeFAQ';
 import HomeSchema from './components/HomeSchema';
 import Testimonials from './components/Testimonials';
 import Hero3D from './components/hero3d/Hero3D';
 import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
+
+const HomeFAQ = dynamic(() => import('./components/HomeFAQ'));
+const Blog = dynamic(() => import('./components/Blog'));
 
 const homeMetadata: Metadata = {
   description:

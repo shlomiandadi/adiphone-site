@@ -179,12 +179,25 @@ function escapeAttr(value: string) {
   return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 }
 
+function withLowPriority(rawAttrs: string) {
+  let attrs = rawAttrs;
+  if (!readAttr(attrs, 'loading')) attrs += ' loading="lazy"';
+  if (!readAttr(attrs, 'fetchpriority')) attrs += ' fetchpriority="low"';
+  if (!readAttr(attrs, 'decoding')) attrs += ' decoding="async"';
+  return attrs;
+}
+
 /** Rewrite <img> tags inside CMS HTML. Content images are below the hero, so they stay lazy. */
 export function optimizeContentImages(html: string) {
   if (!html || !/<img\b/i.test(html)) return html;
   return html.replace(/<img\b([^>]*?)\/?>/gi, (full, rawAttrs: string) => {
     const src = readAttr(rawAttrs, 'src');
-    if (!src || !isOptimizableImageUrl(src)) return full;
+    if (!src) return full;
+    // Hosts we cannot resize still must not compete with the hero.
+    if (!isOptimizableImageUrl(src)) {
+      const attrs = withLowPriority(rawAttrs);
+      return `<img${attrs}>`;
+    }
     let attrs = rawAttrs;
     for (const name of ['src', 'srcset', 'sizes', 'loading', 'fetchpriority', 'decoding']) {
       attrs = stripAttr(attrs, name);

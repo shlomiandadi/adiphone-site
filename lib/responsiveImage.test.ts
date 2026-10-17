@@ -137,3 +137,18 @@ test('cms html images are resized and lazy, and non-photo images are left alone'
   assert.match(next, /src="\/images\/logo\.svg"/);
   assert.equal(next.includes(ORIGINAL), false);
 });
+
+test('content images we cannot resize stay on the same url and do not compete with the hero', () => {
+  const src = 'https://seo-agent-tools.netlify.app/api/images/hero.webp?v=1';
+  const html = `<img src="${src}" alt="section" width="800" height="450" loading="lazy" title="keep" />`;
+  const next = optimizeContentImages(html);
+  assert.match(next, new RegExp(`src="${src.replace(/[?]/g, '\\?')}"`));
+  assert.match(next, /alt="section"/);
+  assert.match(next, /width="800"/);
+  assert.match(next, /height="450"/);
+  assert.match(next, /loading="lazy"/);
+  assert.match(next, /fetchpriority="low"/);
+  assert.match(next, /decoding="async"/);
+  assert.match(next, /title="keep"/);
+  assert.equal((next.match(/loading=/g) || []).length, 1);
+});

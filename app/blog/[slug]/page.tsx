@@ -51,7 +51,8 @@ function blogHeroImage(src: string): ResponsiveImageAttrs {
       src,
       loading: 'eager',
       fetchPriority: 'high',
-      decoding: 'async',
+      // auto, not async: async defers decode and holds the hero out of the first paint.
+      decoding: 'auto',
     };
   }
   return responsiveAttributes(src, {

@@ -6,7 +6,13 @@ const nextConfig = {
       : 'http://localhost:8000'
   },
   images: {
-    unoptimized: true,
+    // Delivery is handled by lib/imageLoader.ts (Cloudinary f_auto/q_auto/c_limit
+    // and Unsplash auto=format). The default optimizer is off so Netlify does not
+    // need sharp, and originals are no longer shipped at full size.
+    loader: 'custom',
+    loaderFile: './lib/imageLoader.ts',
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: 'https',
@@ -28,6 +34,7 @@ const nextConfig = {
   },
   experimental: {
     optimizeCss: true,
+    optimizePackageImports: ['react-icons/fa', 'react-icons/si', 'framer-motion'],
   },
   compiler: {
     styledComponents: true,

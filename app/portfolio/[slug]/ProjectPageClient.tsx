@@ -1,7 +1,6 @@
 "use client";
-import { useState } from 'react';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import { useEffect, useState, type ComponentType } from 'react';
+import { optimizedImageUrl, responsiveAttributes } from '../../../lib/responsiveImage';
 
 interface Project {
   id: string;
@@ -30,8 +29,25 @@ export default function ProjectPageClient({
 }) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
+  const [Lightbox, setLightbox] = useState<ComponentType<Record<string, unknown>> | null>(null);
 
   const images = project.images || [];
+  const lightboxSrc = (src: string) => optimizedImageUrl(src, 1600);
+
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    void import('react-image-lightbox/style.css');
+    void import('react-image-lightbox').then((mod) => {
+      if (!cancelled) {
+        const Loaded = mod.default as unknown as ComponentType<Record<string, unknown>>;
+        setLightbox(() => Loaded);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-10">
@@ -39,10 +55,13 @@ export default function ProjectPageClient({
       <div className="relative rounded-2xl overflow-hidden shadow-lg mb-8">
         {project.image && (
           <img
-            src={project.image}
             alt={project.name}
             className="w-full h-80 object-cover"
-            loading="lazy"
+            {...responsiveAttributes(project.image, {
+              sizes: '(max-width: 896px) 100vw, 896px',
+              widths: [480, 828, 1200, 1600],
+              priority: true,
+            })}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-8">
@@ -77,19 +96,21 @@ export default function ProjectPageClient({
             {images.map((img, i) => (
               <img
                 key={i}
-                src={img}
                 alt={project.name + ' image ' + (i + 1)}
                 className="rounded-lg w-full object-cover aspect-video shadow hover:scale-105 transition-transform cursor-pointer"
-                loading="lazy"
+                {...responsiveAttributes(img, {
+                  sizes: '(max-width: 768px) 50vw, 280px',
+                  widths: [320, 480, 640, 960],
+                })}
                 onClick={() => { setIndex(i); setOpen(true); }}
               />
             ))}
           </div>
-          {open && (
+          {open && Lightbox && (
             <Lightbox
-              mainSrc={images[index]}
-              nextSrc={images[(index + 1) % images.length]}
-              prevSrc={images[(index + images.length - 1) % images.length]}
+              mainSrc={lightboxSrc(images[index])}
+              nextSrc={lightboxSrc(images[(index + 1) % images.length])}
+              prevSrc={lightboxSrc(images[(index + images.length - 1) % images.length])}
               onCloseRequest={() => setOpen(false)}
               onMovePrevRequest={() => setIndex((index + images.length - 1) % images.length)}
               onMoveNextRequest={() => setIndex((index + 1) % images.length)}

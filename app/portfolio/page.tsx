@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Hero3D from '../components/hero3d/Hero3D';
+import { responsiveAttributes } from '../../lib/responsiveImage';
 
 interface Project {
   id: string;
@@ -52,10 +53,12 @@ export default async function PortfolioPage() {
               className="block bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
             >
               <img
-                src={project.image || `${cloudinaryBase}${project.slug}.jpg`}
                 alt={project.name}
                 className="w-full h-48 object-cover"
-                loading="lazy"
+                {...responsiveAttributes(project.image || `${cloudinaryBase}${project.slug}.jpg`, {
+                  sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px',
+                  widths: [360, 480, 720, 960],
+                })}
               />
               <div className="p-4">
                 <h2 className="text-xl font-semibold mb-2">{project.name}</h2>

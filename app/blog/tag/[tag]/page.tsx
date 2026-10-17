@@ -80,6 +80,7 @@ export default async function TagPage({ params }: Props) {
                   src={post.mainImage}
                   alt={post.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>

@@ -1,5 +1,3 @@
-'use client';
-
 import { FaReact, FaNodeJs, FaPython, FaPhp, FaJava, FaAngular, FaVuejs, FaLaravel, FaWordpress, FaDocker } from 'react-icons/fa';
 import { SiNextdotjs, SiTypescript, SiMongodb, SiPostgresql, SiMysql, SiDjango, SiSpring, SiNestjs } from 'react-icons/si';
 

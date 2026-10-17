@@ -43,6 +43,7 @@ export default function BlogCard({ post }: BlogCardProps) {
             src={post.mainImage || '/images/blog/nextjs-guide.jpg'}
             alt={post.title}
             fill
+            sizes="(max-width: 768px) 100vw, 40vw"
             className="object-contain"
           />
           <div className="absolute top-4 right-4">

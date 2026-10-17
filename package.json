@@ -53,6 +53,12 @@
     "tslib": "^2.8.1",
     "yet-another-react-lightbox": "^3.25.0"
   },
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 111",
+    "safari >= 16.4"
+  ],
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.16.2",
     "@types/node": "^20.17.24",

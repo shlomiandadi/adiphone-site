@@ -6,6 +6,7 @@ import { getSiteUrl, plainTextMeta } from '../../../lib/seo';
 import prisma from '../../../lib/prisma';
 import { caseStudyText, readPortfolioCaseStudy } from '../../../lib/portfolioCaseStudy';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
+import { optimizeContentImages } from '../../../lib/responsiveImage';
 
 interface Project {
   id: string;
@@ -93,7 +94,15 @@ export default async function Page({ params }: { params: { slug: string } }) {
         keywords={keywords}
         text={caseStudy ? caseStudyText(caseStudy) : undefined}
       />
-      <ProjectPageClient project={project} caseStudy={caseStudy} />
+      <ProjectPageClient
+        project={{
+          ...project,
+          descriptionRich: project.descriptionRich
+            ? optimizeContentImages(project.descriptionRich)
+            : project.descriptionRich,
+        }}
+        caseStudy={caseStudy}
+      />
     </>
   );
 } 

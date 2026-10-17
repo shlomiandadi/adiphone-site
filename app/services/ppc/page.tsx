@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getSiteUrl } from '../../../lib/seo';
+import { getSiteUrl, organizationLogo } from '../../../lib/seo';
 import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
@@ -88,6 +88,7 @@ export default async function PpcServicePage() {
         addressCountry: 'IL',
       },
       url: siteUrl,
+      logo: organizationLogo(siteUrl),
     },
   };
 

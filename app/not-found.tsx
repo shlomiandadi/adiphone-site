@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
+import BrandLogo from './components/BrandLogo';
 
 export const metadata: Metadata = {
   title: 'עדי פון תקשורת | עמוד 404 - הדף לא נמצא',
@@ -12,6 +13,9 @@ export default function NotFound() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full text-center space-y-8">
         <div>
+          <Link href="/" className="mb-6 inline-block">
+            <BrandLogo height={48} />
+          </Link>
           <h1 className="text-9xl font-bold text-blue-600 dark:text-blue-500">404</h1>
           <h2 className="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
             אופס! העמוד לא נמצא

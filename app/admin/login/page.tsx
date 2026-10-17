@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import BrandLogo from '../../components/BrandLogo';
 
 export default function AdminLogin() {
   const [credentials, setCredentials] = useState({
@@ -56,10 +56,8 @@ export default function AdminLogin() {
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
-            <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
+          <div className="mb-4 flex justify-center">
+            <BrandLogo height={44} />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">ניהול האתר</h2>
           <p className="text-gray-600">התחבר כדי לגשת לדשבורד הניהול</p>

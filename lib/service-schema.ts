@@ -1,10 +1,11 @@
-import { absoluteUrl } from './seo';
+import { absoluteUrl, organizationLogo } from './seo';
 
 export const AGENCY_PROVIDER = {
   '@type': 'ProfessionalService',
   name: 'Top Webstak בנייה וקידום אתרים',
   alternateName: 'עדי פון תקשורת',
   url: 'https://adi-phone.co.il',
+  logo: organizationLogo('https://adi-phone.co.il'),
   telephone: '+972-50-9159951',
   email: 'adiphoneseo@gmail.com',
   address: {

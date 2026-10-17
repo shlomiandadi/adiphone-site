@@ -1,5 +1,11 @@
 import { Resend } from 'resend';
+import { getSiteUrl } from './seo';
 import { formatAttributionEmailHtml, normalizeAttribution } from './tracking';
+
+export function brandLogoEmailHtml() {
+  const src = `${getSiteUrl()}/brand/logo-symbol-96.png`;
+  return `<div style="text-align:right;margin:0 0 16px;"><img src="${src}" width="72" height="72" alt="Top Webstak" style="display:inline-block;border:0;outline:none;text-decoration:none;" /></div>`;
+}
 
 // Only create Resend instance if API key is available
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -15,6 +21,7 @@ export async function sendContactEmail(data: any) {
     subject: 'טופס יצירת קשר חדש',
     html: `
       <div dir="rtl">
+        ${brandLogoEmailHtml()}
         <h2>התקבלה פנייה חדשה מהאתר</h2>
         <p><strong>שם:</strong> ${data.name}</p>
         <p><strong>אימייל:</strong> ${data.email}</p>
@@ -49,6 +56,7 @@ export async function sendThankYouEmail(email: string, name: string) {
     subject: 'תודה על פנייתך',
     html: `
       <div dir="rtl">
+        ${brandLogoEmailHtml()}
         <h2>שלום ${name},</h2>
         <p>תודה על פנייתך. נחזור אליך בהקדם האפשרי.</p>
         <p>בברכה,<br>צוות עדי פון תקשורת</p>

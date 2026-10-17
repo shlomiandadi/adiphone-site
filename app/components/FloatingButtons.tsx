@@ -9,15 +9,7 @@ import { chatbotReplyText, chatbotRequestBody, readTurnstileToken } from '@/lib/
 // Robot Icon Component for Chatbot
 function RobotIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="16" cy="16" r="16" fill="currentColor"/>
-      <rect x="8" y="13" width="16" height="10" rx="5" fill="white"/>
-      <circle cx="13" cy="18" r="1.5" fill="currentColor"/>
-      <circle cx="19" cy="18" r="1.5" fill="currentColor"/>
-      <rect x="15" y="7" width="2" height="5" rx="1" fill="white"/>
-      <rect x="11" y="11" width="2" height="2" rx="1" fill="white"/>
-      <rect x="19" y="11" width="2" height="2" rx="1" fill="white"/>
-    </svg>
+    <img src="/icon-32.png" alt="" width={28} height={28} decoding="async" />
   );
 }
 

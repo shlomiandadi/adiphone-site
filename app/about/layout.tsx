@@ -14,6 +14,12 @@ const organizationSchema = {
   name: 'Top Webstak',
   alternateName: 'עדי פון תקשורת',
   url: 'https://adi-phone.co.il',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://adi-phone.co.il/logo.png',
+    width: 1024,
+    height: 1024,
+  },
   email: 'adiphoneseo@gmail.com',
   telephone: '+972-50-9159951',
   address: {
@@ -27,7 +33,7 @@ const organizationSchema = {
     LINKEDIN_URL,
     'https://www.google.com/maps/place/Top+webStak/@32.465799,34.952319,17z/data=!3m1!4b1!4m6!3m5!1s0x67bf58e7efcb5b51:0x3e583bedf92e1661!8m2!3d32.465799!4d34.952319!16s%2Fg%2F11thcjf6qd',
   ],
-  // TODO(owner): add foundingDate, a public logo URL, and any additional VERIFIED
+  // TODO(owner): add foundingDate and any additional VERIFIED
   // profiles (Google Business Profile, Instagram) once available — do not invent.
 };
 

@@ -22,7 +22,9 @@ function asDate(value: string | Date) {
 
 async function fetchFallbackJson(path: string) {
   if (!contentFallbackOrigin) return null;
-  const response = await fetch(`${contentFallbackOrigin}${path}`, { cache: 'no-store' });
+  // revalidate matches the blog ISR window. no-store would force a static
+  // page to become dynamic and fail the request.
+  const response = await fetch(`${contentFallbackOrigin}${path}`, { next: { revalidate: 300 } });
   if (!response.ok) return null;
   return response.json();
 }

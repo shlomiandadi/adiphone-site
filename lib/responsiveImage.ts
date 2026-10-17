@@ -1,9 +1,12 @@
 /**
- * Responsive delivery for Cloudinary and Unsplash originals.
- * Layout stays put: c_limit / fit=max keep the aspect ratio and do not crop.
+ * Responsive delivery for Cloudinary, Unsplash, and seo-agent-tools originals.
+ * Layout stays put: c_limit / fit=max / Netlify `w` keep the aspect ratio and do not crop.
  * Cloudinary transforms are slash-separated so f_auto applies and srcset
  * (which splits on raw commas) stays valid.
  */
+
+export const SEO_AGENT_IMAGE_ORIGIN = 'https://seo-agent-tools.netlify.app';
+const SEO_AGENT_IMAGE_PREFIX = `${SEO_AGENT_IMAGE_ORIGIN}/api/images/`;
 
 const CLOUDINARY_MARKER = '/upload/';
 const TRANSFORM_PARAM =
@@ -45,6 +48,11 @@ export type ResponsiveImageOptions = {
   coverIfTallerThan?: string;
   /** Set on gallery thumbs so an in-view lazy image does not compete with the hero. */
   fetchPriority?: 'high' | 'low' | 'auto';
+  /**
+   * seo-agent-tools Netlify Image CDN only. `fm` has to be explicit — without it
+   * the CDN returns WebP. Cloudinary and Unsplash keep negotiating format themselves.
+   */
+  format?: 'avif' | 'webp';
 };
 
 export type ResponsiveImageAttrs = {
@@ -76,9 +84,13 @@ export function isUnsplashImage(src: string) {
   }
 }
 
+export function isSeoAgentImage(src: string) {
+  return typeof src === 'string' && src.startsWith(SEO_AGENT_IMAGE_PREFIX);
+}
+
 export function isOptimizableImageUrl(src: string) {
   if (!src || isSvgOrGif(src)) return false;
-  return isCloudinaryUpload(src) || isUnsplashImage(src);
+  return isCloudinaryUpload(src) || isUnsplashImage(src) || isSeoAgentImage(src);
 }
 
 function isTransformSegment(segment: string) {
@@ -160,16 +172,43 @@ export function unsplashUrl(src: string, width: number, quality = 75) {
   return url.toString();
 }
 
+/**
+ * Netlify Image CDN on seo-agent-tools. `url` is the pathname + search of the
+ * original (width is ignored there). `fm` is required; omitting it returns WebP.
+ * `w` only resizes, so the crop stays the one `object-cover` already applies.
+ */
+export function seoAgentImageUrl(
+  src: string,
+  width: number,
+  format: 'avif' | 'webp' = 'webp',
+  quality = 75,
+) {
+  let parsed: URL;
+  try {
+    parsed = new URL(src);
+  } catch {
+    return src;
+  }
+  const cdn = new URL('/.netlify/images', SEO_AGENT_IMAGE_ORIGIN);
+  cdn.searchParams.set('url', `${parsed.pathname}${parsed.search}`);
+  cdn.searchParams.set('w', String(Math.max(16, Math.round(width))));
+  cdn.searchParams.set('fm', format);
+  cdn.searchParams.set('q', String(quality || 75));
+  return cdn.toString();
+}
+
 export function optimizedImageUrl(
   src: string,
   width: number,
   quality = 75,
   crop?: ImageCrop,
   coverIfTallerThan?: string,
+  format?: 'avif' | 'webp',
 ) {
   if (!isOptimizableImageUrl(src)) return src;
   if (isCloudinaryUpload(src)) return cloudinaryUrl(src, width, crop, coverIfTallerThan);
   if (isUnsplashImage(src)) return unsplashUrl(src, width, quality);
+  if (isSeoAgentImage(src)) return seoAgentImageUrl(src, width, format || 'webp', quality);
   return src;
 }
 
@@ -183,7 +222,7 @@ export function responsiveAttributes(src: string, options: ResponsiveImageOption
   const decoding = priority ? 'auto' : 'async';
   const fetchPriority = options.fetchPriority ?? (priority ? 'high' : undefined);
   const urlFor = (width: number) =>
-    optimizedImageUrl(src, width, options.quality, options.crop, options.coverIfTallerThan);
+    optimizedImageUrl(src, width, options.quality, options.crop, options.coverIfTallerThan, options.format);
   if (!isOptimizableImageUrl(src) || widths.length === 0) {
     return {
       src,

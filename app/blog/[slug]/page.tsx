@@ -12,8 +12,10 @@ import { adjacentBlogPosts } from '../../../lib/blogNav';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import {
   isOptimizableImageUrl,
+  isSeoAgentImage,
   optimizeContentImages,
   responsiveAttributes,
+  SEO_AGENT_IMAGE_ORIGIN,
   type ResponsiveImageAttrs,
 } from '../../../lib/responsiveImage';
 
@@ -44,6 +46,15 @@ function demoteContentHeadings(html: string): string {
     .replace(/<\/h1>/gi, '</h2>');
 }
 
+const HERO_SIZES = '100vw';
+
+/**
+ * AVIF q=50 held the same crop as the original on the cloud and SEO heroes
+ * (edges and the small labels stayed intact), so this stays at 50 rather than 60.
+ */
+const SEO_AGENT_HERO_AVIF_QUALITY = 50;
+const SEO_AGENT_HERO_WIDTHS = [640, 828, 1080, 1200];
+
 /** Hero is full-bleed. Eager + high priority, and no fake srcset for hosts we cannot resize. */
 function blogHeroImage(src: string): ResponsiveImageAttrs {
   if (!isOptimizableImageUrl(src)) {
@@ -56,13 +67,38 @@ function blogHeroImage(src: string): ResponsiveImageAttrs {
     };
   }
   return responsiveAttributes(src, {
-    sizes: '100vw',
+    sizes: HERO_SIZES,
     widths: [640, 750, 828, 1080, 1200, 1600],
     priority: true,
   });
 }
 
-function preloadHero(image: ResponsiveImageAttrs) {
+function seoAgentHeroPicture(src: string) {
+  const shared = {
+    sizes: HERO_SIZES,
+    widths: SEO_AGENT_HERO_WIDTHS,
+    priority: true as const,
+  };
+  return {
+    avif: responsiveAttributes(src, { ...shared, quality: SEO_AGENT_HERO_AVIF_QUALITY, format: 'avif' }),
+    webp: responsiveAttributes(src, { ...shared, quality: 75, format: 'webp' }),
+  };
+}
+
+function preconnectSeoAgent() {
+  const preconnect = (ReactDOM as unknown as {
+    preconnect?: (
+      href: string,
+      options?: { crossOrigin?: '' | 'anonymous' | 'use-credentials' }
+    ) => void;
+  }).preconnect;
+  if (typeof preconnect !== 'function') return;
+  // <img> is no-cors, so this is the connection the hero actually reuses.
+  preconnect(SEO_AGENT_IMAGE_ORIGIN);
+  preconnect(SEO_AGENT_IMAGE_ORIGIN, { crossOrigin: 'anonymous' });
+}
+
+function preloadHero(image: ResponsiveImageAttrs, type?: string) {
   const preload = (ReactDOM as unknown as {
     preload?: (
       href: string,
@@ -71,6 +107,7 @@ function preloadHero(image: ResponsiveImageAttrs) {
         fetchPriority?: 'high';
         imageSrcSet?: string;
         imageSizes?: string;
+        type?: string;
       }
     ) => void;
   }).preload;
@@ -80,6 +117,7 @@ function preloadHero(image: ResponsiveImageAttrs) {
     fetchPriority: 'high',
     imageSrcSet: image.srcSet,
     imageSizes: image.sizes,
+    type,
   });
 }
 
@@ -210,8 +248,16 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     });
   };
 
-  const heroImage = post.mainImage ? blogHeroImage(post.mainImage) : null;
-  if (heroImage) preloadHero(heroImage);
+  const picture = post.mainImage && isSeoAgentImage(post.mainImage)
+    ? seoAgentHeroPicture(post.mainImage)
+    : null;
+  const heroImage = !picture && post.mainImage ? blogHeroImage(post.mainImage) : null;
+  if (picture) {
+    preconnectSeoAgent();
+    preloadHero(picture.avif, 'image/avif');
+  } else if (heroImage) {
+    preloadHero(heroImage);
+  }
   const { previousPost, nextPost } = adjacentBlogPosts(await getPublishedNavPosts(), post.slug);
 
   return (
@@ -224,7 +270,34 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       {/* Hero Section */}
       <section className="relative h-[500px] flex items-center justify-center text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
-          {heroImage ? (
+          {picture ? (
+            <>
+              <link rel="preconnect" href={SEO_AGENT_IMAGE_ORIGIN} />
+              <link rel="preconnect" href={SEO_AGENT_IMAGE_ORIGIN} crossOrigin="anonymous" />
+              <link
+                rel="preload"
+                as="image"
+                type="image/avif"
+                href={picture.avif.srcSet ? undefined : picture.avif.src}
+                imageSrcSet={picture.avif.srcSet}
+                imageSizes={picture.avif.sizes}
+                fetchPriority="high"
+              />
+              <picture className="absolute inset-0">
+                <source type="image/avif" srcSet={picture.avif.srcSet} sizes={picture.avif.sizes} />
+                <img
+                  alt={post.title}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  src={picture.webp.src}
+                  srcSet={picture.webp.srcSet}
+                  sizes={picture.webp.sizes}
+                  loading={picture.webp.loading}
+                  fetchPriority={picture.webp.fetchPriority}
+                  decoding={picture.webp.decoding}
+                />
+              </picture>
+            </>
+          ) : heroImage ? (
             <>
               <link
                 rel="preload"

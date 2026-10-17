@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 type ConsentCategories = {
@@ -67,7 +67,7 @@ function updateGtagConsent(categories: ConsentCategories) {
 
 export default function CookieConsent() {
   const pathname = usePathname();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [showCustomize, setShowCustomize] = useState(false);
   const [categories, setCategories] = useState<ConsentCategories>({
     necessary: true,
@@ -76,14 +76,16 @@ export default function CookieConsent() {
     functional: false,
   });
 
-  // Initialize on mount and on route change to prevent re-opening when consent exists
-  useEffect(() => {
+  // Banner is in the server HTML. Hide it before paint when consent is already stored.
+  useLayoutEffect(() => {
     const consent = readConsent();
     if (consent) {
+      document.documentElement.classList.add('has-consent');
       setCategories({ ...consent.categories, necessary: true });
       setVisible(false);
       updateGtagConsent(consent.categories);
     } else {
+      document.documentElement.classList.remove('has-consent');
       setVisible(true);
     }
   }, [pathname]);
@@ -91,6 +93,7 @@ export default function CookieConsent() {
   // Listen for external open requests (cookie icon)
   useEffect(() => {
     const openHandler = () => {
+      document.documentElement.classList.remove('has-consent');
       setShowCustomize(true);
       setVisible(true);
     };
@@ -105,6 +108,7 @@ export default function CookieConsent() {
       version: CONSENT_VERSION,
     };
     writeConsent(state);
+    document.documentElement.classList.add('has-consent');
     updateGtagConsent(state.categories);
     try {
       window.dispatchEvent(
@@ -120,7 +124,7 @@ export default function CookieConsent() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 p-4 sm:p-6 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:pb-6">
+    <div className="cookie-banner fixed inset-x-0 bottom-0 z-50 p-4 sm:p-6 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:pb-6">
       <div className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-white shadow-xl">
         <div className="p-4 sm:p-6">
           <h2 className="text-base sm:text-lg font-semibold mb-2">שימוש בעוגיות (Cookies)</h2>

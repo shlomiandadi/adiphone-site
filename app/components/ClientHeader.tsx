@@ -271,7 +271,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
           <div className={`flex items-center gap-2 xl:gap-3 transition-all duration-300 ${
             isScrolled ? 'h-14' : 'h-16 lg:h-[4.25rem]'
           }`}>
-            <Link href="/" className="flex items-center shrink-0">
+            <Link href="/" prefetch={false} className="flex items-center shrink-0">
               <BrandLogo height={36} />
             </Link>
 
@@ -282,6 +282,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
                   <div key={item.name} className="relative group shrink-0">
                     <Link
                       href={item.href || '#'}
+                      prefetch={false}
                       aria-current={current ? 'page' : undefined}
                       aria-haspopup={item.submenu ? 'true' : undefined}
                       className="nav-link px-1.5 xl:px-2.5 py-2 text-[13px] xl:text-sm font-medium whitespace-nowrap transition-colors duration-300 flex items-center"
@@ -315,6 +316,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
                                 <Link
                                   key={subItem.name}
                                   href={subItem.href}
+                                  prefetch={false}
                                   className={`flex items-start p-3 rounded-xl transition-colors duration-200 ${
                                     subCurrent ? 'bg-blue-50' : 'hover:bg-slate-50'
                                   }`}
@@ -421,6 +423,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
 
               <Link
                 href="/contact"
+                prefetch={false}
                 data-cta="true"
                 data-cta-location="header"
                 className="inline-flex items-center px-3 xl:px-4 h-9 text-xs xl:text-sm font-semibold rounded-full text-white bg-gradient-to-l from-blue-800 via-blue-700 to-blue-600 shadow-lg shadow-blue-700/25 hover:shadow-blue-700/40 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
@@ -508,6 +511,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
                 <div key={item.name}>
                   <Link
                     href={item.href || '#'}
+                    prefetch={false}
                     className={`block px-4 py-3 rounded-lg text-base font-medium ${
                       pathname === item.href ? 'bg-blue-50 text-blue-600' : 'text-gray-900 hover:bg-gray-50'
                     }`}
@@ -521,6 +525,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
                         <Link
                           key={subItem.name}
                           href={subItem.href}
+                          prefetch={false}
                           className={`block px-4 py-2 rounded-lg text-sm ${
                             pathname === subItem.href ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'
                           }`}
@@ -545,6 +550,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
               </a>
               <Link
                 href="/contact"
+                prefetch={false}
                 data-cta="true"
                 data-cta-location="header"
                 className="block w-full px-4 py-3 text-center font-semibold text-white rounded-lg bg-gradient-to-l from-blue-800 via-blue-700 to-blue-600"

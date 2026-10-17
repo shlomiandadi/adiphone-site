@@ -39,7 +39,7 @@ function LinkColumn({ title, links, services }: { title: string; links: FooterLi
       <ul className={services ? 'space-y-2 columns-1' : 'space-y-2'}>
         {links.map((link) => (
           <li key={link.id || `${link.title}-${link.url}`}>
-            <Link href={link.url || '/'} className="text-gray-400 hover:text-white transition-colors">
+            <Link href={link.url || '/'} prefetch={false} className="text-gray-400 hover:text-white transition-colors">
               {link.title}
             </Link>
           </li>
@@ -86,7 +86,7 @@ function FooterMarkup({ data }: { data: FooterView }) {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           <div>
-            <Link href="/" className="mb-4 inline-block">
+            <Link href="/" prefetch={false} className="mb-4 inline-block">
               <BrandLogo height={40} loading="lazy" />
             </Link>
             <h3 className="text-xl font-bold mb-4">{data.name}</h3>

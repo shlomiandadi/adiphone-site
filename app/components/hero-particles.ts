@@ -41,6 +41,10 @@ function project(
 }
 
 export function startHeroParticles(host: HTMLElement): () => void {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return () => undefined;
+  }
+
   const canvas = document.createElement('canvas');
   canvas.className = 'absolute inset-0 h-full w-full';
   canvas.setAttribute('aria-hidden', 'true');
@@ -56,9 +60,9 @@ export function startHeroParticles(host: HTMLElement): () => void {
   let width = 0;
   let height = 0;
   let dpr = 1;
-  let raf = 0;
   let running = false;
   let visible = true;
+  let mobile = isMobile();
   let inView = true;
   let rotY = 0.35;
   let rotX = 0.18;
@@ -79,6 +83,7 @@ export function startHeroParticles(host: HTMLElement): () => void {
   };
 
   const resize = () => {
+    mobile = isMobile();
     const rect = host.getBoundingClientRect();
     width = Math.max(1, Math.floor(rect.width));
     height = Math.max(1, Math.floor(rect.height));
@@ -137,19 +142,41 @@ export function startHeroParticles(host: HTMLElement): () => void {
     }
   };
 
-  const tick = (now: number) => {
-    if (running && visible && inView) draw(now);
-    raf = requestAnimationFrame(tick);
+  let frameId = 0;
+  let timerId = 0;
+
+  const haltLoop = () => {
+    if (frameId) cancelAnimationFrame(frameId);
+    if (timerId) window.clearTimeout(timerId);
+    frameId = 0;
+    timerId = 0;
+  };
+
+  const loop = (now: number) => {
+    frameId = 0;
+    if (!running || !visible || !inView) return;
+    draw(now);
+    if (mobile) {
+      timerId = window.setTimeout(() => {
+        timerId = 0;
+        if (running && visible && inView) frameId = requestAnimationFrame(loop);
+      }, 34);
+    } else {
+      frameId = requestAnimationFrame(loop);
+    }
+  };
+
+  const schedule = () => {
+    if (frameId || timerId || !running || !visible || !inView) return;
+    last = performance.now();
+    frameId = requestAnimationFrame(loop);
   };
 
   const syncLoop = () => {
     const shouldRun = visible && inView;
-    if (shouldRun && !running) {
-      running = true;
-      last = performance.now();
-    } else if (!shouldRun) {
-      running = false;
-    }
+    running = shouldRun;
+    if (shouldRun) schedule();
+    else haltLoop();
   };
 
   const onMouse = (event: MouseEvent) => {
@@ -183,12 +210,11 @@ export function startHeroParticles(host: HTMLElement): () => void {
   window.addEventListener('mousemove', onMouse, { passive: true });
   document.addEventListener('visibilitychange', onVisibility);
 
-  running = true;
-  raf = requestAnimationFrame(tick);
+  syncLoop();
 
   return () => {
     running = false;
-    cancelAnimationFrame(raf);
+    haltLoop();
     resizeObserver.disconnect();
     intersection.disconnect();
     window.removeEventListener('mousemove', onMouse);

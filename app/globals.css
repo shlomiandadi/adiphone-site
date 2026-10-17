@@ -424,6 +424,11 @@ body.high-contrast .mobile-drawer .brand-logo--on-light {
   }
 }
 
+/* Returning visitors: hide the server-rendered banner before paint. */
+html.has-consent .cookie-banner {
+  display: none;
+}
+
 /* Marquee styles */
 .marquee-container {
   @apply overflow-hidden;

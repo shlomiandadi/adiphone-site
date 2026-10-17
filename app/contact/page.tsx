@@ -1,8 +1,7 @@
-'use client';
-
 import Hero3D from '../components/hero3d/Hero3D';
 import LeadForm from '../components/LeadForm';
 import GoogleReviews from '../components/GoogleReviews';
+import LazyGoogleMap from '../components/LazyGoogleMap';
 
 export default function Contact() {
   return (
@@ -55,18 +54,7 @@ export default function Contact() {
               <p className="text-gray-700 dark:text-gray-300 mb-4">
                 זמיר 95, פרדס חנה-כרכור
               </p>
-              <div className="overflow-hidden rounded-xl shadow-lg border border-gray-200">
-                <iframe
-                  title="מפת Google – זמיר 95, פרדס חנה-כרכור"
-                  src="https://maps.google.com/maps?q=%D7%96%D7%9E%D7%99%D7%A8%2095%20%D7%A4%D7%A8%D7%93%D7%A1%20%D7%97%D7%A0%D7%94-%D7%9B%D7%A8%D7%9B%D7%95%D7%A8&hl=he&z=16&output=embed"
-                  width="100%"
-                  height="360"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowFullScreen
-                />
-              </div>
+              <LazyGoogleMap />
             </div>
           </div>
         </div>

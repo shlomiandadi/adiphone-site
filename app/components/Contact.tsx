@@ -1,5 +1,3 @@
-'use client';
-
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaWhatsapp, FaFacebook, FaLinkedin } from 'react-icons/fa';
 import LeadForm from './LeadForm';
 

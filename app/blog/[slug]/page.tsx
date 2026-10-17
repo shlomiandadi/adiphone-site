@@ -8,6 +8,7 @@ import RelatedServiceCTA from '../../components/RelatedServiceCTA';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
 import { getPostBySlug, getPublishedPosts } from '../../../lib/posts';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
+import { optimizeContentImages } from '../../../lib/responsiveImage';
 
 /** Enable ISR: pages are cached and periodically regenerated instead of SSR per request. */
 export const revalidate = 300;
@@ -217,14 +218,14 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                   alt={post.title}
                   width={800}
                   height={400}
+                  sizes="(max-width: 768px) 100vw, 768px"
                   className="w-full h-auto rounded-lg shadow-lg"
-                  priority
                 />
               </div>
             )}
             <div 
               className="prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
-              dangerouslySetInnerHTML={{ __html: demoteContentHeadings(post.content) }}
+              dangerouslySetInnerHTML={{ __html: optimizeContentImages(demoteContentHeadings(post.content)) }}
             />
             <RelatedServiceCTA slug={post.slug} />
           </div>

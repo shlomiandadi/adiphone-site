@@ -1,0 +1,159 @@
+/**
+ * Responsive delivery for Cloudinary and Unsplash originals.
+ * Layout stays put: c_limit / fit=max keep the aspect ratio and do not crop.
+ * Cloudinary transforms are slash-separated so f_auto applies and srcset
+ * (which splits on raw commas) stays valid.
+ */
+
+const CLOUDINARY_MARKER = '/upload/';
+const TRANSFORM_PARAM =
+  /^(?:c|w|h|f|q|g|e|b|r|a|o|x|y|z|t|l|u|p|d|if|fl|ar|bo|dpr|so|eo|pg|vc|ac|af|dn|dl|sp|vs)_/i;
+
+export type ResponsiveImageOptions = {
+  widths?: number[];
+  sizes: string;
+  priority?: boolean;
+  quality?: number;
+};
+
+export type ResponsiveImageAttrs = {
+  src: string;
+  srcSet?: string;
+  sizes?: string;
+  loading: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'auto';
+  decoding: 'async' | 'auto';
+};
+
+const CONTENT_WIDTHS = [480, 768, 1080, 1440];
+
+function isSvgOrGif(src: string) {
+  const path = src.split(/[?#]/)[0] || '';
+  return /\.(?:svg|gif)$/i.test(path);
+}
+
+export function isCloudinaryUpload(src: string) {
+  return src.includes('://res.cloudinary.com/') && src.includes(CLOUDINARY_MARKER);
+}
+
+export function isUnsplashImage(src: string) {
+  try {
+    const host = new URL(src).hostname;
+    return host === 'images.unsplash.com' || host === 'plus.unsplash.com';
+  } catch {
+    return false;
+  }
+}
+
+export function isOptimizableImageUrl(src: string) {
+  if (!src || isSvgOrGif(src)) return false;
+  return isCloudinaryUpload(src) || isUnsplashImage(src);
+}
+
+function isTransformSegment(segment: string) {
+  const path = segment.split('?')[0];
+  if (!path || path.includes('.')) return false;
+  if (/^v\d+$/.test(path)) return false;
+  return path.split(',').every((part) => TRANSFORM_PARAM.test(part));
+}
+
+export function cloudinaryUrl(src: string, width: number) {
+  const index = src.indexOf(CLOUDINARY_MARKER);
+  if (index === -1) return src;
+  const prefix = src.slice(0, index + CLOUDINARY_MARKER.length);
+  const rest = src.slice(index + CLOUDINARY_MARKER.length);
+  const hashIndex = rest.indexOf('#');
+  const beforeHash = hashIndex === -1 ? rest : rest.slice(0, hashIndex);
+  const hash = hashIndex === -1 ? '' : rest.slice(hashIndex);
+  const queryIndex = beforeHash.indexOf('?');
+  const pathOnly = queryIndex === -1 ? beforeHash : beforeHash.slice(0, queryIndex);
+  const query = queryIndex === -1 ? '' : beforeHash.slice(queryIndex);
+  const segments = pathOnly.split('/').filter((segment, i) => segment.length > 0 || i === 0);
+  while (segments.length > 1 && isTransformSegment(segments[0])) {
+    segments.shift();
+  }
+  const safeWidth = Math.max(16, Math.round(width));
+  // Slash-separated so f_auto still negotiates WebP/AVIF. A comma in the URL
+  // would also break srcset, which splits candidates on raw commas.
+  const transform = `f_auto/q_auto/c_limit/w_${safeWidth}`;
+  return `${prefix}${transform}/${segments.join('/')}${query}${hash}`;
+}
+
+export function unsplashUrl(src: string, width: number, quality = 75) {
+  const url = new URL(src);
+  url.searchParams.set('auto', 'format');
+  if (!url.searchParams.has('q')) url.searchParams.set('q', String(quality || 75));
+  url.searchParams.set('w', String(Math.max(16, Math.round(width))));
+  if (!url.searchParams.has('fit')) url.searchParams.set('fit', 'max');
+  return url.toString();
+}
+
+export function optimizedImageUrl(src: string, width: number, quality = 75) {
+  if (!isOptimizableImageUrl(src)) return src;
+  if (isCloudinaryUpload(src)) return cloudinaryUrl(src, width);
+  if (isUnsplashImage(src)) return unsplashUrl(src, width, quality);
+  return src;
+}
+
+export function responsiveAttributes(src: string, options: ResponsiveImageOptions): ResponsiveImageAttrs {
+  const priority = Boolean(options.priority);
+  const widths = (options.widths && options.widths.length > 0 ? options.widths : [480, 768, 1080, 1600])
+    .map((width) => Math.round(width))
+    .filter((width) => width > 0)
+    .sort((a, b) => a - b);
+  const loading = priority ? 'eager' : 'lazy';
+  const decoding = priority ? 'auto' : 'async';
+  if (!isOptimizableImageUrl(src) || widths.length === 0) {
+    return {
+      src,
+      loading,
+      fetchPriority: priority ? 'high' : undefined,
+      decoding,
+    };
+  }
+  const fallback = priority
+    ? widths.find((width) => width >= 828) || widths[widths.length - 1]
+    : widths[Math.min(1, widths.length - 1)];
+  return {
+    src: optimizedImageUrl(src, fallback, options.quality),
+    srcSet: widths.map((width) => `${optimizedImageUrl(src, width, options.quality)} ${width}w`).join(', '),
+    sizes: options.sizes,
+    loading,
+    fetchPriority: priority ? 'high' : undefined,
+    decoding,
+  };
+}
+
+function readAttr(attrs: string, name: string) {
+  const match = attrs.match(new RegExp(`(?:^|\\s)${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, 'i'));
+  if (!match) return '';
+  return match[1] ?? match[2] ?? match[3] ?? '';
+}
+
+function stripAttr(attrs: string, name: string) {
+  return attrs.replace(new RegExp(`(?:^|\\s)${name}\\s*=\\s*(?:"[^"]*"|'[^']*'|[^\\s>]+)`, 'ig'), '');
+}
+
+function escapeAttr(value: string) {
+  return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
+/** Rewrite <img> tags inside CMS HTML. Content images are below the hero, so they stay lazy. */
+export function optimizeContentImages(html: string) {
+  if (!html || !/<img\b/i.test(html)) return html;
+  return html.replace(/<img\b([^>]*?)\/?>/gi, (full, rawAttrs: string) => {
+    const src = readAttr(rawAttrs, 'src');
+    if (!src || !isOptimizableImageUrl(src)) return full;
+    let attrs = rawAttrs;
+    for (const name of ['src', 'srcset', 'sizes', 'loading', 'fetchpriority', 'decoding']) {
+      attrs = stripAttr(attrs, name);
+    }
+    const image = responsiveAttributes(src, {
+      widths: CONTENT_WIDTHS,
+      sizes: '(max-width: 768px) 100vw, 768px',
+      priority: false,
+    });
+    const tail = attrs.trim() ? ` ${attrs.trim()}` : '';
+    return `<img src="${escapeAttr(image.src)}" srcset="${escapeAttr(image.srcSet || '')}" sizes="${escapeAttr(image.sizes || '')}" loading="lazy" decoding="async"${tail}>`;
+  });
+}

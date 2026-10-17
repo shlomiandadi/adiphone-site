@@ -27,7 +27,7 @@ export default function HeroVisual() {
     const arm = () => {
       if (cancelled || motion.matches) return;
       if (typeof window.requestIdleCallback === 'function') {
-        idleId = window.requestIdleCallback(start, { timeout: 2000 });
+        idleId = window.requestIdleCallback(start, { timeout: 3500 });
       } else {
         timeoutId = window.setTimeout(start, 1);
       }

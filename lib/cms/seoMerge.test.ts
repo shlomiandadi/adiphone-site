@@ -21,7 +21,7 @@ describe('CMS title suffix', () => {
 
   test('usesTitleTemplate is true only for template segments', () => {
     assert.equal(usesTitleTemplate({ title: 'קידום אתרים' }), true);
-    assert.equal(usesTitleTemplate({ title: { default: 'בית' } }), true);
+    assert.equal(usesTitleTemplate({ title: { default: 'בית' } as Metadata['title'] }), true);
     assert.equal(usesTitleTemplate({}), true);
     assert.equal(usesTitleTemplate({ title: { absolute: 'אודות | Top Webstak' } }), false);
     assert.equal(usesTitleTemplate({ title: 'קידום במנועי AI – AEO ו-GEO לעסקים | Top Webstak' }), false);

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 import { footerCopyrightLine, HARDCODED_FOOTER, type FooterLinkView, type FooterView } from '../../lib/cms/footerData';
+import BrandLogo from './BrandLogo';
 
 const SOCIAL_ICONS = {
   facebook: FaFacebook,
@@ -85,6 +86,9 @@ function FooterMarkup({ data }: { data: FooterView }) {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           <div>
+            <Link href="/" className="mb-4 inline-block">
+              <BrandLogo height={40} loading="lazy" />
+            </Link>
             <h3 className="text-xl font-bold mb-4">{data.name}</h3>
             <p className="text-gray-400">{data.description}</p>
           </div>

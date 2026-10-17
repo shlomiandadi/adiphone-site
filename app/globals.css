@@ -308,6 +308,68 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
   color: #1d4ed8;
 }
 
+/* Horizontal lockup. White wordmark on dark surfaces, navy wordmark on light.
+   The header bar stays white in dark mode, so the navy lockup stays there. */
+.brand-lockup {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  line-height: 0;
+}
+
+.brand-logo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.brand-logo--on-dark {
+  display: none;
+}
+
+.brand-logo--on-light {
+  display: block;
+}
+
+.site-header[data-contrast='hero'] .brand-logo--on-dark,
+footer.bg-gray-900 .brand-logo--on-dark,
+body.high-contrast .brand-logo--on-dark {
+  display: block;
+}
+
+.site-header[data-contrast='hero'] .brand-logo--on-light,
+footer.bg-gray-900 .brand-logo--on-light,
+body.high-contrast .brand-logo--on-light {
+  display: none;
+}
+
+.site-header .mobile-drawer .brand-logo--on-dark {
+  display: none;
+}
+
+.site-header .mobile-drawer .brand-logo--on-light {
+  display: block;
+}
+
+body.high-contrast .mobile-drawer .brand-logo--on-dark {
+  display: block;
+}
+
+body.high-contrast .mobile-drawer .brand-logo--on-light {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .site-header[data-contrast='light'] .brand-logo--on-dark {
+    display: none;
+  }
+
+  .site-header[data-contrast='light'] .brand-logo--on-light {
+    display: block;
+  }
+}
+
 .nav-dropdown {
   @apply absolute right-0 mt-2 w-[480px] bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50 backdrop-blur-sm bg-opacity-90;
 }

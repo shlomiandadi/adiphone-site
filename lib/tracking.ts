@@ -1,10 +1,16 @@
 import {
   META_LEAD_STATE_KEY,
+  beginMetaLead,
+  createMetaEventId,
   isMetaContactEvent,
-  nextMetaLeadState,
+  metaStandardTrackArguments,
+  parseMetaLeadRecord,
+  promotePendingMetaLead,
   readConsentFlags,
-  shouldFlushMetaLead,
+  serializeMetaLeadRecord,
   shouldLoadMetaPixel,
+  shouldTrackMetaPageView,
+  type MetaLeadRecord,
 } from './thirdPartyTags';
 
 export const GA4_MEASUREMENT_ID = 'G-QMC63HG6SD';
@@ -291,51 +297,84 @@ function isMetaPixelReady() {
   return shouldLoadMetaPixel(window.location.hostname, readConsentFlags(document.cookie));
 }
 
-export function trackMetaContact() {
-  if (!isMetaPixelReady()) return;
+const firedMetaEventIds = new Set<string>();
+
+function readMetaLeadRecord(): MetaLeadRecord | null {
   try {
-    window.fbq?.('track', 'Contact');
+    return parseMetaLeadRecord(window.sessionStorage.getItem(META_LEAD_STATE_KEY));
+  } catch {
+    return null;
+  }
+}
+
+function writeMetaLeadRecord(record: MetaLeadRecord): boolean {
+  try {
+    window.sessionStorage.setItem(META_LEAD_STATE_KEY, serializeMetaLeadRecord(record));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** The only fbq('track', …) call site for Meta standard events. */
+function emitMetaStandardEvent(eventName: 'Lead' | 'Contact' | 'PageView', eventId?: string) {
+  if (!isMetaPixelReady()) return;
+  if (eventId) {
+    if (firedMetaEventIds.has(eventId)) return;
+    firedMetaEventIds.add(eventId);
+  }
+  const args = metaStandardTrackArguments(eventName, eventId);
+  try {
+    window.fbq?.(...(args as [string, string, ...unknown[]]));
   } catch {
     // pixel not available
   }
 }
 
+export function trackMetaContact() {
+  if (!isMetaPixelReady()) return;
+  emitMetaStandardEvent('Contact', createMetaEventId());
+}
+
+/**
+ * One Lead per successful submission.
+ * Ready pixel sends immediately. A not-yet-loaded pixel stores the same event id
+ * and flushMetaLead sends it once from /thank-you or from pixel load.
+ */
 export function trackMetaLead() {
   if (!isBrowser()) return;
-  const next = nextMetaLeadState(isMetaPixelReady());
-  try {
-    window.sessionStorage.setItem(META_LEAD_STATE_KEY, next);
-  } catch {
-    if (next !== 'sent') return;
-  }
-  if (next !== 'sent') return;
-  try {
-    window.fbq?.('track', 'Lead');
-  } catch {
-    // pixel not available
-  }
+  const record = beginMetaLead(createMetaEventId(), isMetaPixelReady());
+  writeMetaLeadRecord(record);
+  if (record.status !== 'sent') return;
+  emitMetaStandardEvent('Lead', record.eventId);
 }
 
 export function flushMetaLead() {
   if (!isBrowser()) return;
-  const ready = isMetaPixelReady();
-  let state: string | null = null;
-  try {
-    state = window.sessionStorage.getItem(META_LEAD_STATE_KEY);
-  } catch {
+  const next = promotePendingMetaLead(readMetaLeadRecord(), isMetaPixelReady());
+  if (!next) return;
+  if (!writeMetaLeadRecord(next)) return;
+  emitMetaStandardEvent('Lead', next.eventId);
+}
+
+/**
+ * App Router changes the URL with history.pushState. The pixel's own history
+ * hook would also emit PageView, and a PageView of /thank-you is turned into a
+ * second Lead by this pixel's Event Setup Tool rule. Push-state tracking is
+ * disabled at init; this sends the route-change PageView for every other path.
+ */
+export function trackMetaPageViewIfChanged(pathname: string | null) {
+  if (!isBrowser() || !pathname) return;
+  if (!shouldTrackMetaPageView(pathname)) {
+    window.__TW_LAST_META_PATH = pathname;
     return;
   }
-  if (!shouldFlushMetaLead(state, ready)) return;
-  try {
-    window.sessionStorage.setItem(META_LEAD_STATE_KEY, 'sent');
-  } catch {
-    return;
-  }
-  try {
-    window.fbq?.('track', 'Lead');
-  } catch {
-    // pixel not available
-  }
+  if (!isMetaPixelReady()) return;
+  if (window.__TW_LAST_META_PATH === pathname) return;
+  const hadPrevious = Boolean(window.__TW_LAST_META_PATH);
+  window.__TW_LAST_META_PATH = pathname;
+  if (!hadPrevious) return;
+  emitMetaStandardEvent('PageView');
 }
 
 export function trackEvent(name: string, params: TrackingParams = {}) {

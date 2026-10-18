@@ -113,14 +113,26 @@ export function promotePendingMetaLead(
   return { eventId: record.eventId, status: 'sent' };
 }
 
-/** /thank-you PageView is Event Setup Tool rule 704720492390338, which derives a Lead. */
+/** Thank-you loads the pixel immediately. PageView on this path is Meta's own. */
 export function isThankYouPath(pathname: string | null | undefined): boolean {
   if (!pathname) return false;
   return pathname === '/thank-you' || pathname.startsWith('/thank-you/');
 }
 
-export function shouldTrackMetaPageView(pathname: string | null | undefined): boolean {
-  return Boolean(pathname) && !isThankYouPath(pathname);
+/**
+ * One manual PageView, on init only. Later route changes are fbevents' pushState
+ * hook. A second manual PageView on the same load is dropped by fbevents 2.9.419.
+ */
+export function metaPixelBootScript(pixelId: string): string {
+  return `
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', ${JSON.stringify(pixelId)});
+    fbq('track', 'PageView');
+  `;
 }
 
 /** fbq('track', name, customData, {eventID}) — eventID is what Meta dedupes on. */

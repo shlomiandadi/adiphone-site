@@ -9,7 +9,6 @@ import {
   readConsentFlags,
   serializeMetaLeadRecord,
   shouldLoadMetaPixel,
-  shouldTrackMetaPageView,
   type MetaLeadRecord,
 } from './thirdPartyTags';
 
@@ -316,8 +315,8 @@ function writeMetaLeadRecord(record: MetaLeadRecord): boolean {
   }
 }
 
-/** The only fbq('track', …) call site for Meta standard events. */
-function emitMetaStandardEvent(eventName: 'Lead' | 'Contact' | 'PageView', eventId?: string) {
+/** The only fbq('track') call site for Lead and Contact. PageView stays with the pixel. */
+function emitMetaStandardEvent(eventName: 'Lead' | 'Contact', eventId?: string) {
   if (!isMetaPixelReady()) return;
   if (eventId) {
     if (firedMetaEventIds.has(eventId)) return;
@@ -355,26 +354,6 @@ export function flushMetaLead() {
   if (!next) return;
   if (!writeMetaLeadRecord(next)) return;
   emitMetaStandardEvent('Lead', next.eventId);
-}
-
-/**
- * App Router changes the URL with history.pushState. The pixel's own history
- * hook would also emit PageView, and a PageView of /thank-you is turned into a
- * second Lead by this pixel's Event Setup Tool rule. Push-state tracking is
- * disabled at init; this sends the route-change PageView for every other path.
- */
-export function trackMetaPageViewIfChanged(pathname: string | null) {
-  if (!isBrowser() || !pathname) return;
-  if (!shouldTrackMetaPageView(pathname)) {
-    window.__TW_LAST_META_PATH = pathname;
-    return;
-  }
-  if (!isMetaPixelReady()) return;
-  if (window.__TW_LAST_META_PATH === pathname) return;
-  const hadPrevious = Boolean(window.__TW_LAST_META_PATH);
-  window.__TW_LAST_META_PATH = pathname;
-  if (!hadPrevious) return;
-  emitMetaStandardEvent('PageView');
 }
 
 export function trackEvent(name: string, params: TrackingParams = {}) {

@@ -9,6 +9,7 @@ import {
   isMetaContactEvent,
   isProductionHostname,
   isThankYouPath,
+  metaPixelBootScript,
   metaStandardTrackArguments,
   parseMetaLeadRecord,
   promotePendingMetaLead,
@@ -17,7 +18,6 @@ import {
   serializeMetaLeadRecord,
   shouldLoadAhrefs,
   shouldLoadMetaPixel,
-  shouldTrackMetaPageView,
 } from './thirdPartyTags.ts';
 
 const PROD = 'adi-phone.co.il';
@@ -132,7 +132,7 @@ test('a later submission gets a new event id and the legacy sent flag does not b
   assert.equal(promotePendingMetaLead(second, true), null);
 });
 
-test('Lead and Contact carry eventID; thank-you does not get a Meta PageView', () => {
+test('Lead and Contact carry eventID; PageView is a single init call with no event id', () => {
   const eventId = createMetaEventId();
   assert.match(eventId, /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
   assert.deepEqual(metaStandardTrackArguments('Lead', eventId), [
@@ -150,10 +150,15 @@ test('Lead and Contact carry eventID; thank-you does not get a Meta PageView', (
   assert.deepEqual(metaStandardTrackArguments('PageView'), ['track', 'PageView']);
   assert.equal(isThankYouPath('/thank-you'), true);
   assert.equal(isThankYouPath('/thank-you/'), true);
-  assert.equal(shouldTrackMetaPageView('/thank-you'), false);
-  assert.equal(shouldTrackMetaPageView('/contact'), true);
-  assert.equal(shouldTrackMetaPageView('/'), true);
-  assert.equal(shouldTrackMetaPageView(null), false);
+  assert.equal(isThankYouPath('/contact'), false);
+  assert.equal(isThankYouPath('/'), false);
+  assert.equal(isThankYouPath(null), false);
+
+  const boot = metaPixelBootScript('1317769456632052');
+  assert.equal(boot.split("fbq('track', 'PageView')").length - 1, 1);
+  assert.equal(boot.includes('disablePushState'), false);
+  assert.equal(boot.includes('eventID'), false);
+  assert.match(boot, /fbq\('init', "1317769456632052"\)/);
 });
 
 test('contact events are phone and whatsapp clicks only', () => {

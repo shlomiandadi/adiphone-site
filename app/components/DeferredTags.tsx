@@ -3,16 +3,16 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { ensureGa4Config } from '../../lib/deferredTags';
-import { flushMetaLead, trackMetaPageViewIfChanged } from '../../lib/tracking';
+import { flushMetaLead } from '../../lib/tracking';
 import {
   AHREFS_ANALYTICS_KEY,
   AHREFS_ANALYTICS_SRC,
   isThankYouPath,
+  metaPixelBootScript,
   readConsentFlags,
   resolveMetaPixelId,
   shouldLoadAhrefs,
   shouldLoadMetaPixel,
-  shouldTrackMetaPageView,
 } from '../../lib/thirdPartyTags';
 
 const INTERACTION_EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'] as const;
@@ -60,19 +60,8 @@ function loadGa4(gaId: string) {
 function loadMetaPixel(pixelId: string) {
   if (!pixelId || window.__TW_PIXEL_LOADED) return;
   window.__TW_PIXEL_LOADED = true;
-  const trackPageView = shouldTrackMetaPageView(window.location.pathname);
-  window.__TW_LAST_META_PATH = window.location.pathname;
   const boot = document.createElement('script');
-  boot.text = `
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq.disablePushState = true;
-    fbq('init', ${JSON.stringify(pixelId)});
-    ${trackPageView ? "fbq('track', 'PageView');" : ''}
-  `;
+  boot.text = metaPixelBootScript(pixelId);
   document.head.appendChild(boot);
 }
 
@@ -100,7 +89,6 @@ function loadConsentGatedTags(pixelId?: string) {
     loadAhrefs();
   }
   flushMetaLead();
-  trackMetaPageViewIfChanged(window.location.pathname);
 }
 
 export default function DeferredTags({ gaId, pixelId }: Props) {

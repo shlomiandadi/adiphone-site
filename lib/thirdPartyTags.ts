@@ -62,14 +62,74 @@ export function resolveMetaPixelId(configured?: string | null): string {
   return trimmed || META_PIXEL_ID;
 }
 
-/** A new lead submission. Pixel not ready defers the Lead; ready sends it now. */
-export function nextMetaLeadState(pixelReady: boolean): 'pending' | 'sent' {
-  return pixelReady ? 'sent' : 'pending';
+export type MetaLeadStatus = 'pending' | 'sent';
+
+/** One successful submission. `sent` already produced its single Lead. */
+export type MetaLeadRecord = {
+  eventId: string;
+  status: MetaLeadStatus;
+};
+
+export function createMetaEventId(): string {
+  const cryptoObj = globalThis.crypto;
+  if (cryptoObj && typeof cryptoObj.randomUUID === 'function') {
+    return cryptoObj.randomUUID();
+  }
+  return `tw_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 12)}`;
 }
 
-/** Thank-you and pixel-load flush. Sends only a deferred lead, once. */
-export function shouldFlushMetaLead(state: string | null, pixelReady: boolean): boolean {
-  return state === 'pending' && pixelReady;
+/**
+ * sessionStorage keeps one record for the latest submission in this tab.
+ * A new submission replaces it, so a later visit or a later submit is not blocked.
+ * Legacy "pending"/"sent" strings from the previous guard are not a live submission.
+ */
+export function parseMetaLeadRecord(raw: string | null | undefined): MetaLeadRecord | null {
+  if (!raw || raw === 'pending' || raw === 'sent') return null;
+  try {
+    const parsed = JSON.parse(raw) as { eventId?: unknown; status?: unknown };
+    if (!parsed || typeof parsed.eventId !== 'string' || !parsed.eventId) return null;
+    if (parsed.status !== 'pending' && parsed.status !== 'sent') return null;
+    return { eventId: parsed.eventId, status: parsed.status };
+  } catch {
+    return null;
+  }
+}
+
+export function serializeMetaLeadRecord(record: MetaLeadRecord): string {
+  return JSON.stringify({ eventId: record.eventId, status: record.status });
+}
+
+/** Pixel ready sends now. Otherwise the same event id waits for one flush. */
+export function beginMetaLead(eventId: string, pixelReady: boolean): MetaLeadRecord {
+  return { eventId, status: pixelReady ? 'sent' : 'pending' };
+}
+
+/** Thank-you and pixel-load flush. Sends only that submission's pending id, once. */
+export function promotePendingMetaLead(
+  record: MetaLeadRecord | null,
+  pixelReady: boolean
+): MetaLeadRecord | null {
+  if (!record || record.status !== 'pending' || !pixelReady || !record.eventId) return null;
+  return { eventId: record.eventId, status: 'sent' };
+}
+
+/** /thank-you PageView is Event Setup Tool rule 704720492390338, which derives a Lead. */
+export function isThankYouPath(pathname: string | null | undefined): boolean {
+  if (!pathname) return false;
+  return pathname === '/thank-you' || pathname.startsWith('/thank-you/');
+}
+
+export function shouldTrackMetaPageView(pathname: string | null | undefined): boolean {
+  return Boolean(pathname) && !isThankYouPath(pathname);
+}
+
+/** fbq('track', name, customData, {eventID}) — eventID is what Meta dedupes on. */
+export function metaStandardTrackArguments(
+  eventName: 'Lead' | 'Contact' | 'PageView',
+  eventId?: string
+): unknown[] {
+  if (eventId) return ['track', eventName, {}, { eventID: eventId }];
+  return ['track', eventName];
 }
 
 export function isMetaContactEvent(name: string): boolean {

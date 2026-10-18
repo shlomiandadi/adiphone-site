@@ -4,14 +4,20 @@ import {
   AHREFS_ANALYTICS_KEY,
   AHREFS_ANALYTICS_SRC,
   META_PIXEL_ID,
+  beginMetaLead,
+  createMetaEventId,
+  isMetaContactEvent,
   isProductionHostname,
-  nextMetaLeadState,
+  isThankYouPath,
+  metaStandardTrackArguments,
+  parseMetaLeadRecord,
+  promotePendingMetaLead,
   readConsentFlags,
   resolveMetaPixelId,
-  shouldFlushMetaLead,
+  serializeMetaLeadRecord,
   shouldLoadAhrefs,
   shouldLoadMetaPixel,
-  isMetaContactEvent,
+  shouldTrackMetaPageView,
 } from './thirdPartyTags.ts';
 
 const PROD = 'adi-phone.co.il';
@@ -94,17 +100,60 @@ test('malformed consent does not grant storage', () => {
 });
 
 test('one lead submission is one Lead, including a later thank-you flush', () => {
-  let state: string | null = null;
-  state = nextMetaLeadState(false);
-  assert.equal(state, 'pending');
-  assert.equal(shouldFlushMetaLead(state, false), false);
-  assert.equal(shouldFlushMetaLead(state, true), true);
-  state = 'sent';
-  assert.equal(shouldFlushMetaLead(state, true), false);
+  const eventId = '11111111-1111-4111-8111-111111111111';
+  const pending = beginMetaLead(eventId, false);
+  assert.equal(pending.status, 'pending');
+  assert.equal(promotePendingMetaLead(pending, false), null);
+  const flushed = promotePendingMetaLead(pending, true);
+  assert.deepEqual(flushed, { eventId, status: 'sent' });
+  assert.equal(promotePendingMetaLead(flushed, true), null);
 
-  state = nextMetaLeadState(true);
-  assert.equal(state, 'sent');
-  assert.equal(shouldFlushMetaLead(state, true), false);
+  const immediate = beginMetaLead(eventId, true);
+  assert.equal(immediate.status, 'sent');
+  assert.equal(promotePendingMetaLead(immediate, true), null);
+  assert.equal(
+    serializeMetaLeadRecord(immediate),
+    JSON.stringify({ eventId, status: 'sent' })
+  );
+  assert.deepEqual(parseMetaLeadRecord(serializeMetaLeadRecord(pending)), pending);
+});
+
+test('a later submission gets a new event id and the legacy sent flag does not block it', () => {
+  assert.equal(parseMetaLeadRecord('sent'), null);
+  assert.equal(parseMetaLeadRecord('pending'), null);
+  assert.equal(parseMetaLeadRecord('{"eventId":"","status":"pending"}'), null);
+
+  const first = beginMetaLead(createMetaEventId(), true);
+  const second = beginMetaLead(createMetaEventId(), true);
+  assert.equal(first.status, 'sent');
+  assert.equal(second.status, 'sent');
+  assert.notEqual(first.eventId, second.eventId);
+  assert.equal(promotePendingMetaLead(first, true), null);
+  assert.equal(promotePendingMetaLead(second, true), null);
+});
+
+test('Lead and Contact carry eventID; thank-you does not get a Meta PageView', () => {
+  const eventId = createMetaEventId();
+  assert.match(eventId, /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+  assert.deepEqual(metaStandardTrackArguments('Lead', eventId), [
+    'track',
+    'Lead',
+    {},
+    { eventID: eventId },
+  ]);
+  assert.deepEqual(metaStandardTrackArguments('Contact', eventId), [
+    'track',
+    'Contact',
+    {},
+    { eventID: eventId },
+  ]);
+  assert.deepEqual(metaStandardTrackArguments('PageView'), ['track', 'PageView']);
+  assert.equal(isThankYouPath('/thank-you'), true);
+  assert.equal(isThankYouPath('/thank-you/'), true);
+  assert.equal(shouldTrackMetaPageView('/thank-you'), false);
+  assert.equal(shouldTrackMetaPageView('/contact'), true);
+  assert.equal(shouldTrackMetaPageView('/'), true);
+  assert.equal(shouldTrackMetaPageView(null), false);
 });
 
 test('contact events are phone and whatsapp clicks only', () => {

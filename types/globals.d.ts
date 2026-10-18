@@ -14,5 +14,6 @@ declare global {
     __TW_TAGS_LOADED?: boolean;
     __TW_PIXEL_LOADED?: boolean;
     __TW_AHREFS_LOADED?: boolean;
+    __TW_LAST_META_PATH?: string;
   }
 } 

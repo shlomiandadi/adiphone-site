@@ -1,5 +1,5 @@
 import { omitBreadcrumbList } from '../lib/cms/breadcrumbShared';
-import { getSeoAgentPageOverride } from './store';
+import { getSeoAgentPageOverride } from './state';
 
 function parseSchemaMarkup(value: string): unknown | null {
   try {

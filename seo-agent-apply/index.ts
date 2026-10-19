@@ -1,5 +1,10 @@
 export { verifySeoAgentSignature } from './hmac';
-export { applySeoAgentPayload, isSeoAgentApplyPayload, isSeoAgentArticlePayload } from './apply';
+export {
+  applySeoAgentPayload,
+  isSeoAgentApplyPayload,
+  isSeoAgentArticlePayload,
+  revalidateSeoAgentPaths,
+} from './apply';
 export {
   applySeoAgentOverride,
   createSeoAgentGenerateMetadata,
@@ -8,7 +13,9 @@ export {
 export { applySeoAgentRedirects } from './middleware';
 export { buildLlmsTxt } from './llms';
 export { SeoAgentPageExtras } from './components';
-export { getSeoAgentPageOverride, hasPageOverride, probeSeoAgentBlobs, readSeoAgentState } from './store';
+export { hasPageOverride } from './override';
+export { probeSeoAgentBlobs } from './store';
+export { getSeoAgentPageOverride, readSeoAgentState, syncSeoAgentStore } from './state';
 export { normalizeSeoAgentPath } from './paths';
 export type {
   SeoAgentApplyPayload,

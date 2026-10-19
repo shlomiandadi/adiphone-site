@@ -1,5 +1,5 @@
 import type { Store } from '@netlify/blobs';
-import type { SeoAgentPageOverride, SeoAgentRedirect, SeoAgentStoreState } from './types';
+import type { SeoAgentRedirect, SeoAgentStoreState } from './types';
 
 const STORE_NAME = 'seo-agent-apply';
 const STATE_KEY = 'state';
@@ -64,12 +64,16 @@ async function openStore(): Promise<{ store: Store; mode: Exclude<SeoAgentBlobsM
 }
 
 /**
- * Netlify Blobs store.
- * 1. Automatic context from @netlify/plugin-nextjs v5 (Node route handlers + Edge middleware)
+ * Netlify Blobs mirror.
+ * Used by Edge middleware for redirects, and as a fallback import into Neon.
+ * Page metadata does not trust this store: route-handler writes succeed here
+ * while static/ISR renders often have no Blobs context and would keep the
+ * hardcoded title. Neon (`seo_agent_state`) is the source of truth.
+ *
+ * 1. Automatic context from @netlify/plugin-nextjs v5 (route handlers + Edge)
  * 2. Fallback: SEO_AGENT_BLOBS_SITE_ID + SEO_AGENT_BLOBS_TOKEN
- * Reads return empty state when Blobs are unavailable so pages stay unchanged.
  */
-export async function readSeoAgentState(): Promise<SeoAgentStoreState> {
+export async function readSeoAgentBlobState(): Promise<SeoAgentStoreState> {
   try {
     const { store } = await openStore();
     const state = (await store.get(STATE_KEY, { type: 'json' })) as SeoAgentStoreState | null;
@@ -79,7 +83,7 @@ export async function readSeoAgentState(): Promise<SeoAgentStoreState> {
   }
 }
 
-export async function writeSeoAgentState(state: SeoAgentStoreState): Promise<void> {
+export async function writeSeoAgentBlobState(state: SeoAgentStoreState): Promise<void> {
   const { store } = await openStore();
   await store.setJSON(STATE_KEY, {
     pages: state.pages || {},
@@ -97,36 +101,7 @@ export async function probeSeoAgentBlobs(): Promise<{ ok: boolean; mode: SeoAgen
   }
 }
 
-export async function getSeoAgentPageOverride(
-  path: string
-): Promise<SeoAgentPageOverride | null> {
-  const state = await readSeoAgentState();
-  const override = state.pages[path];
-  if (!override || !hasPageOverride(override)) return null;
-  return override;
-}
-
-export function hasPageOverride(override: SeoAgentPageOverride | null | undefined): boolean {
-  if (!override) return false;
-  return Boolean(
-    override.title ||
-      override.description ||
-      override.canonical ||
-      override.keywords ||
-      override.ogTitle ||
-      override.ogDescription ||
-      override.ogImage ||
-      override.schemaMarkup ||
-      (override.faq && override.faq.length > 0)
-  );
-}
-
 export async function getSeoAgentRedirects(): Promise<SeoAgentRedirect[]> {
-  const state = await readSeoAgentState();
+  const state = await readSeoAgentBlobState();
   return state.redirects.filter((item) => item?.from && item?.to);
-}
-
-export async function getSeoAgentLlmsAddition(): Promise<string> {
-  const state = await readSeoAgentState();
-  return state.llms.trim();
 }

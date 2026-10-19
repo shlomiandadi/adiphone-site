@@ -8,6 +8,8 @@ import {
   isSeoAgentApplyPayload,
   isSeoAgentArticlePayload,
   probeSeoAgentBlobs,
+  revalidateSeoAgentPaths,
+  syncSeoAgentStore,
   verifySeoAgentSignature,
 } from '../../../../seo-agent-apply';
 
@@ -243,11 +245,25 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   const blobs = await probeSeoAgentBlobs();
+  let storage: { provider: 'neon'; imported: boolean; paths: number; error?: string } = {
+    provider: 'neon',
+    imported: false,
+    paths: 0,
+  };
+  try {
+    const synced = await syncSeoAgentStore();
+    storage = { provider: 'neon', imported: synced.imported, paths: synced.paths.length };
+    if (synced.imported) revalidateSeoAgentPaths(synced.paths);
+  } catch (error) {
+    console.error('SEO Agent store sync failed:', error);
+    storage = { provider: 'neon', imported: false, paths: 0, error: 'Neon store unavailable' };
+  }
   return NextResponse.json({
     ok: true,
     message: 'SEO Agent webhook is live. Send POST with X-SEO-Agent-Signature (HMAC-SHA256).',
     urlPattern: `${getSiteUrl()}/blog/{slug}`,
-    apply: 'Title/meta/FAQ/schema overrides, redirects, llms.txt (Netlify Blobs)',
+    apply: 'Title/meta/FAQ/schema overrides, redirects, llms.txt (Neon Postgres)',
+    storage,
     blobs,
     signatureHeader: 'X-SEO-Agent-Signature',
     signatureAlgorithm: 'HMAC-SHA256',

@@ -317,48 +317,6 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
   line-height: 0;
 }
 
-.logo-tilt-plane {
-  position: absolute;
-  inset: 0;
-  transform: perspective(640px) rotateX(var(--logo-rx, 0deg)) rotateY(var(--logo-ry, 0deg));
-  animation: logo-tilt-idle 8s ease-in-out infinite;
-}
-
-.logo-tilt.is-pointing .logo-tilt-plane {
-  animation: none;
-  transform: perspective(640px) rotateX(var(--logo-rx, 0deg)) rotateY(var(--logo-ry, 0deg));
-}
-
-@keyframes logo-tilt-idle {
-  0%,
-  100% {
-    transform: perspective(640px) rotateX(0deg) rotateY(0deg);
-  }
-  50% {
-    transform: perspective(640px) rotateX(2.5deg) rotateY(-3.5deg);
-  }
-}
-
-.site-header[data-contrast='hero'] .logo-tilt,
-footer.bg-gray-900 .logo-tilt {
-  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.28));
-}
-
-.site-header[data-contrast='light'] .logo-tilt {
-  filter: drop-shadow(0 6px 8px rgba(15, 23, 42, 0.16));
-}
-
-.mobile-drawer:not(.mobile-drawer-open) .logo-tilt-plane {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logo-tilt-plane {
-    animation: none !important;
-    transform: none !important;
-  }
-}
-
 .brand-logo {
   position: absolute;
   inset: 0;

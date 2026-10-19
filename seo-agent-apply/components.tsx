@@ -1,3 +1,4 @@
+import { omitBreadcrumbList } from '../lib/cms/breadcrumbShared';
 import { getSeoAgentPageOverride } from './store';
 
 function parseSchemaMarkup(value: string): unknown | null {
@@ -6,23 +7,6 @@ function parseSchemaMarkup(value: string): unknown | null {
   } catch {
     return null;
   }
-}
-
-function isBreadcrumbList(node: unknown): boolean {
-  if (!node || typeof node !== 'object') return false;
-  const type = (node as { '@type'?: unknown })['@type'];
-  return type === 'BreadcrumbList' || (Array.isArray(type) && type.includes('BreadcrumbList'));
-}
-
-/** Drop a stored BreadcrumbList so the layout keeps the single Hebrew list. */
-function omitBreadcrumbList(schema: unknown): unknown | null {
-  if (!schema || typeof schema !== 'object') return schema;
-  if (isBreadcrumbList(schema)) return null;
-  const record = schema as { '@graph'?: unknown };
-  if (!Array.isArray(record['@graph'])) return schema;
-  const graph = record['@graph'].filter((node) => !isBreadcrumbList(node));
-  if (graph.length === 0) return null;
-  return { ...record, '@graph': graph };
 }
 
 /**
@@ -34,8 +18,8 @@ export async function SeoAgentPageExtras({ path }: { path: string }) {
   if (!override) return null;
 
   const parsed = override.schemaMarkup ? parseSchemaMarkup(override.schemaMarkup) : null;
-  // This path already emits one Hebrew BreadcrumbList from the layout.
-  const schema = path === '/services/website-tadmit' ? omitBreadcrumbList(parsed) : parsed;
+  // Every page already emits one Hebrew BreadcrumbList from the layout.
+  const schema = omitBreadcrumbList(parsed);
   const faq = override.faq || [];
 
   if (!schema && faq.length === 0) return null;

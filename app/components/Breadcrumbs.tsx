@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { breadcrumbJsonLd, fallbackBreadcrumbItems } from '../../lib/cms/breadcrumbShared';
+import { fallbackBreadcrumbItems } from '../../lib/cms/breadcrumbShared';
 
 export default function Breadcrumbs() {
   const pathname = usePathname() || '/';
@@ -13,20 +13,9 @@ export default function Breadcrumbs() {
 
   const homeIsFirst = trail[0]?.url === '/';
   const rest = homeIsFirst ? trail.slice(1) : trail;
-  const schema = breadcrumbJsonLd(homeIsFirst ? trail : [{ url: '/', title: 'דף הבית' }, ...trail]);
-  // These paths already publish one Hebrew BreadcrumbList from BreadcrumbSchema.
-  // Skip this trail so /contact does not add "Contact", and /services/website-tadmit
-  // does not add a second list whose parent crumb is the English "Services".
-  const skipJsonLd = pathname === '/contact' || pathname === '/services/website-tadmit';
 
   return (
     <nav className="py-4" aria-label="Breadcrumb">
-      {skipJsonLd ? null : (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      )}
       <ol className="inline-flex items-center space-x-2 rtl:space-x-reverse text-sm md:text-base">
         <li>
           <Link

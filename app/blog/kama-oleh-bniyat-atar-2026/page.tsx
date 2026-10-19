@@ -1,6 +1,16 @@
 import Link from 'next/link';
+import BlogPostSchema from '../../components/BlogPostSchema';
 import Hero3D from '../../components/hero3d/Hero3D';
+import { absoluteUrl } from '../../../lib/seo';
 import { PRICING_ADDONS, PRICING_PACKAGES } from '../../../lib/pricing';
+import {
+  ARTICLE_DESCRIPTION,
+  ARTICLE_HEADLINE,
+  ARTICLE_IMAGE_PATH,
+  ARTICLE_MODIFIED,
+  ARTICLE_PUBLISHED,
+  ARTICLE_SLUG,
+} from './article';
 
 const FAQ = [
   {
@@ -40,9 +50,31 @@ const faqSchema = {
   })),
 };
 
+const articleContent = [
+  ARTICLE_DESCRIPTION,
+  ...FAQ.map((item) => `${item.question}\n${item.answer}`),
+  ...PRICING_PACKAGES.map((pkg) => `${pkg.name} ${pkg.priceLabel} ${pkg.summary}`),
+  ...PRICING_ADDONS.map((addon) => `${addon.name} ${addon.priceLabel} ${addon.detail}`),
+].join('\n\n');
+
 export default function WebsiteCostGuidePage() {
   return (
     <div className="min-h-screen bg-white" dir="rtl">
+      <BlogPostSchema
+        post={{
+          id: ARTICLE_SLUG,
+          title: ARTICLE_HEADLINE,
+          excerpt: ARTICLE_DESCRIPTION,
+          mainImage: absoluteUrl(ARTICLE_IMAGE_PATH),
+          category: 'בניית אתרים',
+          createdAt: ARTICLE_PUBLISHED,
+          updatedAt: ARTICLE_MODIFIED,
+          slug: ARTICLE_SLUG,
+          authorName: 'שלומי',
+          authorEmail: '',
+          content: articleContent,
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

@@ -57,9 +57,15 @@ export function shouldLoadAhrefs(hostname: string, consent: ConsentFlags): boole
   return consent.analytics === true && isProductionHostname(hostname);
 }
 
-export function resolveMetaPixelId(configured?: string | null): string {
+/**
+ * Empty config keeps the built-in pixel. `blocked` is an env-supplied id that
+ * must not be booted (Netlify's FB_PIXEL_ID). The official pixel is never blocked.
+ */
+export function resolveMetaPixelId(configured?: string | null, blocked?: string | null): string {
   const trimmed = configured?.trim() || '';
-  return trimmed || META_PIXEL_ID;
+  const retired = blocked?.trim() || '';
+  if (!trimmed || (retired && retired !== META_PIXEL_ID && trimmed === retired)) return META_PIXEL_ID;
+  return trimmed;
 }
 
 export type MetaLeadStatus = 'pending' | 'sent';

@@ -46,6 +46,11 @@ test('default pixel and Ahrefs snippet values', () => {
   assert.equal(resolveMetaPixelId('   '), META_PIXEL_ID);
   assert.equal(resolveMetaPixelId(undefined), META_PIXEL_ID);
   assert.equal(resolveMetaPixelId('555'), '555');
+  assert.equal(resolveMetaPixelId('555', '555'), META_PIXEL_ID);
+  assert.equal(resolveMetaPixelId(' 555 ', '555'), META_PIXEL_ID);
+  assert.equal(resolveMetaPixelId('777', '555'), '777');
+  assert.equal(resolveMetaPixelId(META_PIXEL_ID, META_PIXEL_ID), META_PIXEL_ID);
+  assert.equal(resolveMetaPixelId('555', META_PIXEL_ID), '555');
   assert.equal(AHREFS_ANALYTICS_KEY, 'aB0fdPwT7Rd5S9fsBNZURA');
   assert.equal(AHREFS_ANALYTICS_SRC, 'https://analytics.ahrefs.com/analytics.js');
 });

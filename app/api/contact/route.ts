@@ -3,6 +3,7 @@ import prisma from '../../../lib/prisma';
 import { sendContactEmail } from '../../../lib/emailService';
 import { ContactService } from '@prisma/client';
 import { requireAdminApiAuth } from '../../../lib/adminAuth';
+import { postMetaCapiLead } from '../../../lib/metaCapi';
 
 export const dynamic = 'force-dynamic';
 
@@ -130,6 +131,21 @@ export async function POST(request: NextRequest) {
       } catch (emailError) {
         console.error('Error sending email:', emailError);
         // Continue execution even if email fails
+      }
+
+      try {
+        await postMetaCapiLead({
+          headers: request.headers,
+          eventId: body?.meta_event_id,
+          bodyConsent: body?.meta_consent,
+          email: resolvedEmail,
+          phone: typeof phone === 'string' ? phone : '',
+          name: typeof name === 'string' ? name : '',
+        });
+      } catch (capiError) {
+        console.error('Meta CAPI Lead request failed', {
+          name: capiError instanceof Error ? capiError.name : 'Error',
+        });
       }
 
       return new Response(JSON.stringify({ success: true, contact }), {

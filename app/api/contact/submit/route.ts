@@ -6,6 +6,7 @@ import { LEAD_PLACEHOLDER_EMAIL } from '@/lib/lead-form';
 import { mapContactService } from '@/lib/mapContactService';
 import { brandLogoEmailHtml } from '@/lib/emailService';
 import { formatAttributionEmailHtml, normalizeAttribution } from '@/lib/tracking';
+import { postMetaCapiLead } from '@/lib/metaCapi';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -210,6 +211,23 @@ export async function POST(request: Request) {
       emailSuccess = true;
     } catch (emailError) {
       console.error('Error sending emails:', emailError);
+    }
+
+    if (saved) {
+      try {
+        await postMetaCapiLead({
+          headers: request.headers,
+          eventId: data?.meta_event_id,
+          bodyConsent: data?.meta_consent,
+          email,
+          phone,
+          name,
+        });
+      } catch (capiError) {
+        console.error('Meta CAPI Lead request failed', {
+          name: capiError instanceof Error ? capiError.name : 'Error',
+        });
+      }
     }
 
     if (saved || emailSuccess) {

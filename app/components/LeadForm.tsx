@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { attachAttribution, trackGenerateLead } from '../../lib/tracking';
+import { attachAttribution, createMetaLeadSubmitContext, trackGenerateLead } from '../../lib/tracking';
 import {
   LEAD_PLACEHOLDER_EMAIL,
   LEAD_SERVICE_OPTIONS,
@@ -55,6 +55,7 @@ export default function LeadForm({ formName, className = '', compact = false }: 
     }
 
     const serviceLabel = labelForLeadService(formData.service);
+    const metaLead = createMetaLeadSubmitContext();
 
     try {
       const response = await fetch('/api/contact/submit', {
@@ -63,6 +64,7 @@ export default function LeadForm({ formName, className = '', compact = false }: 
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
+        credentials: 'same-origin',
         body: JSON.stringify(
           attachAttribution({
             name: formData.name.trim(),
@@ -72,6 +74,8 @@ export default function LeadForm({ formName, className = '', compact = false }: 
             email: LEAD_PLACEHOLDER_EMAIL,
             message: defaultLeadMessage(serviceLabel),
             form_name: formName,
+            meta_event_id: metaLead.meta_event_id,
+            meta_consent: metaLead.meta_consent,
           })
         ),
       });
@@ -81,7 +85,7 @@ export default function LeadForm({ formName, className = '', compact = false }: 
         throw new Error(errorData.error || 'Failed to submit form');
       }
 
-      trackGenerateLead(formName, { service_name: serviceLabel });
+      trackGenerateLead(formName, { service_name: serviceLabel }, metaLead.meta_event_id);
       setSuccess('הטופס נשלח בהצלחה!');
       setFormData({ name: '', phone: '', service: '' });
       router.push('/thank-you');

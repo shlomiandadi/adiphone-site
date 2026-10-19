@@ -9,6 +9,7 @@ import Technologies from './components/Technologies';
 import HomeSchema from './components/HomeSchema';
 import Testimonials from './components/Testimonials';
 import Hero3D from './components/hero3d/Hero3D';
+import HeroLogoMark from './components/logo3d/HeroLogoMark';
 import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
 const HomeFAQ = dynamic(() => import('./components/HomeFAQ'));
@@ -29,6 +30,7 @@ export default function Home() {
       <div className="overflow-hidden">
         <Hero3D
           theme="home"
+          mark={<HeroLogoMark />}
           title="בניית וקידום אתרים לעסקים – Top Webstak"
           extraHeading="סוכנות דיגיטל מפרדס חנה, מבית עדי פון תקשורת"
           subtitle="אנחנו מספקים לעסקים בניית אתרים, קידום בגוגל (SEO), קמפיינים ממומנים וקידום במנועי AI"

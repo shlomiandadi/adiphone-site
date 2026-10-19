@@ -39,5 +39,7 @@ export type Hero3DProps = {
   ctas?: HeroCta[];
   cityName?: string;
   align?: 'start' | 'center';
+  /** Homepage-only mark. Other pages omit it so its client code stays off their bundles. */
+  mark?: ReactNode;
   children?: ReactNode;
 };

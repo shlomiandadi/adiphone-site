@@ -9,6 +9,7 @@ import SearchResult from './SearchResult';
 import { navigation, promotions, type NavigationItem } from './navigation-data';
 import { IconType } from 'react-icons';
 import BrandLogo from './BrandLogo';
+import { bootHeroLogo } from './logo3d/bootHeroLogo';
 
 interface SubMenuItem {
   name: string;
@@ -91,6 +92,60 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
   useEffect(() => {
     setIsMenuOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const host = document.querySelector('.hero-logo3d');
+    if (!(host instanceof HTMLElement)) return;
+    return bootHeroLogo(host);
+  }, []);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 768px)');
+    if (!desktop.matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let disposed = false;
+    const cleanups: Array<() => void> = [];
+    let idleId = 0;
+    let timerId = 0;
+
+    const clear = () => {
+      if (idleId && typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleId);
+      idleId = 0;
+      if (timerId) window.clearTimeout(timerId);
+      timerId = 0;
+    };
+
+    const bind = () => {
+      if (disposed) return;
+      void import(/* webpackChunkName: "logo-tilt", webpackPrefetch: false, webpackPreload: false */ './logoTiltMotion').then(
+        (mod) => {
+          if (disposed) return;
+          document.querySelectorAll('.brand-lockup').forEach((node) => {
+            if (node instanceof HTMLElement) cleanups.push(mod.bindLogoTilt(node));
+          });
+        },
+      );
+    };
+
+    const arm = () => {
+      if (disposed) return;
+      if (typeof window.requestIdleCallback === 'function') {
+        idleId = window.requestIdleCallback(bind, { timeout: 10000 });
+      } else {
+        timerId = window.setTimeout(bind, 250);
+      }
+    };
+
+    if (document.readyState === 'complete') arm();
+    else window.addEventListener('load', arm, { once: true });
+
+    return () => {
+      disposed = true;
+      clear();
+      window.removeEventListener('load', arm);
+      cleanups.forEach((fn) => fn());
+    };
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

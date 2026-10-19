@@ -751,3 +751,90 @@
     animation: none !important;
   }
 }
+
+/* Homepage hero logo. The box is sized up front so the static SVG and the
+   deferred canvas share one footprint. Copy stays above it. */
+.hero-logo3d {
+  position: absolute;
+  z-index: 2;
+  top: 5.75rem;
+  left: 50%;
+  width: min(28rem, 42vw);
+  aspect-ratio: 1440 / 360;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.hero-logo3d-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-logo3d-static,
+.hero-logo3d-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.45s ease;
+}
+
+.hero-logo3d-canvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-logo3d[data-logo3d='on'] .hero-logo3d-static {
+  opacity: 0;
+}
+
+.hero-logo3d[data-logo3d='on'] .hero-logo3d-canvas {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo3d-static,
+  .hero-logo3d-canvas {
+    transition: none;
+  }
+}
+
+.hero-logo3d-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+  border-radius: 0.5rem;
+}
+
+.h3d-stage:has(.hero-logo3d) .h3d-content {
+  pointer-events: none;
+}
+
+.h3d-stage:has(.hero-logo3d) .h3d-copy {
+  pointer-events: auto;
+}
+
+@media (min-width: 1024px) and (max-height: 760px) {
+  .hero-logo3d {
+    top: 4.7rem;
+    width: min(22rem, 34vw);
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-logo3d {
+    left: 50%;
+    top: 4.85rem;
+    width: min(15.5rem, 72vw);
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 1023px) and (max-height: 700px) {
+  .hero-logo3d {
+    top: 4.35rem;
+    width: min(13rem, 58vw);
+  }
+}

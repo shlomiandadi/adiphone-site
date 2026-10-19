@@ -1,3 +1,5 @@
+import LogoTilt from './LogoTilt';
+
 const RATIO = 1440 / 360;
 
 type BrandLogoProps = {
@@ -9,7 +11,7 @@ export default function BrandLogo({ height = 36, loading = 'eager' }: BrandLogoP
   const width = Math.round(RATIO * height);
 
   return (
-    <span className="brand-lockup" style={{ width, height }}>
+    <LogoTilt width={width} height={height}>
       <img
         src="/brand/logo-horizontal-transparent.svg"
         alt="Top Webstak"
@@ -28,6 +30,6 @@ export default function BrandLogo({ height = 36, loading = 'eager' }: BrandLogoP
         decoding="async"
         loading={loading}
       />
-    </span>
+    </LogoTilt>
   );
 }

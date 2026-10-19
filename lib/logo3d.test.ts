@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { canArmHeroLogo, LOGO3D_MOBILE_DELAY_MS, shouldSkipLogo3d } from './logo3dGate.ts';
 import {
   extrudeMask,
+  extrudeMaskYielded,
   extrusionShade,
   frontFacesCamera,
   maskToModel,
   projectPoint,
-  shouldSkipLogo3d,
   traceContours,
 } from './logo3d.ts';
 
@@ -20,6 +21,25 @@ test('skips the 3D logo for reduced motion, save-data, and weak devices', () => 
   assert.equal(shouldSkipLogo3d({ ...ok, hardwareConcurrency: 2 }), true);
   assert.equal(shouldSkipLogo3d({ ...ok, hardwareConcurrency: 4 }), false);
   assert.equal(shouldSkipLogo3d({ reducedMotion: false, saveData: false }), false);
+});
+
+test('the hero logo arms only after load, and later still on touch', () => {
+  const ready = {
+    blocked: false,
+    loaded: true,
+    inView: true,
+    touchLike: false,
+    interacted: false,
+    sinceLoadMs: 0,
+  };
+  assert.equal(canArmHeroLogo(ready), true);
+  assert.equal(canArmHeroLogo({ ...ready, loaded: false, interacted: true }), false);
+  assert.equal(canArmHeroLogo({ ...ready, inView: false }), false);
+  assert.equal(canArmHeroLogo({ ...ready, blocked: true }), false);
+  assert.equal(canArmHeroLogo({ ...ready, touchLike: true, sinceLoadMs: 0 }), false);
+  assert.equal(canArmHeroLogo({ ...ready, touchLike: true, interacted: true, sinceLoadMs: 0 }), true);
+  assert.equal(canArmHeroLogo({ ...ready, touchLike: true, sinceLoadMs: LOGO3D_MOBILE_DELAY_MS - 1 }), false);
+  assert.equal(canArmHeroLogo({ ...ready, touchLike: true, sinceLoadMs: LOGO3D_MOBILE_DELAY_MS }), true);
 });
 
 test('a solid rectangle traces one outer loop and extrudes it', () => {
@@ -59,6 +79,33 @@ test('projects the origin to the screen center and keeps y up', () => {
   const turned = maskToModel(0, 0, 100, 25);
   assert.ok(turned.x < 0);
   assert.ok(turned.y > 0);
+});
+
+test('yielded extrusion matches the sync walls and keeps each slice under 50ms', async () => {
+  const width = 480;
+  const height = 120;
+  const mask = new Uint8Array(width * height).fill(1);
+  for (let y = 40; y <= 80; y += 1) {
+    for (let x = 160; x <= 320; x += 1) mask[y * width + x] = 0;
+  }
+  const color = () => ({ r: 8, g: 16, b: 32 });
+  const sync = extrudeMask(mask, width, height, color);
+  let last = performance.now();
+  let maxSlice = 0;
+  let yields = 0;
+  const yielded = await extrudeMaskYielded(mask, width, height, color, async () => {
+    const now = performance.now();
+    maxSlice = Math.max(maxSlice, now - last);
+    yields += 1;
+    await new Promise((resolve) => {
+      setTimeout(resolve, 0);
+    });
+    last = performance.now();
+  });
+  maxSlice = Math.max(maxSlice, performance.now() - last);
+  assert.equal(yielded.length, sync.length);
+  assert.ok(yields >= 8, `expected several yields, got ${yields}`);
+  assert.ok(maxSlice < 50, `longest slice ${maxSlice.toFixed(2)}ms`);
 });
 
 test('the front face points at the camera only while yaw stays in front', () => {

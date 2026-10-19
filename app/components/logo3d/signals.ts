@@ -1,4 +1,4 @@
-import { shouldSkipLogo3d } from '@/lib/logo3d';
+import { shouldSkipLogo3d } from '@/lib/logo3dGate';
 
 export function readLogo3dBlockers(): boolean {
   if (typeof window === 'undefined') return true;

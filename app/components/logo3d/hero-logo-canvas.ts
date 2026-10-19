@@ -3,10 +3,11 @@ import {
   LOGO_MAX_DPR,
   type LogoEdge,
   extrusionShade,
-  extrudeMask,
+  extrudeMaskYielded,
   frontFacesCamera,
   projectPoint,
   shadeNormal,
+  yieldToMain,
 } from '@/lib/logo3d';
 import { readLogo3dBlockers } from './signals';
 
@@ -300,21 +301,56 @@ export function startHeroLogo(canvas: HTMLCanvasElement): () => void {
   const image = new Image();
   image.decoding = 'async';
   image.onload = () => {
+    void prepare(image);
+  };
+  image.src = SRC;
+
+  const prepare = async (source: HTMLImageElement) => {
+    await yieldToMain();
     if (cancelled) return;
-    const maskHeight = Math.max(8, Math.round((MASK_WIDTH * image.height) / image.width));
+    const maskHeight = Math.max(8, Math.round((MASK_WIDTH * source.height) / source.width));
+    const bitmap = await createImageBitmap(source).catch(() => null);
+    await yieldToMain();
+    if (cancelled) {
+      bitmap?.close();
+      return;
+    }
+    const drawable: CanvasImageSource = bitmap ?? source;
     const maskCanvas = document.createElement('canvas');
     maskCanvas.width = MASK_WIDTH;
     maskCanvas.height = maskHeight;
     const maskCtx = maskCanvas.getContext('2d', { willReadFrequently: true });
-    if (!maskCtx) return;
-    maskCtx.drawImage(image, 0, 0, MASK_WIDTH, maskHeight);
+    if (!maskCtx) {
+      bitmap?.close();
+      return;
+    }
+    maskCtx.drawImage(drawable, 0, 0, MASK_WIDTH, maskHeight);
     const pixels = maskCtx.getImageData(0, 0, MASK_WIDTH, maskHeight);
+    await yieldToMain();
+    if (cancelled) {
+      bitmap?.close();
+      return;
+    }
     const mask = new Uint8Array(MASK_WIDTH * maskHeight);
-    for (let i = 0; i < mask.length; i += 1) mask[i] = pixels.data[i * 4 + 3] > 170 ? 1 : 0;
-    const built = extrudeMask(mask, MASK_WIDTH, maskHeight, (x, y) => {
+    for (let y = 0; y < maskHeight; y += 1) {
+      const row = y * MASK_WIDTH;
+      for (let x = 0; x < MASK_WIDTH; x += 1) {
+        mask[row + x] = pixels.data[(row + x) * 4 + 3] > 170 ? 1 : 0;
+      }
+      if ((y + 1) % 8 === 0) await yieldToMain();
+      if (cancelled) {
+        bitmap?.close();
+        return;
+      }
+    }
+    const built = await extrudeMaskYielded(mask, MASK_WIDTH, maskHeight, (x, y) => {
       const index = (y * MASK_WIDTH + x) * 4;
       return { r: pixels.data[index], g: pixels.data[index + 1], b: pixels.data[index + 2] };
     });
+    if (cancelled) {
+      bitmap?.close();
+      return;
+    }
     edges = built.map((edge) => ({
       ...edge,
       luma: (edge.r * 0.3 + edge.g * 0.59 + edge.b * 0.11) / 255,
@@ -324,18 +360,30 @@ export function startHeroLogo(canvas: HTMLCanvasElement): () => void {
     edgeScratch = new Array(edges.length);
     halfH = maskHeight / MASK_WIDTH;
 
-    const textureHeight = Math.max(8, Math.round((TEXTURE_WIDTH * image.height) / image.width));
+    await yieldToMain();
+    if (cancelled) {
+      bitmap?.close();
+      return;
+    }
+    const textureHeight = Math.max(8, Math.round((TEXTURE_WIDTH * source.height) / source.width));
     const face = document.createElement('canvas');
     face.width = TEXTURE_WIDTH;
     face.height = textureHeight;
     const faceCtx = face.getContext('2d');
-    if (!faceCtx) return;
-    faceCtx.drawImage(image, 0, 0, TEXTURE_WIDTH, textureHeight);
+    if (!faceCtx) {
+      bitmap?.close();
+      return;
+    }
+    faceCtx.drawImage(drawable, 0, 0, TEXTURE_WIDTH, textureHeight);
+    bitmap?.close();
     texture = face;
+    await yieldToMain();
+    if (cancelled || !texture) return;
+    resize();
+    draw(performance.now());
     canvas.closest('.hero-logo3d')?.setAttribute('data-logo3d', 'on');
     sync();
   };
-  image.src = SRC;
 
   sync();
 

@@ -777,16 +777,29 @@
   display: block;
   width: 100%;
   height: 100%;
+  transition: opacity 0.45s ease;
 }
 
 .hero-logo3d-canvas {
   position: absolute;
   inset: 0;
+  opacity: 0;
   pointer-events: none;
 }
 
 .hero-logo3d[data-logo3d='on'] .hero-logo3d-static {
   opacity: 0;
+}
+
+.hero-logo3d[data-logo3d='on'] .hero-logo3d-canvas {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo3d-static,
+  .hero-logo3d-canvas {
+    transition: none;
+  }
 }
 
 .hero-logo3d-link:focus-visible {

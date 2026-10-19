@@ -9,7 +9,6 @@ import SearchResult from './SearchResult';
 import { navigation, promotions, type NavigationItem } from './navigation-data';
 import { IconType } from 'react-icons';
 import BrandLogo from './BrandLogo';
-import { bindHeaderLogoTilt } from './headerLogoTilt';
 
 interface SubMenuItem {
   name: string;
@@ -72,7 +71,6 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
-  const logoTiltRef = useRef<HTMLSpanElement>(null);
   const isHome = pathname === '/';
   const overHero = isHome && !isScrolled;
   const lightText = overHero;
@@ -93,8 +91,6 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
   useEffect(() => {
     setIsMenuOpen(false);
   }, [pathname]);
-
-  useEffect(() => bindHeaderLogoTilt(logoTiltRef.current), []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -276,9 +272,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
             isScrolled ? 'h-14' : 'h-16 lg:h-[4.25rem]'
           }`}>
             <Link href="/" prefetch={false} className="header-logo-link flex items-center shrink-0">
-              <span ref={logoTiltRef} className="header-logo-tilt">
-                <BrandLogo height={36} />
-              </span>
+              <BrandLogo height={36} />
             </Link>
 
             <div className="hidden lg:flex items-center justify-center flex-1 min-w-0 flex-nowrap">

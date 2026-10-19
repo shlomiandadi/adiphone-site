@@ -1,26 +1,3 @@
-export type Logo3dSignals = {
-  reducedMotion: boolean;
-  saveData: boolean;
-  deviceMemory?: number;
-  hardwareConcurrency?: number;
-};
-
-/** Skip the interactive logo on reduced motion, data-saver, or a weak device. */
-export function shouldSkipLogo3d(signals: Logo3dSignals): boolean {
-  if (signals.reducedMotion || signals.saveData) return true;
-  if (typeof signals.deviceMemory === 'number' && signals.deviceMemory >= 0.5 && signals.deviceMemory < 4) {
-    return true;
-  }
-  if (
-    typeof signals.hardwareConcurrency === 'number' &&
-    signals.hardwareConcurrency >= 1 &&
-    signals.hardwareConcurrency < 4
-  ) {
-    return true;
-  }
-  return false;
-}
-
 export type LogoEdge = {
   x0: number;
   y0: number;
@@ -39,6 +16,23 @@ const onMask = (mask: Uint8Array, width: number, height: number, x: number, y: n
 type Pt = { x: number; y: number };
 
 const pointKey = (point: Pt) => `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
+
+function marchingLinks(code: number, x: number, y: number): Array<[Pt, Pt]> {
+  if (code === 0 || code === 15) return [];
+  const top = { x: x + 0.5, y };
+  const right = { x: x + 1, y: y + 0.5 };
+  const bottom = { x: x + 0.5, y: y + 1 };
+  const left = { x, y: y + 0.5 };
+  if (code === 1 || code === 14) return [[left, top]];
+  if (code === 2 || code === 13) return [[top, right]];
+  if (code === 3 || code === 12) return [[left, right]];
+  if (code === 4 || code === 11) return [[right, bottom]];
+  if (code === 6 || code === 9) return [[top, bottom]];
+  if (code === 7 || code === 8) return [[bottom, left]];
+  if (code === 5) return [[left, top], [right, bottom]];
+  if (code === 10) return [[top, right], [bottom, left]];
+  return [];
+}
 
 /** Smooth silhouette loops, including holes. Pixel space, y downward. */
 export function traceContours(mask: Uint8Array, width: number, height: number): Pt[][] {
@@ -70,21 +64,7 @@ export function traceContours(mask: Uint8Array, width: number, height: number): 
       if (onMask(padded, paddedWidth, paddedHeight, x + 1, y)) code |= 2;
       if (onMask(padded, paddedWidth, paddedHeight, x + 1, y + 1)) code |= 4;
       if (onMask(padded, paddedWidth, paddedHeight, x, y + 1)) code |= 8;
-      if (code === 0 || code === 15) continue;
-      const top = { x: x + 0.5, y };
-      const right = { x: x + 1, y: y + 0.5 };
-      const bottom = { x: x + 0.5, y: y + 1 };
-      const left = { x, y: y + 0.5 };
-      const links: Array<[Pt, Pt]> = [];
-      if (code === 1 || code === 14) links.push([left, top]);
-      else if (code === 2 || code === 13) links.push([top, right]);
-      else if (code === 3 || code === 12) links.push([left, right]);
-      else if (code === 4 || code === 11) links.push([right, bottom]);
-      else if (code === 6 || code === 9) links.push([top, bottom]);
-      else if (code === 7 || code === 8) links.push([bottom, left]);
-      else if (code === 5) links.push([left, top], [right, bottom]);
-      else if (code === 10) links.push([top, right], [bottom, left]);
-      for (const [from, to] of links) push(from, to);
+      for (const [from, to] of marchingLinks(code, x, y)) push(from, to);
     }
   }
 
@@ -111,8 +91,7 @@ export function traceContours(mask: Uint8Array, width: number, height: number): 
   return contours;
 }
 
-export function simplifyRdp(points: Pt[], epsilon: number): Pt[] {
-  if (points.length < 3) return points;
+function rdpSplit(points: Pt[], epsilon: number): { index: number; max: number } {
   let max = 0;
   let index = 0;
   const start = points[0];
@@ -127,9 +106,34 @@ export function simplifyRdp(points: Pt[], epsilon: number): Pt[] {
       index = i;
     }
   }
-  if (max <= epsilon) return [start, end];
+  return { index, max };
+}
+
+export function simplifyRdp(points: Pt[], epsilon: number): Pt[] {
+  if (points.length < 3) return points;
+  const { index, max } = rdpSplit(points, epsilon);
+  if (max <= epsilon) return [points[0], points[points.length - 1]];
   const left = simplifyRdp(points.slice(0, index + 1), epsilon);
   const right = simplifyRdp(points.slice(index), epsilon);
+  return left.slice(0, -1).concat(right);
+}
+
+async function simplifyRdpYielded(
+  points: Pt[],
+  epsilon: number,
+  yieldFn: () => Promise<void>,
+  budget: { n: number },
+): Promise<Pt[]> {
+  budget.n += points.length;
+  if (budget.n >= 2500) {
+    budget.n = 0;
+    await yieldFn();
+  }
+  if (points.length < 3) return points;
+  const { index, max } = rdpSplit(points, epsilon);
+  if (max <= epsilon) return [points[0], points[points.length - 1]];
+  const left = await simplifyRdpYielded(points.slice(0, index + 1), epsilon, yieldFn, budget);
+  const right = await simplifyRdpYielded(points.slice(index), epsilon, yieldFn, budget);
   return left.slice(0, -1).concat(right);
 }
 
@@ -189,6 +193,111 @@ export function extrudeMask(
       const color = sampleEdgeColor(a.x, a.y, b.x, b.y, width, height, colorAt);
       edges.push({ x0: start.x, y0: start.y, x1: end.x, y1: end.y, r: color.r, g: color.g, b: color.b });
     }
+  }
+  return edges;
+}
+
+/** Hand the main thread back between extrusion slices. */
+export function yieldToMain(): Promise<void> {
+  const scheduler = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
+  if (typeof scheduler?.yield === 'function') return scheduler.yield();
+  return new Promise((resolve) => {
+    setTimeout(resolve, 0);
+  });
+}
+
+const EXTRUDE_ROW_BATCH = 8;
+const EXTRUDE_WALK_BATCH = 200;
+
+/**
+ * Same walls as extrudeMask, but the mask scan, marching squares, and contour walk
+ * each return to the event loop so a single task stays short.
+ */
+export async function extrudeMaskYielded(
+  mask: Uint8Array,
+  width: number,
+  height: number,
+  colorAt: (x: number, y: number) => Rgb,
+  yieldFn: () => Promise<void> = yieldToMain,
+): Promise<LogoEdge[]> {
+  const paddedWidth = width + 2;
+  const paddedHeight = height + 2;
+  const padded = new Uint8Array(paddedWidth * paddedHeight);
+  for (let y = 0; y < height; y += 1) {
+    const src = y * width;
+    const dest = (y + 1) * paddedWidth + 1;
+    for (let x = 0; x < width; x += 1) {
+      if (mask[src + x]) padded[dest + x] = 1;
+    }
+    if ((y + 1) % EXTRUDE_ROW_BATCH === 0) await yieldFn();
+  }
+
+  type Seg = { a: Pt; b: Pt; used: boolean };
+  const buckets = new Map<string, Seg[]>();
+  const push = (from: Pt, to: Pt) => {
+    const segment: Seg = { a: from, b: to, used: false };
+    for (const point of [from, to]) {
+      const key = pointKey(point);
+      const list = buckets.get(key);
+      if (list) list.push(segment);
+      else buckets.set(key, [segment]);
+    }
+  };
+
+  for (let y = 0; y < paddedHeight - 1; y += 1) {
+    for (let x = 0; x < paddedWidth - 1; x += 1) {
+      let code = 0;
+      if (onMask(padded, paddedWidth, paddedHeight, x, y)) code |= 1;
+      if (onMask(padded, paddedWidth, paddedHeight, x + 1, y)) code |= 2;
+      if (onMask(padded, paddedWidth, paddedHeight, x + 1, y + 1)) code |= 4;
+      if (onMask(padded, paddedWidth, paddedHeight, x, y + 1)) code |= 8;
+      for (const [from, to] of marchingLinks(code, x, y)) push(from, to);
+    }
+    if ((y + 1) % EXTRUDE_ROW_BATCH === 0) await yieldFn();
+  }
+
+  const contours: Pt[][] = [];
+  const entries = Array.from(buckets.entries());
+  let walked = 0;
+  for (let n = 0; n < entries.length; n += 1) {
+    const [startKey, segments] = entries[n];
+    if (!segments.some((segment) => !segment.used)) continue;
+    const [sx, sy] = startKey.split(',').map(Number);
+    let cursor = { x: sx, y: sy };
+    const loop: Pt[] = [];
+    let guard = 0;
+    while (guard < paddedWidth * paddedHeight) {
+      guard += 1;
+      walked += 1;
+      if (walked % EXTRUDE_WALK_BATCH === 0) await yieldFn();
+      const choices = buckets.get(pointKey(cursor));
+      const segment = choices?.find((item) => !item.used);
+      if (!segment) break;
+      segment.used = true;
+      const nextPoint = pointKey(segment.a) === pointKey(cursor) ? segment.b : segment.a;
+      loop.push({ x: cursor.x - 1, y: cursor.y - 1 });
+      if (pointKey(nextPoint) === startKey) break;
+      cursor = nextPoint;
+    }
+    if (loop.length >= 8) contours.push(loop);
+    if ((n + 1) % EXTRUDE_ROW_BATCH === 0) await yieldFn();
+  }
+
+  const edges: LogoEdge[] = [];
+  const simplifyBudget = { n: 0 };
+  for (let c = 0; c < contours.length; c += 1) {
+    const loop = await simplifyRdpYielded(contours[c], 1.15, yieldFn, simplifyBudget);
+    if (loop.length < 4) continue;
+    for (let i = 0; i < loop.length; i += 1) {
+      const a = loop[i];
+      const b = loop[(i + 1) % loop.length];
+      if (Math.hypot(b.x - a.x, b.y - a.y) < 0.35) continue;
+      const start = maskToModel(a.x, a.y, width, height);
+      const end = maskToModel(b.x, b.y, width, height);
+      const color = sampleEdgeColor(a.x, a.y, b.x, b.y, width, height, colorAt);
+      edges.push({ x0: start.x, y0: start.y, x1: end.x, y1: end.y, r: color.r, g: color.g, b: color.b });
+    }
+    if ((c + 1) % 2 === 0) await yieldFn();
   }
   return edges;
 }

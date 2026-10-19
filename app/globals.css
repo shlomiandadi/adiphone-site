@@ -317,6 +317,27 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
   line-height: 0;
 }
 
+.header-logo-tilt {
+  display: inline-block;
+  line-height: 0;
+  transform: perspective(640px) rotateX(var(--logo-rx, 0deg)) rotateY(var(--logo-ry, 0deg));
+  transform-style: preserve-3d;
+}
+
+.site-header[data-contrast='hero'] .header-logo-tilt {
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.28));
+}
+
+.site-header[data-contrast='light'] .header-logo-tilt {
+  filter: drop-shadow(0 6px 8px rgba(15, 23, 42, 0.16));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-logo-tilt {
+    transform: none;
+  }
+}
+
 .brand-logo {
   position: absolute;
   inset: 0;

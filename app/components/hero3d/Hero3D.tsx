@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import HeroVisualLoader from '../HeroVisualLoader';
+import HeroLogo3D from '../logo3d/HeroLogo3D';
 import Hero3DScene from './Hero3DScene';
 import type { Hero3DProps } from './types';
 
@@ -148,6 +149,7 @@ export default function Hero3D({
           <Hero3DScene theme={theme} cityName={cityName} />
         </div>
       </div>
+      {theme === 'home' ? <HeroLogo3D /> : null}
       <div className={`h3d-content h3d-align-${align}`}>
         <div className="container mx-auto px-4">
           <div className={`h3d-copy text-white ${align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-2xl'}`}>

@@ -7,3 +7,11 @@ export const SERVICE_DOCUMENT_TITLES = {
 } as const;
 
 export const TITLE_BRAND_SUFFIX = ' | Top Webstak';
+
+/**
+ * Replace only the document title. Description, canonical, Open Graph, and
+ * Twitter fields from the SEO-agent merge stay as they are.
+ */
+export function forceAbsoluteTitle<T extends object>(metadata: T, title: string): T {
+  return { ...metadata, title: { absolute: title } };
+}

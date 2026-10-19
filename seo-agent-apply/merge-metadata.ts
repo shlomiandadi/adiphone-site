@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { mergeCmsMetadata } from '../lib/cms/seo';
+import { forceAbsoluteTitle } from '../lib/serviceTitles';
 import { getSeoAgentPageOverride, hasPageOverride } from './store';
 import type { SeoAgentPageOverride } from './types';
 
@@ -78,8 +79,14 @@ export async function mergeSeoAgentMetadata(path: string, base: Metadata): Promi
   return mergeCmsMetadata(path, withAgent);
 }
 
-export function createSeoAgentGenerateMetadata(path: string, base: Metadata) {
+export function createSeoAgentGenerateMetadata(
+  path: string,
+  base: Metadata,
+  absoluteTitle?: string
+) {
   return async function generateMetadata(): Promise<Metadata> {
-    return mergeSeoAgentMetadata(path, base);
+    const merged = await mergeSeoAgentMetadata(path, base);
+    if (!absoluteTitle) return merged;
+    return forceAbsoluteTitle(merged, absoluteTitle);
   };
 }

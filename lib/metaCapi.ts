@@ -11,8 +11,9 @@ import { META_PIXEL_ID, isProductionHostname, readConsentFlags } from './thirdPa
  * in the posted consent state also blocks the call. META_TEST_EVENT_CODE, when
  * set, is forwarded as test_event_code.
  *
- * The pixel is fixed to META_PIXEL_ID (1317769456632052). The call is
- * fire-and-forget with a short timeout and never throws to the lead handler.
+ * The pixel is fixed to META_PIXEL_ID (1317769456632052). Callers must await
+ * postMetaCapiLead. The fetch aborts after META_CAPI_TIMEOUT_MS and the function
+ * never throws, so a Meta failure cannot fail the lead response or the lead email.
  * Failures are logged without the request body or user data.
  */
 
@@ -318,9 +319,4 @@ export async function postMetaCapiLead(input: MetaCapiLeadInput): Promise<MetaCa
     logMetaCapiFailure(error);
     return 'failed';
   }
-}
-
-/** Starts the CAPI request and does not wait for it. Never throws. */
-export function queueMetaCapiLead(input: MetaCapiLeadInput): void {
-  void postMetaCapiLead(input);
 }

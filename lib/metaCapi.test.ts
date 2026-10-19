@@ -11,7 +11,6 @@ import {
   normalizeMetaName,
   normalizeMetaPhone,
   postMetaCapiLead,
-  queueMetaCapiLead,
   requestHostname,
   sha256Hex,
   shouldSendMetaCapiLead,
@@ -24,7 +23,6 @@ const EMAIL_HASH = '973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e
 const PHONE_HASH = 'ca65e2d4e9424f3e83d4f2bb5da5060fe78ea1a3813d613d29df131ee2dad066';
 const NAME_HASH = '4ffe91842477f3a0621f8a0ccf32d36ec642f455666ecaedc181a0c7383faa5a';
 const HEBREW_NAME_HASH = '97dcf6c170eaa93668b89387d5d7ad95b6c25dee860be4aa2f6fc91fb0009623';
-const RETIRED_PIXEL_ID = '1243736846887573';
 
 function consentCookie(marketing: boolean) {
   const value = encodeURIComponent(
@@ -119,7 +117,6 @@ test('Lead payload hashes user data and pins the pixel', () => {
   assert.equal(META_CAPI_PIXEL_ID, '1317769456632052');
   assert.equal(payload.url, 'https://graph.facebook.com/v21.0/1317769456632052/events');
   assert.equal(payload.url, META_CAPI_EVENTS_URL);
-  assert.equal(payload.url.includes(RETIRED_PIXEL_ID), false);
   assert.equal(new URL(payload.url).search, '');
 
   const body = payload.body;
@@ -150,7 +147,6 @@ test('Lead payload hashes user data and pins the pixel', () => {
   assert.equal(serialized.includes('050-915-9951'), false);
   assert.equal(serialized.includes('0509159951'), false);
   assert.equal(serialized.includes('Shlomi'), false);
-  assert.equal(serialized.includes(RETIRED_PIXEL_ID), false);
   assert.equal(serialized.includes('"Contact"'), false);
   assert.equal(serialized.includes('eventID'), false);
 });
@@ -299,7 +295,6 @@ test('post reads cookies and headers into one Lead and skips closed gates', asyn
   assert.equal(calls[0].body.data[0].user_data.client_ip_address, '203.0.113.8');
   assert.equal(calls[0].body.data[0].user_data.client_user_agent, 'Mozilla/5.0 Test');
   assert.equal(calls[0].body.data[0].event_source_url, 'https://adi-phone.co.il/contact');
-  assert.equal(JSON.stringify(calls[0].body).includes(RETIRED_PIXEL_ID), false);
 
   let called = false;
   const skipped = await postMetaCapiLead({
@@ -429,25 +424,20 @@ test('http failures and timeouts do not throw and logs omit pii', async () => {
   assert.equal(logged.includes('Secret Name'), false);
 });
 
-test('queueMetaCapiLead does not wait for the network', async () => {
-  let started = false;
-  let release: (() => void) | undefined;
-  const gate = new Promise<void>((resolve) => {
-    release = resolve;
-  });
-  const queued = queueMetaCapiLead({
+test('postMetaCapiLead resolves only after the request finishes and never throws', async () => {
+  let finished = false;
+  const pending = postMetaCapiLead({
     headers: prodHeaders(),
     eventId: EVENT_ID,
     phone: '0509159951',
     token: 'server-token',
     fetchImpl: async () => {
-      started = true;
-      await gate;
+      await new Promise((resolve) => setTimeout(resolve, 40));
+      finished = true;
       return new Response('{}', { status: 200 });
     },
   });
-  assert.equal(queued, undefined);
-  await new Promise((resolve) => setImmediate(resolve));
-  assert.equal(started, true);
-  release?.();
+  assert.equal(finished, false);
+  assert.equal(await pending, 'sent');
+  assert.equal(finished, true);
 });

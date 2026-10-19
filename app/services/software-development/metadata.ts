@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { absoluteUrl } from '../../../lib/seo';
-import { SERVICE_DOCUMENT_TITLES } from '../../../lib/serviceTitles';
 
 export const metadata: Metadata = {
-  title: { absolute: SERVICE_DOCUMENT_TITLES.softwareDevelopment },
+  title: 'פיתוח תוכנה בהתאמה אישית | Top Webstak | בניית מערכות Web ו-Desktop',
   description: 'כאשר תוכנת מדף לא מספיקה, אנחנו בונים לכם פתרון ייעודי. Top Webstak מתמחה בפיתוח תוכנה (Software Development) מאפס, המותאם 100% לצרכים של העסק שלכם.',
   alternates: {
     canonical: absoluteUrl('/services/software-development'),

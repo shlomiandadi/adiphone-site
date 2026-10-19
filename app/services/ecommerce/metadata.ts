@@ -1,9 +1,8 @@
 import { Metadata } from 'next';
 import { absoluteUrl } from '../../../lib/seo';
-import { SERVICE_DOCUMENT_TITLES } from '../../../lib/serviceTitles';
 
 export const metadata: Metadata = {
-  title: { absolute: SERVICE_DOCUMENT_TITLES.ecommerce },
+  title: 'הקמת חנויות אינטרנטיות (Ecommerce) | Top Webstak | פתרונות מסחר מתקדמים',
   description: 'רוצים למכור אונליין? Top Webstak מתמחה בהקמת חנויות אינטרנטיות (איקומרס) ממירות, מאובטחות וקלות לניהול. מהקמת החנות ועד שיווק וקידום. התחילו למכור עוד היום!',
   alternates: {
     canonical: absoluteUrl('/services/ecommerce'),

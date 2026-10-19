@@ -1,8 +1,13 @@
 import { getSiteUrl } from '../seo';
-import { fallbackBreadcrumbItems, type CmsBreadcrumbItem } from './breadcrumbFallback';
+import {
+  breadcrumbSegmentTitle,
+  fallbackBreadcrumbItems,
+  omitBreadcrumbList,
+  type CmsBreadcrumbItem,
+} from './breadcrumbFallback';
 
 export type { CmsBreadcrumbItem };
-export { fallbackBreadcrumbItems };
+export { breadcrumbSegmentTitle, fallbackBreadcrumbItems, omitBreadcrumbList };
 
 export function breadcrumbJsonLd(items: CmsBreadcrumbItem[]) {
   const siteUrl = getSiteUrl();

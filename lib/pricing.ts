@@ -1,6 +1,6 @@
 export const PHONE_DISPLAY = '050-9159951';
 export const PHONE_TEL = '+972509159951';
-export const WHATSAPP_BASE = 'https://wa.me/972509159951';
+export { WHATSAPP_BASE, whatsappUrl, whatsappHrefForPath, PRICING_ARTICLE_PATH, PRICING_ARTICLE_WHATSAPP_TEXT } from './whatsapp';
 export const PRICING_PATH = '/pricing';
 
 export type PricingPackageId = 'landing' | 'brochure' | 'store' | 'custom';
@@ -93,10 +93,6 @@ export const PRICING_ADDONS = [
   { name: 'SEO / GEO חודשי', priceLabel: 'לפי הצעת מחיר', detail: 'קידום אורגני ומוכנות לחיפוש מבוסס בינה מלאכותית.' },
   { name: 'עמודים נוספים', priceLabel: 'לפי היקף העמוד', detail: 'מעבר להיקף החבילה שנבחרה.' },
 ] as const;
-
-export function whatsappUrl(text: string): string {
-  return `${WHATSAPP_BASE}?text=${encodeURIComponent(text)}`;
-}
 
 /** Which approved website-building packages belong on a given service page. */
 const PACKAGES_FOR_SERVICE: Record<string, PricingPackageId[]> = {

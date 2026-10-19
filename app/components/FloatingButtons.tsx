@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
+import { whatsappHrefForPath } from '../../lib/whatsapp';
 import { FaWheelchair, FaTimes, FaFont, FaEye } from 'react-icons/fa';
 import ChatbotHoneypot from './ChatbotHoneypot';
 import { chatbotReplyText, chatbotRequestBody, readTurnstileToken } from '@/lib/chatbot/policy';
@@ -14,6 +16,8 @@ function RobotIcon() {
 }
 
 export default function FloatingButtons() {
+  const pathname = usePathname() || '/';
+  const whatsappHref = whatsappHrefForPath(pathname);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [chatbotOpen, setChatbotOpen] = useState(false);
@@ -454,7 +458,7 @@ export default function FloatingButtons() {
               <span className="text-xs font-semibold">התקשרו</span>
             </Link>
             <Link
-              href="https://wa.me/972509159951"
+              href={whatsappHref}
               prefetch={false}
               target="_blank"
               rel="noopener noreferrer"
@@ -491,7 +495,7 @@ export default function FloatingButtons() {
       <div className="float-pop float-pop-d1 relative group">
         <div className="absolute -inset-1 bg-gradient-to-r from-green-600 to-green-400 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-200"></div>
         <Link
-          href="https://wa.me/972509159951"
+          href={whatsappHref}
           prefetch={false}
           target="_blank"
           rel="noopener noreferrer"

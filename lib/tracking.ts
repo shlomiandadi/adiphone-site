@@ -335,14 +335,38 @@ export function trackMetaContact() {
   emitMetaStandardEvent('Contact', createMetaEventId());
 }
 
+export type MetaLeadSubmitContext = {
+  meta_event_id: string;
+  meta_consent: { analytics: boolean; marketing: boolean };
+};
+
+/**
+ * Create the Lead event id before the contact POST. The submit body carries this
+ * id plus the current consent flags; trackMetaLead must be called with the same
+ * id after a successful submit so the pixel and Conversions API dedupe.
+ */
+export function createMetaLeadSubmitContext(): MetaLeadSubmitContext {
+  const meta_event_id = createMetaEventId();
+  if (!isBrowser()) {
+    return { meta_event_id, meta_consent: { analytics: false, marketing: false } };
+  }
+  try {
+    return { meta_event_id, meta_consent: readConsentFlags(document.cookie) };
+  } catch {
+    return { meta_event_id, meta_consent: { analytics: false, marketing: false } };
+  }
+}
+
 /**
  * One Lead per successful submission.
  * Ready pixel sends immediately. A not-yet-loaded pixel stores the same event id
  * and flushMetaLead sends it once from /thank-you or from pixel load.
+ * Pass the id from createMetaLeadSubmitContext so the browser event matches CAPI.
  */
-export function trackMetaLead() {
+export function trackMetaLead(eventId?: string) {
   if (!isBrowser()) return;
-  const record = beginMetaLead(createMetaEventId(), isMetaPixelReady());
+  const id = eventId?.trim() || createMetaEventId();
+  const record = beginMetaLead(id, isMetaPixelReady());
   writeMetaLeadRecord(record);
   if (record.status !== 'sent') return;
   emitMetaStandardEvent('Lead', record.eventId);
@@ -375,9 +399,9 @@ export function trackEvent(name: string, params: TrackingParams = {}) {
   if (isMetaContactEvent(name)) trackMetaContact();
 }
 
-export function trackGenerateLead(formName: string, extra: TrackingParams = {}) {
+export function trackGenerateLead(formName: string, extra: TrackingParams = {}, metaEventId?: string) {
   trackEvent('generate_lead', { form_name: formName, ...extra });
-  trackMetaLead();
+  trackMetaLead(metaEventId);
 }
 
 export function trackPageView() {

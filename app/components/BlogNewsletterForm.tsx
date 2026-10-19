@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ContactService } from '@prisma/client';
-import { attachAttribution, trackGenerateLead } from '../../lib/tracking';
+import { attachAttribution, createMetaLeadSubmitContext, trackGenerateLead } from '../../lib/tracking';
 
 export default function BlogNewsletterForm() {
   const [formData, setFormData] = useState({
@@ -20,17 +20,27 @@ export default function BlogNewsletterForm() {
     setIsSubmitting(true);
     setStatus('שולח...');
 
+    const metaLead = createMetaLeadSubmitContext();
+
     try {
       const response = await fetch('/api/contact/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(attachAttribution({ ...formData, form_name: 'newsletter' })),
+        credentials: 'same-origin',
+        body: JSON.stringify(
+          attachAttribution({
+            ...formData,
+            form_name: 'newsletter',
+            meta_event_id: metaLead.meta_event_id,
+            meta_consent: metaLead.meta_consent,
+          })
+        ),
       });
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || 'שגיאה בשליחת הטופס');
       }
-      trackGenerateLead('newsletter');
+      trackGenerateLead('newsletter', {}, metaLead.meta_event_id);
       setStatus('תודה על ההרשמה לניוזלטר! נשלח לך עדכונים בקרוב.');
       setFormData({
         name: '',

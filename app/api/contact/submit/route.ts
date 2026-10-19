@@ -6,6 +6,7 @@ import { LEAD_PLACEHOLDER_EMAIL } from '@/lib/lead-form';
 import { mapContactService } from '@/lib/mapContactService';
 import { brandLogoEmailHtml } from '@/lib/emailService';
 import { formatAttributionEmailHtml, normalizeAttribution } from '@/lib/tracking';
+import { queueMetaCapiLead } from '@/lib/metaCapi';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -195,6 +196,17 @@ export async function POST(request: Request) {
       contactId = contact.id;
     } catch (dbError) {
       console.error('Error saving contact lead:', dbError);
+    }
+
+    if (saved) {
+      queueMetaCapiLead({
+        headers: request.headers,
+        eventId: data?.meta_event_id,
+        bodyConsent: data?.meta_consent,
+        email,
+        phone,
+        name,
+      });
     }
 
     let emailSuccess = false;

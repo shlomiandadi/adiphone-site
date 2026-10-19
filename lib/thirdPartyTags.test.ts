@@ -46,6 +46,8 @@ test('default pixel and Ahrefs snippet values', () => {
   assert.equal(resolveMetaPixelId('   '), META_PIXEL_ID);
   assert.equal(resolveMetaPixelId(undefined), META_PIXEL_ID);
   assert.equal(resolveMetaPixelId('555'), '555');
+  assert.equal(resolveMetaPixelId('1243736846887573'), META_PIXEL_ID);
+  assert.equal(resolveMetaPixelId(' 1243736846887573 '), META_PIXEL_ID);
   assert.equal(AHREFS_ANALYTICS_KEY, 'aB0fdPwT7Rd5S9fsBNZURA');
   assert.equal(AHREFS_ANALYTICS_SRC, 'https://analytics.ahrefs.com/analytics.js');
 });
@@ -159,6 +161,10 @@ test('Lead and Contact carry eventID; PageView is a single init call with no eve
   assert.equal(boot.includes('disablePushState'), false);
   assert.equal(boot.includes('eventID'), false);
   assert.match(boot, /fbq\('init', "1317769456632052"\)/);
+
+  const retiredBoot = metaPixelBootScript('1243736846887573');
+  assert.equal(retiredBoot.includes('1243736846887573'), false);
+  assert.match(retiredBoot, /fbq\('init', "1317769456632052"\)/);
 });
 
 test('contact events are phone and whatsapp clicks only', () => {

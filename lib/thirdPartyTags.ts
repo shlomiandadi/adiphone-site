@@ -57,9 +57,13 @@ export function shouldLoadAhrefs(hostname: string, consent: ConsentFlags): boole
   return consent.analytics === true && isProductionHostname(hostname);
 }
 
+/** Retired adi-phone pixel. Never initialize or send events to this id. */
+const RETIRED_META_PIXEL_ID = '1243736846887573';
+
 export function resolveMetaPixelId(configured?: string | null): string {
   const trimmed = configured?.trim() || '';
-  return trimmed || META_PIXEL_ID;
+  if (!trimmed || trimmed === RETIRED_META_PIXEL_ID) return META_PIXEL_ID;
+  return trimmed;
 }
 
 export type MetaLeadStatus = 'pending' | 'sent';
@@ -124,13 +128,14 @@ export function isThankYouPath(pathname: string | null | undefined): boolean {
  * hook. A second manual PageView on the same load is dropped by fbevents 2.9.419.
  */
 export function metaPixelBootScript(pixelId: string): string {
+  const safePixelId = resolveMetaPixelId(pixelId);
   return `
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
     n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
     t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', ${JSON.stringify(pixelId)});
+    fbq('init', ${JSON.stringify(safePixelId)});
     fbq('track', 'PageView');
   `;
 }

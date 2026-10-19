@@ -1,6 +1,9 @@
 import { metadata as servicesMetadata, viewport as servicesViewport } from './metadata';
 import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
+// Keep service routes ISR so a webhook revalidate can refresh layout metadata.
+export const revalidate = 3600;
+
 export const generateMetadata = createSeoAgentGenerateMetadata('/services', servicesMetadata);
 export const viewport = servicesViewport;
 

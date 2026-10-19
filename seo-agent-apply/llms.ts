@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { BASE_LLMS_TXT } from './base-llms';
-import { getSeoAgentLlmsAddition } from './store';
+import { getSeoAgentLlmsAddition } from './state';
 
 const APPLY_HEADING = '## SEO Agent';
 

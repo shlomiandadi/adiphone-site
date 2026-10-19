@@ -1,6 +1,8 @@
 import { metadata as serviceMetadata } from './metadata';
 import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 
+export const revalidate = 3600;
+
 export const generateMetadata = createSeoAgentGenerateMetadata('/services/ecommerce', serviceMetadata);
 
 export default function EcommerceLayout({

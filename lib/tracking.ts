@@ -9,6 +9,7 @@ import {
   readConsentFlags,
   serializeMetaLeadRecord,
   shouldLoadMetaPixel,
+  shouldTrackManualPageView,
   type MetaLeadRecord,
 } from './thirdPartyTags';
 
@@ -406,6 +407,8 @@ export function trackGenerateLead(formName: string, extra: TrackingParams = {}, 
 
 export function trackPageView() {
   if (!isBrowser()) return;
+  // Enhanced measurement already counted this navigation. Direct loads are the config hit.
+  if (!shouldTrackManualPageView(window.location.pathname)) return;
   trackEvent('page_view', {
     page_location: window.location.href,
     page_title: document.title,

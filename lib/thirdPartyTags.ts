@@ -126,6 +126,18 @@ export function isThankYouPath(pathname: string | null | undefined): boolean {
 }
 
 /**
+ * GA4 enhanced measurement already emits one page_view on each App Router
+ * history change, on every route. A manual page_view on that same change
+ * doubles the hit (and, on /thank-you, the Ads lead conversion).
+ * Direct loads still get the single page_view from gtag config (send_page_view),
+ * which runs before the history listener exists. generate_lead and thank_you
+ * are separate events and are not gated here.
+ */
+export function shouldTrackManualPageView(_pathname?: string | null): boolean {
+  return false;
+}
+
+/**
  * One manual PageView, on init only. Later route changes are fbevents' pushState
  * hook. A second manual PageView on the same load is dropped by fbevents 2.9.419.
  */

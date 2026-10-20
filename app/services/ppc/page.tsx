@@ -174,7 +174,7 @@ export default async function PpcServicePage() {
       {/* Process */}
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
-          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה שלנו</h2>
+          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה על קמפיין ה-PPC שלך</h2>
           <div className="grid gap-6 md:grid-cols-4">
             {PROCESS.map((step, index) => (
               <div key={step.title} className="rounded-xl bg-white p-6 text-center shadow-sm">

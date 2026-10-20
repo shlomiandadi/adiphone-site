@@ -127,7 +127,7 @@ export default function CookieConsent() {
     <div className="cookie-banner fixed inset-x-0 bottom-0 z-50 p-4 sm:p-6 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:pb-6">
       <div className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-white shadow-xl">
         <div className="p-4 sm:p-6">
-          <h2 className="text-base sm:text-lg font-semibold mb-2">שימוש בעוגיות (Cookies)</h2>
+          <p className="text-base sm:text-lg font-semibold mb-2">שימוש בעוגיות (Cookies)</p>
           <p className="text-sm text-gray-600 mb-4 leading-relaxed">
             אנו משתמשים בעוגיות הכרחיות לתפקוד האתר. בכפוף להסכמתך נשתמש גם בעוגיות למדידות ובשיווק. ניתן לשנות העדפה בכל עת.
             קרא עוד ב־

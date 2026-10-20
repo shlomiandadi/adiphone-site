@@ -7,6 +7,9 @@ export default function UIDesignService() {
   const serviceData = {
     title: "עיצוב UI/UX לאתרים ואפליקציות",
     subtitle: "עיצוב חווית משתמש מרהיבה ואפקטיבית",
+    featuresHeading: "היתרונות שלנו בעיצוב UI/UX",
+    benefitsHeading: "היתרונות של ממשק מעוצב לעסק",
+    processHeading: "תהליך העבודה על עיצוב הממשק שלך",
     intro: "עיצוב UI/UX הוא עיצוב חוויית המשתמש והממשק של מוצר דיגיטלי, כך שיהיה נוח, ברור ומזמין לשימוש – ומוביל לפעולה.",
     serviceType: "ui-design",
     description: (

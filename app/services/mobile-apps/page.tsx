@@ -9,6 +9,9 @@ export default function MobileAppService() {
   const serviceData = {
     title: "פיתוח אפליקציות",
     subtitle: "אפליקציות מובייל חדשניות ומותאמות אישית",
+    featuresHeading: "היתרונות שלנו בפיתוח אפליקציות מובייל",
+    benefitsHeading: "היתרונות של אפליקציית מובייל לעסק",
+    processHeading: "תהליך העבודה על אפליקציית המובייל שלך",
     intro: "פיתוח אפליקציות הוא בניית אפליקציה לאנדרואיד ול-iOS, מהאפיון ועד ההשקה בחנויות, בהתאמה לצרכים של העסק.",
     serviceType: "mobile-apps",
     description: (

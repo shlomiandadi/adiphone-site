@@ -185,7 +185,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
 
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
-          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה שלנו</h2>
+          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה על בניית אתר ב{content.cityName}</h2>
           <div className="grid gap-6 md:grid-cols-4">
             {content.process.map((step, index) => (
               <div key={step.title} className="rounded-xl border border-gray-100 bg-white p-6 text-center shadow-sm">

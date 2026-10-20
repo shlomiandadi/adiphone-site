@@ -15,7 +15,7 @@ type Props = {
 export default function WebDevelopmentView({ projects }: Props) {
   return (
     <ServiceLayout
-      title="בניית אתרים לעסקים"
+      title="בניית אתר תדמית לעסקים"
       subtitle="אתרים מקצועיים ומותאמים אישית"
       intro="בניית אתרים היא תהליך הקמת אתר מקצועי לעסק – תדמית, קטלוג או מערכת – שמהיר, מאובטח ומותאם לנייד."
       serviceType="web-development"
@@ -23,7 +23,7 @@ export default function WebDevelopmentView({ projects }: Props) {
       heroVisual={
         <Hero3D
           theme="web-development"
-          title="בניית אתרים לעסקים"
+          title="בניית אתר תדמית לעסקים"
           subtitle="אתרים מקצועיים ומותאמים אישית"
           ctas={[
             { href: '/contact', label: 'ייעוץ לבניית אתר' },
@@ -32,7 +32,8 @@ export default function WebDevelopmentView({ projects }: Props) {
         />
       }
       featuresHeading="מה מקבלים באתר"
-      benefitsHeading="למה לבנות איתנו"
+      benefitsHeading="היתרונות שלנו בבניית אתרי תדמית"
+      processHeading="תהליך העבודה על אתר התדמית שלך"
       portfolioHeading="פרויקטים שבנינו"
       portfolioCtaLabel="לצפייה בפרויקט"
       serviceOffersHeading="סוגי אתרים שאנחנו בונים"

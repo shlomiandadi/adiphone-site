@@ -9,6 +9,7 @@ import {
   isMetaContactEvent,
   isProductionHostname,
   isThankYouPath,
+  shouldTrackManualPageView,
   metaPixelBootScript,
   metaStandardTrackArguments,
   parseMetaLeadRecord,
@@ -164,6 +165,18 @@ test('Lead and Contact carry eventID; PageView is a single init call with no eve
   assert.equal(boot.includes('disablePushState'), false);
   assert.equal(boot.includes('eventID'), false);
   assert.match(boot, /fbq\('init', "1317769456632052"\)/);
+});
+
+test('manual GA page_view is off on every route; Meta still sends one PageView per navigation', () => {
+  for (const path of ['/', '/contact', '/services/web-development', '/thank-you', '/thank-you/', null, undefined]) {
+    assert.equal(shouldTrackManualPageView(path), false);
+  }
+  const boot = metaPixelBootScript(META_PIXEL_ID);
+  assert.equal(boot.split("fbq('track', 'PageView')").length - 1, 1);
+  assert.equal(boot.includes('disablePushState'), false);
+  assert.equal(isMetaContactEvent('generate_lead'), false);
+  assert.equal(isMetaContactEvent('thank_you'), false);
+  assert.equal(isMetaContactEvent('page_view'), false);
 });
 
 test('contact events are phone and whatsapp clicks only', () => {

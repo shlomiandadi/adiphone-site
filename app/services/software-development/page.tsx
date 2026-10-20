@@ -39,8 +39,11 @@ const softwareDevelopmentContent = `
 export default function SoftwareDevelopmentPage() {
   return (
     <ServiceLayout
-      title="פיתוח תוכנה"
+      title="פיתוח תוכנה בהתאמה אישית לעסקים"
       subtitle="פתרונות תוכנה מותאמים אישית לעסקים"
+      featuresHeading="היתרונות שלנו בפיתוח תוכנה בהתאמה אישית"
+      benefitsHeading="היתרונות של תוכנה מותאמת לעסק"
+      processHeading="תהליך העבודה על התוכנה המותאמת שלך"
       intro="פיתוח תוכנה בהתאמה אישית הוא בניית מערכת ייעודית מאפס, כשתוכנת מדף קיימת לא עונה על הצרכים של העסק."
       serviceType="software-development"
       description={(

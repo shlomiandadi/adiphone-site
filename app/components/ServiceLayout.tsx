@@ -51,6 +51,7 @@ interface ServiceLayoutProps {
   featuresHeading?: string;
   benefits: string[];
   benefitsHeading?: string;
+  processHeading?: string;
   process: Array<{
     title: string;
     description: string;
@@ -147,6 +148,7 @@ export default function ServiceLayout({
   featuresHeading = 'היתרונות שלנו',
   benefits,
   benefitsHeading = 'היתרונות שלנו',
+  processHeading = 'תהליך העבודה שלנו',
   process,
   faq,
   portfolio = [],
@@ -414,7 +416,7 @@ export default function ServiceLayout({
             variants={fadeInUp}
             className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-white"
           >
-            תהליך העבודה שלנו
+            {processHeading}
           </motion.h2>
           <motion.div
             initial={motionInitial}

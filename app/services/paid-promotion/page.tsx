@@ -8,6 +8,9 @@ export default function PaidPromotionPage() {
     <ServiceLayout
       title="קידום ממומן"
       subtitle="ניהול קמפיינים ממומנים בגוגל ופייסבוק"
+      featuresHeading="היתרונות שלנו בקידום ממומן"
+      benefitsHeading="היתרונות של קמפיין ממומן לעסק"
+      processHeading="תהליך העבודה על הקידום הממומן שלך"
       serviceType="ppc"
       description="אנו מתמחים בניהול קמפיינים ממומנים בפלטפורמות המובילות, תוך שימוש בכלים מתקדמים ואסטרטגיות פרסום מוכחות. הצוות המקצועי שלנו מביא ניסיון עשיר בניהול תקציבי פרסום ומקסום החזר השקעה."
       heroTheme="ppc"

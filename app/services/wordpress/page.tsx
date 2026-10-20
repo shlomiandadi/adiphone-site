@@ -5,8 +5,11 @@ import { FaWordpress, FaPaintBrush, FaShieldAlt, FaCog } from 'react-icons/fa';
 
 export default function WordPressService() {
   const serviceData = {
-    title: "בניית אתרי וורדפרס",
+    title: "מומחה וורדפרס – בניית אתרי וורדפרס",
     subtitle: "אתרי וורדפרס מקצועיים ומותאמים אישית",
+    featuresHeading: "היתרונות שלנו בבניית אתרי וורדפרס",
+    benefitsHeading: "היתרונות של אתר וורדפרס לעסק",
+    processHeading: "תהליך העבודה על אתר הוורדפרס שלך",
     intro: "אתר וורדפרס הוא אתר הבנוי על מערכת הניהול וורדפרס, המאפשרת לכם לעדכן תכנים בעצמכם בקלות, בגמישות ובעלות נוחה.",
     serviceType: "web-development",
     servicePath: "/services/wordpress",

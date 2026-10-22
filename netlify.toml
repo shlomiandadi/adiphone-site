@@ -47,6 +47,30 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# The Prerender extension rewrites crawlers to one function path. Never let
+# the OG image's year-long immutable cache attach here; vary on `url` so
+# /opengraph-image cannot occupy every page's bot cache.
+[[headers]]
+  for = "/netlify-prerender-function"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Netlify-CDN-Cache-Control = "public, max-age=0, must-revalidate"
+    Netlify-Vary = "query=url"
+
+[[headers]]
+  for = "/opengraph-image"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Netlify-CDN-Cache-Control = "public, max-age=31536000, immutable, durable"
+    Netlify-Vary = "query"
+
+[[headers]]
+  for = "/services/*/opengraph-image"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Netlify-CDN-Cache-Control = "public, max-age=31536000, immutable, durable"
+    Netlify-Vary = "query"
+
 [[redirects]]
   from = "http://*"
   to = "https://:splat"

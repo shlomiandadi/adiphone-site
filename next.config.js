@@ -49,6 +49,34 @@ const nextConfig = {
   },
   poweredByHeader: false,
   staticPageGenerationTimeout: 120,
+  // OG image metadata routes send immutable cache. Scope that to their own
+  // paths. The prerender rewrite must never inherit those headers — it is
+  // the shared bot entry for every page URL.
+  async headers() {
+    const ogImageCache = [
+      { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+      { key: 'Netlify-CDN-Cache-Control', value: 'public, max-age=31536000, immutable, durable' },
+      { key: 'Netlify-Vary', value: 'query' },
+    ];
+    return [
+      {
+        source: '/opengraph-image',
+        headers: ogImageCache,
+      },
+      {
+        source: '/:path+/opengraph-image',
+        headers: ogImageCache,
+      },
+      {
+        source: '/netlify-prerender-function',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
+          { key: 'Netlify-CDN-Cache-Control', value: 'public, max-age=0, must-revalidate' },
+          { key: 'Netlify-Vary', value: 'query=url' },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       // Duplicate / thin service stubs → primary service URLs (fixes cannibalization + orphans)

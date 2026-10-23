@@ -67,6 +67,27 @@ describe('next.config header scoping', () => {
     );
     assert.equal(pageLike.length, 0);
 
+    const home = bySource.get('/') || [];
+    assert.match(
+      home.find((header) => header.key === 'Netlify-CDN-Cache-Control')?.value || '',
+      /durable/
+    );
+    assert.doesNotMatch(
+      home.find((header) => header.key === 'Netlify-CDN-Cache-Control')?.value || '',
+      /immutable/
+    );
+    assert.equal(home.find((header) => header.key === 'Cache-Control'), undefined);
+
+    const brand = bySource.get('/brand/:path*') || [];
+    assert.match(
+      brand.find((header) => header.key === 'Cache-Control')?.value || '',
+      /max-age=31536000/
+    );
+    assert.doesNotMatch(
+      brand.find((header) => header.key === 'Cache-Control')?.value || '',
+      /immutable/
+    );
+
     const og = bySource.get('/opengraph-image') || [];
     assert.equal(
       og.find((header) => header.key === 'Cache-Control')?.value,
@@ -78,6 +99,10 @@ describe('next.config header scoping', () => {
     assert.doesNotMatch(
       prerender.find((header) => header.key === 'Cache-Control')?.value || '',
       /immutable/
+    );
+    assert.doesNotMatch(
+      prerender.find((header) => header.key === 'Netlify-CDN-Cache-Control')?.value || '',
+      /s-maxage=31536000|immutable/
     );
     assert.equal(prerender.find((header) => header.key === 'Netlify-Vary')?.value, 'query=url');
   });

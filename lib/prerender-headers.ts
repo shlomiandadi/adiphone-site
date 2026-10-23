@@ -10,6 +10,9 @@
  * object. Next.js metadata routes (app/opengraph-image.png, opengraph-image.tsx)
  * answer with Cache-Control: public, max-age=31536000, immutable. Copying that
  * onto this shared path stores the 1200x630 PNG under every page URL for a year.
+ *
+ * Homepage browser HTML may set durable Edge TTL on `/` only. Never express
+ * that as `/*` or `/:path*` — those sources also match this rewrite.
  */
 
 const OG_IMAGE_PATH = /(?:^|\/)opengraph-image\/?$/i;

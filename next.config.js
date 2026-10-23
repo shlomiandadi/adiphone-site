@@ -49,9 +49,11 @@ const nextConfig = {
   },
   poweredByHeader: false,
   staticPageGenerationTimeout: 120,
-  // OG image metadata routes send immutable cache. Scope that to their own
-  // paths. The prerender rewrite must never inherit those headers — it is
-  // the shared bot entry for every page URL.
+  // Cache policy is path-scoped on purpose. A /:path* rule would also match
+  // /netlify-prerender-function and can re-attach year-long CDN cache to the
+  // shared bot rewrite (the PR #70 failure). Homepage HTML may use durable
+  // Edge TTL; OG images stay immutable; the prerender path stays short-lived
+  // and varies on `url`.
   async headers() {
     const ogImageCache = [
       { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
@@ -59,6 +61,19 @@ const nextConfig = {
       { key: 'Netlify-Vary', value: 'query' },
     ];
     return [
+      {
+        source: '/',
+        headers: [
+          { key: 'Netlify-CDN-Cache-Control', value: 'public, durable, s-maxage=31536000, stale-while-revalidate=31536000' },
+        ],
+      },
+      {
+        source: '/brand/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000' },
+          { key: 'Netlify-CDN-Cache-Control', value: 'public, max-age=31536000, durable' },
+        ],
+      },
       {
         source: '/opengraph-image',
         headers: ogImageCache,

@@ -41,11 +41,26 @@
   for = "/_next/static/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+    Netlify-CDN-Cache-Control = "public, max-age=31536000, immutable, durable"
 
 [[headers]]
   for = "/static/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+    Netlify-CDN-Cache-Control = "public, max-age=31536000, immutable, durable"
+
+# Homepage HTML for browsers. Do not use `/*` or `/:path*` — that also matches
+# /netlify-prerender-function and can pin the shared bot object for a year.
+[[headers]]
+  for = "/"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, durable, s-maxage=31536000, stale-while-revalidate=31536000"
+
+[[headers]]
+  for = "/brand/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    Netlify-CDN-Cache-Control = "public, max-age=31536000, durable"
 
 # The Prerender extension rewrites crawlers to one function path. Never let
 # the OG image's year-long immutable cache attach here; vary on `url` so

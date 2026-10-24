@@ -129,6 +129,20 @@ function withWebsiteTadmit(data: FooterView): FooterView {
   };
 }
 
+function withDataDeletion(data: FooterView): FooterView {
+  return {
+    ...data,
+    columns: data.columns.map((column) => {
+      if (column.links.some((link) => link.url === '/data-deletion')) return column;
+      const index = column.links.findIndex((link) => link.url === '/privacy-policy');
+      if (index < 0) return column;
+      const links = [...column.links];
+      links.splice(index + 1, 0, { title: 'מחיקת נתונים', url: '/data-deletion' });
+      return { ...column, links };
+    }),
+  };
+}
+
 export default function Footer({ cmsFooter }: { cmsFooter?: FooterView | null }) {
-  return <FooterMarkup data={withWebsiteTadmit(cmsFooter || HARDCODED_FOOTER)} />;
+  return <FooterMarkup data={withDataDeletion(withWebsiteTadmit(cmsFooter || HARDCODED_FOOTER))} />;
 }

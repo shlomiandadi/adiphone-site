@@ -15,6 +15,8 @@ const pageMetadata = {
 export const generateMetadata = createSeoAgentGenerateMetadata('/data-deletion', pageMetadata);
 
 const DELETION_EMAIL = 'shlomiandadi@gmail.com';
+const DELETION_EMAIL_ALT = 'shlomimalfuf1@gmail.com';
+const DELETION_EMAIL_SUBJECT = encodeURIComponent('בקשה למחיקת נתונים');
 
 export default function DataDeletion() {
   return (
@@ -34,8 +36,12 @@ export default function DataDeletion() {
           <ul className="list-disc pr-5 mb-2 text-gray-700">
             <li className="mb-1">
               <b>בדוא"ל:</b>{' '}
-              <a className="text-blue-700 hover:underline" href={`mailto:${DELETION_EMAIL}?subject=${encodeURIComponent('בקשה למחיקת נתונים')}`}>
+              <a className="text-blue-700 hover:underline" href={`mailto:${DELETION_EMAIL}?subject=${DELETION_EMAIL_SUBJECT}`}>
                 {DELETION_EMAIL}
+              </a>
+              {' '}או{' '}
+              <a className="text-blue-700 hover:underline" href={`mailto:${DELETION_EMAIL_ALT}?subject=${DELETION_EMAIL_SUBJECT}`}>
+                {DELETION_EMAIL_ALT}
               </a>
             </li>
             <li>

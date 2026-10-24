@@ -143,6 +143,22 @@ function withDataDeletion(data: FooterView): FooterView {
   };
 }
 
+function withTerms(data: FooterView): FooterView {
+  return {
+    ...data,
+    columns: data.columns.map((column) => {
+      if (column.links.some((link) => link.url === '/terms')) return column;
+      const afterDeletion = column.links.findIndex((link) => link.url === '/data-deletion');
+      const afterPrivacy = column.links.findIndex((link) => link.url === '/privacy-policy');
+      const index = afterDeletion >= 0 ? afterDeletion : afterPrivacy;
+      if (index < 0) return column;
+      const links = [...column.links];
+      links.splice(index + 1, 0, { title: 'תנאי שימוש', url: '/terms' });
+      return { ...column, links };
+    }),
+  };
+}
+
 export default function Footer({ cmsFooter }: { cmsFooter?: FooterView | null }) {
-  return <FooterMarkup data={withDataDeletion(withWebsiteTadmit(cmsFooter || HARDCODED_FOOTER))} />;
+  return <FooterMarkup data={withTerms(withDataDeletion(withWebsiteTadmit(cmsFooter || HARDCODED_FOOTER)))} />;
 }

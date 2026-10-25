@@ -24,6 +24,10 @@
   external_node_modules = ["@prisma/client", "prisma"]
   included_files = ["prisma/**", "seo-agent-apply/base-llms.txt"]
 
+# Weekly contact-lead retention (Contact rows older than 12 months).
+[functions."lead-retention-cleanup"]
+  schedule = "0 3 * * 0"
+
 [[headers]]
   for = "/*"
   [headers.values]

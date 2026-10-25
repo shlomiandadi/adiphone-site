@@ -24,7 +24,7 @@ export default function TermsOfUse() {
         <section className="mb-6">
           <h2 className="font-bold text-lg mb-2">1. אודות השירות</h2>
           <p>
-            שירות Top Webstak, המופעל על ידי עדי פון תקשורת (להלן: "השירות", "אנחנו"), כולל בניית אתרים, קידום אתרים (SEO) וניהול וקידום ברשתות חברתיות. תנאים אלה חלים על השימוש באתר adi-phone.co.il ועל השירותים הניתנים במסגרתו.
+            Top Webstak הוא שם מסחרי של עדי פון תקשורת (להלן: &quot;החברה&quot;, &quot;אנחנו&quot;), העוסקת בבניית אתרים, קידום אתרים ומערכות דיגיטליות. שירות Top Webstak כולל בניית אתרים, קידום אתרים (SEO) וניהול וקידום ברשתות חברתיות. תנאים אלה חלים על השימוש באתר adi-phone.co.il ועל השירותים הניתנים במסגרתו.
           </p>
         </section>
 
@@ -49,7 +49,14 @@ export default function TermsOfUse() {
         </section>
 
         <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">4. פרטיות</h2>
+          <h2 className="font-bold text-lg mb-2">4. גישה לנתוני לידים של לקוחות</h2>
+          <p>
+            כדי לקבל לידים מעמוד פייסבוק של לקוח, הלקוח (או מי שמנהל את העמוד בשמו) מאשר לנו במפורש גישה לטפסי הלידים של העמוד, ויכול לבטל את הגישה בכל עת דרך הגדרות העסק או העמוד שלו בפייסבוק או בפנייה אלינו. הלקוח מצהיר כי הוא מנהל מורשה של העמוד, וכי הוא אחראי לכך שבטפסי הלידים שלו מוצגת הודעת פרטיות ושיש לו בסיס חוקי לאסוף את פרטי הפונים. אנו פועלים כמעבד מידע מטעם הלקוח: הלידים שייכים ללקוח, מוצגים רק לו, ומשמשים רק למסירת הפנייה אליו. בסיום ההתקשרות או לפי בקשה נמחק את נתוני הלקוח.
+          </p>
+        </section>
+
+        <section className="mb-6">
+          <h2 className="font-bold text-lg mb-2">5. פרטיות</h2>
           <p>
             מידע נוסף על איסוף המידע ועל השימוש בו מופיע ב
             <Link className="text-blue-700 hover:underline" href="/privacy-policy">מדיניות הפרטיות</Link>
@@ -59,37 +66,37 @@ export default function TermsOfUse() {
         </section>
 
         <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">5. קניין רוחני</h2>
+          <h2 className="font-bold text-lg mb-2">6. קניין רוחני</h2>
           <p>
             כל הזכויות באתר, בעיצובו, בתוכנו וביצירות שמקורן בנו שמורות לנו או לבעלי הזכויות הרלוונטיים, אלא אם צוין אחרת. אין להעתיק, להפיץ או להשתמש בחומרים אלה ללא אישור מראש. תוכן שהלקוח מוסר נותר בבעלותו; הלקוח מעניק לנו רישיון להשתמש בו לצורך מתן השירות.
           </p>
         </section>
 
         <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">6. הגבלת אחריות</h2>
+          <h2 className="font-bold text-lg mb-2">7. הגבלת אחריות</h2>
           <p>
             במידה המרבית המותרת על פי דין, לא נהיה אחראים לנזק עקיף, תוצאתי או מיוחד, או לאובדן הכנסות, נתונים או הזדמנויות עסקיות, הנובעים מהשימוש באתר או בשירותים.
           </p>
         </section>
 
         <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">7. שינויים בתנאים</h2>
+          <h2 className="font-bold text-lg mb-2">8. שינויים בתנאים</h2>
           <p>
             אנו רשאים לעדכן תנאים אלה מעת לעת. תאריך העדכון האחרון מופיע בראש העמוד. המשך שימוש באתר או בשירותים לאחר פרסום השינוי מהווה הסכמה לתנאים המעודכנים.
           </p>
         </section>
 
         <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">8. הדין החל</h2>
+          <h2 className="font-bold text-lg mb-2">9. הדין החל</h2>
           <p>
             על תנאים אלה ועל השימוש באתר ובשירותים יחול דין מדינת ישראל, וסמכות השיפוט תהיה לבתי המשפט המוסמכים בישראל.
           </p>
         </section>
 
         <section>
-          <h2 className="font-bold text-lg mb-2">9. יצירת קשר</h2>
-          <p>
-            <b>בדוא"ל:</b>{' '}
+          <h2 className="font-bold text-lg mb-2">10. יצירת קשר</h2>
+          <p className="mb-2">
+            <b>בדוא&quot;ל:</b>{' '}
             <a className="text-blue-700 hover:underline" href={`mailto:${CONTACT_EMAIL}?subject=${CONTACT_EMAIL_SUBJECT}`}>
               {CONTACT_EMAIL}
             </a>
@@ -98,6 +105,7 @@ export default function TermsOfUse() {
               {CONTACT_EMAIL_ALT}
             </a>
           </p>
+          <p><b>טלפון:</b> 050-9159951</p>
         </section>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { PrismaClient, Post } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import type { BlogNavPost } from './blogNav';
 import {
   BLOG_CACHE_TAG,
@@ -9,8 +9,6 @@ import {
 } from './contentCache';
 
 const prisma = new PrismaClient();
-
-type Category = 'SEO' | 'WEB_DEVELOPMENT' | 'APP_DEVELOPMENT' | 'DIGITAL_MARKETING' | 'UI_UX' | 'ECOMMERCE';
 
 export const BLOG_POSTS_PER_PAGE = 6;
 
@@ -27,9 +25,8 @@ const getPublishedPostSlugsUncached = contentCache(
   }
 );
 
-export async function getPublishedPosts({ limit }: { limit?: number } = {}): Promise<Post[]> {
-  const rows = await getPublishedPostSlugsUncached(limit);
-  return rows as Post[];
+export async function getPublishedPosts({ limit }: { limit?: number } = {}): Promise<{ slug: string }[]> {
+  return getPublishedPostSlugsUncached(limit);
 }
 
 const NAV_POST_LIMIT = 100;
@@ -252,18 +249,18 @@ export async function getPostBySlug(slug: string) {
   }
 }
 
-export async function getPostsByCategory(categorySlug: string): Promise<Post[]> {
+export async function getPostsByCategory(categorySlug: string) {
   const { posts } = await getPostsByCategorySlugCached(categorySlug);
-  return posts as Post[];
+  return posts;
 }
 
-export async function getRelatedPosts(currentPostId: string, categorySlug: string): Promise<Post[]> {
+export async function getRelatedPosts(currentPostId: string, categorySlug: string) {
   const { posts } = await getPostsByCategorySlugCached(categorySlug);
-  return posts.filter((post) => post.id !== currentPostId).slice(0, 3) as Post[];
+  return posts.filter((post) => post.id !== currentPostId).slice(0, 3);
 }
 
-export async function searchPosts(tag: string): Promise<Post[]> {
-  return (await getPostsByTagCached(tag)) as Post[];
+export async function searchPosts(tag: string) {
+  return getPostsByTagCached(tag);
 }
 
 export async function createPost(data: {

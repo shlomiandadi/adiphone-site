@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { FaSearch, FaWordpress, FaShoppingCart, FaMobileAlt, FaPaintBrush, FaBullhorn, FaChartLine, FaCode, FaBrain, FaCloud, FaRobot } from 'react-icons/fa';
 import { AGENCY_PROVIDER, SERVICES_HUB_ITEMS, buildServiceJsonLd } from '../../lib/service-schema';
 import { absoluteUrl } from '../../lib/seo';
+import { CITY_SERVICE_AREAS } from '../../lib/service-areas';
 import Hero3D from '../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../components/ServiceCtaBanner';
 
@@ -232,6 +233,35 @@ export default function ServicesPage() {
           ))}
         </motion.div>
       </div>
+
+      <section data-reveal className="container mx-auto px-4 pb-16">
+        <h2 className="text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">בניית אתרים לפי אזור</h2>
+        <p className="text-center text-gray-600 dark:text-gray-300 mb-8">
+          עמוד ייעודי לכל אזור שירות – בלי לחפש בתפריט העליון.
+        </p>
+        <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {CITY_SERVICE_AREAS.map((city) => (
+            <li key={city.href}>
+              <Link
+                href={city.href}
+                className="block rounded-xl border border-gray-100 bg-white p-5 text-right shadow-sm transition-colors hover:border-blue-200 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-800"
+              >
+                <span className="font-semibold text-blue-700 underline dark:text-blue-400">{city.name}</span>
+                <span className="mt-2 block text-sm text-gray-600 dark:text-gray-300">{city.blurb}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-8 text-center text-lg text-gray-700 dark:text-gray-300">
+          <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline">
+            אתר תדמית לעסק
+          </Link>
+          {' · '}
+          <Link href="/services/aeo-geo" className="font-semibold text-blue-700 underline">
+            הופעה בתשובות של ChatGPT ו-Gemini
+          </Link>
+        </p>
+      </section>
 
       <ServiceCtaBanner serviceKey="services" />
     </div>

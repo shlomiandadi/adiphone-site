@@ -9,6 +9,10 @@ import {
   getPublishedPortfolioBySlug,
   getPublishedPortfolioList,
 } from '../../../lib/portfolioPublic';
+import { PORTFOLIO_RELATED_SERVICE } from '../../../lib/related-content';
+import Link from 'next/link';
+import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
+import { optimizeContentImages } from '../../../lib/responsiveImage';
 
 export const revalidate = 3600;
 
@@ -20,8 +24,6 @@ export async function generateStaticParams() {
     return [];
   }
 }
-import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
-import { optimizeContentImages } from '../../../lib/responsiveImage';
 
 interface Project {
   id: string;
@@ -119,6 +121,17 @@ export default async function Page({ params }: { params: { slug: string } }) {
         }}
         caseStudy={caseStudy}
       />
+      {PORTFOLIO_RELATED_SERVICE[project.slug] ? (
+        <p className="max-w-4xl mx-auto px-4 pb-10 text-right text-lg">
+          השירות המתאים:{' '}
+          <Link
+            href={PORTFOLIO_RELATED_SERVICE[project.slug].serviceHref}
+            className="font-semibold text-blue-700 underline"
+          >
+            {PORTFOLIO_RELATED_SERVICE[project.slug].serviceLabel}
+          </Link>
+        </p>
+      ) : null}
     </>
   );
 } 

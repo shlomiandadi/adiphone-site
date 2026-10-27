@@ -109,8 +109,8 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
           ))}
           <p className="text-lg leading-relaxed text-gray-700">
             בין אם אתם צריכים{' '}
-            <Link href="/services/web-development" className="text-blue-700 underline">
-              אתר תדמית
+            <Link href="/services/website-tadmit" className="text-blue-700 underline">
+              אתרי תדמית לעסקים
             </Link>
             ,{' '}
             <Link href="/services/ecommerce" className="text-blue-700 underline">

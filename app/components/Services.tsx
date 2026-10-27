@@ -69,9 +69,13 @@ export default function Services() {
           <Link href="/services/web-development" className="font-semibold text-blue-700 underline dark:text-blue-400">
             בניית אתרים
           </Link>
-          {' '}או{' '}
+          {', '}
           <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline dark:text-blue-400">
-            בניית אתר תדמית
+            אתרי תדמית לעסקים
+          </Link>
+          {' '}או{' '}
+          <Link href="/services/aeo-geo" className="font-semibold text-blue-700 underline dark:text-blue-400">
+            קידום במנועי AI (AEO ו-GEO)
           </Link>
           ?
         </p>

@@ -1,3 +1,5 @@
+import { FOOTER_SERVICE_AREA_LINKS } from '../service-areas';
+
 export type FooterLinkView = {
   id?: string;
   title: string;
@@ -55,18 +57,7 @@ export const FOOTER_SERVICE_LINKS: FooterLinkView[] = [
   { title: 'כמה עולה בניית אתר ב-2026', url: '/blog/kama-oleh-bniyat-atar-2026' },
 ];
 
-export const FOOTER_AREA_LINKS: FooterLinkView[] = [
-  { title: 'בניית אתרים בפרדס חנה', url: '/services/bniyat-atarim-pardes-hana' },
-  { title: 'בניית אתרים בחדרה', url: '/services/bniyat-atarim-hadera' },
-  { title: 'בניית אתרים בקיסריה', url: '/services/bniyat-atarim-caesarea' },
-  { title: 'בניית אתרים בזכרון יעקב', url: '/services/bniyat-atarim-zichron-yaakov' },
-  { title: 'בניית אתרים בחיפה', url: '/services/bniyat-atarim-haifa' },
-  { title: 'בניית אתרים בנתניה', url: '/services/bniyat-atarim-netanya' },
-  { title: 'בניית אתרים באור עקיבא', url: '/services/bniyat-atarim-or-akiva' },
-  { title: 'בניית אתרים בבנימינה', url: '/services/bniyat-atarim-binyamina' },
-  { title: 'בניית אתרים ביוקנעם', url: '/services/bniyat-atarim-yokneam' },
-  { title: 'בניית אתרים בעפולה', url: '/services/bniyat-atarim-afula' },
-];
+export const FOOTER_AREA_LINKS: FooterLinkView[] = FOOTER_SERVICE_AREA_LINKS;
 
 export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
   { title: '0509159951', url: 'tel:0509159951', icon: 'phone' },
@@ -121,6 +112,30 @@ export function columnKind(title: string, links: FooterLinkView[]): FooterColumn
   }
   if (title === 'השירותים שלנו') return 'services';
   return 'links';
+}
+
+export function withServiceAreaColumn(data: FooterView): FooterView {
+  const required = FOOTER_AREA_LINKS;
+  const index = data.columns.findIndex((column) => column.title === 'אזורי שירות');
+  if (index >= 0) {
+    const column = data.columns[index];
+    const links = [...column.links];
+    for (const item of required) {
+      if (!links.some((link) => link.url === item.url)) {
+        links.push(item);
+      }
+    }
+    const columns = [...data.columns];
+    columns[index] = { ...column, links };
+    return { ...data, columns };
+  }
+
+  const contactIndex = data.columns.findIndex((column) => column.kind === 'contact');
+  const column: FooterColumnView = { title: 'אזורי שירות', kind: 'links', links: required };
+  const columns = [...data.columns];
+  if (contactIndex >= 0) columns.splice(contactIndex, 0, column);
+  else columns.push(column);
+  return { ...data, columns };
 }
 
 export const HARDCODED_FOOTER: FooterView = {

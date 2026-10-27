@@ -134,6 +134,18 @@ export default async function SeoServicePage() {
             <Link href="/blog/seo-tips-google-ranking-guide" className="text-green-700 underline">
               טיפים לקידום אתרים בגוגל
             </Link>
+            , את{' '}
+            <Link href="/blog/mh-zh-seo" className="text-green-700 underline">
+              מדריך SEO למתחילים
+            </Link>
+            {' '}ואת{' '}
+            <Link href="/blog/ayk-lbchvr-chbrt-kydvm-atrym" className="text-green-700 underline">
+              איך לבחור חברת קידום אתרים
+            </Link>
+            . לחיפוש במנועי שיחה:{' '}
+            <Link href="/services/aeo-geo" className="text-green-700 underline">
+              קידום במנועי AI
+            </Link>
             .
           </p>
         </div>

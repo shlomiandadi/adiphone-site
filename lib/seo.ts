@@ -6,6 +6,9 @@ export const SERVICE_CANONICALS = {
   ppc: '/services/ppc',
   seo: '/services/seo',
   webDevelopment: '/services/web-development',
+  websiteTadmit: '/services/website-tadmit',
+  aeoGeo: '/services/aeo-geo',
+  ai: '/services/ai',
   mobileApps: '/services/mobile-apps',
   software: '/services/software-development',
   softwareDevelopment: '/services/software-development',
@@ -68,6 +71,41 @@ export const BLOG_META_OVERRIDES: Record<
   'nyhvl-kmpyyn-mmvmn': {
     relatedService: SERVICE_CANONICALS.ppc,
     relatedLabel: 'שירות ניהול קמפיינים ממומנים',
+  },
+  'ptrvnvt-bynh-mlakvtyt': {
+    metaTitle: 'בינה מלאכותית לעסקים: מדריך מעשי ליישום ב-2026',
+    metaDesc:
+      'מדריך מעשי ליישום בינה מלאכותית בעסק: צ׳אטבוט, לידים וקידום במנועי AI. איך בוחרים פתרון ומתחילים בליווי Top Webstak.',
+    relatedService: SERVICE_CANONICALS.ai,
+    relatedLabel: 'שירות פתרונות AI לעסקים',
+  },
+  'mh-zh-seo': {
+    relatedService: SERVICE_CANONICALS.aeoGeo,
+    relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
+  },
+  'ayk-lbchvr-chbrt-kydvm-atrym': {
+    relatedService: SERVICE_CANONICALS.aeoGeo,
+    relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
+  },
+  'kydvm-atrym-avrgny': {
+    relatedService: SERVICE_CANONICALS.aeoGeo,
+    relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
+  },
+  'pytvch-tvknh': {
+    relatedService: SERVICE_CANONICALS.websiteTadmit,
+    relatedLabel: 'אתרי תדמית לעסקים',
+  },
+  'pytvch-atrym-seo-shyvvk-dygytly': {
+    relatedService: SERVICE_CANONICALS.websiteTadmit,
+    relatedLabel: 'אתרי תדמית לעסקים',
+  },
+  'kama-oleh-bniyat-atar-2026': {
+    relatedService: SERVICE_CANONICALS.websiteTadmit,
+    relatedLabel: 'אתרי תדמית לעסקים',
+  },
+  'ai-bot-for-businesses': {
+    relatedService: SERVICE_CANONICALS.aeoGeo,
+    relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
   },
 };
 

@@ -7,8 +7,114 @@ import {
   requireAdminApiUser,
 } from '../../../lib/adminAuth';
 import { normalizeTagNames, syncPostTags, tagPathValues } from '../../../lib/postTags';
+import {
+  BLOG_CACHE_TAG,
+  POST_LIST_SELECT,
+  PRIVATE_NO_STORE,
+  PUBLIC_CACHE_CONTROL,
+  contentCache,
+} from '../../../lib/contentCache';
 
 const prisma = new PrismaClient();
+
+const getPublicPostsList = contentCache(
+  'api-posts-public',
+  [BLOG_CACHE_TAG],
+  async (page: number, limit: number, category: string, fields: string) => {
+    const skip = (page - 1) * limit;
+    if (fields === 'nav') {
+      const where = { published: true as const };
+      const [posts, total] = await Promise.all([
+        prisma.post.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip,
+          take: limit,
+          select: {
+            title: true,
+            slug: true,
+            category: { select: { name: true } },
+          },
+        }),
+        prisma.post.count({ where }),
+      ]);
+      return {
+        posts: posts.map((post) => ({
+          title: post.title,
+          slug: post.slug,
+          category: post.category?.name || 'כללי',
+        })),
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) || 1,
+        },
+      };
+    }
+
+    const where: { published: true; category?: { slug: string } } = { published: true };
+    if (category) where.category = { slug: category };
+
+    const [posts, total] = await Promise.all([
+      prisma.post.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+        select: POST_LIST_SELECT,
+      }),
+      prisma.post.count({ where }),
+    ]);
+
+    return {
+      posts: posts.map((post) => ({
+        id: post.id,
+        title: post.title,
+        slug: post.slug,
+        excerpt: post.excerpt,
+        mainImage: post.mainImage,
+        category: post.category?.name || 'כללי',
+        categorySlug: post.category?.slug || 'general',
+        categoryColor: post.category?.color || '#3B82F6',
+        published: post.published,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+        authorName: post.authorName,
+        authorEmail: post.authorEmail,
+        authorId: post.authorId,
+        views: post.views,
+        likes: post.likes,
+        metaTitle: post.metaTitle,
+        metaDesc: post.metaDesc,
+        tags: Array.isArray(post.tags) ? post.tags : [],
+        canonicalUrl: post.canonicalUrl,
+        ogImage: post.ogImage,
+        robots: post.robots,
+        postTags: post.postTags,
+      })),
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    };
+  }
+);
+
+function publicJson(data: unknown) {
+  return NextResponse.json(data, {
+    headers: { 'Cache-Control': PUBLIC_CACHE_CONTROL },
+  });
+}
+
+function privateJson(data: unknown, init?: { status?: number }) {
+  return NextResponse.json(data, {
+    ...init,
+    headers: { 'Cache-Control': PRIVATE_NO_STORE },
+  });
+}
 
 function parseSchemaMarkup(value: unknown): string | null | NextResponse {
   if (value == null || value === '') return null;
@@ -157,35 +263,14 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit;
 
-    if (searchParams.get('fields') === 'nav' && admin !== 'true') {
-      const where = { published: true as const };
-      const [posts, total] = await Promise.all([
-        prisma.post.findMany({
-          where,
-          orderBy: { createdAt: 'desc' },
-          skip,
-          take: limit,
-          select: {
-            title: true,
-            slug: true,
-            category: { select: { name: true } },
-          },
-        }),
-        prisma.post.count({ where }),
-      ]);
-      return NextResponse.json({
-        posts: posts.map((post) => ({
-          title: post.title,
-          slug: post.slug,
-          category: post.category?.name || 'כללי',
-        })),
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit) || 1,
-        },
-      });
+    if (admin !== 'true' && published !== 'false') {
+      const payload = await getPublicPostsList(
+        page,
+        limit,
+        category || '',
+        searchParams.get('fields') === 'nav' ? 'nav' : ''
+      );
+      return publicJson(payload);
     }
 
     const where: any = {};
@@ -214,40 +299,7 @@ export async function GET(request: NextRequest) {
         orderBy: { createdAt: 'desc' },
         skip,
         take: limit,
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          excerpt: true,
-          mainImage: true,
-          category: {
-            select: {
-              id: true,
-              name: true,
-              slug: true,
-              color: true,
-              description: true,
-            }
-          },
-          published: true,
-          createdAt: true,
-          updatedAt: true,
-          authorName: true,
-          authorEmail: true,
-          authorId: true,
-          views: true,
-          likes: true,
-          metaTitle: true,
-          metaDesc: true,
-          tags: true,
-          canonicalUrl: true,
-          schemaMarkup: true,
-          ogImage: true,
-          robots: true,
-          postTags: {
-            include: { tag: true },
-          },
-        }
+        select: POST_LIST_SELECT
       }),
       prisma.post.count({ where })
     ]);
@@ -273,13 +325,12 @@ export async function GET(request: NextRequest) {
       metaDesc: post.metaDesc,
       tags: Array.isArray(post.tags) ? post.tags : [],
       canonicalUrl: post.canonicalUrl,
-      schemaMarkup: post.schemaMarkup,
       ogImage: post.ogImage,
       robots: post.robots,
       postTags: post.postTags,
     }));
 
-    return NextResponse.json({
+    return privateJson({
       posts: formattedPosts,
       pagination: {
         page,

@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { CONTENT_REVALIDATE_SECONDS, PRERENDER_CACHE_TAG } from '../../lib/contentCache';
 import { prerenderOutboundHeaders } from '../../lib/prerender-headers';
 
 export const dynamic = 'force-dynamic';
@@ -62,7 +63,7 @@ export async function GET(request: NextRequest) {
   const upstream = await fetch(upstreamUrl, {
     headers: { 'user-agent': BROWSER_UA, accept: 'text/html' },
     redirect: 'manual',
-    cache: 'no-store',
+    next: { revalidate: CONTENT_REVALIDATE_SECONDS, tags: [PRERENDER_CACHE_TAG] },
   });
 
   const headers = prerenderOutboundHeaders({

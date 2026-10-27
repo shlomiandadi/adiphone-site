@@ -1,5 +1,12 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { CMS_CACHE_TAG } from './cms/cache';
+import {
+  BLOG_CACHE_TAG,
+  LLMS_CACHE_TAG,
+  PORTFOLIO_CACHE_TAG,
+  PRERENDER_CACHE_TAG,
+  revalidateContentTags,
+} from './contentCache';
 
 function safeRevalidate(paths: string[]) {
   try {
@@ -34,6 +41,7 @@ export function revalidateBlogPaths(
     }
   }
   safeRevalidate(Array.from(paths));
+  revalidateContentTags([BLOG_CACHE_TAG, PRERENDER_CACHE_TAG]);
 }
 
 export function revalidatePortfolioPaths(slug: string, previousSlug?: string | null) {
@@ -42,6 +50,12 @@ export function revalidatePortfolioPaths(slug: string, previousSlug?: string | n
     paths.unshift(`/portfolio/${previousSlug}`);
   }
   safeRevalidate(paths);
+  revalidateContentTags([PORTFOLIO_CACHE_TAG, PRERENDER_CACHE_TAG]);
+}
+
+export function revalidateLlmsPath() {
+  safeRevalidate(['/llms.txt']);
+  revalidateContentTags([LLMS_CACHE_TAG]);
 }
 
 export function revalidateSitePaths(paths: string[], layout = false) {

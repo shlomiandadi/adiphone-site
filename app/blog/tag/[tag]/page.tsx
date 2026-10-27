@@ -2,12 +2,12 @@ import { FaBlog, FaCode, FaMobileAlt, FaSearch, FaPaintBrush, FaShoppingCart } f
 import { IconType } from 'react-icons';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PrismaClient } from '@prisma/client';
 import type { Metadata } from 'next';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { metadata as blogMetadata } from '../../metadata';
+import { getPostsByTagCached } from '../../../../lib/posts';
 
-const prisma = new PrismaClient();
+export const revalidate = 3600;
 
 type Category = 'SEO' | 'WEB_DEVELOPMENT' | 'APP_DEVELOPMENT' | 'DIGITAL_MARKETING' | 'UI_UX' | 'ECOMMERCE';
 
@@ -41,23 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TagPage({ params }: Props) {
   const decodedTag = decodeURIComponent(params.tag);
-  
-  const posts = await prisma.post.findMany({
-    where: {
-      published: true,
-      OR: [
-        { tags: { has: decodedTag } },
-        { postTags: { some: { tag: { slug: decodedTag } } } },
-        { postTags: { some: { tag: { name: decodedTag } } } },
-      ],
-    },
-    include: {
-      category: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  const posts = await getPostsByTagCached(decodedTag);
 
   return (
     <div className="container mx-auto px-4 py-8">

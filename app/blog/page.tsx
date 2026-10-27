@@ -5,7 +5,7 @@ import BlogSchema from '../components/BlogSchema';
 import BlogNewsletterForm from '../components/BlogNewsletterForm';
 import { BLOG_POSTS_PER_PAGE, getPublishedPostsPage } from '../../lib/posts';
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 function getPageNumbers(current: number, total: number): (number | 'ellipsis')[] {
   if (total <= 7) {

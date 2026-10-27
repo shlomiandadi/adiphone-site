@@ -1,3 +1,5 @@
+import { getPublishedPortfolioList } from './portfolioPublic';
+
 export type WebsiteProjectCard = {
   name: string;
   slug: string;
@@ -71,11 +73,7 @@ export async function getPublishedPortfolioProjects(
   limit = 6
 ): Promise<WebsiteProjectCard[]> {
   try {
-    const res = await fetch('https://adi-phone.co.il/api/portfolio2', {
-      next: { revalidate: 300 },
-    });
-    if (!res.ok) return [];
-    const rows = (await res.json()) as PublishedProject[];
+    const rows = (await getPublishedPortfolioList()) as PublishedProject[];
     if (!Array.isArray(rows)) return [];
     return rows
       .filter((row) => row.slug && row.name && row.published !== false && matchesPortfolioTopic(row, topic))

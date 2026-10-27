@@ -3,8 +3,23 @@ import { Metadata } from 'next';
 import ProjectPageClient from './ProjectPageClient';
 import CreativeWorkSchema from '../../components/CreativeWorkSchema';
 import { getSiteUrl, plainTextMeta } from '../../../lib/seo';
-import prisma from '../../../lib/prisma';
-import { caseStudyText, readPortfolioCaseStudy } from '../../../lib/portfolioCaseStudy';
+import { caseStudyText } from '../../../lib/portfolioCaseStudy';
+import {
+  getPortfolioCaseStudyCached,
+  getPublishedPortfolioBySlug,
+  getPublishedPortfolioList,
+} from '../../../lib/portfolioPublic';
+
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  try {
+    const projects = await getPublishedPortfolioList();
+    return projects.map((project) => ({ slug: project.slug }));
+  } catch {
+    return [];
+  }
+}
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { optimizeContentImages } from '../../../lib/responsiveImage';
 
@@ -35,12 +50,13 @@ function inferProjectType(project: Project): string {
 }
 
 async function fetchProject(slug: string): Promise<Project | null> {
-  const baseUrl = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:3000' 
-    : 'https://adi-phone.co.il';
-  const res = await fetch(`${baseUrl}/api/portfolio2?slug=${slug}`, { cache: 'no-store' });
-  if (!res.ok) return null;
-  return res.json();
+  try {
+    const project = await getPublishedPortfolioBySlug(slug);
+    if (!project || !project.published) return null;
+    return project as Project;
+  } catch {
+    return null;
+  }
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -81,7 +97,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const keywords = (project.keywords && project.keywords.length)
     ? project.keywords
     : (project.technologies || []);
-  const caseStudy = await readPortfolioCaseStudy(prisma, project.slug);
+  const caseStudy = await getPortfolioCaseStudyCached(project.slug);
   return (
     <>
       <SeoAgentPageExtras path={`/portfolio/${project.slug}`} />

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getPublishedPortfolioList } from '../../lib/portfolioPublic';
 
 interface Project {
   id: string;
@@ -12,14 +13,11 @@ interface Project {
 const cloudinaryBase = 'https://res.cloudinary.com/dooxg35gj/image/upload/v1753362055/portfolio/';
 
 async function fetchProjects(): Promise<Project[]> {
-  const baseUrl = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:3000' 
-    : 'https://adi-phone.co.il';
-  const res = await fetch(`${baseUrl}/api/portfolio2`, {
-    next: { revalidate: 300 },
-  });
-  if (!res.ok) return [];
-  return res.json();
+  try {
+    return await getPublishedPortfolioList();
+  } catch {
+    return [];
+  }
 }
 
 export default async function Portfolio() {

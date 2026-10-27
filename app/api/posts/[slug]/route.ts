@@ -8,6 +8,8 @@ import {
   requireAdminApiUser,
 } from '../../../../lib/adminAuth';
 import { normalizeTagNames, syncPostTags, tagPathValues } from '../../../../lib/postTags';
+import { PRIVATE_NO_STORE, PUBLIC_CACHE_CONTROL } from '../../../../lib/contentCache';
+import { getPostBySlug } from '../../../../lib/posts';
 
 const prisma = new PrismaClient();
 
@@ -52,13 +54,21 @@ export async function GET(
       if (unauthorized) return unauthorized;
     }
 
-    const where: any = { slug: params.slug };
     if (admin !== 'true') {
-      where.published = true;
+      const post = await getPostBySlug(params.slug);
+      if (!post || !post.published) {
+        return NextResponse.json(
+          { error: 'פוסט לא נמצא' },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json(post, {
+        headers: { 'Cache-Control': PUBLIC_CACHE_CONTROL },
+      });
     }
 
     const post = await prisma.post.findUnique({
-      where,
+      where: { slug: params.slug },
       include: {
         category: true,
         postTags: { include: { tag: true } },
@@ -72,7 +82,9 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(post);
+    return NextResponse.json(post, {
+      headers: { 'Cache-Control': PRIVATE_NO_STORE },
+    });
   } catch (error) {
     console.error('Error fetching post:', error);
     return NextResponse.json(

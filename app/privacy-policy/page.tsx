@@ -89,7 +89,7 @@ export default function PrivacyPolicy() {
         <section className="mb-6">
           <h2 className="font-bold text-lg mb-2">7. שיתוף מידע ומעבדי נתונים</h2>
           <p className="mb-2">
-            אנו משתמשים רק בספקים הבאים: Neon (מסד נתונים), Netlify (אירוח ופונקציות שרת), ו-WhatsApp Cloud API של מטא (התראות על לידים). בנוסף פועלים באתר זה ספקי מדידה (Google Analytics, Meta Pixel) בכפוף להסכמה. מסירת מידע לרשויות תתבצע רק כנדרש בדין או בצו.
+            אנו משתמשים רק בספקים הבאים: Neon (מסד נתונים), Netlify (אירוח ופונקציות שרת), ו-WhatsApp Cloud API של מטא (התראות על לידים). בנוסף פועלים באתר זה ספקי מדידה (Google Analytics, Meta Pixel) בכפוף להסכמה. מסירת מידע לרשויות תתבצע רק כנדרש בדין או בצו. לפני מסירת מידע לרשות נבדקת חוקיות הבקשה, ונמסר רק המידע המינימלי הנדרש.
           </p>
         </section>
 

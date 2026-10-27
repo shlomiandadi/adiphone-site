@@ -1,5 +1,3 @@
-import { FOOTER_SERVICE_AREA_LINKS } from '../service-areas';
-
 export type FooterLinkView = {
   id?: string;
   title: string;
@@ -57,7 +55,20 @@ export const FOOTER_SERVICE_LINKS: FooterLinkView[] = [
   { title: 'כמה עולה בניית אתר ב-2026', url: '/blog/kama-oleh-bniyat-atar-2026' },
 ];
 
-export const FOOTER_AREA_LINKS: FooterLinkView[] = FOOTER_SERVICE_AREA_LINKS;
+export const FOOTER_AREA_LINKS: FooterLinkView[] = [
+  { title: 'בניית אתרים בפרדס חנה', url: '/services/bniyat-atarim-pardes-hana' },
+  { title: 'בניית אתרים בחדרה', url: '/services/bniyat-atarim-hadera' },
+  { title: 'בניית אתרים בקיסריה', url: '/services/bniyat-atarim-caesarea' },
+  { title: 'בניית אתרים בזכרון יעקב', url: '/services/bniyat-atarim-zichron-yaakov' },
+  { title: 'בניית אתרים בחיפה', url: '/services/bniyat-atarim-haifa' },
+  { title: 'בניית אתרים בנתניה', url: '/services/bniyat-atarim-netanya' },
+  { title: 'בניית אתרים באור עקיבא', url: '/services/bniyat-atarim-or-akiva' },
+  { title: 'בניית אתרים בבנימינה', url: '/services/bniyat-atarim-binyamina' },
+  { title: 'בניית אתרים ביוקנעם', url: '/services/bniyat-atarim-yokneam' },
+  { title: 'בניית אתרים בעפולה', url: '/services/bniyat-atarim-afula' },
+  { title: 'אתרי תדמית לעסקים', url: '/services/website-tadmit' },
+  { title: 'קידום במנועי AI (AEO ו-GEO)', url: '/services/aeo-geo' },
+];
 
 export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
   { title: '0509159951', url: 'tel:0509159951', icon: 'phone' },

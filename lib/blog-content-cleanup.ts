@@ -9,7 +9,7 @@ export function cleanupBlogHtml(html: string, slug?: string): string {
 
   let out = html
     .replace(/<div class="aio-summary">[\s\S]*?<\/div>/gi, '')
-    .replace(/<p>[^<]*עיינו גם ב[\s\S]*?<\/p>/gi, '')
+    .replace(/<p>(?:(?!<\/p>)[\s\S])*עיינו גם ב[\s\S]*?<\/p>/gi, '')
     .replace(/<h2[^>]*>מושגים מרכזיים<\/h2>\s*<dl[\s\S]*?<\/dl>/gi, '')
     .replace(/<h2[^>]*>מאמרים קשורים באתר<\/h2>\s*<ul class="internal-links">[\s\S]*?<\/ul>/gi, '');
 

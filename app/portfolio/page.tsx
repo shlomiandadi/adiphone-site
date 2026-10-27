@@ -2,6 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import Hero3D from '../components/hero3d/Hero3D';
 import { responsiveAttributes } from '../../lib/responsiveImage';
+import { getPublishedPortfolioList } from '../../lib/portfolioPublic';
+
+export const revalidate = 3600;
 
 interface Project {
   id: string;
@@ -14,19 +17,11 @@ interface Project {
 const cloudinaryBase = 'https://res.cloudinary.com/dooxg35gj/image/upload/v1753362055/portfolio/';
 
 async function fetchProjects(): Promise<Project[]> {
-  const baseUrl = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:3000' 
-    : 'https://adi-phone.co.il';
-  const res = await fetch(`${baseUrl}/api/portfolio2`, { 
-    cache: 'no-store',
-    headers: {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0'
-    }
-  });
-  if (!res.ok) return [];
-  return res.json();
+  try {
+    return await getPublishedPortfolioList();
+  } catch {
+    return [];
+  }
 }
 
 export default async function PortfolioPage() {

@@ -1,3 +1,4 @@
+import { contentCache, SEO_AGENT_CACHE_TAG } from '../lib/contentCache';
 import { readDbState, writeDbState } from './db';
 import { readSeoAgentBlobState as readBlobState, writeSeoAgentBlobState as writeBlobState } from './store';
 import type { SeoAgentPageOverride, SeoAgentStoreState } from './types';
@@ -27,7 +28,7 @@ function cloneState(state: SeoAgentStoreState): SeoAgentStoreState {
  * on Blobs: static generation and ISR on Netlify often have no Blobs context,
  * and a failed read used to fall back to the hardcoded title.
  */
-export async function readSeoAgentState(): Promise<SeoAgentStoreState> {
+async function readSeoAgentStateUncached(): Promise<SeoAgentStoreState> {
   const db = await readDbState();
   if (db && hasStoredContent(db)) return cloneState(db);
 
@@ -49,6 +50,12 @@ export async function readSeoAgentState(): Promise<SeoAgentStoreState> {
 
   return cloneState(db || EMPTY);
 }
+
+export const readSeoAgentState = contentCache(
+  'seo-agent-state',
+  [SEO_AGENT_CACHE_TAG],
+  readSeoAgentStateUncached
+);
 
 export async function writeSeoAgentState(state: SeoAgentStoreState): Promise<void> {
   await writeDbState(state);

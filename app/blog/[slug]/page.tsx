@@ -22,7 +22,7 @@ import {
 } from '../../../lib/responsiveImage';
 
 /** Enable ISR: pages are cached and periodically regenerated instead of SSR per request. */
-export const revalidate = 300;
+export const revalidate = 3600;
 
 /** Pre-render published posts at build (when the DB is reachable); others render on demand. */
 export async function generateStaticParams() {

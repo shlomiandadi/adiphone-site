@@ -36,7 +36,6 @@ export default function Blog() {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        cache: 'no-store'
       });
 
       if (!response.ok) {

@@ -1,4 +1,5 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
+import { LLMS_CACHE_TAG, revalidateContentTags } from '../lib/contentCache';
 import {
   isSeoAgentApplyPayload,
   isSeoAgentArticlePayload,
@@ -23,6 +24,9 @@ export function revalidateSeoAgentPaths(paths: string[]) {
     revalidateTag('seo-agent-apply');
   } catch (error) {
     console.warn('seo-agent: revalidateTag failed', error);
+  }
+  if (paths.includes('/llms.txt')) {
+    revalidateContentTags([LLMS_CACHE_TAG]);
   }
 }
 

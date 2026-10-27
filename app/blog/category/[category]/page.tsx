@@ -3,12 +3,12 @@ import { IconType } from 'react-icons';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { PrismaClient } from '@prisma/client';
 import type { Metadata } from 'next';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { metadata as blogMetadata } from '../../metadata';
+import { getPostsByCategorySlugCached } from '../../../../lib/posts';
 
-const prisma = new PrismaClient();
+export const revalidate = 3600;
 
 type Category = 'SEO' | 'WEB_DEVELOPMENT' | 'APP_DEVELOPMENT' | 'DIGITAL_MARKETING' | 'UI_UX' | 'ECOMMERCE';
 
@@ -42,23 +42,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const category = params.category.toUpperCase() as Category;
-  const categoryRecord = await prisma.category.findUnique({
-    where: { slug: params.category }
-  });
+  const { categoryRecord, posts } = await getPostsByCategorySlugCached(params.category);
 
   if (!categoryRecord) {
     notFound();
   }
-
-  const posts = await prisma.post.findMany({
-    where: {
-      categoryId: categoryRecord.id,
-      published: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
 
   const Icon = categoryIcons[category] || FaBlog;
   const title = categoryTitles[category] || categoryRecord.name;

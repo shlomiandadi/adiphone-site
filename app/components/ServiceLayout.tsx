@@ -77,6 +77,8 @@ interface ServiceLayoutProps {
   ctaTitle?: string;
   ctaText?: string;
   ctaWhatsappText?: string;
+  /** Skip the website-packages teaser (e.g. apps page). */
+  hidePricing?: boolean;
   /** Deprecated: placeholder testimonials were removed. Kept optional for back-compat. */
   testimonials?: Array<{
     quote: string;
@@ -163,6 +165,7 @@ export default function ServiceLayout({
   ctaTitle,
   ctaText,
   ctaWhatsappText,
+  hidePricing = false,
 }: ServiceLayoutProps) {
   const motionInitial = disableMotionHide ? false : 'hidden';
   const [topicPortfolio, setTopicPortfolio] = useState(portfolioTopic ? [] : portfolio);
@@ -600,7 +603,7 @@ export default function ServiceLayout({
       </section>
 
       {/* Pricing Section */}
-      {serviceType && <ServicePricing serviceType={serviceType} />}
+      {serviceType && !hidePricing && <ServicePricing serviceType={serviceType} />}
 
       <ServiceCtaBanner
         serviceKey={servicePath || serviceType}

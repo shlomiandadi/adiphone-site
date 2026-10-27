@@ -4,10 +4,11 @@ import type { Metadata } from 'next';
 import ServiceLayout from '../../components/ServiceLayout';
 import Link from 'next/link';
 import { FaMobileAlt, FaRocket, FaCode, FaTools, FaPaintBrush, FaBolt, FaShieldAlt } from 'react-icons/fa';
+import { PHONE_DISPLAY, PHONE_TEL, whatsappUrl } from '../../../lib/pricing';
 
 export default function MobileAppService() {
   const serviceData = {
-    title: "פיתוח אפליקציות",
+    title: "בניית אפליקציות לעסקים – iOS ואנדרואיד",
     subtitle: "אפליקציות מובייל חדשניות ומותאמות אישית",
     featuresHeading: "היתרונות שלנו בפיתוח אפליקציות מובייל",
     benefitsHeading: "היתרונות של אפליקציית מובייל לעסק",
@@ -57,6 +58,25 @@ export default function MobileAppService() {
         </ul>
         <p><strong>יש לכם רעיון לאפליקציה שיכולה לשנות את השוק? או אולי אתם רוצים לשפר את הקשר עם הלקוחות שלכם?</strong></p>
         <p><strong>בואו נדבר. צוות המומחים של Top Webstak ישמח לשמוע את החזון שלכם ולהפוך אותו יחד למציאות מצליחה בכף ידם של מיליוני משתמשים.</strong></p>
+        <h2><strong>כמה עולה לבנות אפליקציה?</strong></h2>
+        <p>מחיר פיתוח אפליקציה נקבע לפי היקף הפרויקט, לא לפי מחירון קבוע. אלה הגורמים שמשפיעים על העלות:</p>
+        <ul>
+          <li><strong>פלטפורמות iOS ואנדרואיד:</strong> אפליקציה לפלטפורמה אחת או לשתי החנויות, בנייטיב או בקרוס-פלטפורם.</li>
+          <li><strong>מספר מסכים ופיצ'רים:</strong> כמה מסכים, תהליכים ופונקציות צריך בגרסה הראשונה.</li>
+          <li><strong>חיבור לשרת ולמסד נתונים:</strong> האם יש צד-שרת, חשבונות משתמשים וסנכרון נתונים.</li>
+          <li><strong>התראות:</strong> הודעות דחיפה (Push) ומנגנון עדכון למשתמשים.</li>
+          <li><strong>סליקה:</strong> רכישות בתוך האפליקציה או חיבור לתשלום.</li>
+          <li><strong>עיצוב:</strong> היקף ה-UI/UX, זהות המותג ורמת ההתאמה לממשק של כל מערכת הפעלה.</li>
+          <li><strong>פרסום בחנויות:</strong> הכנה והעלאה ל-App Store ול-Google Play, כולל עמודי החנות.</li>
+        </ul>
+        <p>אחרי שיחת ייעוץ קצרה וללא עלות נבין מה באמת צריך ונחזור עם הצעה לפי האפיון — בלי התחייבות.</p>
+        <p>
+          <Link href="/contact#contact-form">קבעו שיחת ייעוץ חינם</Link>
+          {' · '}
+          <a href={whatsappUrl('שלום, אשמח לשיחת ייעוץ על פיתוח אפליקציה.')}>וואטסאפ</a>
+          {' · '}
+          <a href={`tel:${PHONE_TEL}`}>חייגו {PHONE_DISPLAY}</a>
+        </p>
       </>
     ),
     heroTheme: "apps" as const,
@@ -127,7 +147,8 @@ export default function MobileAppService() {
         answer: "כן, אנו מציעים חבילות תמיכה ותחזוקה הכוללות: ניטור ביצועים, תיקון באגים, עדכוני אבטחה, התאמות לגרסאות OS חדשות, וסיוע בהטמעת פיצ'רים חדשים. אנו מלווים את הלקוחות שלנו לטווח ארוך ומבטיחים את הצלחת האפליקציה גם לאחר ההשקה."
       }
     ],
-    portfolio: []
+    portfolio: [],
+    hidePricing: true,
   };
 
   return <ServiceLayout {...serviceData} />;

@@ -243,6 +243,49 @@ export default function PricingPage() {
                 </div>
               </article>
             ))}
+            <article className="flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
+              <h3 className="mb-2 text-2xl font-bold text-gray-900">אפליקציות לעסקים</h3>
+              <p className="mb-1 text-3xl font-bold text-blue-700">מחיר לפי פרויקט</p>
+              <p className="mb-6 text-gray-600">בהתאם לפיצ׳רים; ייעוץ ללא עלות.</p>
+              <ul className="mb-6 flex-1 space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 text-blue-600" aria-hidden>
+                    •
+                  </span>
+                  <span>היקף לפי פלטפורמות, מסכים ופיצ׳רים</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 text-blue-600" aria-hidden>
+                    •
+                  </span>
+                  <span>הצעה אחרי שיחת אפיון, בלי מחירון קבוע</span>
+                </li>
+              </ul>
+              <div className="space-y-3">
+                <a
+                  href={whatsappUrl('שלום, אשמח לשיחת ייעוץ על פיתוח אפליקציה.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-package-name="אפליקציות לעסקים"
+                  data-cta-location="pricing"
+                  className="block rounded-full bg-green-600 px-4 py-3 text-center font-semibold text-white transition-colors hover:bg-green-700"
+                >
+                  וואטסאפ: {PHONE_DISPLAY}
+                </a>
+                <Link
+                  href="/contact"
+                  data-cta="true"
+                  data-package-name="אפליקציות לעסקים"
+                  data-cta-location="pricing"
+                  className="block rounded-full border border-blue-700 px-4 py-3 text-center font-semibold text-blue-700 transition-colors hover:bg-blue-50"
+                >
+                  השאירו פרטים
+                </Link>
+                <Link href="/services/mobile-apps" className="block text-center text-sm text-blue-700 underline">
+                  עוד על פיתוח אפליקציות
+                </Link>
+              </div>
+            </article>
           </div>
         </div>
       </section>

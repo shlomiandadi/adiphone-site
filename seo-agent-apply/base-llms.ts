@@ -46,4 +46,11 @@ export const BASE_LLMS_TXT = `# Top Webstak (מבית עדי פון תקשורת
 - [בניית אתרים בבנימינה](https://adi-phone.co.il/services/bniyat-atarim-binyamina)
 - [בניית אתרים ביוקנעם](https://adi-phone.co.il/services/bniyat-atarim-yokneam)
 - [בניית אתרים בעפולה](https://adi-phone.co.il/services/bniyat-atarim-afula)
+
+## מחירי פתיחה ואזורי שירות
+- דף נחיתה: מ-2,500 ₪
+- אתר תדמית: מ-6,500 ₪
+- חנות: מ-12,000 ₪
+- מערכת: מ-20,000 ₪
+- אזורי שירות: פרדס חנה-כרכור, חדרה, קיסריה, זכרון יעקב, חיפה, ובכל הארץ
 `;

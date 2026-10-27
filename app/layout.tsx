@@ -41,7 +41,7 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_API_
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Top Webstak - בנייה וקידום אתרים מקצועיים | עדי פון תקשורת',
+    default: 'בניית וקידום אתרים בפרדס חנה-כרכור | Top Webstak – עדי פון',
     template: '%s | Top Webstak',
   },
   description: 'בניית אתרים, קידום בגוגל (SEO), קמפיינים ממומנים וקידום במנועי AI לעסקים. סוכנות דיגיטל מפרדס חנה. ייעוץ חינם: 050-9159951.',

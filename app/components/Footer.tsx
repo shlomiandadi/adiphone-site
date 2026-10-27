@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 import { footerCopyrightLine, HARDCODED_FOOTER, type FooterLinkView, type FooterView } from '../../lib/cms/footerData';
 import BrandLogo from './BrandLogo';
+import BusinessDetails from './BusinessDetails';
 
 const SOCIAL_ICONS = {
   facebook: FaFacebook,
@@ -106,7 +107,8 @@ function FooterMarkup({ data }: { data: FooterView }) {
           )}
         </div>
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>{footerCopyrightLine(data.copyrightText)}</p>
+          <BusinessDetails variant="footer" />
+          <p className="mt-4">{footerCopyrightLine(data.copyrightText)}</p>
         </div>
       </div>
     </footer>

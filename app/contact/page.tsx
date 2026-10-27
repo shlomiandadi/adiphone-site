@@ -2,6 +2,7 @@ import Hero3D from '../components/hero3d/Hero3D';
 import LeadForm from '../components/LeadForm';
 import GoogleReviews from '../components/GoogleReviews';
 import LazyGoogleMap from '../components/LazyGoogleMap';
+import BusinessDetails from '../components/BusinessDetails';
 
 export default function Contact() {
   return (
@@ -54,6 +55,9 @@ export default function Contact() {
               <p className="text-gray-700 dark:text-gray-300 mb-4">
                 זמיר 95, פרדס חנה-כרכור
               </p>
+              <div className="mb-4">
+                <BusinessDetails variant="page" />
+              </div>
               <LazyGoogleMap />
             </div>
           </div>

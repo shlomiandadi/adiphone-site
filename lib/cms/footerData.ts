@@ -92,6 +92,14 @@ export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
   },
 ];
 
+export const BUSINESS_LEGAL_NAME = 'מלפוף עדי (עוסק פטור)';
+export const BUSINESS_TRADE_NAME = 'עדי פון תקשורת';
+export const BUSINESS_ADDRESS = 'זמיר 95, פרדס חנה-כרכור';
+export const BUSINESS_PHONE_DISPLAY = '050-9159951';
+export const BUSINESS_PHONE_HREF =
+  FOOTER_CONTACT_LINKS.find((link) => link.icon === 'phone')?.url || 'tel:0509159951';
+export const BUSINESS_TRADEMARK_NOTE = 'Top Webstak הוא שם מסחרי של עדי פון תקשורת.';
+
 export const FOOTER_COLUMNS: FooterColumnView[] = [
   { title: 'קישורים מהירים', kind: 'links', links: FOOTER_QUICK_LINKS },
   { title: 'השירותים שלנו', kind: 'services', links: FOOTER_SERVICE_LINKS },

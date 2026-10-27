@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Services from './components/Services';
+import ServiceAreas from './components/ServiceAreas';
 import Portfolio from './components/Portfolio';
 import Team from './components/Team';
 import Contact from './components/Contact';
 import ProcessSteps from './components/ProcessSteps';
 import Technologies from './components/Technologies';
 import HomeSchema from './components/HomeSchema';
+import FeaturedHomePosts from './components/FeaturedHomePosts';
 import Testimonials from './components/Testimonials';
 import Hero3D from './components/hero3d/Hero3D';
 import HeroLogoMark from './components/logo3d/HeroLogoMark';
@@ -49,6 +51,8 @@ export default function Home() {
           <Services />
         </section>
 
+        <ServiceAreas includeExtraServices />
+
         <section data-reveal>
           <Portfolio />
         </section>
@@ -66,6 +70,7 @@ export default function Home() {
         </section>
 
         <section data-reveal>
+          <FeaturedHomePosts />
           <Blog />
         </section>
 

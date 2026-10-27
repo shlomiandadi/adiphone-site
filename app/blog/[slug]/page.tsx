@@ -6,7 +6,9 @@ import { Metadata } from 'next';
 import BlogPostSchema from '../../components/BlogPostSchema';
 import BlogNavigation from '../../components/BlogNavigation';
 import RelatedServiceCTA from '../../components/RelatedServiceCTA';
+import RelatedArticleLinks from '../../components/RelatedArticleLinks';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
+import { cleanupBlogHtml } from '../../../lib/blog-content-cleanup';
 import { getPostBySlug, getPublishedNavPosts, getPublishedPosts } from '../../../lib/posts';
 import { adjacentBlogPosts } from '../../../lib/blogNav';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
@@ -326,7 +328,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             >
               {post.category}
             </span>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              {BLOG_META_OVERRIDES[post.slug]?.metaTitle || post.title}
+            </h1>
             <div className="flex items-center justify-center space-x-4">
               <span>{formatDate(post.createdAt)}</span>
               <span>•</span>
@@ -358,8 +362,13 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             )}
             <div 
               className="prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
-              dangerouslySetInnerHTML={{ __html: optimizeContentImages(demoteContentHeadings(post.content)) }}
+              dangerouslySetInnerHTML={{
+                __html: optimizeContentImages(
+                  demoteContentHeadings(cleanupBlogHtml(post.content, post.slug))
+                ),
+              }}
             />
+            <RelatedArticleLinks slug={post.slug} category={post.category} />
             <RelatedServiceCTA slug={post.slug} />
           </div>
         </div>

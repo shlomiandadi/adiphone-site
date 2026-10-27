@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { FEATURED_HOME_PORTFOLIO } from '../../lib/related-content';
 
 interface Project {
   id: string;
@@ -58,6 +59,16 @@ export default async function Portfolio() {
                 </Link>
               ))}
             </div>
+            <p className="mt-8 text-center text-gray-700">
+              {FEATURED_HOME_PORTFOLIO.map((item, index) => (
+                <span key={item.href}>
+                  {index > 0 ? ' · ' : null}
+                  <Link href={item.href} className="font-semibold text-blue-700 underline">
+                    {item.label}
+                  </Link>
+                </span>
+              ))}
+            </p>
             <div className="text-center mt-10">
               <Link href="/portfolio" className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors">
                 לכל הפרויקטים

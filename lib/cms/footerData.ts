@@ -66,6 +66,8 @@ export const FOOTER_AREA_LINKS: FooterLinkView[] = [
   { title: 'בניית אתרים בבנימינה', url: '/services/bniyat-atarim-binyamina' },
   { title: 'בניית אתרים ביוקנעם', url: '/services/bniyat-atarim-yokneam' },
   { title: 'בניית אתרים בעפולה', url: '/services/bniyat-atarim-afula' },
+  { title: 'אתרי תדמית לעסקים', url: '/services/website-tadmit' },
+  { title: 'קידום במנועי AI (AEO ו-GEO)', url: '/services/aeo-geo' },
 ];
 
 export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
@@ -121,6 +123,30 @@ export function columnKind(title: string, links: FooterLinkView[]): FooterColumn
   }
   if (title === 'השירותים שלנו') return 'services';
   return 'links';
+}
+
+export function withServiceAreaColumn(data: FooterView): FooterView {
+  const required = FOOTER_AREA_LINKS;
+  const index = data.columns.findIndex((column) => column.title === 'אזורי שירות');
+  if (index >= 0) {
+    const column = data.columns[index];
+    const links = [...column.links];
+    for (const item of required) {
+      if (!links.some((link) => link.url === item.url)) {
+        links.push(item);
+      }
+    }
+    const columns = [...data.columns];
+    columns[index] = { ...column, links };
+    return { ...data, columns };
+  }
+
+  const contactIndex = data.columns.findIndex((column) => column.kind === 'contact');
+  const column: FooterColumnView = { title: 'אזורי שירות', kind: 'links', links: required };
+  const columns = [...data.columns];
+  if (contactIndex >= 0) columns.splice(contactIndex, 0, column);
+  else columns.push(column);
+  return { ...data, columns };
 }
 
 export const HARDCODED_FOOTER: FooterView = {

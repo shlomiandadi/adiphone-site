@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { FaFacebook, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
-import { footerCopyrightLine, HARDCODED_FOOTER, type FooterLinkView, type FooterView } from '../../lib/cms/footerData';
+import { footerCopyrightLine, HARDCODED_FOOTER, withServiceAreaColumn, type FooterLinkView, type FooterView } from '../../lib/cms/footerData';
 import BrandLogo from './BrandLogo';
 import BusinessDetails from './BusinessDetails';
 
@@ -162,5 +162,9 @@ function withTerms(data: FooterView): FooterView {
 }
 
 export default function Footer({ cmsFooter }: { cmsFooter?: FooterView | null }) {
-  return <FooterMarkup data={withTerms(withDataDeletion(withWebsiteTadmit(cmsFooter || HARDCODED_FOOTER)))} />;
+  return (
+    <FooterMarkup
+      data={withServiceAreaColumn(withTerms(withDataDeletion(withWebsiteTadmit(cmsFooter || HARDCODED_FOOTER))))}
+    />
+  );
 }

@@ -9,27 +9,27 @@ const PHONE_TEL = '+972509159951';
 
 const INCLUDED = [
   {
-    title: 'קמפיינים ב-Google Ads',
+    title: 'קמפיינים בגוגל (Google Ads)',
     description: 'מודעות חיפוש שמופיעות ללקוחות בדיוק כשהם מחפשים את השירות או המוצר שלכם.',
   },
   {
-    title: 'קמפיינים במדיה חברתית',
+    title: 'קמפיינים בפייסבוק ובאינסטגרם',
     description: 'מודעות ממוקדות בפייסבוק ובאינסטגרם לפי קהל, תחומי עניין ומיקום.',
   },
   {
-    title: 'דפי נחיתה ומסרים',
+    title: 'דפי נחיתה ומסרים שמביאים פניות',
     description: 'התאמת המסר ועמוד היעד כדי שהתקציב יתורגם לפניות ולא רק לקליקים.',
   },
   {
-    title: 'רימרקטינג',
+    title: 'רימרקטינג לגולשים שכבר ביקרו',
     description: 'חזרה לגולשים שכבר ביקרו באתר אך טרם השאירו פנייה.',
   },
   {
-    title: 'מעקב המרות',
+    title: 'מעקב המרות: שיחות, טפסים ורכישות',
     description: 'הגדרת מעקב אחר שיחות, טפסים ורכישות, כדי לדעת מאיפה מגיעות התוצאות.',
   },
   {
-    title: 'אופטימיזציה שוטפת',
+    title: 'אופטימיזציה שוטפת לעלות לפנייה',
     description: 'ניהול תקציב, בדיקות וכיוונון מתמשך לשיפור העלות לכל פנייה.',
   },
 ];
@@ -122,7 +122,7 @@ export default async function PpcServicePage() {
       <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <div className="rounded-xl border-r-4 border-orange-500 bg-orange-50 p-6">
-            <h2 className="mb-3 text-2xl font-bold text-gray-900">מה זה קידום ממומן?</h2>
+            <h2 className="mb-3 text-2xl font-bold text-gray-900">מה זה קידום ממומן (PPC) ואיך הוא עובד?</h2>
             <p className="text-lg leading-relaxed text-gray-800">
               קידום ממומן (PPC) הוא פרסום בתשלום בגוגל וברשתות החברתיות, שבו משלמים בעיקר כאשר
               גולש מקליק על המודעה. זו הדרך המהירה והמדידה ביותר להביא לאתר תנועה ממוקדת של
@@ -146,7 +146,7 @@ export default async function PpcServicePage() {
       {/* What's included */}
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
-          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">מה כולל השירות</h2>
+          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">מה כולל ניהול קמפיין ממומן אצלנו</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {INCLUDED.map((item) => (
               <div key={item.title} className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -174,7 +174,7 @@ export default async function PpcServicePage() {
       {/* Process */}
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
-          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה על קמפיין ה-PPC שלך</h2>
+          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה: מאפיון ועד אופטימיזציה</h2>
           <div className="grid gap-6 md:grid-cols-4">
             {PROCESS.map((step, index) => (
               <div key={step.title} className="rounded-xl bg-white p-6 text-center shadow-sm">
@@ -192,7 +192,7 @@ export default async function PpcServicePage() {
       {/* How results are measured */}
       <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
-          <h2 className="mb-4 text-3xl font-bold text-gray-900">איך מודדים תוצאות?</h2>
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">איך מודדים תוצאות: לידים, CPL ו-ROAS</h2>
           <p className="text-lg leading-relaxed text-gray-700">
             אנחנו מגדירים מעקב המרות אמיתי (שיחות, טפסים ורכישות) ומודדים את העלות לכל פנייה
             (CPL) ואת תשואת הפרסום (ROAS) בחנויות. המטרה היא לא רק קליקים, אלא פניות ומכירות

@@ -177,6 +177,38 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
   @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded;
 }
 
+/* Legal pages: one breadcrumb trail (in the page header) and readable crumbs on navy */
+body:has(.legal-page) #site-breadcrumbs {
+  display: none;
+}
+
+.legal-page-header nav a {
+  color: #e2e8f0;
+}
+
+.legal-page-header nav a:hover,
+.legal-page-header nav a:focus-visible {
+  color: #22defb;
+}
+
+.legal-page-header nav span {
+  color: #22defb;
+}
+
+.legal-page-header nav .text-gray-400,
+.legal-page-header nav .dark\:text-gray-500 {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.legal-toc details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.legal-toc details > summary::after {
+  content: "▾";
+  float: left;
+}
+
 /* Search bar styles */
 .search-container {
   @apply relative;

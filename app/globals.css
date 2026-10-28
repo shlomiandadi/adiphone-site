@@ -1144,6 +1144,37 @@ html.wow-fallback [data-clip-reveal] {
   display: none;
 }
 
-.blog-newsletter-flush .sticky {
-  position: static;
+.blog-post-article .faq-section {
+  margin-top: 2rem;
+}
+
+.blog-post-article .faq-item {
+  background: #fff;
+  border: 1px solid #f3f4f6;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.blog-post-article .faq-item summary {
+  cursor: pointer;
+  padding: 1.1rem 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.blog-post-article .faq-answer {
+  padding: 0 1.25rem 1.25rem;
+  color: #4b5563;
+}
+
+.blog-post-article a.article-cta {
+  display: block;
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  background: #02336E;
+  color: #fff !important;
+  text-decoration: none !important;
 }

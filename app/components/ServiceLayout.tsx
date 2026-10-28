@@ -79,6 +79,11 @@ interface ServiceLayoutProps {
   ctaWhatsappText?: string;
   /** Skip the website-packages teaser (e.g. apps page). */
   hidePricing?: boolean;
+  /** Optional H2 under the hero title (existing Hero3D extraHeading slot). */
+  extraHeading?: string;
+  extraHeadingAs?: 'h2' | 'p';
+  /** Override the shared pricing-block heading on this service page only. */
+  pricingHeading?: string;
   /** Deprecated: placeholder testimonials were removed. Kept optional for back-compat. */
   testimonials?: Array<{
     quote: string;
@@ -166,6 +171,9 @@ export default function ServiceLayout({
   ctaText,
   ctaWhatsappText,
   hidePricing = false,
+  extraHeading,
+  extraHeadingAs,
+  pricingHeading,
 }: ServiceLayoutProps) {
   const motionInitial = disableMotionHide ? false : 'hidden';
   const [topicPortfolio, setTopicPortfolio] = useState(portfolioTopic ? [] : portfolio);
@@ -241,6 +249,8 @@ export default function ServiceLayout({
           theme={heroTheme}
           title={title}
           subtitle={subtitle}
+          extraHeading={extraHeading}
+          extraHeadingAs={extraHeadingAs}
           align={heroAlign}
           ctas={heroCtas || [
             { href: '/contact', label: 'צרו קשר' },
@@ -603,7 +613,9 @@ export default function ServiceLayout({
       </section>
 
       {/* Pricing Section */}
-      {serviceType && !hidePricing && <ServicePricing serviceType={serviceType} />}
+      {serviceType && !hidePricing && (
+        <ServicePricing serviceType={serviceType} heading={pricingHeading} />
+      )}
 
       <ServiceCtaBanner
         serviceKey={servicePath || serviceType}

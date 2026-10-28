@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CITY_SERVICE_AREAS, EXTRA_SERVICE_AREA_LINKS } from '../../lib/service-areas';
+import { MapPinIcon } from './icons';
 
 type Props = {
   heading?: string;
@@ -27,12 +28,17 @@ export default function ServiceAreas({
             <li key={city.href}>
               <Link
                 href={city.href}
-                className="block rounded-xl border border-gray-100 bg-gray-50 p-4 text-right shadow-sm transition-colors hover:border-blue-200 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-800"
+                className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50 p-4 text-right shadow-sm transition-colors hover:border-[#22DEFB] hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-800"
               >
+                <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#02336E] text-[#22DEFB]">
+                  <MapPinIcon className="h-4 w-4" />
+                </span>
+                <span className="min-w-0 flex-1">
                 <span className="font-semibold text-blue-700 underline dark:text-blue-400">{city.name}</span>
                 {showBlurbs ? (
                   <span className="mt-2 block text-sm text-gray-600 dark:text-gray-300">{city.blurb}</span>
                 ) : null}
+                </span>
               </Link>
             </li>
           ))}

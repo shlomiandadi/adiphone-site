@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, type ComponentType } from 'react';
+import Link from 'next/link';
 import { lightboxImageUrl, responsiveAttributes } from '../../../lib/responsiveImage';
 
 interface Project {
@@ -20,12 +21,27 @@ type CaseStudy = {
   result: string;
 };
 
+type RelatedService = {
+  serviceHref: string;
+  serviceLabel: string;
+};
+
+function TechChip({ label }: { label: string }) {
+  return (
+    <span className="inline-flex items-center rounded-full border border-[#22DEFB]/40 bg-white px-3 py-1 text-sm font-medium text-[#02336E] shadow-sm">
+      {label}
+    </span>
+  );
+}
+
 export default function ProjectPageClient({
   project,
   caseStudy = null,
+  relatedService = null,
 }: {
   project: Project;
   caseStudy?: CaseStudy | null;
+  relatedService?: RelatedService | null;
 }) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
@@ -34,6 +50,13 @@ export default function ProjectPageClient({
 
   const images = project.images || [];
   const lightboxSrc = (src: string) => (originalFallback[src] ? src : lightboxImageUrl(src, 1600));
+  const caseStudySteps = caseStudy
+    ? [
+        caseStudy.challenge ? { title: 'האתגר', description: caseStudy.challenge } : null,
+        caseStudy.solution ? { title: 'הפתרון', description: caseStudy.solution } : null,
+        caseStudy.result ? { title: 'התוצאה', description: caseStudy.result } : null,
+      ].filter((step): step is { title: string; description: string } => Boolean(step))
+    : [];
 
   const handleImageLoadError = (imageSrc: string) => {
     const original = images.find((img) => img === imageSrc || lightboxImageUrl(img, 1600) === imageSrc);
@@ -57,44 +80,36 @@ export default function ProjectPageClient({
   }, [open]);
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-10">
-      {/* Hero Section */}
-      <div className="relative rounded-2xl overflow-hidden shadow-lg mb-8">
+    <div className="mx-auto max-w-5xl px-4 py-12 md:py-16">
+      <div className="relative mb-10 overflow-hidden rounded-2xl shadow-lg">
         {project.image && (
           <img
             alt={project.name}
             width={864}
             height={320}
-            className="w-full h-80 object-cover"
+            className="h-80 w-full object-cover"
             {...responsiveAttributes(project.image, {
               sizes: '(max-width: 896px) calc(100vw - 2rem), 864px',
               widths: [480, 640, 720, 828, 1200, 1600],
               priority: true,
-              // h-80 is 320px tall. 4:5 is the object-cover window at a 288px
-              // viewport (256px content). Taller screenshots are cut to that
-              // center band; every wider box then shows the same slice as the
-              // full image. Wider originals skip the crop and stay c_limit.
               coverIfTallerThan: '4:5',
             })}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-8">
-          <h1 className="text-4xl font-bold text-white drop-shadow mb-2">{project.name}</h1>
-          {project.technologies && project.technologies.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-2">
-              {project.technologies.map((tech, i) => (
-                <span key={i} className="bg-blue-600/80 text-white px-3 py-1 rounded-full text-sm font-medium shadow">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          )}
+        <div
+          className="absolute inset-0 flex flex-col justify-end p-6 md:p-8"
+          style={{
+            background:
+              'linear-gradient(to top, rgba(2, 51, 110, 0.82) 0%, rgba(2, 51, 110, 0.28) 45%, transparent 100%)',
+          }}
+        >
+          <h1 className="mb-3 text-3xl font-bold text-white drop-shadow md:text-4xl">{project.name}</h1>
           {project.url && (
             <a
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-white/90 text-blue-700 px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 hover:text-white transition w-fit min-w-fit"
+              className="inline-block w-fit min-w-fit rounded-lg bg-white/90 px-6 py-2 font-semibold text-blue-700 transition hover:bg-[#22DEFB] hover:text-[#02336E]"
             >
               מעבר לאתר הפרויקט
             </a>
@@ -102,18 +117,37 @@ export default function ProjectPageClient({
         </div>
       </div>
 
-      {/* Gallery */}
+      {(relatedService || (project.technologies && project.technologies.length > 0)) && (
+        <section className="mb-10 overflow-hidden rounded-lg bg-white shadow-lg">
+          <div className="p-6 md:p-8">
+            <div className="flex flex-wrap gap-2">
+              {relatedService ? (
+                <Link
+                  href={relatedService.serviceHref}
+                  className="inline-flex items-center rounded-full bg-[#02336E] px-3 py-1 text-sm font-medium text-white shadow-sm"
+                >
+                  {relatedService.serviceLabel}
+                </Link>
+              ) : null}
+              {(project.technologies || []).map((tech, i) => (
+                <TechChip key={i} label={tech} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {images.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">גלריית תמונות</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="mb-10">
+          <h2 className="mb-4 text-xl font-semibold">גלריית תמונות</h2>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             {images.map((img, i) => (
               <img
                 key={i}
                 alt={project.name + ' image ' + (i + 1)}
                 width={480}
                 height={270}
-                className="rounded-lg w-full object-cover aspect-video shadow hover:scale-105 transition-transform cursor-pointer"
+                className="aspect-video w-full cursor-pointer rounded-lg object-cover shadow transition-transform hover:scale-105"
                 {...responsiveAttributes(img, {
                   sizes: '(max-width: 768px) 50vw, 280px',
                   widths: [320, 480, 640, 960],
@@ -141,46 +175,49 @@ export default function ProjectPageClient({
         </div>
       )}
 
-      {caseStudy && (caseStudy.challenge || caseStudy.solution || caseStudy.result) && (
-        <section className="mb-8 rounded-xl bg-white/80 p-6 shadow" aria-label="סיפור מקרה">
-          <h2 className="text-xl font-semibold mb-4">סיפור המקרה</h2>
-          {caseStudy.challenge ? (
-            <div className="mb-4">
-              <h3 className="font-semibold text-gray-900 mb-1">האתגר</h3>
-              <p className="text-gray-700 whitespace-pre-line">{caseStudy.challenge}</p>
+      {caseStudySteps.length > 0 && (
+        <section className="relative mb-10 overflow-hidden rounded-lg bg-gray-50 py-10 shadow-lg" aria-label="סיפור מקרה">
+          <div className="px-6 md:px-8">
+            <h2 className="mb-8 text-center text-xl font-semibold">סיפור המקרה</h2>
+            <div className="relative">
+              <div className="absolute left-0 right-0 top-6 hidden h-1 -translate-y-1/2 bg-[#22DEFB]/40 md:block" />
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                {caseStudySteps.map((step, index) => (
+                  <div key={step.title} className="relative">
+                    <div className="relative z-10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#02336E] text-xl font-bold text-white tabular-nums">
+                      <span>{index + 1}</span>
+                    </div>
+                    <blockquote className="rounded-2xl border border-gray-100 bg-white p-6 text-right shadow-sm">
+                      <h3 className="mb-2 text-xl font-bold">{step.title}</h3>
+                      <p className="leading-relaxed text-gray-700 whitespace-pre-line">{step.description}</p>
+                    </blockquote>
+                  </div>
+                ))}
+              </div>
             </div>
-          ) : null}
-          {caseStudy.solution ? (
-            <div className="mb-4">
-              <h3 className="font-semibold text-gray-900 mb-1">הפתרון</h3>
-              <p className="text-gray-700 whitespace-pre-line">{caseStudy.solution}</p>
-            </div>
-          ) : null}
-          {caseStudy.result ? (
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-1">התוצאה</h3>
-              <p className="text-gray-700 whitespace-pre-line">{caseStudy.result}</p>
-            </div>
-          ) : null}
+          </div>
         </section>
       )}
 
-      {/* Description */}
       {project.descriptionRich && (
-        <div className="prose prose-lg mb-8 bg-white/80 rounded-xl p-6 shadow">
-          <div dangerouslySetInnerHTML={{ __html: project.descriptionRich }} />
+        <div className="mb-10 overflow-hidden rounded-lg bg-white shadow-lg">
+          <blockquote className="border-r-4 border-[#22DEFB] p-6 text-right md:p-8">
+            <div className="prose prose-lg max-w-none leading-relaxed text-gray-700">
+              <div dangerouslySetInnerHTML={{ __html: project.descriptionRich }} />
+            </div>
+          </blockquote>
         </div>
       )}
 
-      {/* Back Button */}
-      <div className="text-center mt-8">
-        <a
+      <div className="mt-4 text-right">
+        <Link
           href="/portfolio"
-          className="inline-block bg-gray-100 hover:bg-blue-600 hover:text-white text-blue-700 px-8 py-3 rounded-lg text-lg font-medium transition-colors"
+          className="inline-flex min-h-12 items-center gap-2 font-semibold text-[#02336E] underline-offset-4 transition-colors hover:text-blue-700 hover:underline"
         >
+          <span aria-hidden>→</span>
           חזרה לכל הפרויקטים
-        </a>
+        </Link>
       </div>
-    </main>
+    </div>
   );
-} 
+}

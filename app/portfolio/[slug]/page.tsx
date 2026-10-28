@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import ProjectPageClient from './ProjectPageClient';
+import ReactDOM from 'react-dom';
+import ProjectPageClient, { PORTFOLIO_HERO_IMAGE } from './ProjectPageClient';
 import CreativeWorkSchema from '../../components/CreativeWorkSchema';
 import { getSiteUrl, plainTextMeta } from '../../../lib/seo';
 import { caseStudyText } from '../../../lib/portfolioCaseStudy';
@@ -14,7 +15,46 @@ import Link from 'next/link';
 import PortfolioCard from '../../components/PortfolioCard';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
-import { optimizeContentImages } from '../../../lib/responsiveImage';
+import {
+  optimizeContentImages,
+  responsiveAttributes,
+  type ResponsiveImageAttrs,
+} from '../../../lib/responsiveImage';
+
+const CLOUDINARY_ORIGIN = 'https://res.cloudinary.com';
+
+function preloadHero(image: ResponsiveImageAttrs) {
+  const preload = (ReactDOM as unknown as {
+    preload?: (
+      href: string,
+      options: {
+        as: 'image';
+        fetchPriority?: 'high';
+        imageSrcSet?: string;
+        imageSizes?: string;
+      }
+    ) => void;
+  }).preload;
+  if (typeof preload !== 'function') return;
+  preload(image.src, {
+    as: 'image',
+    fetchPriority: 'high',
+    imageSrcSet: image.srcSet,
+    imageSizes: image.sizes,
+  });
+}
+
+function preconnectCloudinary() {
+  const preconnect = (ReactDOM as unknown as {
+    preconnect?: (
+      href: string,
+      options?: { crossOrigin?: '' | 'anonymous' | 'use-credentials' }
+    ) => void;
+  }).preconnect;
+  if (typeof preconnect !== 'function') return;
+  preconnect(CLOUDINARY_ORIGIN);
+  preconnect(CLOUDINARY_ORIGIN, { crossOrigin: 'anonymous' });
+}
 
 export const revalidate = 3600;
 
@@ -110,8 +150,29 @@ export default async function Page({ params }: { params: { slug: string } }) {
   } catch {
     relatedProjects = [];
   }
+  const heroImage = project.image
+    ? responsiveAttributes(project.image, PORTFOLIO_HERO_IMAGE)
+    : null;
+  if (heroImage) {
+    preconnectCloudinary();
+    preloadHero(heroImage);
+  }
   return (
     <>
+      {heroImage ? (
+        <>
+          <link rel="preconnect" href={CLOUDINARY_ORIGIN} />
+          <link rel="preconnect" href={CLOUDINARY_ORIGIN} crossOrigin="anonymous" />
+          <link
+            rel="preload"
+            as="image"
+            href={heroImage.srcSet ? undefined : heroImage.src}
+            imageSrcSet={heroImage.srcSet}
+            imageSizes={heroImage.sizes}
+            fetchPriority="high"
+          />
+        </>
+      ) : null}
       <SeoAgentPageExtras path={`/portfolio/${project.slug}`} />
       <CreativeWorkSchema
         name={project.name}
@@ -131,9 +192,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
         }}
         caseStudy={caseStudy}
         relatedService={relatedService}
+        heroImage={heroImage}
       />
       {relatedProjects.length > 0 ? (
-        <section className="bg-gray-50 py-10" aria-label="הפרויקטים שלנו">
+        <section
+          className="bg-gray-50 py-10 [content-visibility:auto] [contain-intrinsic-size:auto_1400px]"
+          aria-label="הפרויקטים שלנו"
+        >
           <div className="container mx-auto max-w-4xl px-4">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
               {relatedProjects.map((item) => (

@@ -7,8 +7,12 @@ import BlogPostSchema from '../../components/BlogPostSchema';
 import BlogNavigation from '../../components/BlogNavigation';
 import RelatedServiceCTA from '../../components/RelatedServiceCTA';
 import RelatedArticleLinks from '../../components/RelatedArticleLinks';
+import ServiceCtaBanner from '../../components/ServiceCtaBanner';
+import BlogPostToc from '../../components/BlogPostToc';
+import BlogKeyTakeaways from '../../components/BlogKeyTakeaways';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
 import { cleanupBlogHtml } from '../../../lib/blog-content-cleanup';
+import { enhanceBlogHtml } from '../../../lib/blog-article-enhance';
 import { getPostBySlug, getPublishedNavPosts, getPublishedPosts } from '../../../lib/posts';
 import { adjacentBlogPosts } from '../../../lib/blogNav';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
@@ -261,6 +265,10 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     preloadHero(heroImage);
   }
   const { previousPost, nextPost } = adjacentBlogPosts(await getPublishedNavPosts(), post.slug);
+  const prepared = enhanceBlogHtml(
+    optimizeContentImages(demoteContentHeadings(cleanupBlogHtml(post.content, post.slug)))
+  );
+  const override = BLOG_META_OVERRIDES[post.slug];
 
   return (
     <main className="pt-24">
@@ -343,33 +351,42 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       {/* Content Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            {/* Main Image Display */}
-            {post.mainImage && (
-              <div className="mb-8">
-                <Image
-                  src={post.mainImage}
-                  alt={post.title}
-                  width={800}
-                  height={400}
-                  sizes="(max-width: 768px) 100vw, 768px"
-                  className="w-full h-auto rounded-lg shadow-lg"
-                  loading="lazy"
-                  fetchPriority="low"
-                  unoptimized={!isOptimizableImageUrl(post.mainImage)}
-                />
+          <div className="mx-auto max-w-6xl">
+            <div className="flex flex-col gap-10 lg:flex-row-reverse">
+              <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
+                <BlogPostToc headings={prepared.takeawayHeadings} variant="desktop" />
               </div>
-            )}
-            <div 
-              className="prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
-              dangerouslySetInnerHTML={{
-                __html: optimizeContentImages(
-                  demoteContentHeadings(cleanupBlogHtml(post.content, post.slug))
-                ),
-              }}
-            />
-            <RelatedArticleLinks slug={post.slug} category={post.category} />
-            <RelatedServiceCTA slug={post.slug} />
+              <div className="min-w-0 flex-1">
+                <div className="mx-auto max-w-[42rem]">
+                  <BlogPostToc headings={prepared.takeawayHeadings} variant="mobile" />
+                  <BlogKeyTakeaways headings={prepared.takeawayHeadings} />
+                  {post.mainImage && (
+                    <div className="mb-8">
+                      <Image
+                        src={post.mainImage}
+                        alt={post.title}
+                        width={800}
+                        height={400}
+                        sizes="(max-width: 768px) 100vw, 768px"
+                        className="h-auto w-full rounded-lg shadow-lg"
+                        loading="lazy"
+                        fetchPriority="low"
+                        unoptimized={!isOptimizableImageUrl(post.mainImage)}
+                      />
+                    </div>
+                  )}
+                  <div
+                    className="blog-post-article prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
+                    dangerouslySetInnerHTML={{ __html: prepared.html }}
+                  />
+                  <div className="mt-10">
+                    <ServiceCtaBanner serviceKey={override?.relatedService} />
+                  </div>
+                  <RelatedArticleLinks slug={post.slug} category={post.category} />
+                  <RelatedServiceCTA slug={post.slug} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

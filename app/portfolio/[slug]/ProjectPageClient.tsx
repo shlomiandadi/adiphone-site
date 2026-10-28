@@ -1,6 +1,6 @@
-"use client";
-import { useEffect, useState, type ComponentType } from 'react';
-import { lightboxImageUrl, responsiveAttributes } from '../../../lib/responsiveImage';
+import Link from 'next/link';
+import { responsiveAttributes } from '../../../lib/responsiveImage';
+import ProjectGallery from './ProjectGallery';
 
 interface Project {
   id: string;
@@ -20,70 +20,60 @@ type CaseStudy = {
   result: string;
 };
 
+type RelatedService = {
+  serviceHref: string;
+  serviceLabel: string;
+};
+
 export default function ProjectPageClient({
   project,
   caseStudy = null,
+  relatedService = null,
 }: {
   project: Project;
   caseStudy?: CaseStudy | null;
+  relatedService?: RelatedService | null;
 }) {
-  const [open, setOpen] = useState(false);
-  const [index, setIndex] = useState(0);
-  const [Lightbox, setLightbox] = useState<ComponentType<Record<string, unknown>> | null>(null);
-  const [originalFallback, setOriginalFallback] = useState<Record<string, true>>({});
-
   const images = project.images || [];
-  const lightboxSrc = (src: string) => (originalFallback[src] ? src : lightboxImageUrl(src, 1600));
-
-  const handleImageLoadError = (imageSrc: string) => {
-    const original = images.find((img) => img === imageSrc || lightboxImageUrl(img, 1600) === imageSrc);
-    if (!original || original === imageSrc || originalFallback[original]) return;
-    setOriginalFallback((prev) => (prev[original] ? prev : { ...prev, [original]: true }));
-  };
-
-  useEffect(() => {
-    if (!open) return;
-    let cancelled = false;
-    void import('react-image-lightbox/style.css');
-    void import('react-image-lightbox').then((mod) => {
-      if (!cancelled) {
-        const Loaded = mod.default as unknown as ComponentType<Record<string, unknown>>;
-        setLightbox(() => Loaded);
-      }
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [open]);
+  const caseStudySteps = caseStudy
+    ? [
+        caseStudy.challenge ? { title: 'האתגר', description: caseStudy.challenge } : null,
+        caseStudy.solution ? { title: 'הפתרון', description: caseStudy.solution } : null,
+        caseStudy.result ? { title: 'התוצאה', description: caseStudy.result } : null,
+      ].filter((step): step is { title: string; description: string } => Boolean(step))
+    : [];
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-10">
-      {/* Hero Section */}
-      <div className="relative rounded-2xl overflow-hidden shadow-lg mb-8">
+    <div className="mx-auto max-w-4xl px-4 py-10">
+      <div className="relative mb-8 overflow-hidden rounded-2xl shadow-lg">
         {project.image && (
           <img
             alt={project.name}
             width={864}
             height={320}
-            className="w-full h-80 object-cover"
+            className="h-80 w-full object-cover"
             {...responsiveAttributes(project.image, {
               sizes: '(max-width: 896px) calc(100vw - 2rem), 864px',
               widths: [480, 640, 720, 828, 1200, 1600],
               priority: true,
-              // h-80 is 320px tall. 4:5 is the object-cover window at a 288px
-              // viewport (256px content). Taller screenshots are cut to that
-              // center band; every wider box then shows the same slice as the
-              // full image. Wider originals skip the crop and stay c_limit.
               coverIfTallerThan: '4:5',
             })}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-8">
-          <h1 className="text-4xl font-bold text-white drop-shadow mb-2">{project.name}</h1>
-          {project.technologies && project.technologies.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-2">
-              {project.technologies.map((tech, i) => (
-                <span key={i} className="bg-blue-600/80 text-white px-3 py-1 rounded-full text-sm font-medium shadow">
+        <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/20 to-transparent p-8">
+          <h1 className="mb-2 text-4xl font-bold text-white drop-shadow">{project.name}</h1>
+          {(relatedService || (project.technologies && project.technologies.length > 0)) && (
+            <div className="mb-2 flex flex-wrap gap-2">
+              {relatedService ? (
+                <Link
+                  href={relatedService.serviceHref}
+                  className="rounded-full bg-blue-600/80 px-3 py-1 text-sm font-medium text-white shadow"
+                >
+                  {relatedService.serviceLabel}
+                </Link>
+              ) : null}
+              {(project.technologies || []).map((tech, i) => (
+                <span key={i} className="rounded-full bg-blue-600/80 px-3 py-1 text-sm font-medium text-white shadow">
                   {tech}
                 </span>
               ))}
@@ -94,7 +84,7 @@ export default function ProjectPageClient({
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-white/90 text-blue-700 px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 hover:text-white transition w-fit min-w-fit"
+              className="inline-block w-fit min-w-fit rounded-lg bg-white/90 px-6 py-2 font-semibold text-blue-700 transition hover:bg-blue-700 hover:text-white"
             >
               מעבר לאתר הפרויקט
             </a>
@@ -102,85 +92,40 @@ export default function ProjectPageClient({
         </div>
       </div>
 
-      {/* Gallery */}
-      {images.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">גלריית תמונות</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {images.map((img, i) => (
-              <img
-                key={i}
-                alt={project.name + ' image ' + (i + 1)}
-                width={480}
-                height={270}
-                className="rounded-lg w-full object-cover aspect-video shadow hover:scale-105 transition-transform cursor-pointer"
-                {...responsiveAttributes(img, {
-                  sizes: '(max-width: 768px) 50vw, 280px',
-                  widths: [320, 480, 640, 960],
-                  crop: { ar: '16:9' },
-                  fetchPriority: 'low',
-                })}
-                onClick={() => { setIndex(i); setOpen(true); }}
-              />
+      <ProjectGallery name={project.name} description={project.description} images={images} />
+
+      {caseStudySteps.length > 0 && (
+        <section className="mb-8 rounded-xl bg-white/80 p-6 shadow" aria-label="סיפור מקרה">
+          <h2 className="mb-4 text-xl font-semibold">סיפור המקרה</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {caseStudySteps.map((step, index) => (
+              <blockquote key={step.title} className="rounded-2xl border border-gray-100 bg-gray-50 p-6 text-right shadow-sm">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-lg font-bold text-white tabular-nums">
+                  {index + 1}
+                </div>
+                <h3 className="mb-1 font-semibold text-gray-900">{step.title}</h3>
+                <p className="text-gray-700 whitespace-pre-line">{step.description}</p>
+              </blockquote>
             ))}
           </div>
-          {open && Lightbox && (
-            <Lightbox
-              mainSrc={lightboxSrc(images[index])}
-              nextSrc={lightboxSrc(images[(index + 1) % images.length])}
-              prevSrc={lightboxSrc(images[(index + images.length - 1) % images.length])}
-              onCloseRequest={() => setOpen(false)}
-              onMovePrevRequest={() => setIndex((index + images.length - 1) % images.length)}
-              onMoveNextRequest={() => setIndex((index + 1) % images.length)}
-              imageTitle={project.name}
-              imageCaption={project.description}
-              enableZoom={true}
-              onImageLoadError={handleImageLoadError}
-            />
-          )}
-        </div>
-      )}
-
-      {caseStudy && (caseStudy.challenge || caseStudy.solution || caseStudy.result) && (
-        <section className="mb-8 rounded-xl bg-white/80 p-6 shadow" aria-label="סיפור מקרה">
-          <h2 className="text-xl font-semibold mb-4">סיפור המקרה</h2>
-          {caseStudy.challenge ? (
-            <div className="mb-4">
-              <h3 className="font-semibold text-gray-900 mb-1">האתגר</h3>
-              <p className="text-gray-700 whitespace-pre-line">{caseStudy.challenge}</p>
-            </div>
-          ) : null}
-          {caseStudy.solution ? (
-            <div className="mb-4">
-              <h3 className="font-semibold text-gray-900 mb-1">הפתרון</h3>
-              <p className="text-gray-700 whitespace-pre-line">{caseStudy.solution}</p>
-            </div>
-          ) : null}
-          {caseStudy.result ? (
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-1">התוצאה</h3>
-              <p className="text-gray-700 whitespace-pre-line">{caseStudy.result}</p>
-            </div>
-          ) : null}
         </section>
       )}
 
-      {/* Description */}
       {project.descriptionRich && (
-        <div className="prose prose-lg mb-8 bg-white/80 rounded-xl p-6 shadow">
+        <div className="prose prose-lg mb-8 rounded-xl bg-white/80 p-6 shadow">
           <div dangerouslySetInnerHTML={{ __html: project.descriptionRich }} />
         </div>
       )}
 
-      {/* Back Button */}
-      <div className="text-center mt-8">
-        <a
+      <div className="mt-8">
+        <Link
           href="/portfolio"
-          className="inline-block bg-gray-100 hover:bg-blue-600 hover:text-white text-blue-700 px-8 py-3 rounded-lg text-lg font-medium transition-colors"
+          className="inline-flex items-center gap-2 font-medium text-blue-700 underline-offset-4 hover:underline"
         >
+          <span aria-hidden>→</span>
           חזרה לכל הפרויקטים
-        </a>
+        </Link>
       </div>
-    </main>
+    </div>
   );
-} 
+}

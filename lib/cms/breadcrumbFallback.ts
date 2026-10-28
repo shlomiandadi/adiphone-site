@@ -19,6 +19,8 @@ const SEGMENT_TITLES: Record<string, string> = {
   contact: 'צור קשר',
   'privacy-policy': 'מדיניות פרטיות',
   'accessibility-statement': 'הצהרת נגישות',
+  terms: 'תנאי שימוש',
+  'data-deletion': 'מחיקת נתוני משתמש',
   'web-development': 'בניית אתרים',
   'website-tadmit': 'אתרי תדמית לעסקים',
   wordpress: 'וורדפרס',

@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import { responsiveAttributes } from '../../lib/responsiveImage';
 
 interface Project {
   title: string;
@@ -7,6 +7,7 @@ interface Project {
   description: string;
   category: string;
   href?: string;
+  imageSrc?: string;
 }
 
 interface PortfolioCardProps {
@@ -14,27 +15,26 @@ interface PortfolioCardProps {
 }
 
 export default function PortfolioCard({ project }: PortfolioCardProps) {
-  const imageSrc = project.image.includes('/')
-    ? project.image
-    : `/images/portfolio/${project.image}.svg`;
-
-  const body = (
-    <div className="h-full overflow-hidden rounded-lg bg-white shadow-lg">
-      <div className="relative h-48 w-full bg-slate-100">
-        <Image
-          src={imageSrc}
-          alt={project.title}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover"
-        />
-      </div>
-      <div className="p-6">
+  const src = project.imageSrc || `/images/portfolio/${project.image}.svg`;
+  const card = (
+    <div className="flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-lg">
+      <img
+        alt={project.title}
+        width={360}
+        height={192}
+        className="h-48 w-full object-cover"
+        {...responsiveAttributes(src, {
+          sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px',
+          widths: [360, 480, 720],
+          fetchPriority: 'low',
+        })}
+      />
+      <div className="flex flex-1 flex-col p-6">
         <h3 className="mb-2 text-xl font-bold text-gray-900">{project.title}</h3>
-        {project.description ? (
-          <p className="mb-4 text-gray-600">{project.description}</p>
+        <p className="mb-4 line-clamp-3 text-gray-600">{project.description}</p>
+        {project.category ? (
+          <div className="mt-auto text-sm text-gray-500">{project.category}</div>
         ) : null}
-        {project.category ? <div className="text-sm text-gray-500">{project.category}</div> : null}
       </div>
     </div>
   );
@@ -42,10 +42,10 @@ export default function PortfolioCard({ project }: PortfolioCardProps) {
   if (project.href) {
     return (
       <Link href={project.href} className="block h-full">
-        {body}
+        {card}
       </Link>
     );
   }
 
-  return body;
+  return card;
 }

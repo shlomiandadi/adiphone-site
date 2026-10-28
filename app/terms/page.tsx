@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import LegalPageLayout, { LegalSection } from '../components/LegalPageLayout';
 
 export const metadata: Metadata = {
   title: 'תנאי שימוש | עדי פון תקשורת',
@@ -14,22 +15,29 @@ const CONTACT_EMAIL = 'shlomiandadi@gmail.com';
 const CONTACT_EMAIL_ALT = 'shlomimalfuf1@gmail.com';
 const CONTACT_EMAIL_SUBJECT = encodeURIComponent('פנייה בנושא תנאי שימוש');
 
+const TOC = [
+  { id: 'about', label: '1. אודות השירות' },
+  { id: 'use', label: '2. שימוש באתר ובשירותים' },
+  { id: 'leads', label: '3. שימוש בנתוני לידים' },
+  { id: 'lead-access', label: '4. גישה לנתוני לידים של לקוחות' },
+  { id: 'privacy', label: '5. פרטיות' },
+  { id: 'ip', label: '6. קניין רוחני' },
+  { id: 'liability', label: '7. הגבלת אחריות' },
+  { id: 'changes', label: '8. שינויים בתנאים' },
+  { id: 'law', label: '9. הדין החל' },
+  { id: 'contact', label: '10. יצירת קשר' },
+];
+
 export default function TermsOfUse() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-10">
-      <div className="max-w-3xl w-full bg-white rounded-xl shadow-lg p-8 text-right" dir="rtl">
-        <h1 className="text-3xl font-bold mb-2">תנאי שימוש</h1>
-        <div className="text-sm text-gray-500 mb-6">עדכון אחרון: 25.10.2026</div>
-
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">1. אודות השירות</h2>
+    <LegalPageLayout title="תנאי שימוש" lastUpdated="עדכון אחרון: 25.10.2026" toc={TOC}>
+        <LegalSection id="about" heading="1. אודות השירות">
           <p>
             Top Webstak הוא שם מסחרי של עדי פון תקשורת (להלן: &quot;החברה&quot;, &quot;אנחנו&quot;), העוסקת בבניית אתרים, קידום אתרים ומערכות דיגיטליות. שירות Top Webstak כולל בניית אתרים, קידום אתרים (SEO) וניהול וקידום ברשתות חברתיות. תנאים אלה חלים על השימוש באתר adi-phone.co.il ועל השירותים הניתנים במסגרתו.
           </p>
-        </section>
+        </LegalSection>
 
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">2. שימוש באתר ובשירותים</h2>
+        <LegalSection id="use" heading="2. שימוש באתר ובשירותים">
           <p className="mb-2">
             האתר והשירותים ניתנים כפי שהם (as-is). אין אנו מתחייבים לדירוג, לתוצאות או להישגים מסוימים במנועי חיפוש, ברשתות חברתיות או בכל ערוץ אחר.
           </p>
@@ -39,62 +47,54 @@ export default function TermsOfUse() {
           <p>
             השימוש באתר ובשירותים מותר למטרות חוקיות בלבד. אין לעשות שימוש הפוגע באתר, בשירותים או בצדדים שלישיים.
           </p>
-        </section>
+        </LegalSection>
 
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">3. שימוש בנתוני לידים</h2>
+        <LegalSection id="leads" heading="3. שימוש בנתוני לידים">
           <p>
             פרטים הנמסרים באמצעות טפסי האתר או באמצעות טפסי לידים בפייסבוק ובאינסטגרם משמשים אותנו רק למענה לפנייה ולמתן השירות. אין אנו מוכרים פרטים אלה לצדדים שלישיים.
           </p>
-        </section>
+        </LegalSection>
 
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">4. גישה לנתוני לידים של לקוחות</h2>
+        <LegalSection id="lead-access" heading="4. גישה לנתוני לידים של לקוחות">
           <p>
             כדי לקבל לידים מעמוד פייסבוק של לקוח, הלקוח (או מי שמנהל את העמוד בשמו) מאשר לנו במפורש גישה לטפסי הלידים של העמוד, ויכול לבטל את הגישה בכל עת דרך הגדרות העסק או העמוד שלו בפייסבוק או בפנייה אלינו. הלקוח מצהיר כי הוא מנהל מורשה של העמוד, וכי הוא אחראי לכך שבטפסי הלידים שלו מוצגת הודעת פרטיות ושיש לו בסיס חוקי לאסוף את פרטי הפונים. אנו פועלים כמעבד מידע מטעם הלקוח: הלידים שייכים ללקוח, מוצגים רק לו, ומשמשים רק למסירת הפנייה אליו. בסיום ההתקשרות או לפי בקשה נמחק את נתוני הלקוח.
           </p>
-        </section>
+        </LegalSection>
 
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">5. פרטיות</h2>
+        <LegalSection id="privacy" heading="5. פרטיות">
           <p>
             מידע נוסף על איסוף המידע ועל השימוש בו מופיע ב
             <Link className="text-blue-700 hover:underline" href="/privacy-policy">מדיניות הפרטיות</Link>
             . ניתן לבקש מחיקת נתונים לפי{' '}
             <Link className="text-blue-700 hover:underline" href="/data-deletion">עמוד מחיקת הנתונים</Link>.
           </p>
-        </section>
+        </LegalSection>
 
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">6. קניין רוחני</h2>
+        <LegalSection id="ip" heading="6. קניין רוחני">
           <p>
             כל הזכויות באתר, בעיצובו, בתוכנו וביצירות שמקורן בנו שמורות לנו או לבעלי הזכויות הרלוונטיים, אלא אם צוין אחרת. אין להעתיק, להפיץ או להשתמש בחומרים אלה ללא אישור מראש. תוכן שהלקוח מוסר נותר בבעלותו; הלקוח מעניק לנו רישיון להשתמש בו לצורך מתן השירות.
           </p>
-        </section>
+        </LegalSection>
 
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">7. הגבלת אחריות</h2>
+        <LegalSection id="liability" heading="7. הגבלת אחריות">
           <p>
             במידה המרבית המותרת על פי דין, לא נהיה אחראים לנזק עקיף, תוצאתי או מיוחד, או לאובדן הכנסות, נתונים או הזדמנויות עסקיות, הנובעים מהשימוש באתר או בשירותים.
           </p>
-        </section>
+        </LegalSection>
 
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">8. שינויים בתנאים</h2>
+        <LegalSection id="changes" heading="8. שינויים בתנאים">
           <p>
             אנו רשאים לעדכן תנאים אלה מעת לעת. תאריך העדכון האחרון מופיע בראש העמוד. המשך שימוש באתר או בשירותים לאחר פרסום השינוי מהווה הסכמה לתנאים המעודכנים.
           </p>
-        </section>
+        </LegalSection>
 
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">9. הדין החל</h2>
+        <LegalSection id="law" heading="9. הדין החל">
           <p>
             על תנאים אלה ועל השימוש באתר ובשירותים יחול דין מדינת ישראל, וסמכות השיפוט תהיה לבתי המשפט המוסמכים בישראל.
           </p>
-        </section>
+        </LegalSection>
 
-        <section>
-          <h2 className="font-bold text-lg mb-2">10. יצירת קשר</h2>
+        <LegalSection id="contact" heading="10. יצירת קשר">
           <p className="mb-2">
             <b>בדוא&quot;ל:</b>{' '}
             <a className="text-blue-700 hover:underline" href={`mailto:${CONTACT_EMAIL}?subject=${CONTACT_EMAIL_SUBJECT}`}>
@@ -106,8 +106,7 @@ export default function TermsOfUse() {
             </a>
           </p>
           <p><b>טלפון:</b> 050-9159951</p>
-        </section>
-      </div>
-    </div>
+        </LegalSection>
+    </LegalPageLayout>
   );
 }

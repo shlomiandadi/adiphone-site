@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { createSeoAgentGenerateMetadata } from '@/seo-agent-apply';
+import LegalPageLayout, { LegalSection } from '../components/LegalPageLayout';
 
 const pageMetadata = {
   title: 'הצהרת נגישות',
@@ -17,20 +18,23 @@ const pageMetadata = {
 
 export const generateMetadata = createSeoAgentGenerateMetadata('/accessibility-statement', pageMetadata);
 
+const TOC = [
+  { id: 'general', label: '1. כללי' },
+  { id: 'features', label: '2. אמצעי נגישות באתר' },
+  { id: 'usage', label: '3. הוראות שימוש' },
+  { id: 'contact', label: '4. פניות בנושא נגישות' },
+  { id: 'updates', label: '5. עדכון הצהרת נגישות' },
+];
+
 export default function AccessibilityStatement() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-10">
-      <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-8 text-right" dir="rtl">
-        <h1 className="text-3xl font-bold mb-2">הצהרת נגישות</h1>
-        <div className="text-sm text-gray-500 mb-6">עדכון אחרון: 23 ביולי 2025</div>
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">1. כללי</h2>
+    <LegalPageLayout title="הצהרת נגישות" lastUpdated="עדכון אחרון: 23 ביולי 2025" toc={TOC}>
+        <LegalSection id="general" heading="1. כללי">
           <p className="mb-2">
             אתר זה מופעל על ידי <b>עדי פון תקשורת</b> ומחויב להנגיש את האתר לכלל הציבור, לרבות אנשים עם מוגבלויות. אנו רואים חשיבות רבה בהנגשת השירותים הדיגיטליים שלנו, ופועלים לשיפור מתמיד של חוויית הגלישה לכל המשתמשים.
           </p>
-        </section>
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">2. אמצעי נגישות באתר</h2>
+        </LegalSection>
+        <LegalSection id="features" heading="2. אמצעי נגישות באתר">
           <ul className="list-disc pr-6 mb-2 text-gray-700">
             <li><strong>כפתור נגישות צף:</strong> כפתור נגישות עם אייקון כיסא גלגלים ממוקם בפינה הימנית התחתונה של האתר, המאפשר גישה מהירה לכל הגדרות הנגישות.</li>
             <li><strong>סרגל נגישות מתקדם:</strong> רכיב נגישות ייעודי המאפשר:
@@ -51,9 +55,8 @@ export default function AccessibilityStatement() {
             <li><strong>דילוג לתוכן הראשי:</strong> קישור "דלג לתוכן הראשי" בתחילת הדף לניווט מהיר.</li>
             <li><strong>סגנונות מיקוד:</strong> הדגשה ברורה של אלמנטים בעת ניווט במקלדת.</li>
           </ul>
-        </section>
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">3. הוראות שימוש</h2>
+        </LegalSection>
+        <LegalSection id="usage" heading="3. הוראות שימוש">
           <ul className="list-disc pr-6 mb-2 text-gray-700">
             <li><strong>כפתור הנגישות:</strong> לחץ על כפתור הנגישות (אייקון כיסא גלגלים) בפינה הימנית התחתונה כדי לפתוח את סרגל ההגדרות.</li>
             <li><strong>שינוי גודל גופן:</strong> השתמש בכפתורי A+ ו-A- להגדלה או הקטנה של הטקסט.</li>
@@ -62,9 +65,8 @@ export default function AccessibilityStatement() {
             <li><strong>גודל סמן:</strong> בחר בין קטן, רגיל או גדול לסמן העכבר.</li>
             <li><strong>ניווט במקלדת:</strong> השתמש ב-Tab לניווט בין אלמנטים, Enter לבחירה, ו-Esc לסגירה.</li>
           </ul>
-        </section>
-        <section className="mb-6">
-          <h2 className="font-bold text-lg mb-2">4. פניות בנושא נגישות</h2>
+        </LegalSection>
+        <LegalSection id="contact" heading="4. פניות בנושא נגישות">
           <p className="mb-2">
             אם נתקלתם בבעיה כלשהי בנגישות האתר, נשמח שתעדכנו אותנו ונפעל לתקנה בהקדם האפשרי.
           </p>
@@ -72,14 +74,12 @@ export default function AccessibilityStatement() {
             <li>דוא"ל: <a href="mailto:shlomiandadi@gmail.com" className="text-blue-600 hover:underline">shlomiandadi@gmail.com</a></li>
             <li>טלפון: <a href="tel:0509159951" className="text-blue-600 hover:underline">050-9159951</a></li>
           </ul>
-        </section>
-        <section>
-          <h2 className="font-bold text-lg mb-2">5. עדכון הצהרת נגישות</h2>
+        </LegalSection>
+        <LegalSection id="updates" heading="5. עדכון הצהרת נגישות">
           <p>
             הצהרה זו עודכנה לאחרונה בתאריך 23 ביולי 2025, ועשויה להתעדכן מעת לעת בהתאם לשיפורים בנגישות האתר.
           </p>
-        </section>
-      </div>
-    </div>
+        </LegalSection>
+    </LegalPageLayout>
   );
-} 
+}

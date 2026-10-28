@@ -177,6 +177,38 @@ body.high-contrast *:not(main):not(section):not(article):not(aside):not(header):
   @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded;
 }
 
+/* Legal pages: one breadcrumb trail (in the page header) and readable crumbs on navy */
+body:has(.legal-page) #site-breadcrumbs {
+  display: none;
+}
+
+.legal-page-header nav a {
+  color: #e2e8f0;
+}
+
+.legal-page-header nav a:hover,
+.legal-page-header nav a:focus-visible {
+  color: #22defb;
+}
+
+.legal-page-header nav span {
+  color: #22defb;
+}
+
+.legal-page-header nav .text-gray-400,
+.legal-page-header nav .dark\:text-gray-500 {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.legal-toc details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.legal-toc details > summary::after {
+  content: "▾";
+  float: left;
+}
+
 /* Search bar styles */
 .search-container {
   @apply relative;
@@ -990,4 +1022,191 @@ html.wow-fallback [data-clip-reveal] {
     animation: none;
     transform: none;
   }
+}
+
+/* Blog post template — scoped so other pages keep their prose rules */
+.blog-post-article {
+  max-width: 42rem;
+  color: #1f2937;
+  line-height: 1.8;
+}
+
+.blog-post-article :is(h2, h3, h4) {
+  scroll-margin-top: 6.5rem;
+  color: #02336E;
+}
+
+.blog-post-article h2 {
+  font-size: 1.65rem;
+  margin-top: 2rem;
+  margin-bottom: 0.85rem;
+}
+
+.blog-post-article h3 {
+  font-size: 1.3rem;
+}
+
+.blog-post-article blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-right: 4px solid #22DEFB;
+  background: rgba(2, 51, 110, 0.04);
+  border-radius: 0.75rem;
+  font-style: italic;
+  color: #02336E;
+}
+
+.blog-post-article ul {
+  list-style: none;
+  padding-right: 0;
+}
+
+.blog-post-article ul > li {
+  position: relative;
+  padding-right: 1.25rem;
+}
+
+.blog-post-article ul > li::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0.7em;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: #22DEFB;
+}
+
+.blog-post-article ol {
+  padding-right: 1.25rem;
+}
+
+.blog-post-article table {
+  width: 100%;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: 0.75rem;
+}
+
+.blog-post-article th,
+.blog-post-article td {
+  border: 1px solid #e5e7eb;
+  padding: 0.65rem 0.85rem;
+  text-align: right;
+}
+
+.blog-post-article th {
+  background: #02336E;
+  color: #fff;
+  font-weight: 600;
+}
+
+.blog-post-article tr:nth-child(even) td {
+  background: rgba(2, 51, 110, 0.04);
+}
+
+.blog-post-article img {
+  border-radius: 1rem !important;
+}
+
+.blog-faq-section {
+  margin-top: 2rem;
+}
+
+.blog-faq-item {
+  background: #fff;
+  border: 1px solid #f3f4f6;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.blog-faq-summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+}
+
+.blog-faq-summary::-webkit-details-marker {
+  display: none;
+}
+
+.blog-faq-summary h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.blog-faq-summary::after {
+  content: '▾';
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #2563eb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blog-faq-item[open] .blog-faq-summary::after {
+  transform: rotate(180deg);
+}
+
+.blog-faq-answer {
+  padding: 0 1.25rem 1.25rem;
+  border-top: 1px solid #f3f4f6;
+  color: #4b5563;
+}
+
+.blog-toc-mobile > summary {
+  list-style: none;
+}
+
+.blog-toc-mobile > summary::-webkit-details-marker {
+  display: none;
+}
+
+.blog-post-article .faq-section {
+  margin-top: 2rem;
+}
+
+.blog-post-article .faq-item {
+  background: #fff;
+  border: 1px solid #f3f4f6;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.blog-post-article .faq-item summary {
+  cursor: pointer;
+  padding: 1.1rem 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.blog-post-article .faq-answer {
+  padding: 0 1.25rem 1.25rem;
+  color: #4b5563;
+}
+
+.blog-post-article a.article-cta {
+  display: block;
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  background: #02336E;
+  color: #fff !important;
+  text-decoration: none !important;
 }

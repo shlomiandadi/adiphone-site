@@ -54,6 +54,17 @@ function demoteContentHeadings(html: string): string {
 
 const HERO_SIZES = '100vw';
 
+/** Below-fold only; sizes match current blocks so the reserved slot does not jump. */
+const CV_FAQ = 'auto 420px';
+const CV_CTA = 'auto 520px';
+
+const belowFoldStyle = (containIntrinsicSize: string): React.CSSProperties => ({
+  contentVisibility: 'auto',
+  containIntrinsicSize,
+});
+
+const BLOG_BELOW_FOLD_CSS = `.blog-post-article .faq-section,.blog-post-article .blog-faq-section{content-visibility:auto;contain-intrinsic-size:${CV_FAQ}}`;
+
 /**
  * AVIF q=50 held the same crop as the original on the cloud and SEO heroes
  * (edges and the small labels stayed intact), so this stays at 50 rather than 60.
@@ -280,6 +291,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       ) : null}
       <SeoAgentPageExtras path={`/blog/${post.slug}`} />
       <BlogPostSchema post={post} />
+      <style dangerouslySetInnerHTML={{ __html: BLOG_BELOW_FOLD_CSS }} />
       {/* Hero Section */}
       <section className="blog-post-hero relative h-[500px] flex items-center justify-center text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -366,7 +378,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                     className="blog-post-article prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
                     dangerouslySetInnerHTML={{ __html: prepared.html }}
                   />
-                  <div className="mt-10">
+                  <div className="mt-10" style={belowFoldStyle(CV_CTA)}>
                     <ServiceCtaBanner serviceKey={override?.relatedService} />
                   </div>
                   <RelatedArticleLinks slug={post.slug} category={post.category} />

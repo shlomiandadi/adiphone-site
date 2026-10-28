@@ -6,7 +6,10 @@ export default function RelatedServiceCTA({ slug }: { slug: string }) {
   if (!override) return null;
 
   return (
-    <aside className="mt-12 rounded-xl border border-blue-100 bg-blue-50 p-6 text-right">
+    <aside
+      className="mt-12 rounded-xl border border-blue-100 bg-blue-50 p-6 text-right"
+      style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 220px' }}
+    >
       <p className="text-sm font-medium text-blue-800 mb-2">מחפשים ליווי מקצועי?</p>
       <p className="text-gray-700 mb-4">
         המדריך הזה משלים את השירות שלנו. לעבודה מלאה מול צוות מומחים:

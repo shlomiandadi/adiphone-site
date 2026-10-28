@@ -195,13 +195,12 @@ export default function WebsiteCostGuidePage() {
 
           <h2 className="mb-6 text-3xl font-bold text-[#02336E]">שאלות נפוצות</h2>
           <div className="mb-4 space-y-4">
-            {FAQ.map((item, index) => (
-              <details
+            {FAQ.map((item) => (
+              <div
                 key={item.question}
                 className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md"
-                open={index === 0}
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-right [&::-webkit-details-marker]:hidden">
+                <div className="flex items-center justify-between gap-4 px-6 py-5 text-right">
                   <h3 className="text-lg font-semibold text-gray-900">{item.question}</h3>
                   <span
                     className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#22DEFB]/30 text-[#02336E]"
@@ -211,11 +210,11 @@ export default function WebsiteCostGuidePage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </span>
-                </summary>
+                </div>
                 <div className="border-t border-gray-100 px-6 pb-5">
                   <p className="pt-4 leading-relaxed text-gray-600">{item.answer}</p>
                 </div>
-              </details>
+              </div>
             ))}
           </div>
 

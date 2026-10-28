@@ -12,6 +12,7 @@ import {
 
 interface ServicePricingProps {
   serviceType: string;
+  heading?: string;
 }
 
 const fadeInUp = {
@@ -82,8 +83,9 @@ function PricingPageLink({ className = '' }: { className?: string }) {
   );
 }
 
-export default function ServicePricing({ serviceType }: ServicePricingProps) {
+export default function ServicePricing({ serviceType, heading }: ServicePricingProps) {
   const plans = packagesForService(serviceType);
+  const blockHeading = heading || 'מחירון בניית אתרים';
 
   return (
     <section className="bg-gradient-to-b from-gray-50 to-white px-4 py-16 dark:from-gray-900 dark:to-gray-800">
@@ -96,7 +98,7 @@ export default function ServicePricing({ serviceType }: ServicePricingProps) {
           className="mb-12 text-center"
         >
           <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
-            מחירון בניית אתרים
+            {blockHeading}
           </h2>
           {plans.length > 0 ? (
             <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">

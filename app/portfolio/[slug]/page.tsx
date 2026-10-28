@@ -11,6 +11,8 @@ import {
 } from '../../../lib/portfolioPublic';
 import { PORTFOLIO_RELATED_SERVICE } from '../../../lib/related-content';
 import Link from 'next/link';
+import PortfolioCard from '../../components/PortfolioCard';
+import ServiceCtaBanner from '../../components/ServiceCtaBanner';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { optimizeContentImages } from '../../../lib/responsiveImage';
 
@@ -100,6 +102,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
     ? project.keywords
     : (project.technologies || []);
   const caseStudy = await getPortfolioCaseStudyCached(project.slug);
+  const relatedService = PORTFOLIO_RELATED_SERVICE[project.slug] || null;
+  let relatedProjects: Awaited<ReturnType<typeof getPublishedPortfolioList>> = [];
+  try {
+    const published = await getPublishedPortfolioList();
+    relatedProjects = published.filter((item) => item.slug !== project.slug).slice(0, 3);
+  } catch {
+    relatedProjects = [];
+  }
   return (
     <>
       <SeoAgentPageExtras path={`/portfolio/${project.slug}`} />
@@ -120,15 +130,38 @@ export default async function Page({ params }: { params: { slug: string } }) {
             : project.descriptionRich,
         }}
         caseStudy={caseStudy}
+        relatedService={relatedService}
       />
-      {PORTFOLIO_RELATED_SERVICE[project.slug] ? (
+      {relatedProjects.length > 0 ? (
+        <section className="bg-gray-50 py-10" aria-label="הפרויקטים שלנו">
+          <div className="container mx-auto max-w-4xl px-4">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+              {relatedProjects.map((item) => (
+                <PortfolioCard
+                  key={item.id}
+                  project={{
+                    title: item.name,
+                    image: item.slug,
+                    imageSrc: item.image,
+                    description: item.description,
+                    category: item.technologies?.[0] || '',
+                    href: `/portfolio/${item.slug}`,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+      <ServiceCtaBanner serviceKey={relatedService?.serviceHref} />
+      {relatedService ? (
         <p className="max-w-4xl mx-auto px-4 pb-10 text-right text-lg">
           השירות המתאים:{' '}
           <Link
-            href={PORTFOLIO_RELATED_SERVICE[project.slug].serviceHref}
+            href={relatedService.serviceHref}
             className="font-semibold text-blue-700 underline"
           >
-            {PORTFOLIO_RELATED_SERVICE[project.slug].serviceLabel}
+            {relatedService.serviceLabel}
           </Link>
         </p>
       ) : null}

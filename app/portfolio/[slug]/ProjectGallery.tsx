@@ -42,7 +42,7 @@ export default function ProjectGallery({
   if (images.length === 0) return null;
 
   return (
-    <div className="mb-8">
+    <div className="mb-8 [content-visibility:auto] [contain-intrinsic-size:auto_480px]">
       <h2 className="mb-4 text-xl font-semibold">גלריית תמונות</h2>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
         {images.map((img, i) => (

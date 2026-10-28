@@ -27,7 +27,11 @@ export default function PortfolioCard({ project }: PortfolioCardProps) {
           sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px',
           widths: [360, 480, 720],
           fetchPriority: 'low',
+          priority: false,
         })}
+        loading="lazy"
+        decoding="async"
+        fetchPriority="low"
       />
       <div className="flex flex-1 flex-col p-6">
         <h3 className="mb-2 text-xl font-bold text-gray-900">{project.title}</h3>

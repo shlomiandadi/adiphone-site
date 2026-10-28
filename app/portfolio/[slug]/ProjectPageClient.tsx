@@ -1,6 +1,13 @@
 import Link from 'next/link';
-import { responsiveAttributes } from '../../../lib/responsiveImage';
+import { responsiveAttributes, type ResponsiveImageAttrs } from '../../../lib/responsiveImage';
 import ProjectGallery from './ProjectGallery';
+
+export const PORTFOLIO_HERO_IMAGE = {
+  sizes: '(max-width: 896px) calc(100vw - 2rem), 864px',
+  widths: [480, 640, 720, 828, 1200, 1600],
+  priority: true as const,
+  coverIfTallerThan: '4:5',
+};
 
 interface Project {
   id: string;
@@ -29,12 +36,17 @@ export default function ProjectPageClient({
   project,
   caseStudy = null,
   relatedService = null,
+  heroImage = null,
 }: {
   project: Project;
   caseStudy?: CaseStudy | null;
   relatedService?: RelatedService | null;
+  heroImage?: ResponsiveImageAttrs | null;
 }) {
   const images = project.images || [];
+  const hero =
+    heroImage ||
+    (project.image ? responsiveAttributes(project.image, PORTFOLIO_HERO_IMAGE) : null);
   const caseStudySteps = caseStudy
     ? [
         caseStudy.challenge ? { title: 'האתגר', description: caseStudy.challenge } : null,
@@ -46,18 +58,18 @@ export default function ProjectPageClient({
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <div className="relative mb-8 overflow-hidden rounded-2xl shadow-lg">
-        {project.image && (
+        {hero && (
           <img
             alt={project.name}
             width={864}
             height={320}
             className="h-80 w-full object-cover"
-            {...responsiveAttributes(project.image, {
-              sizes: '(max-width: 896px) calc(100vw - 2rem), 864px',
-              widths: [480, 640, 720, 828, 1200, 1600],
-              priority: true,
-              coverIfTallerThan: '4:5',
-            })}
+            src={hero.src}
+            srcSet={hero.srcSet}
+            sizes={hero.sizes}
+            loading="eager"
+            fetchPriority="high"
+            decoding="auto"
           />
         )}
         <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/20 to-transparent p-8">

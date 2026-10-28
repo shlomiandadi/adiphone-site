@@ -5,6 +5,9 @@ import { getPublishedPortfolioProjects } from '../../lib/website-projects';
 import { getServiceCta } from '../../lib/service-cta';
 import Hero3D from './hero3d/Hero3D';
 import ServiceCtaBanner from './ServiceCtaBanner';
+import Testimonials from './Testimonials';
+import PortfolioCard from './PortfolioCard';
+import { FeatureCardIcon } from './icons';
 import {
   LOCAL_WEBSITE_PAGES,
   PHONE_DISPLAY,
@@ -20,12 +23,25 @@ type Props = {
   content: LocalCityContent;
 };
 
+function HighlightedParagraph({ text, className = '' }: { text: string; className?: string }) {
+  const match = text.match(/^(.+?[.!?…])(\s+[\s\S]*)?$/);
+  const lead = match?.[1] ?? text;
+  const rest = match?.[2] ?? '';
+
+  return (
+    <p className={`text-lg leading-relaxed text-gray-700 ${className}`}>
+      <span className="font-semibold text-[#02336E]">{lead}</span>
+      {rest}
+    </p>
+  );
+}
+
 export default async function LocalWebsiteBuildingPage({ content }: Props) {
   const siteUrl = getSiteUrl();
   const pageUrl = `${siteUrl}${content.path}`;
   const h1 = `בניית אתרים ב${content.cityName}`;
   const localCta = getServiceCta('local');
-  const projects = await getPublishedPortfolioProjects('websites', 1);
+  const projects = await getPublishedPortfolioProjects('websites', 3);
   const projectImage = projects.find((project) => project.image && !project.image.endsWith('.svg'))?.image;
   const localBusinessSchema = buildLocalBusinessJsonLd({
     url: pageUrl,
@@ -100,43 +116,55 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
       />
 
       <section data-reveal className="px-4 py-16">
-        <div className="container mx-auto max-w-3xl text-right">
-          <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.introTitle}</h2>
-          {content.introParagraphs.map((paragraph) => (
-            <p key={paragraph.slice(0, 48)} className="mb-4 text-lg leading-relaxed text-gray-700">
-              {paragraph}
+        <div className="container mx-auto max-w-5xl text-right">
+          <h2 className="mb-8 text-3xl font-bold text-gray-900">{content.introTitle}</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {content.introParagraphs.map((paragraph) => (
+              <div
+                key={paragraph.slice(0, 48)}
+                className="rounded-2xl border border-[#22DEFB]/40 bg-white p-6 shadow-sm"
+              >
+                <HighlightedParagraph text={paragraph} />
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 rounded-2xl border border-gray-100 bg-[#02336E]/[0.04] p-6">
+            <p className="text-lg leading-relaxed text-gray-700">
+              בין אם אתם צריכים{' '}
+              <Link href="/services/website-tadmit" className="text-blue-700 underline">
+                אתרי תדמית לעסקים
+              </Link>
+              ,{' '}
+              <Link href="/services/ecommerce" className="text-blue-700 underline">
+                חנות אונליין
+              </Link>{' '}
+              או{' '}
+              <Link href="/services/wordpress" className="text-blue-700 underline">
+                אתר וורדפרס
+              </Link>
+              , נבנה לכם נכס דיגיטלי שעובד בשבילכם. מחירי פתיחה שקופים ב
+              <Link href="/pricing" className="text-blue-700 underline">
+                מחירון בניית אתרים
+              </Link>
+              .
             </p>
-          ))}
-          <p className="text-lg leading-relaxed text-gray-700">
-            בין אם אתם צריכים{' '}
-            <Link href="/services/website-tadmit" className="text-blue-700 underline">
-              אתרי תדמית לעסקים
-            </Link>
-            ,{' '}
-            <Link href="/services/ecommerce" className="text-blue-700 underline">
-              חנות אונליין
-            </Link>{' '}
-            או{' '}
-            <Link href="/services/wordpress" className="text-blue-700 underline">
-              אתר וורדפרס
-            </Link>
-            , נבנה לכם נכס דיגיטלי שעובד בשבילכם. מחירי פתיחה שקופים ב
-            <Link href="/pricing" className="text-blue-700 underline">
-              מחירון בניית אתרים
-            </Link>
-            .
-          </p>
+          </div>
         </div>
       </section>
 
       <section data-reveal className="bg-gray-50 px-4 py-16">
-        <div className="container mx-auto max-w-3xl text-right">
-          <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.localContextTitle}</h2>
-          {content.localContextParagraphs.map((paragraph) => (
-            <p key={paragraph.slice(0, 48)} className="mb-4 text-lg leading-relaxed text-gray-700 last:mb-0">
-              {paragraph}
-            </p>
-          ))}
+        <div className="container mx-auto max-w-5xl text-right">
+          <h2 className="mb-8 text-3xl font-bold text-gray-900">{content.localContextTitle}</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {content.localContextParagraphs.map((paragraph) => (
+              <div
+                key={paragraph.slice(0, 48)}
+                className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
+              >
+                <HighlightedParagraph text={paragraph} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -146,8 +174,11 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
             {content.typicalBusinessesTitle}
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {content.typicalBusinesses.map((item) => (
+            {content.typicalBusinesses.map((item, index) => (
               <div key={item.title} className="rounded-xl border border-gray-100 p-6 shadow-sm">
+                <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#02336E] text-[#22DEFB]">
+                  <FeatureCardIcon index={index} variant="business" className="h-5 w-5" />
+                </div>
                 <h3 className="mb-2 text-xl font-semibold text-gray-900">{item.title}</h3>
                 <p className="text-gray-600">{item.description}</p>
               </div>
@@ -162,8 +193,11 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
             {content.includedTitle}
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {content.included.map((item) => (
+            {content.included.map((item, index) => (
               <div key={item.title} className="rounded-xl bg-white p-6 shadow-sm">
+                <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#22DEFB]/20 text-[#02336E]">
+                  <FeatureCardIcon index={index} variant="included" className="h-5 w-5" />
+                </div>
                 <h3 className="mb-2 text-xl font-semibold text-gray-900">{item.title}</h3>
                 <p className="text-gray-600">{item.description}</p>
               </div>
@@ -172,14 +206,26 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
+      <ServiceCtaBanner
+        serviceKey="local"
+        title={content.ctaTitle || localCta.title}
+        text={`${content.ctaText} שיחת ייעוץ של 15 דקות – בחינם.`}
+        whatsappText={`שלום, אשמח לקבוע שיחת ייעוץ לבניית אתר ב${content.cityName}.`}
+      />
+
       <section data-reveal className="px-4 py-16">
-        <div className="container mx-auto max-w-3xl text-right">
-          <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.servingTitle}</h2>
-          {content.servingParagraphs.map((paragraph) => (
-            <p key={paragraph.slice(0, 48)} className="mb-4 text-lg leading-relaxed text-gray-700 last:mb-0">
-              {paragraph}
-            </p>
-          ))}
+        <div className="container mx-auto max-w-5xl text-right">
+          <h2 className="mb-8 text-3xl font-bold text-gray-900">{content.servingTitle}</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {content.servingParagraphs.map((paragraph) => (
+              <div
+                key={paragraph.slice(0, 48)}
+                className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
+              >
+                <HighlightedParagraph text={paragraph} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -199,6 +245,30 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
           </div>
         </div>
       </section>
+
+      {projects.length > 0 && (
+        <section data-reveal className="px-4 py-16">
+          <div className="container mx-auto max-w-5xl">
+            <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">פרויקטים שבנינו</h2>
+            <div className="grid gap-6 md:grid-cols-3">
+              {projects.slice(0, 3).map((project, index) => (
+                <PortfolioCard
+                  key={project.slug}
+                  project={{
+                    title: project.name,
+                    image: `project${(index % 3) + 1}`,
+                    description: project.description || '',
+                    category: '',
+                    href: `/portfolio/${project.slug}`,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <Testimonials />
 
       <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-center">

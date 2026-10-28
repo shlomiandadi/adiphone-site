@@ -7,9 +7,16 @@ import BlogPostSchema from '../../components/BlogPostSchema';
 import BlogNavigation from '../../components/BlogNavigation';
 import RelatedServiceCTA from '../../components/RelatedServiceCTA';
 import RelatedArticleLinks from '../../components/RelatedArticleLinks';
+import ServiceCtaBanner from '../../components/ServiceCtaBanner';
+import BlogCard from '../../components/BlogCard';
+import BlogNewsletterForm from '../../components/BlogNewsletterForm';
+import Breadcrumbs from '../../components/Breadcrumbs';
+import BlogPostToc from '../../components/BlogPostToc';
+import BlogKeyTakeaways from '../../components/BlogKeyTakeaways';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
 import { cleanupBlogHtml } from '../../../lib/blog-content-cleanup';
-import { getPostBySlug, getPublishedNavPosts, getPublishedPosts } from '../../../lib/posts';
+import { enhanceBlogHtml } from '../../../lib/blog-article-enhance';
+import { getPostBySlug, getPublishedNavPosts, getPublishedPosts, getPublishedPostsPage } from '../../../lib/posts';
 import { adjacentBlogPosts } from '../../../lib/blogNav';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import {
@@ -46,6 +53,28 @@ function demoteContentHeadings(html: string): string {
   return html
     .replace(/<h1(\s[^>]*)?>/gi, '<h2$1>')
     .replace(/<\/h1>/gi, '</h2>');
+}
+
+function mapRelatedPost(post: Awaited<ReturnType<typeof getPublishedPostsPage>>['posts'][number]) {
+  return {
+    id: post.id,
+    title: post.title,
+    excerpt: post.excerpt,
+    mainImage: post.mainImage,
+    category: post.category?.name || 'כללי',
+    categoryColor: post.category?.color || null,
+    createdAt: post.createdAt.toISOString(),
+    tags: post.tags,
+    slug: post.slug,
+    published: post.published,
+    authorName: post.authorName || 'שלומי',
+    authorEmail: post.authorEmail || '',
+    views: post.views,
+    likes: post.likes,
+    metaTitle: post.metaTitle,
+    metaDesc: post.metaDesc,
+    updatedAt: post.updatedAt.toISOString(),
+  };
 }
 
 const HERO_SIZES = '100vw';
@@ -261,6 +290,20 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     preloadHero(heroImage);
   }
   const { previousPost, nextPost } = adjacentBlogPosts(await getPublishedNavPosts(), post.slug);
+  const prepared = enhanceBlogHtml(
+    optimizeContentImages(demoteContentHeadings(cleanupBlogHtml(post.content, post.slug)))
+  );
+  const override = BLOG_META_OVERRIDES[post.slug];
+  let relatedPosts: ReturnType<typeof mapRelatedPost>[] = [];
+  try {
+    const page = await getPublishedPostsPage(1, 8);
+    relatedPosts = page.posts
+      .filter((item: { slug: string }) => item.slug !== post.slug)
+      .slice(0, 3)
+      .map(mapRelatedPost);
+  } catch {
+    relatedPosts = [];
+  }
 
   return (
     <main className="pt-24">
@@ -318,13 +361,13 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-blue-600 to-purple-700" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-600/80" />
+          <div className="absolute inset-0 bg-gradient-to-l from-[#02336E]/85 to-[#02336E]/70" />
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center">
             <span
-              className="inline-block bg-blue-500 text-white px-4 py-2 rounded-full text-sm mb-4"
-              style={post.categoryColor ? { backgroundColor: post.categoryColor } : undefined}
+              className="inline-block bg-[#22DEFB] text-[#02336E] px-4 py-2 rounded-full text-sm mb-4 font-semibold"
+              style={post.categoryColor ? { backgroundColor: post.categoryColor, color: '#fff' } : undefined}
             >
               {post.category}
             </span>
@@ -341,35 +384,67 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       </section>
 
       {/* Content Section */}
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            {/* Main Image Display */}
-            {post.mainImage && (
-              <div className="mb-8">
-                <Image
-                  src={post.mainImage}
-                  alt={post.title}
-                  width={800}
-                  height={400}
-                  sizes="(max-width: 768px) 100vw, 768px"
-                  className="w-full h-auto rounded-lg shadow-lg"
-                  loading="lazy"
-                  fetchPriority="low"
-                  unoptimized={!isOptimizableImageUrl(post.mainImage)}
-                />
+          <div className="mx-auto max-w-6xl">
+            <Breadcrumbs />
+            <div className="flex flex-col gap-10 lg:flex-row-reverse">
+              <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
+                <BlogPostToc headings={prepared.headings} variant="desktop" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="mx-auto max-w-[42rem]">
+                  <BlogPostToc headings={prepared.headings} variant="mobile" />
+                  <BlogKeyTakeaways headings={prepared.takeawayHeadings} />
+                  {post.mainImage && (
+                    <div className="mb-8">
+                      <Image
+                        src={post.mainImage}
+                        alt={post.title}
+                        width={800}
+                        height={400}
+                        sizes="(max-width: 768px) 100vw, 672px"
+                        className="h-auto w-full rounded-2xl shadow-lg"
+                        loading="lazy"
+                        fetchPriority="low"
+                        unoptimized={!isOptimizableImageUrl(post.mainImage)}
+                      />
+                    </div>
+                  )}
+                  <div
+                    className="blog-post-article prose prose-lg dark:prose-invert max-w-none"
+                    dangerouslySetInnerHTML={{ __html: prepared.beforeMid }}
+                  />
+                  {prepared.afterMid ? (
+                    <div className="my-10 overflow-hidden rounded-2xl">
+                      <ServiceCtaBanner serviceKey={override?.relatedService} />
+                    </div>
+                  ) : null}
+                  {prepared.afterMid ? (
+                    <div
+                      className="blog-post-article prose prose-lg dark:prose-invert max-w-none"
+                      dangerouslySetInnerHTML={{ __html: prepared.afterMid }}
+                    />
+                  ) : null}
+                  <RelatedServiceCTA slug={post.slug} />
+                  <RelatedArticleLinks slug={post.slug} category={post.category} />
+                  <div className="blog-newsletter-flush mt-10">
+                    <BlogNewsletterForm />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {relatedPosts.length > 0 && (
+              <div className="mt-14">
+                <p className="mb-6 text-right text-xl font-bold text-[#02336E]">עוד מהבלוג</p>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {relatedPosts.map((item) => (
+                    <BlogCard key={item.id} post={item} />
+                  ))}
+                </div>
               </div>
             )}
-            <div 
-              className="prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
-              dangerouslySetInnerHTML={{
-                __html: optimizeContentImages(
-                  demoteContentHeadings(cleanupBlogHtml(post.content, post.slug))
-                ),
-              }}
-            />
-            <RelatedArticleLinks slug={post.slug} category={post.category} />
-            <RelatedServiceCTA slug={post.slug} />
           </div>
         </div>
       </section>

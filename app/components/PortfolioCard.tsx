@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import { responsiveAttributes } from '../../lib/responsiveImage';
 
 interface Project {
   title: string;
@@ -18,15 +18,17 @@ export default function PortfolioCard({ project }: PortfolioCardProps) {
   const src = project.imageSrc || `/images/portfolio/${project.image}.svg`;
   const card = (
     <div className="flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-lg">
-      <div className="relative h-48 w-full overflow-hidden bg-slate-100">
-        <Image
-          src={src}
-          alt={project.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
-          className="object-cover"
-        />
-      </div>
+      <img
+        alt={project.title}
+        width={360}
+        height={192}
+        className="h-48 w-full object-cover"
+        {...responsiveAttributes(src, {
+          sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px',
+          widths: [360, 480, 720],
+          fetchPriority: 'low',
+        })}
+      />
       <div className="flex flex-1 flex-col p-6">
         <h3 className="mb-2 text-xl font-bold text-gray-900">{project.title}</h3>
         <p className="mb-4 line-clamp-3 text-gray-600">{project.description}</p>
@@ -39,7 +41,7 @@ export default function PortfolioCard({ project }: PortfolioCardProps) {
 
   if (project.href) {
     return (
-      <Link href={project.href} className="block h-full transition hover:shadow-xl">
+      <Link href={project.href} className="block h-full">
         {card}
       </Link>
     );

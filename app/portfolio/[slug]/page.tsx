@@ -133,8 +133,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
         relatedService={relatedService}
       />
       {relatedProjects.length > 0 ? (
-        <section className="bg-gray-50 py-16" aria-label="הפרויקטים שלנו">
-          <div className="container mx-auto max-w-6xl px-4">
+        <section className="bg-gray-50 py-10" aria-label="הפרויקטים שלנו">
+          <div className="container mx-auto max-w-4xl px-4">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
               {relatedProjects.map((item) => (
                 <PortfolioCard
@@ -153,11 +153,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           </div>
         </section>
       ) : null}
-      <ServiceCtaBanner
-        serviceKey={relatedService?.serviceHref}
-        image={project.image || undefined}
-        imageAlt={project.name}
-      />
+      <ServiceCtaBanner serviceKey={relatedService?.serviceHref} />
       {relatedService ? (
         <p className="max-w-4xl mx-auto px-4 pb-10 text-right text-lg">
           השירות המתאים:{' '}

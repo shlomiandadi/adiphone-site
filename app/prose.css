@@ -1,0 +1,3 @@
+@config "../tailwind.prose.config.js";
+@tailwind components;
+@tailwind utilities;

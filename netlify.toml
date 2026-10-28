@@ -17,6 +17,11 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# Blog posts only: make the main stylesheet non-blocking after critical CSS is inlined.
+[[edge_functions]]
+  function = "blog-defer-css"
+  path = "/blog/*"
+
 [functions]
   # Do not set node_bundler = "esbuild" here: @netlify/plugin-nextjs ships its
   # own server handler with bundler "none". Re-bundling drops prerendered HTML

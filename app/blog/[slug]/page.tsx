@@ -340,12 +340,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col gap-10 lg:flex-row-reverse">
-              <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
-                <BlogPostToc headings={prepared.takeawayHeadings} variant="desktop" />
-              </div>
+              <BlogPostToc headings={prepared.takeawayHeadings} />
               <div className="min-w-0 flex-1">
                 <div className="mx-auto max-w-[42rem]">
-                  <BlogPostToc headings={prepared.takeawayHeadings} variant="mobile" />
                   <BlogKeyTakeaways headings={prepared.takeawayHeadings} />
                   {post.mainImage && (
                     <div className="mb-8">
@@ -363,14 +360,16 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                     </div>
                   )}
                   <div
-                    className="blog-post-article prose prose-lg dark:prose-invert max-w-none prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-lg prose-img:my-6 prose-img:mx-auto"
+                    className="blog-post-article blog-below-fold max-w-none"
                     dangerouslySetInnerHTML={{ __html: prepared.html }}
                   />
-                  <div className="mt-10">
+                  <div className="blog-below-fold blog-below-fold--cta mt-10">
                     <ServiceCtaBanner serviceKey={override?.relatedService} />
                   </div>
-                  <RelatedArticleLinks slug={post.slug} category={post.category} />
-                  <RelatedServiceCTA slug={post.slug} />
+                  <div className="blog-below-fold blog-below-fold--related">
+                    <RelatedArticleLinks slug={post.slug} category={post.category} />
+                    <RelatedServiceCTA slug={post.slug} />
+                  </div>
                 </div>
               </div>
             </div>

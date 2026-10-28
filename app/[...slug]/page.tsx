@@ -1,3 +1,4 @@
+import '../prose.css';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getCmsPageBySlug } from '../../lib/cms/pages';

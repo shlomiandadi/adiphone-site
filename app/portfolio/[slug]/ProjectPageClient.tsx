@@ -1,3 +1,4 @@
+import '../../prose.css';
 import Link from 'next/link';
 import { responsiveAttributes, type ResponsiveImageAttrs } from '../../../lib/responsiveImage';
 import ProjectGallery from './ProjectGallery';

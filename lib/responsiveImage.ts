@@ -274,7 +274,10 @@ export function optimizeContentImages(html: string) {
     if (!src) return full;
     // Hosts we cannot resize still must not compete with the hero.
     if (!isOptimizableImageUrl(src)) {
-      const attrs = withLowPriority(rawAttrs);
+      let attrs = withLowPriority(rawAttrs);
+      if (!isSvgOrGif(src) && (!readAttr(attrs, 'width') || !readAttr(attrs, 'height'))) {
+        attrs += ' width="800" height="450"';
+      }
       return `<img${attrs}>`;
     }
     let attrs = rawAttrs;
@@ -287,6 +290,9 @@ export function optimizeContentImages(html: string) {
       priority: false,
     });
     const tail = attrs.trim() ? ` ${attrs.trim()}` : '';
-    return `<img src="${escapeAttr(image.src)}" srcset="${escapeAttr(image.srcSet || '')}" sizes="${escapeAttr(image.sizes || '')}" loading="lazy" fetchpriority="low" decoding="async"${tail}>`;
+    const sized = (!readAttr(attrs, 'width') || !readAttr(attrs, 'height'))
+      ? ' width="800" height="450"'
+      : '';
+    return `<img src="${escapeAttr(image.src)}" srcset="${escapeAttr(image.srcSet || '')}" sizes="${escapeAttr(image.sizes || '')}" loading="lazy" fetchpriority="low" decoding="async"${sized}${tail}>`;
   });
 }

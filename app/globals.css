@@ -1048,6 +1048,20 @@ html.wow-fallback [data-clip-reveal] {
   line-height: 1.8;
 }
 
+.blog-post-article p {
+  margin-bottom: 1rem;
+}
+
+.blog-post-article a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.blog-post-article strong {
+  font-weight: 700;
+  color: #111827;
+}
+
 .blog-post-article :is(h2, h3, h4) {
   scroll-margin-top: 6.5rem;
   color: #02336E;
@@ -1125,7 +1139,12 @@ html.wow-fallback [data-clip-reveal] {
 }
 
 .blog-post-article img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto;
   border-radius: 1rem !important;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 .blog-faq-section {
@@ -1185,12 +1204,58 @@ html.wow-fallback [data-clip-reveal] {
   color: #4b5563;
 }
 
-.blog-toc-mobile > summary {
+.blog-toc-summary {
   list-style: none;
 }
 
-.blog-toc-mobile > summary::-webkit-details-marker {
+.blog-toc-summary::-webkit-details-marker {
   display: none;
+}
+
+@media (min-width: 1024px) {
+  .blog-toc-root .blog-toc-summary {
+    cursor: default;
+    pointer-events: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .blog-toc-root .blog-toc-chevron {
+    display: none;
+  }
+
+  .blog-toc-root .blog-toc-panel {
+    display: block;
+    border-top: 0;
+    max-height: 28rem;
+    overflow-y: auto;
+    padding: 0.5rem;
+  }
+}
+
+/* Below-the-fold blog blocks: skip style/layout until near the viewport. */
+.blog-below-fold,
+.blog-below-fold--cta,
+.blog-below-fold--related,
+.blog-post-article .blog-faq-section,
+.blog-post-article .faq-section {
+  content-visibility: auto;
+}
+
+.blog-below-fold {
+  contain-intrinsic-size: auto 1600px;
+}
+
+.blog-below-fold--cta {
+  contain-intrinsic-size: auto 420px;
+}
+
+.blog-below-fold--related {
+  contain-intrinsic-size: auto 360px;
+}
+
+.blog-post-article .blog-faq-section,
+.blog-post-article .faq-section {
+  contain-intrinsic-size: auto 520px;
 }
 
 .blog-post-article .faq-section {

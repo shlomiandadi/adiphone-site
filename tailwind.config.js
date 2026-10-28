@@ -51,7 +51,7 @@ module.exports = {
       },
     }
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  // Typography plugin lives in tailwind.prose.config.js + app/prose.css,
+  // imported only by pages that still use .prose (not the blog post template).
+  plugins: [],
 } 

@@ -22,46 +22,23 @@ function TocList({ headings }: { headings: BlogHeading[] }) {
   );
 }
 
-export default function BlogPostToc({
-  headings,
-  variant = 'all',
-}: {
-  headings: BlogHeading[];
-  variant?: 'mobile' | 'desktop' | 'all';
-}) {
+/** One TOC in the DOM. Mobile is a details accordion; lg+ is the sticky sidebar. */
+export default function BlogPostToc({ headings }: { headings: BlogHeading[] }) {
   if (headings.length === 0) return null;
 
-  const mobile = variant === 'mobile' || variant === 'all';
-  const desktop = variant === 'desktop' || variant === 'all';
-
   return (
-    <>
-      {mobile ? (
-        <details className="blog-toc-mobile mb-8 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm lg:hidden">
-          <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-semibold text-[#02336E]">
-            <span>תוכן עניינים</span>
-            <span className="blog-toc-chevron text-[#22DEFB]" aria-hidden>
-              ▾
-            </span>
-          </summary>
-          <div className="border-t border-gray-100 px-2 py-3">
-            <TocList headings={headings} />
-          </div>
-        </details>
-      ) : null}
-
-      {desktop ? (
-        <aside className="blog-toc-desktop hidden lg:block">
-          <div className="sticky top-24 w-64 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-            <p className="border-b border-gray-200 px-4 py-3 font-semibold text-[#02336E]">
-              תוכן עניינים
-            </p>
-            <div className="max-h-[28rem] overflow-y-auto p-2">
-              <TocList headings={headings} />
-            </div>
-          </div>
-        </aside>
-      ) : null}
-    </>
+    <aside className="blog-toc-root mx-auto mb-8 w-full max-w-[42rem] lg:mx-0 lg:mb-0 lg:w-64 lg:max-w-none lg:flex-shrink-0">
+      <details className="blog-toc overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm lg:sticky lg:top-24">
+        <summary className="blog-toc-summary flex cursor-pointer list-none items-center justify-between px-4 py-3 font-semibold text-[#02336E]">
+          <span>תוכן עניינים</span>
+          <span className="blog-toc-chevron text-[#22DEFB]" aria-hidden>
+            ▾
+          </span>
+        </summary>
+        <div className="blog-toc-panel border-t border-gray-100 px-2 py-3">
+          <TocList headings={headings} />
+        </div>
+      </details>
+    </aside>
   );
 }

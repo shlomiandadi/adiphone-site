@@ -1024,6 +1024,23 @@ html.wow-fallback [data-clip-reveal] {
   }
 }
 
+/* Blog hero: paint immediately. Do not inherit reveal/opacity/transition.
+   The LCP <img> is already downloaded; waiting on the article tree was
+   the render-delay. Isolate this box so style/layout of TOC + article
+   cannot hold the first paint. */
+.blog-post-hero,
+.blog-post-hero picture,
+.blog-post-hero img {
+  opacity: 1;
+  visibility: visible;
+  content-visibility: visible;
+  animation: none;
+  transition: none;
+}
+.blog-post-hero {
+  contain: layout paint;
+}
+
 /* Blog post template — scoped so other pages keep their prose rules */
 .blog-post-article {
   max-width: 42rem;

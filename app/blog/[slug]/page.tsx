@@ -203,7 +203,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   );
 
   const ogImage = post.ogImage || post.mainImage;
-  return mergeSeoAgentMetadata(`/blog/${post.slug}`, {
+  const metadata = mergeSeoAgentMetadata(`/blog/${post.slug}`, {
     title,
     description,
     keywords: post.tags?.join(', '),
@@ -236,6 +236,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       images: [ogImage],
     },
   });
+  // Next metadata has no first-class preconnect field; the page also emits
+  // <link rel="preconnect"> so App Router hoists it into <head>.
+  return metadata;
 }
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
@@ -272,57 +275,38 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 
   return (
     <main className="pt-24">
+      {picture ? (
+        <link rel="preconnect" href={SEO_AGENT_IMAGE_ORIGIN} crossOrigin="anonymous" />
+      ) : null}
       <SeoAgentPageExtras path={`/blog/${post.slug}`} />
       <BlogPostSchema post={post} />
-      {post.articleStyles && (
-        <style dangerouslySetInnerHTML={{ __html: post.articleStyles }} />
-      )}
       {/* Hero Section */}
-      <section className="relative h-[500px] flex items-center justify-center text-white overflow-hidden">
+      <section className="blog-post-hero relative h-[500px] flex items-center justify-center text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
           {picture ? (
-            <>
-              <link rel="preconnect" href={SEO_AGENT_IMAGE_ORIGIN} />
-              <link rel="preconnect" href={SEO_AGENT_IMAGE_ORIGIN} crossOrigin="anonymous" />
-              <link
-                rel="preload"
-                as="image"
-                type="image/avif"
-                href={picture.avif.srcSet ? undefined : picture.avif.src}
-                imageSrcSet={picture.avif.srcSet}
-                imageSizes={picture.avif.sizes}
-                fetchPriority="high"
-              />
-              <picture className="absolute inset-0">
-                <source type="image/avif" srcSet={picture.avif.srcSet} sizes={picture.avif.sizes} />
-                <img
-                  alt={post.title}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  src={picture.webp.src}
-                  srcSet={picture.webp.srcSet}
-                  sizes={picture.webp.sizes}
-                  loading={picture.webp.loading}
-                  fetchPriority={picture.webp.fetchPriority}
-                  decoding={picture.webp.decoding}
-                />
-              </picture>
-            </>
-          ) : heroImage ? (
-            <>
-              <link
-                rel="preload"
-                as="image"
-                href={heroImage.srcSet ? undefined : heroImage.src}
-                imageSrcSet={heroImage.srcSet}
-                imageSizes={heroImage.sizes}
-                fetchPriority="high"
-              />
+            <picture className="absolute inset-0">
+              <source type="image/avif" srcSet={picture.avif.srcSet} sizes={picture.avif.sizes} />
               <img
                 alt={post.title}
                 className="absolute inset-0 h-full w-full object-cover"
-                {...heroImage}
+                src={picture.webp.src}
+                srcSet={picture.webp.srcSet}
+                sizes={picture.webp.sizes}
+                width={1600}
+                height={900}
+                loading={picture.webp.loading}
+                fetchPriority={picture.webp.fetchPriority}
+                decoding={picture.webp.decoding}
               />
-            </>
+            </picture>
+          ) : heroImage ? (
+            <img
+              alt={post.title}
+              className="absolute inset-0 h-full w-full object-cover"
+              width={1600}
+              height={900}
+              {...heroImage}
+            />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-blue-600 to-purple-700" />
           )}
@@ -347,6 +331,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </div>
       </section>
+      {post.articleStyles && (
+        <style dangerouslySetInnerHTML={{ __html: post.articleStyles }} />
+      )}
 
       {/* Content Section */}
       <section className="py-16">

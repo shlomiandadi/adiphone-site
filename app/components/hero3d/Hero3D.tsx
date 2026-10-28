@@ -5,6 +5,7 @@ import Link from 'next/link';
 import HeroVisualLoader from '../HeroVisualLoader';
 import Hero3DScene from './Hero3DScene';
 import type { Hero3DProps } from './types';
+import './hero3d.css';
 
 function bindHeroMotion(root: HTMLElement, scene: HTMLElement, motion: MediaQueryList) {
   const narrow = window.matchMedia('(max-width: 767px)');

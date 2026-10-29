@@ -13,14 +13,14 @@ import {
 describe('verified social profiles', () => {
   test('organization sameAs is Facebook and Instagram only', () => {
     assert.deepEqual([...ORGANIZATION_SAME_AS], [SOCIAL_FACEBOOK, SOCIAL_INSTAGRAM]);
-    assert.ok(!ORGANIZATION_SAME_AS.includes(SOCIAL_LINKEDIN));
-    assert.ok(!ORGANIZATION_SAME_AS.includes(SOCIAL_X));
+    assert.ok(!(ORGANIZATION_SAME_AS as readonly string[]).includes(SOCIAL_LINKEDIN));
+    assert.ok(!(ORGANIZATION_SAME_AS as readonly string[]).includes(SOCIAL_X));
   });
 
   test('person sameAs is LinkedIn and X only', () => {
     assert.deepEqual([...PERSON_SAME_AS], [SOCIAL_LINKEDIN, SOCIAL_X]);
-    assert.ok(!PERSON_SAME_AS.includes(SOCIAL_FACEBOOK));
-    assert.ok(!PERSON_SAME_AS.includes(SOCIAL_INSTAGRAM));
+    assert.ok(!(PERSON_SAME_AS as readonly string[]).includes(SOCIAL_FACEBOOK));
+    assert.ok(!(PERSON_SAME_AS as readonly string[]).includes(SOCIAL_INSTAGRAM));
   });
 
   test('organizationSameAs keeps Google Maps, dedupes, and drops personal profiles', () => {

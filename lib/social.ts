@@ -17,7 +17,7 @@ export function organizationSameAs(...extra: Array<string | undefined | null>): 
   return Array.from(
     new Set([
       ...ORGANIZATION_SAME_AS,
-      ...extra.filter((url): url is string => Boolean(url) && !PERSON_ONLY.has(url)),
+      ...extra.filter((url): url is string => typeof url === 'string' && !PERSON_ONLY.has(url)),
     ])
   );
 }

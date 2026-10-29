@@ -5,7 +5,7 @@ export const SOCIAL_INSTAGRAM = 'https://www.instagram.com/topwebstack/';
 export const SOCIAL_LINKEDIN = 'https://www.linkedin.com/in/shlomi-malfuf-709961221/';
 export const SOCIAL_X = 'https://x.com/shlomiMalfuf';
 
-/** Organization / LocalBusiness / publisher sameAs — business profiles only. */
+/** Organization / LocalBusiness / publisher sameAs — Facebook + Instagram only. */
 export const ORGANIZATION_SAME_AS = [SOCIAL_FACEBOOK, SOCIAL_INSTAGRAM] as const;
 
 /** Person (founder / author) sameAs — personal profiles only. */

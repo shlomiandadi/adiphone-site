@@ -1,37 +1,10 @@
 import { MetadataRoute } from 'next';
 import { getSitemapSettings } from '../lib/cms/sitemap';
-import { LOCAL_WEBSITE_PAGE_PATHS } from '../lib/local-website-building';
+import staticLastmod from '../lib/static-lastmod.json';
+import { resolveStaticLastModified, STATIC_ROUTES } from '../lib/staticLastmod';
 import { getSiteUrl } from '../lib/seo';
 
 export const revalidate = 3600;
-
-/** Indexable static routes only (no noindex pages, no duplicate/redirect stubs). */
-const STATIC_ROUTES = [
-  '',
-  '/about',
-  '/services',
-  '/portfolio',
-  '/blog',
-  '/contact',
-  '/pricing',
-  '/privacy-policy',
-  '/accessibility-statement',
-  '/services/ai',
-  '/services/analytics',
-  '/services/cloud',
-  '/services/ecommerce',
-  '/services/mobile-apps',
-  '/services/ppc',
-  '/services/seo',
-  '/services/aeo-geo',
-  '/services/software-development',
-  '/services/ui-design',
-  '/services/web-development',
-  '/services/website-tadmit',
-  '/services/wordpress',
-  '/blog/kama-oleh-bniyat-atar-2026',
-  ...LOCAL_WEBSITE_PAGE_PATHS,
-];
 
 /** Slugs that 301 elsewhere — must not appear in sitemap. */
 const REDIRECTED_BLOG_SLUGS = new Set([
@@ -73,13 +46,6 @@ const REDIRECTED_BLOG_SLUGS = new Set([
   'svknvt-kydvm-atrym',
 ]);
 
-/**
- * Stable last-modified date for static informational routes.
- * Using `new Date()` here made every request emit a fresh lastmod, which Google
- * treats as an unreliable signal. Bump this when the static pages change.
- */
-const STATIC_LASTMOD = new Date('2026-10-14T00:00:00Z');
-
 function isExcluded(path: string, excludes: string[]) {
   return excludes.some((rule) => {
     if (!rule) return false;
@@ -105,12 +71,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticRoutes = (includePages ? STATIC_ROUTES : [])
     .filter((route) => !isExcluded(route || '/', excludes))
-    .map((route) => ({
-      url: `${baseUrl}${route}`,
-      lastModified: settings?.lastModified || STATIC_LASTMOD,
-      changeFrequency,
-      priority: route === '' ? 1 : defaultPriority,
-    }));
+    .map((route) => {
+      const lastModified = resolveStaticLastModified(route, staticLastmod);
+      return {
+        url: `${baseUrl}${route}`,
+        ...(lastModified ? { lastModified } : {}),
+        changeFrequency,
+        priority: route === '' ? 1 : defaultPriority,
+      };
+    });
 
   let blogRoutes: MetadataRoute.Sitemap = [];
   let portfolioRoutes: MetadataRoute.Sitemap = [];

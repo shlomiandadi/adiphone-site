@@ -3,8 +3,6 @@ const SOCIAL_LINKEDIN = 'https://www.linkedin.com/in/shlomi-malfuf-709961221/';
 const ORGANIZATION_SAME_AS = [
   'https://www.facebook.com/profile.php?id=61578707397365',
   'https://www.instagram.com/topwebstack/',
-  SOCIAL_LINKEDIN,
-  'https://x.com/shlomiMalfuf',
 ];
 const PERSON_SAME_AS = [SOCIAL_LINKEDIN, 'https://x.com/shlomiMalfuf'];
 
@@ -31,7 +29,6 @@ export const BLOG_AUTHOR = {
   worksFor: {
     '@type': 'Organization' as const,
     name: 'Top Webstak',
-    sameAs: [...ORGANIZATION_SAME_AS],
   },
 };
 

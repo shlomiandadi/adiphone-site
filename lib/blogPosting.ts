@@ -1,4 +1,10 @@
 const DEFAULT_SITE_URL = 'https://adi-phone.co.il';
+const SOCIAL_LINKEDIN = 'https://www.linkedin.com/in/shlomi-malfuf-709961221/';
+const ORGANIZATION_SAME_AS = [
+  'https://www.facebook.com/profile.php?id=61578707397365',
+  'https://www.instagram.com/topwebstack/',
+];
+const PERSON_SAME_AS = [SOCIAL_LINKEDIN, 'https://x.com/shlomiMalfuf'];
 
 /** Same default as getSiteUrl(), kept local so this module has no relative imports. */
 function siteUrl(): string {
@@ -18,7 +24,8 @@ function publisherLogo(base: string) {
 export const BLOG_AUTHOR = {
   '@type': 'Person' as const,
   name: 'שלומי',
-  url: 'https://www.linkedin.com/in/shlomi-malfuf-709961221/',
+  url: SOCIAL_LINKEDIN,
+  sameAs: [...PERSON_SAME_AS],
   worksFor: {
     '@type': 'Organization' as const,
     name: 'Top Webstak',
@@ -53,6 +60,7 @@ export function buildBlogPostingSchema(post: BlogPostingInput) {
       name: 'Top Webstak',
       url: base,
       logo: publisherLogo(base),
+      sameAs: [...ORGANIZATION_SAME_AS],
     },
     datePublished: post.createdAt,
     dateModified: post.updatedAt,

@@ -1,4 +1,5 @@
 import { absoluteUrl, organizationLogo } from './seo';
+import { ORGANIZATION_SAME_AS } from './social';
 
 export const AGENCY_PROVIDER = {
   '@type': 'ProfessionalService',
@@ -14,6 +15,7 @@ export const AGENCY_PROVIDER = {
     addressLocality: 'פרדס חנה-כרכור',
     addressCountry: 'IL',
   },
+  sameAs: ORGANIZATION_SAME_AS,
 } as const;
 
 export const DEFAULT_AREA_SERVED = [

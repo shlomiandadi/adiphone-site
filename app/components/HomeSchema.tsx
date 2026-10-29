@@ -1,5 +1,6 @@
 import { homeFaqItems } from '../data/homeFaq';
 import { organizationLogo } from '../../lib/seo';
+import { organizationSameAs } from '../../lib/social';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://adi-phone.co.il';
 const GOOGLE_MAPS_URL =
@@ -16,6 +17,7 @@ export default function HomeSchema() {
       url: siteUrl,
       logo: organizationLogo(siteUrl),
       description,
+      sameAs: organizationSameAs(GOOGLE_MAPS_URL),
     },
     {
       '@context': 'https://schema.org',
@@ -25,6 +27,7 @@ export default function HomeSchema() {
       url: siteUrl,
       logo: organizationLogo(siteUrl),
       description,
+      sameAs: organizationSameAs(GOOGLE_MAPS_URL),
     },
     {
       '@context': 'https://schema.org',
@@ -59,11 +62,7 @@ export default function HomeSchema() {
         addressCountry: 'IL',
       },
       hasMap: GOOGLE_MAPS_URL,
-      sameAs: [
-        'https://www.facebook.com/profile.php?id=61578707397365',
-        'https://www.linkedin.com/in/shlomi-malfuf-709961221/',
-        GOOGLE_MAPS_URL,
-      ],
+      sameAs: organizationSameAs(GOOGLE_MAPS_URL),
       areaServed: [
         'פרדס חנה-כרכור',
         'חדרה',

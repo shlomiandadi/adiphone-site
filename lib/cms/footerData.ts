@@ -1,3 +1,10 @@
+import {
+  SOCIAL_FACEBOOK,
+  SOCIAL_INSTAGRAM,
+  SOCIAL_LINKEDIN,
+  SOCIAL_X,
+} from '../social.ts';
+
 export type FooterLinkView = {
   id?: string;
   title: string;
@@ -76,7 +83,7 @@ export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
   { title: 'זמיר 95, פרדס חנה', url: '', icon: 'map-marker' },
   {
     title: 'Facebook',
-    url: 'https://www.facebook.com/profile.php?id=61578707397365',
+    url: SOCIAL_FACEBOOK,
     icon: 'facebook',
     openInNewTab: true,
   },
@@ -88,11 +95,43 @@ export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
   },
   {
     title: 'LinkedIn',
-    url: 'https://www.linkedin.com/in/shlomi-malfuf-709961221/',
+    url: SOCIAL_LINKEDIN,
     icon: 'linkedin',
     openInNewTab: true,
   },
+  {
+    title: 'Instagram',
+    url: SOCIAL_INSTAGRAM,
+    icon: 'instagram',
+    openInNewTab: true,
+  },
+  {
+    title: 'X',
+    url: SOCIAL_X,
+    icon: 'x',
+    openInNewTab: true,
+  },
 ];
+
+const REQUIRED_SOCIAL_LINKS = FOOTER_CONTACT_LINKS.filter((link) =>
+  ['facebook', 'instagram', 'linkedin', 'x'].includes(link.icon || '')
+);
+
+/** Ensure CMS footers still expose the verified public profiles. */
+export function withRequiredSocialLinks(data: FooterView): FooterView {
+  const index = data.columns.findIndex((column) => column.kind === 'contact');
+  if (index < 0) return data;
+  const column = data.columns[index];
+  const links = [...column.links];
+  for (const item of REQUIRED_SOCIAL_LINKS) {
+    if (!links.some((link) => link.url === item.url || link.icon === item.icon)) {
+      links.push(item);
+    }
+  }
+  const columns = [...data.columns];
+  columns[index] = { ...column, links };
+  return { ...data, columns };
+}
 
 export const BUSINESS_LEGAL_NAME = 'מלפוף עדי (עוסק פטור)';
 export const BUSINESS_TRADE_NAME = 'עדי פון תקשורת';

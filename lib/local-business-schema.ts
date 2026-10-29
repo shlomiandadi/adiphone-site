@@ -1,5 +1,6 @@
 import { GOOGLE_MAPS_REVIEWS_URL, GOOGLE_RATING } from './reviews';
 import { getSiteUrl, organizationLogo } from './seo';
+import { organizationSameAs } from './social';
 
 export const BUSINESS_NAME = 'Top Webstak בנייה וקידום אתרים';
 export const BUSINESS_ALTERNATE_NAME = 'עדי פון תקשורת';
@@ -73,11 +74,7 @@ export function buildLocalBusinessJsonLd(options: BuildOptions = {}) {
       addressCountry: 'IL',
     },
     hasMap: GOOGLE_MAPS_REVIEWS_URL,
-    sameAs: [
-      'https://www.facebook.com/profile.php?id=61578707397365',
-      'https://www.linkedin.com/in/shlomi-malfuf-709961221/',
-      GOOGLE_MAPS_REVIEWS_URL,
-    ],
+    sameAs: organizationSameAs(GOOGLE_MAPS_REVIEWS_URL),
     areaServed: areas.map((name) => ({
       '@type': name === 'השרון' || name === 'הצפון' || name === 'חיפה והקריות' ? 'AdministrativeArea' : 'City',
       name,

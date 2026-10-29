@@ -1,4 +1,5 @@
 import { organizationLogo } from '../../lib/seo';
+import { ORGANIZATION_SAME_AS, PERSON_SAME_AS, SOCIAL_LINKEDIN } from '../../lib/social';
 
 interface BlogSchemaProps {
   posts: Array<{
@@ -26,7 +27,8 @@ export default function BlogSchema({ posts }: BlogSchemaProps) {
       "@type": "Organization",
       "name": "Top Webstak",
       "url": "https://adi-phone.co.il",
-      "logo": organizationLogo()
+      "logo": organizationLogo(),
+      "sameAs": [...ORGANIZATION_SAME_AS]
     },
     "blogPost": posts.map(post => ({
       "@type": "BlogPosting",
@@ -36,13 +38,15 @@ export default function BlogSchema({ posts }: BlogSchemaProps) {
       "author": {
         "@type": "Person",
         "name": "שלומי",
-        "url": "https://www.linkedin.com/in/shlomi-malfuf-709961221/"
+        "url": SOCIAL_LINKEDIN,
+        "sameAs": [...PERSON_SAME_AS]
       },
       "publisher": {
         "@type": "Organization",
         "name": "Top Webstak",
         "url": "https://adi-phone.co.il",
-        "logo": organizationLogo()
+        "logo": organizationLogo(),
+        "sameAs": [...ORGANIZATION_SAME_AS]
       },
       "datePublished": post.createdAt,
       "dateModified": post.updatedAt,

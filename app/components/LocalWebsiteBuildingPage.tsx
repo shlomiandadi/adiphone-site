@@ -270,6 +270,44 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
 
       <Testimonials />
 
+      {content.neighborhoods && (
+        <section data-reveal className="bg-gray-50 px-4 py-16">
+          <div className="container mx-auto max-w-5xl text-right">
+            <h2 className="mb-8 text-3xl font-bold text-gray-900">
+              {content.neighborhoods.title || 'שכונות ואזורים שאנו משרתים'}
+            </h2>
+            <div className="mb-8 flex flex-wrap gap-3">
+              {content.neighborhoods.places.map((place) => (
+                <span key={place} className="rounded-full bg-white px-4 py-2 text-gray-800 shadow-sm">
+                  {place}
+                </span>
+              ))}
+            </div>
+            {content.neighborhoods.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 48)} className="mb-4 text-lg leading-relaxed text-gray-700">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {content.localExamples && (
+        <section data-reveal className="px-4 py-16">
+          <div className="container mx-auto max-w-3xl text-right">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.localExamples.title}</h2>
+            {content.localExamples.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 48)} className="mb-4 text-lg leading-relaxed text-gray-700">
+                {paragraph}
+              </p>
+            ))}
+            <Link href={content.localExamples.href} className="text-lg font-semibold text-blue-700 underline">
+              {content.localExamples.label}
+            </Link>
+          </div>
+        </section>
+      )}
+
       <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="mb-6 text-3xl font-bold text-gray-900">בניית אתרים לפי אזור</h2>

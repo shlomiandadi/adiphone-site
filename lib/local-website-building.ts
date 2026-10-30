@@ -40,6 +40,17 @@ export type LocalCityContent = {
     paragraphs: string[];
     links: { href: string; label: string }[];
   };
+  neighborhoods?: {
+    title?: string;
+    places: string[];
+    paragraphs: string[];
+  };
+  localExamples?: {
+    title: string;
+    paragraphs: string[];
+    href: string;
+    label: string;
+  };
   faq: LocalFaqItem[];
   ctaTitle: string;
   ctaText: string;

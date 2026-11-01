@@ -28,7 +28,11 @@ const AI_SLUGS = new Set([
 const WEBSITE_SLUGS = new Set([
   'kama-oleh-bniyat-atar-2026',
   'mvmchh-vvrdprs',
+  'bnyyt-atrym-laskym-ktnym',
 ]);
+
+const PPC_SLUGS = new Set(['nyhvl-kmpyyn-mmvmn']);
+const CLOUD_SLUGS = new Set(['ptrvnvt-bann', 'ptrvnvt-cloud-abtchh-v-devops', 'shyrvty-ann-laskym']);
 
 function looksSeo(category: string) {
   return /seo|קידום/i.test(category);
@@ -52,16 +56,31 @@ export function relatedArticleLinks(slug: string, category = ''): RelatedLink[] 
     }
   };
 
-  if (SEO_SLUGS.has(slug) || looksSeo(category)) pushAll(SEO_GUIDES);
+  if (SEO_SLUGS.has(slug) || looksSeo(category)) {
+    pushAll([...SEO_GUIDES, { href: '/services/aeo-geo', label: 'קידום במנועי AI (AEO ו-GEO)' }]);
+  }
   if (AI_SLUGS.has(slug) || looksAi(category)) pushAll(AI_GUIDES);
   if (WEBSITE_SLUGS.has(slug) || looksWebsite(category)) {
     pushAll([
       { href: '/services/website-tadmit', label: 'אתרי תדמית לעסקים' },
       { href: '/services/web-development', label: 'בניית אתרים' },
+      { href: '/services/bniyat-atarim-haifa', label: 'בניית אתרים בחיפה' },
+      { href: '/services/bniyat-atarim-hadera', label: 'בניית אתרים בחדרה' },
     ]);
   }
-
-  return links.slice(0, 4);
+  if (PPC_SLUGS.has(slug)) {
+    pushAll([
+      { href: '/services/ppc', label: 'קמפיינים ממומנים' },
+      { href: '/services/aeo-geo', label: 'קידום במנועי AI' },
+    ]);
+  }
+  if (CLOUD_SLUGS.has(slug)) {
+    pushAll([
+      { href: '/services/cloud', label: 'שירותי ענן' },
+      { href: '/services/aeo-geo', label: 'קידום במנועי AI' },
+    ]);
+  }
+  return links.slice(0, 6);
 }
 
 export const FEATURED_HOME_POSTS: RelatedLink[] = [

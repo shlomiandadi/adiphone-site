@@ -43,18 +43,16 @@ export default function ServiceAreas({
             </li>
           ))}
         </ul>
-        {extras.length > 0 ? (
-          <p className="mt-8 text-center text-lg text-gray-700 dark:text-gray-300">
-            {extras.map((item, index) => (
-              <span key={item.href}>
-                {index > 0 ? ' · ' : null}
-                <Link href={item.href} className="font-semibold text-blue-700 underline dark:text-blue-400">
-                  {item.name}
-                </Link>
-              </span>
-            ))}
-          </p>
-        ) : null}
+        <p className="mt-8 text-center text-lg text-gray-700 dark:text-gray-300">
+          {[...cities, ...extras].map((item, index) => (
+            <span key={`text-${item.href}`}>
+              {index > 0 ? ' · ' : null}
+              <Link href={item.href} className="font-semibold text-blue-700 underline dark:text-blue-400">
+                {item.name}
+              </Link>
+            </span>
+          ))}
+        </p>
       </div>
     </section>
   );

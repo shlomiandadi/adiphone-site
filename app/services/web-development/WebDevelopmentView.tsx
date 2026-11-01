@@ -61,7 +61,7 @@ export default function WebDevelopmentView({ projects }: Props) {
       ]}
       localLinksHeading="בניית אתרים באזור"
       localLinks={LOCAL_WEBSITE_PAGES.map((city) => ({
-        name: city.name,
+        name: `בניית אתרים ב${city.name}`,
         path: city.path,
       }))}
       description={(
@@ -69,7 +69,13 @@ export default function WebDevelopmentView({ projects }: Props) {
           <h2><strong>בניית אתרים: האתר שלכם הוא לא כרטיס ביקור – הוא המשרד, חלון הראווה והמוכרן הראשי שלכם</strong></h2>
           <p>בעידן הדיגיטלי, אתר אינטרנט הוא הרבה יותר מכתובת שמופיעה על כרטיס ביקור. הוא המרכז העצבי של כל הפעילות השיווקית והעסקית שלכם. זה המקום הראשון שלקוחות פוטנציאליים פוגשים אתכם, המקום בו הם לומדים עליכם, בונים אמון, ובסופו של דבר, מקבלים החלטה האם לעשות אתכם עסקים. אתר אינטרנט שלא בנוי כהלכה – אתר איטי, לא מאובטח, או שלא מותאם למובייל – לא רק שלא עוזר לעסק, הוא פוגע בו באופן אקטיבי.</p>
           <p>ב-Top Webstak, אנו ניגשים לכל פרויקט של בניית אתר כאל בניית נכס דיגיטלי אסטרטגי. אנו משלבים <a href="/services/ui-design"><strong>עיצוב UI/UX</strong></a> מרהיב עם הנדסה טכנולוגית בלתי מתפשרת, כדי ליצור אתרים שהם לא רק יפים למראה, אלא מהווים מכונה עסקית משומנת היטב.</p>
-          <p>אנחנו בונים אתרים לעסקים בכל אזור השרון והצפון, כולל <a href="/services/bniyat-atarim-hadera">בניית אתרים בחדרה</a>, <a href="/services/bniyat-atarim-haifa">בניית אתרים בחיפה</a>, <a href="/services/bniyat-atarim-netanya">בניית אתרים בנתניה</a>, <a href="/services/bniyat-atarim-pardes-hana">בניית אתרים בפרדס חנה</a>, <a href="/services/bniyat-atarim-caesarea">בניית אתרים בקיסריה</a> ו<a href="/services/bniyat-atarim-zichron-yaakov">בניית אתרים בזכרון יעקב</a>. לפירוט על אתר שמציג את העסק ומביא פניות ראו <a href="/services/website-tadmit">אתרי תדמית</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.</p>
+          <p>אנחנו בונים אתרים לעסקים בכל אזור השרון והצפון, כולל {LOCAL_WEBSITE_PAGES.map((city, index) => (
+            <span key={city.path}>
+              {index > 0 ? (index === LOCAL_WEBSITE_PAGES.length - 1 ? ' ו' : ', ') : null}
+              <a href={city.path}>{`בניית אתרים ב${city.name}`}</a>
+            </span>
+          ))}
+          . לפירוט על אתר שמציג את העסק ומביא פניות ראו <a href="/services/website-tadmit">אתרי תדמית</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.</p>
           <h2><strong>מהו פיתוח אתרים מקצועי, ומה ההבדל בין אתר &quot;חובבני&quot; לאתר מנצח?</strong></h2>
           <p>בניית אתר היא תהליך הנדסי של הפיכת עיצוב גרפי למערכת חיה, פונקציונלית ואינטראקטיבית. בעוד שכל אחד יכול &quot;לגרור ולשחרר&quot; אלמנטים בפלטפורמה כזו או אחרת, פיתוח מקצועי מתמקד ביסודות הבלתי נראים שקובעים את הצלחת האתר:</p>
           <ul>

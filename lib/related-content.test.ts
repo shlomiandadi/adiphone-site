@@ -14,4 +14,10 @@ describe('relatedArticleLinks', () => {
     assert.ok(hrefs.includes('/blog/ptrvnvt-bynh-mlakvtyt'));
     assert.ok(hrefs.includes('/services/aeo-geo'));
   });
+
+  test('small-business website post points at tadmit and a city page', () => {
+    const hrefs = relatedArticleLinks('bnyyt-atrym-laskym-ktnym', 'בניית אתרים').map((item) => item.href);
+    assert.ok(hrefs.includes('/services/website-tadmit'));
+    assert.ok(hrefs.includes('/services/bniyat-atarim-haifa'));
+  });
 });

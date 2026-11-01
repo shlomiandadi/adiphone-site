@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import { getSitemapSettings } from '../lib/cms/sitemap';
 import staticLastmod from '../lib/static-lastmod.json';
 import { resolveStaticLastModified, STATIC_ROUTES } from '../lib/staticLastmod';
+import { mergeRequiredSitemapUrls } from '../lib/sitemapRequired';
 import { getSiteUrl } from '../lib/seo';
 
 export const revalidate = 3600;
@@ -156,5 +157,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.warn('Could not fetch dynamic routes for sitemap:', error);
   }
 
-  return [...staticRoutes, ...blogRoutes, ...portfolioRoutes, ...categoryRoutes];
+  return mergeRequiredSitemapUrls(
+    [...staticRoutes, ...blogRoutes, ...portfolioRoutes, ...categoryRoutes],
+    baseUrl,
+    staticLastmod,
+    changeFrequency
+  );
 }

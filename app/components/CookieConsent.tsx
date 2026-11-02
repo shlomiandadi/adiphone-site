@@ -200,7 +200,7 @@ export default function CookieConsent() {
                   התאמה אישית
                 </button>
                 <button
-                  className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
+                  className="px-4 py-2 rounded-lg bg-green-700 text-white hover:bg-green-700"
                   onClick={() =>
                     persistAndClose({ necessary: true, analytics: true, marketing: true, functional: true })
                   }

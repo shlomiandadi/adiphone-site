@@ -22,6 +22,10 @@ const homeMetadata: Metadata = {
     'בניית אתרים, קידום בגוגל (SEO), קמפיינים ממומנים וקידום במנועי AI לעסקים. סוכנות דיגיטל מפרדס חנה. ייעוץ חינם: 050-9159951.',
 };
 
+// Public homepage: ISR so origin HTML is not rebuilt on every Lighthouse/cold hit.
+// CMS/admin writes already call revalidatePath('/'); 600s is the fallback window.
+export const revalidate = 600;
+
 export const generateMetadata = createSeoAgentGenerateMetadata('/', homeMetadata);
 
 export default function Home() {

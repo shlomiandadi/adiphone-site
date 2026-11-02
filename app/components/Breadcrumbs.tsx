@@ -15,7 +15,7 @@ export default function Breadcrumbs() {
   const rest = homeIsFirst ? trail.slice(1) : trail;
 
   return (
-    <nav className="py-4" aria-label="Breadcrumb">
+    <nav className="min-h-[3.25rem] py-4" aria-label="Breadcrumb">
       <ol className="inline-flex items-center space-x-2 rtl:space-x-reverse text-sm md:text-base">
         <li>
           <Link

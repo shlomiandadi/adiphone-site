@@ -25,6 +25,7 @@ const heebo = Heebo({
   weight: ['300', '400', '500', '700', '900'],
   display: 'swap',
   adjustFontFallback: true,
+  fallback: ['Arial', 'Helvetica Neue', 'sans-serif'],
   preload: true,
   variable: '--font-heebo',
 });

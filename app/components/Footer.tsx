@@ -130,6 +130,7 @@ function ContactColumn({ title, links }: { title: string; links: FooterLinkView[
               rel="noopener noreferrer me"
               aria-label={label}
             >
+              <span className="sr-only">{label}</span>
               <SocialSvg name={icon} />
             </a>
           );

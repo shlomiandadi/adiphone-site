@@ -172,7 +172,7 @@ export default function LeadForm({ formName, className = '', compact = false }: 
       <div className="space-y-3">
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
           בשליחת הטופס אני מאשר/ת את{' '}
-          <a href="/privacy-policy" className="text-blue-600 hover:underline">
+          <a href="/privacy-policy" className="text-blue-600 underline">
             מדיניות הפרטיות
           </a>
         </p>

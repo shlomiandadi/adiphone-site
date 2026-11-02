@@ -35,7 +35,7 @@ export default function HomeFAQ() {
                 >
                   <span className="text-lg font-semibold text-gray-900">{item.question}</span>
                   <span
-                    className={`flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center transition-transform duration-200 ${
+                    className={`flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center transition-transform duration-200 ${
                       isOpen ? 'rotate-180' : ''
                     }`}
                     aria-hidden="true"

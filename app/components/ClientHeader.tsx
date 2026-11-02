@@ -69,6 +69,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
   const [activeIndex, setActiveIndex] = useState(-1);
   const searchRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const menuOverlayRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
@@ -175,6 +176,11 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
   useEffect(() => {
     if (typeof window === 'undefined') return;
     document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    const overlay = menuOverlayRef.current;
+    if (overlay) {
+      if (isMenuOpen) overlay.removeAttribute('inert');
+      else overlay.setAttribute('inert', '');
+    }
     return () => {
       document.body.style.overflow = '';
     };
@@ -506,8 +512,10 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
       </header>
 
       <div
+        ref={menuOverlayRef}
         className={`fixed inset-0 z-[60] lg:hidden ${isMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
         aria-hidden={!isMenuOpen}
+        {...(!isMenuOpen ? { inert: true } : {})}
       >
         <button
           type="button"
@@ -524,7 +532,6 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
           role="dialog"
           aria-modal="true"
           aria-label="תפריט נייד"
-          inert={!isMenuOpen ? true : undefined}
           className={`mobile-drawer absolute inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl overflow-y-auto transition-transform duration-300 ${
             isMenuOpen ? 'mobile-drawer-open' : ''
           }`}

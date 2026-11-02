@@ -52,6 +52,15 @@
   z-index: 2;
 }
 
+/* Reserve copy height so Heebo swap / late hero hydration cannot shift layout. */
+.h3d-copy h1 {
+  min-height: 2.25em;
+}
+
+.h3d-copy > p {
+  min-height: 1.5em;
+}
+
 .h3d-laptop,
 .h3d-phone,
 .h3d-float,

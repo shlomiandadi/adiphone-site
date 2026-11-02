@@ -129,7 +129,7 @@ export default function Blog() {
               </div>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">
+                  <span className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
                     {post.category}
                   </span>
                   <span className="text-gray-500 text-sm">{formatDate(post.createdAt)}</span>

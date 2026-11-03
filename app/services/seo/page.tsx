@@ -109,8 +109,8 @@ export default async function SeoServicePage() {
 
       <Hero3D
         theme="seo"
-        title="קידום אתרים אורגני (SEO) לעסקים"
-        subtitle="קידום אורגני (SEO) מקצועי שמביא לעסק שלכם תנועה איכותית ולקוחות מגוגל – לאורך זמן."
+        title="קידום אתרים ושירותי SEO לעסקים"
+        subtitle="שירותי SEO וקידום אורגני מקצועי שמביאים לעסק שלכם תנועה איכותית ולקוחות מגוגל – לאורך זמן."
         align="center"
         ctas={[
           { href: `tel:${PHONE_TEL}`, label: `חייגו: ${PHONE_DISPLAY}` },

@@ -145,12 +145,9 @@ function Scene({ theme }: { theme: NicheHeroTheme }) {
 export default function NicheHero({ theme, title, subtitle, eyebrow, ctas }: Props) {
   return (
     <header className={`nh-stage nh-theme-${theme}`}>
-      <div className="nh-visual" aria-hidden="true">
-        <Scene theme={theme} />
-      </div>
-      <div className="nh-content">
-        <div className="container mx-auto px-4">
-          <div className="nh-copy max-w-2xl text-white">
+      <div className="container mx-auto px-4">
+        <div className="nh-shell">
+          <div className="nh-copy text-white">
             {eyebrow ? <p className="mb-3 text-sm font-semibold tracking-wide text-sky-300">{eyebrow}</p> : null}
             <h1 className="mb-4 text-4xl font-bold md:text-5xl">{title}</h1>
             <p className="mb-8 text-xl text-white/90 md:text-2xl">{subtitle}</p>
@@ -175,6 +172,9 @@ export default function NicheHero({ theme, title, subtitle, eyebrow, ctas }: Pro
                 );
               })}
             </div>
+          </div>
+          <div className="nh-visual" aria-hidden="true">
+            <Scene theme={theme} />
           </div>
         </div>
       </div>

@@ -2,35 +2,18 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 32rem;
   background:
     radial-gradient(1200px 600px at 80% 20%, rgba(56, 189, 248, 0.22), transparent 55%),
     radial-gradient(900px 500px at 10% 80%, rgba(37, 99, 235, 0.28), transparent 50%),
     linear-gradient(135deg, #071433 0%, #1e3a8a 42%, #2563eb 72%, #0b1f4d 100%);
 }
 
-.nh-visual {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  perspective: 1400px;
-}
-
-.nh-content {
-  position: relative;
-  z-index: 10;
-  display: flex;
+.nh-shell {
+  display: grid;
+  grid-template-columns: 1fr;
   align-items: center;
-  min-height: 32rem;
-  padding-block: 7.5rem 4rem;
-}
-
-@supports (min-height: 100svh) {
-  .nh-stage,
-  .nh-content {
-    min-height: max(32rem, 72svh);
-  }
+  gap: 1.5rem;
+  padding-block: 6.25rem 2.25rem;
 }
 
 .nh-copy h1 {
@@ -41,60 +24,71 @@
   min-height: 1.5em;
 }
 
+.nh-visual {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 18.5rem;
+  max-width: 22.5rem;
+  margin-inline: auto;
+  perspective: 1200px;
+  overflow: hidden;
+}
+
 .nh-scene {
   position: absolute;
-  inset-inline-end: 2%;
-  top: 54%;
-  width: min(28rem, 48vw);
-  height: min(22rem, 52vh);
-  transform: translateY(-50%) rotateX(12deg) rotateY(-18deg);
+  inset: 8% 7%;
+  transform: rotateX(8deg);
   transform-style: preserve-3d;
 }
 
 .nh-card,
 .nh-back {
   position: absolute;
-  border-radius: 1rem;
+  border-radius: 1.1rem;
   transform-style: preserve-3d;
-  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.28);
 }
 
 .nh-back {
-  inset: 8% 10% auto;
-  height: 62%;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.18), rgba(56, 189, 248, 0.12));
-  transform: translateZ(-28px) rotateY(10deg);
+  inset: 6% 8% auto;
+  height: 68%;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.34), rgba(56, 189, 248, 0.2));
+  box-shadow: 0 24px 48px rgba(2, 6, 23, 0.42);
+  transform: translateZ(-32px) rotateY(8deg);
 }
 
 .nh-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(15, 23, 42, 0.35));
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.78), rgba(7, 20, 51, 0.9));
+  border: 1px solid rgba(186, 230, 253, 0.42);
+  box-shadow:
+    0 22px 40px rgba(2, 6, 23, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
   color: #fff;
-  padding: 0.85rem 1rem;
+  padding: 0.95rem 1.05rem;
 }
 
 .nh-card-a {
-  inset-inline-start: 6%;
+  inset-inline-start: 4%;
   top: 8%;
-  width: 68%;
-  height: 52%;
-  transform: translateZ(36px);
+  width: 72%;
+  height: 58%;
+  transform: translateZ(28px);
 }
 
 .nh-card-b {
-  inset-inline-start: 28%;
-  top: 42%;
-  width: 58%;
-  height: 38%;
-  transform: translateZ(18px) rotateY(-8deg);
+  inset-inline-start: 26%;
+  top: 48%;
+  width: 64%;
+  height: 40%;
+  transform: translateZ(14px) rotateY(-6deg);
 }
 
 .nh-card-c {
-  inset-inline-end: 4%;
-  top: 0;
-  width: 38%;
-  min-height: 5.5rem;
-  transform: translateZ(48px);
+  inset-inline-end: 2%;
+  top: 2%;
+  width: 42%;
+  min-height: 5.75rem;
+  transform: translateZ(40px);
 }
 
 .nh-label {
@@ -102,13 +96,13 @@
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  opacity: 0.85;
+  color: #bae6fd;
 }
 
 .nh-title {
   display: block;
   margin-block-start: 0.25rem;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 
@@ -130,7 +124,7 @@
 .nh-bars span {
   flex: 1;
   border-radius: 0.3rem 0.3rem 0 0;
-  background: rgba(125, 211, 252, 0.85);
+  background: #7dd3fc;
 }
 
 .nh-bars .b1 { height: 42%; }
@@ -149,11 +143,11 @@
   display: block;
   height: 0.55rem;
   border-radius: 0.2rem;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .nh-cal i.on {
-  background: rgba(125, 211, 252, 0.85);
+  background: #7dd3fc;
 }
 
 .nh-docs {
@@ -167,50 +161,62 @@
   display: block;
   height: 0.4rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(186, 230, 253, 0.45);
 }
 
 .nh-docs i:nth-child(2) { width: 78%; }
 .nh-docs i:nth-child(3) { width: 62%; }
 
-@media (max-width: 767px) {
+@media (min-width: 768px) {
+  .nh-shell {
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 1fr);
+    gap: 2.5rem;
+    min-height: 34rem;
+    padding-block: 7.5rem 4rem;
+    align-items: center;
+  }
+
+  .nh-visual {
+    max-width: none;
+    height: 28rem;
+  }
+
   .nh-scene {
-    width: min(13.5rem, 46vw);
-    height: 11rem;
-    inset-inline-end: 4%;
-    top: auto;
-    bottom: 1.25rem;
-    transform: none;
-    opacity: 0.4;
+    inset: 4% 2%;
+    transform: rotateX(12deg) rotateY(-16deg);
   }
 
-  .nh-copy {
-    max-width: 100%;
+  .nh-card-a {
+    width: 70%;
+    height: 60%;
   }
 
-  .nh-copy h1,
-  .nh-copy > p {
-    text-shadow: 0 1px 12px rgba(7, 20, 51, 0.45);
+  .nh-card-b {
+    width: 62%;
+    height: 42%;
   }
 
-  .nh-stage,
-  .nh-content {
-    min-height: 28rem;
+  .nh-card-c {
+    width: 40%;
+    min-height: 6.5rem;
   }
 
-  .nh-content {
-    padding-block: 6.25rem 7.5rem;
+  .nh-title {
+    font-size: 1.2rem;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .nh-card-a,
-  .nh-card-c {
-    animation: nh-float 7s ease-in-out infinite;
+  .nh-card-a {
+    animation: nh-float-a 7s ease-in-out infinite;
   }
 
   .nh-card-b {
-    animation: nh-float 8.5s ease-in-out infinite reverse;
+    animation: nh-float-b 8.5s ease-in-out infinite;
+  }
+
+  .nh-card-c {
+    animation: nh-float-c 7.5s ease-in-out infinite;
   }
 }
 
@@ -222,40 +228,32 @@
   }
 }
 
-@keyframes nh-float {
+@keyframes nh-float-a {
   0%,
   100% {
-    transform: translate3d(0, 0, 36px);
+    transform: translate3d(0, 0, 28px);
   }
   50% {
-    transform: translate3d(0, -8px, 36px);
+    transform: translate3d(0, -8px, 28px);
   }
-}
-
-.nh-card-b {
-  animation-name: nh-float-b;
 }
 
 @keyframes nh-float-b {
   0%,
   100% {
-    transform: translate3d(0, 0, 18px) rotateY(-8deg);
+    transform: translate3d(0, 0, 14px) rotateY(-6deg);
   }
   50% {
-    transform: translate3d(0, -6px, 18px) rotateY(-8deg);
+    transform: translate3d(0, -6px, 14px) rotateY(-6deg);
   }
-}
-
-.nh-card-c {
-  animation-name: nh-float-c;
 }
 
 @keyframes nh-float-c {
   0%,
   100% {
-    transform: translate3d(0, 0, 48px);
+    transform: translate3d(0, 0, 40px);
   }
   50% {
-    transform: translate3d(0, -10px, 48px);
+    transform: translate3d(0, -10px, 40px);
   }
 }

@@ -65,7 +65,32 @@ describe('next.config header scoping', () => {
     const pageLike = rules.filter(
       (rule) => rule.source === '/:path*' || rule.source === '/:path+'
     );
-    assert.equal(pageLike.length, 0);
+    for (const rule of pageLike) {
+      const cache = rule.headers.filter((header) =>
+        /cache-control/i.test(header.key)
+      );
+      assert.equal(cache.length, 0, `${rule.source} must not set cache headers`);
+      assert.equal(
+        rule.headers.find((header) => header.key === 'Cross-Origin-Opener-Policy')?.value,
+        'same-origin-allow-popups'
+      );
+      assert.match(
+        rule.headers.find((header) => header.key === 'Strict-Transport-Security')?.value || '',
+        /^max-age=31536000; includeSubDomains$/
+      );
+      assert.doesNotMatch(
+        rule.headers.find((header) => header.key === 'Strict-Transport-Security')?.value || '',
+        /preload/i
+      );
+      assert.match(
+        rule.headers.find((header) => header.key === 'Content-Security-Policy-Report-Only')?.value || '',
+        /googletagmanager/
+      );
+      assert.equal(
+        rule.headers.find((header) => header.key === 'Content-Security-Policy'),
+        undefined
+      );
+    }
 
     const home = bySource.get('/') || [];
     assert.match(

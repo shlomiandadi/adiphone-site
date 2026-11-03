@@ -60,11 +60,28 @@ const nextConfig = {
       { key: 'Netlify-CDN-Cache-Control', value: 'public, max-age=31536000, immutable, durable' },
       { key: 'Netlify-Vary', value: 'query' },
     ];
+    // netlify.toml [[headers]] already sets these on static files. Next.js
+    // HTML from @netlify/plugin-nextjs does not inherit that block, so the
+    // same security values are applied here (no cache keys — do not widen TTL).
+    const documentSecurity = [
+      { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
+      { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
+      {
+        key: 'Content-Security-Policy-Report-Only',
+        value:
+          "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://www.gstatic.com https://connect.facebook.net https://analytics.ahrefs.com https://tag.netlify.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com https://www.gstatic.com; img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com https://www.google.co.il https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.facebook.com https://connect.facebook.net https://*.facebook.com https://res.cloudinary.com https://images.unsplash.com https://analytics.ahrefs.com https://seo-agent-tools.netlify.app https://app.netlify.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://stats.g.doubleclick.net https://www.facebook.com https://connect.facebook.net https://graph.facebook.com https://*.facebook.com https://analytics.ahrefs.com https://res.cloudinary.com https://images.unsplash.com https://*.netlify.app https://*.netlify.com https://app.netlify.com https://tag.netlify.com https://adi-phone.co.il https://www.adi-phone.co.il https://seo.adi-phone.co.il https://leads.adi-phone.co.il https://wa.me https://api.whatsapp.com; frame-src 'self' https://www.googletagmanager.com https://www.google.com https://maps.google.com https://www.google.com/maps https://td.doubleclick.net https://rd.doubleclick.net https://www.facebook.com https://bid.g.doubleclick.net https://app.netlify.com https://tag.netlify.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://www.facebook.com https://wa.me; frame-ancestors 'none'",
+      },
+    ];
     return [
+      {
+        source: '/:path*',
+        headers: documentSecurity,
+      },
       {
         source: '/',
         headers: [
           { key: 'Netlify-CDN-Cache-Control', value: 'public, durable, s-maxage=31536000, stale-while-revalidate=31536000' },
+          ...documentSecurity,
         ],
       },
       {

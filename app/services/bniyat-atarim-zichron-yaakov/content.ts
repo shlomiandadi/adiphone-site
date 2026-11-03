@@ -1,4 +1,4 @@
-import type { LocalCityContent } from '../../../lib/local-website-building';
+import { REGIONAL_PORTFOLIO_INTRO, type LocalCityContent } from '../../../lib/local-website-building';
 
 export const zichronContent: LocalCityContent = {
   path: '/services/bniyat-atarim-zichron-yaakov',
@@ -90,9 +90,7 @@ export const zichronContent: LocalCityContent = {
   },
   localExamples: {
     title: 'פרויקטים מהאזור',
-    paragraphs: [
-      'בתיק העבודות באתר אין כרגע פרויקט שמשויך במפורש לזכרון יעקב. לא נציין יקב או מסעדה שלא מופיעים בפורטפוליו. דוגמאות אתרים שבנינו נמצאות בתיק העבודות.',
-    ],
+    paragraphs: [REGIONAL_PORTFOLIO_INTRO],
     href: '/portfolio',
     label: 'לתיק העבודות',
   },

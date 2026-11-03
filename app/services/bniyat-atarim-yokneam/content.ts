@@ -1,4 +1,4 @@
-import type { LocalCityContent } from '../../../lib/local-website-building';
+import { REGIONAL_PORTFOLIO_INTRO, type LocalCityContent } from '../../../lib/local-website-building';
 
 export const yokneamContent: LocalCityContent = {
   path: '/services/bniyat-atarim-yokneam',
@@ -92,9 +92,7 @@ export const yokneamContent: LocalCityContent = {
   },
   localExamples: {
     title: 'פרויקטים מהאזור',
-    paragraphs: [
-      'בתיק העבודות באתר אין כרגע פרויקט שמשויך במפורש ליוקנעם או לפארק התעשייה. לא נציין חברה מהפארק שלא מופיעה בפורטפוליו. דוגמאות אתרים שבנינו נמצאות בתיק העבודות.',
-    ],
+    paragraphs: [REGIONAL_PORTFOLIO_INTRO],
     href: '/portfolio',
     label: 'לתיק העבודות',
   },

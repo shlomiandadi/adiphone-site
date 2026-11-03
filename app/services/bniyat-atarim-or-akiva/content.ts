@@ -1,4 +1,4 @@
-import type { LocalCityContent } from '../../../lib/local-website-building';
+import { REGIONAL_PORTFOLIO_INTRO, type LocalCityContent } from '../../../lib/local-website-building';
 
 export const orAkivaContent: LocalCityContent = {
   path: '/services/bniyat-atarim-or-akiva',
@@ -92,9 +92,7 @@ export const orAkivaContent: LocalCityContent = {
   },
   localExamples: {
     title: 'פרויקטים מהאזור',
-    paragraphs: [
-      'בתיק העבודות באתר אין כרגע פרויקט שמשויך במפורש לאור עקיבא. לא נמציא לקוח מקומי. דוגמאות אתרים שבנינו מופיעות בפורטפוליו.',
-    ],
+    paragraphs: [REGIONAL_PORTFOLIO_INTRO],
     href: '/portfolio',
     label: 'לתיק העבודות',
   },

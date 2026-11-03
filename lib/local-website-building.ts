@@ -7,6 +7,45 @@ export const PROVIDER_NAME = 'Top Webstak בנייה וקידום אתרים';
 export const PROVIDER_EMAIL = 'adiphoneseo@gmail.com';
 export const PROVIDER_STREET = 'זמיר 95';
 export const PROVIDER_LOCALITY = 'פרדס חנה-כרכור';
+export const PROVIDER_HOME_CITY = 'פרדס חנה';
+
+const HE_GERESH = /[\u05B0-\u05BD\u05BF\u05C1\u05C2\u05C4\u05C5\u05C7]/g;
+
+/** Attach a Hebrew inseparable prefix (ב/ל/מ/כ) with no space. */
+export function hebrewPrefix(prefix: 'ב' | 'ל' | 'מ' | 'כ', place: string): string {
+  const name = place.trim();
+  if (!name) return prefix;
+  const first = name.replace(HE_GERESH, '')[0] || name[0];
+  // Names that already begin with ה keep בהרצליה / להרצליה, not ב הרצליה.
+  if (first === 'ה' || first === 'א' || first === 'ע') {
+    return `${prefix}${name}`;
+  }
+  return `${prefix}${name}`;
+}
+
+export function inCity(cityName: string): string {
+  return hebrewPrefix('ב', cityName);
+}
+
+export function toCity(cityName: string): string {
+  return hebrewPrefix('ל', cityName);
+}
+
+export function isProviderHomeCity(cityName: string): boolean {
+  const name = cityName.trim();
+  return name === PROVIDER_HOME_CITY || name === PROVIDER_LOCALITY || name.startsWith('פרדס חנה');
+}
+
+/** Agency origin: from Pardes Hanna, near the target city — never "near itself". */
+export function originFromPardesHana(cityName: string): string {
+  if (isProviderHomeCity(cityName)) {
+    return 'אנחנו יושבים בפרדס חנה ומלווים עסקים מקומיים בפגישה או מרחוק.';
+  }
+  return `אנחנו מגיעים מפרדס חנה, הקרובה ${toCity(cityName)}.`;
+}
+
+export const REGIONAL_PORTFOLIO_INTRO =
+  'אנחנו מלווים לקוחות באזור מרחוק ובפגישה. דוגמאות אתרים מהתיק הכללי אפשר לראות בפורטפוליו.';
 
 export type LocalFaqItem = {
   question: string;

@@ -16,6 +16,9 @@ import {
   PROVIDER_LOCALITY,
   PROVIDER_NAME,
   PROVIDER_STREET,
+  REGIONAL_PORTFOLIO_INTRO,
+  inCity,
+  originFromPardesHana,
   type LocalCityContent,
 } from '../../lib/local-website-building';
 
@@ -39,7 +42,7 @@ function HighlightedParagraph({ text, className = '' }: { text: string; classNam
 export default async function LocalWebsiteBuildingPage({ content }: Props) {
   const siteUrl = getSiteUrl();
   const pageUrl = `${siteUrl}${content.path}`;
-  const h1 = `בניית אתרים ב${content.cityName}`;
+  const h1 = `בניית אתרים ${inCity(content.cityName)}`;
   const localCta = getServiceCta('local');
   const projects = await getPublishedPortfolioProjects('websites', 3);
   const projectImage = projects.find((project) => project.image && !project.image.endsWith('.svg'))?.image;
@@ -210,7 +213,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
         serviceKey="local"
         title={content.ctaTitle || localCta.title}
         text={`${content.ctaText} שיחת ייעוץ של 15 דקות – בחינם.`}
-        whatsappText={`שלום, אשמח לקבוע שיחת ייעוץ לבניית אתר ב${content.cityName}.`}
+        whatsappText={`שלום, אשמח לקבוע שיחת ייעוץ לבניית אתר ${inCity(content.cityName)}.`}
       />
 
       <section data-reveal className="px-4 py-16">
@@ -231,7 +234,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
 
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
-          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה על בניית אתר ב{content.cityName}</h2>
+          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה על בניית אתר {inCity(content.cityName)}</h2>
           <div className="grid gap-6 md:grid-cols-4">
             {content.process.map((step, index) => (
               <div key={step.title} className="rounded-xl border border-gray-100 bg-white p-6 text-center shadow-sm">
@@ -276,6 +279,9 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
             <h2 className="mb-8 text-3xl font-bold text-gray-900">
               {content.neighborhoods.title || 'שכונות ואזורים שאנו משרתים'}
             </h2>
+            <p className="mb-4 text-lg leading-relaxed text-gray-700">
+              {originFromPardesHana(content.cityName)}
+            </p>
             <div className="mb-8 flex flex-wrap gap-3">
               {content.neighborhoods.places.map((place) => (
                 <span key={place} className="rounded-full bg-white px-4 py-2 text-gray-800 shadow-sm">
@@ -296,11 +302,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
         <section data-reveal className="px-4 py-16">
           <div className="container mx-auto max-w-3xl text-right">
             <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.localExamples.title}</h2>
-            {content.localExamples.paragraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 48)} className="mb-4 text-lg leading-relaxed text-gray-700">
-                {paragraph}
-              </p>
-            ))}
+            <p className="mb-4 text-lg leading-relaxed text-gray-700">{REGIONAL_PORTFOLIO_INTRO}</p>
             <Link href={content.localExamples.href} className="text-lg font-semibold text-blue-700 underline">
               {content.localExamples.label}
             </Link>
@@ -327,7 +329,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
                   href={city.path}
                   className="rounded-full bg-white px-4 py-2 text-blue-700 shadow-sm ring-1 ring-blue-100 transition-colors hover:bg-blue-50"
                 >
-                  בניית אתרים ב{city.name}
+                  בניית אתרים {inCity(city.name)}
                 </Link>
               )
             )}
@@ -403,7 +405,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
         serviceKey="local"
         title={content.ctaTitle || localCta.title}
         text={`${content.ctaText} שיחת ייעוץ של 15 דקות – בחינם.`}
-        whatsappText={`שלום, אשמח לקבוע שיחת ייעוץ לבניית אתר ב${content.cityName}.`}
+        whatsappText={`שלום, אשמח לקבוע שיחת ייעוץ לבניית אתר ${inCity(content.cityName)}.`}
         image={projectImage}
         imageAlt={`פרויקט אתר לעסק באזור ${content.cityName}`}
       />

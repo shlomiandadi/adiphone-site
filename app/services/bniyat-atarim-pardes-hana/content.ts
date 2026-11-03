@@ -1,4 +1,4 @@
-import type { LocalCityContent } from '../../../lib/local-website-building';
+import { REGIONAL_PORTFOLIO_INTRO, type LocalCityContent } from '../../../lib/local-website-building';
 
 export const pardesHanaContent: LocalCityContent = {
   path: '/services/bniyat-atarim-pardes-hana',
@@ -91,9 +91,7 @@ export const pardesHanaContent: LocalCityContent = {
   },
   localExamples: {
     title: 'פרויקטים מהאזור',
-    paragraphs: [
-      'בתיק העבודות באתר אין כרגע פרויקט שמשויך במפורש לפרדס חנה-כרכור. לא נציין כאן לקוח או כתובת שלא מופיעים בפורטפוליו. דוגמאות אתרים שבנינו לעסקים אפשר לראות בתיק העבודות.',
-    ],
+    paragraphs: [REGIONAL_PORTFOLIO_INTRO],
     href: '/portfolio',
     label: 'לתיק העבודות',
   },

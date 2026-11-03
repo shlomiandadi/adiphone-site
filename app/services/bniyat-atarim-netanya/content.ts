@@ -1,4 +1,4 @@
-import type { LocalCityContent } from '../../../lib/local-website-building';
+import { REGIONAL_PORTFOLIO_INTRO, type LocalCityContent } from '../../../lib/local-website-building';
 
 export const netanyaContent: LocalCityContent = {
   path: '/services/bniyat-atarim-netanya',
@@ -92,9 +92,7 @@ export const netanyaContent: LocalCityContent = {
   },
   localExamples: {
     title: 'פרויקטים מהאזור',
-    paragraphs: [
-      'בתיק העבודות באתר אין כרגע פרויקט שמשויך במפורש לנתניה או לפולג. לא נמציא כאן לקוח מהעיר. דוגמאות אתרים שבנינו מופיעות בפורטפוליו.',
-    ],
+    paragraphs: [REGIONAL_PORTFOLIO_INTRO],
     href: '/portfolio',
     label: 'לתיק העבודות',
   },

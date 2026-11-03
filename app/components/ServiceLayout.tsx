@@ -84,6 +84,8 @@ interface ServiceLayoutProps {
   extraHeadingAs?: 'h2' | 'p';
   /** Override the shared pricing-block heading on this service page only. */
   pricingHeading?: string;
+  /** Replace the shared website-packages teaser with a page-specific pricing section. */
+  pricingContent?: React.ReactNode;
   /** Deprecated: placeholder testimonials were removed. Kept optional for back-compat. */
   testimonials?: Array<{
     quote: string;
@@ -174,6 +176,7 @@ export default function ServiceLayout({
   extraHeading,
   extraHeadingAs,
   pricingHeading,
+  pricingContent,
 }: ServiceLayoutProps) {
   const motionInitial = disableMotionHide ? false : 'hidden';
   const [topicPortfolio, setTopicPortfolio] = useState(portfolioTopic ? [] : portfolio);
@@ -613,9 +616,11 @@ export default function ServiceLayout({
       </section>
 
       {/* Pricing Section */}
-      {serviceType && !hidePricing && (
-        <ServicePricing serviceType={serviceType} heading={pricingHeading} />
-      )}
+      {pricingContent
+        ? pricingContent
+        : serviceType && !hidePricing && (
+            <ServicePricing serviceType={serviceType} heading={pricingHeading} />
+          )}
 
       <ServiceCtaBanner
         serviceKey={servicePath || serviceType}

@@ -1,12 +1,14 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import AiServiceCost from '../../components/AiServiceCost';
 import { FaRobot, FaLanguage, FaBrain, FaCogs } from 'react-icons/fa';
 
 export default function AIService() {
   const serviceData = {
-    title: "פתרונות בינה מלאכותית",
-    subtitle: "טכנולוגיות AI חדשניות להאצת הצמיחה העסקית",
+    title: "בינה מלאכותית לעסקים",
+    subtitle: "פתרונות בינה מלאכותית שמאיצים את הצמיחה העסקית",
+    pricingContent: <AiServiceCost />,
     featuresHeading: "היתרונות שלנו בפתרונות בינה מלאכותית",
     benefitsHeading: "היתרונות של AI לעסק",
     processHeading: "תהליך העבודה על פתרון ה-AI שלך",

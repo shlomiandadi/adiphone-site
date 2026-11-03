@@ -39,6 +39,21 @@ export default function WebDevelopmentView({ projects }: Props) {
       serviceOffersHeading="סוגי אתרים שאנחנו בונים"
       serviceOffers={[
         {
+          title: 'אתר לעורכי דין',
+          description: 'עמודי תחומי עיסוק ופנייה מסודרת למשרד. פירוט בעמוד בניית אתר לעורך דין.',
+          href: '/services/web-development/lawyers',
+        },
+        {
+          title: 'אתר לקליניקות',
+          description: 'עמודי טיפולים, קביעת תור וטפסים שמכבדים פרטיות.',
+          href: '/services/web-development/clinics',
+        },
+        {
+          title: 'אתר לרואי חשבון',
+          description: 'עמודי שירות למשרד חשבונאות וטופס היכרות קצר.',
+          href: '/services/web-development/accountants',
+        },
+        {
           title: 'אתר תדמית',
           description: 'עד 6–8 עמודים לעסק מקומי. פירוט בעמוד בניית אתר תדמית.',
           href: '/services/website-tadmit',
@@ -75,7 +90,7 @@ export default function WebDevelopmentView({ projects }: Props) {
               <a href={city.path}>{`בניית אתרים ב${city.name}`}</a>
             </span>
           ))}
-          . לפירוט על אתר שמציג את העסק ומביא פניות ראו <a href="/services/website-tadmit">אתרי תדמית</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.</p>
+          . לפירוט על אתר שמציג את העסק ומביא פניות ראו <a href="/services/website-tadmit">אתרי תדמית</a>. לעסקים במקצועות ספציפיים יש גם דפים על <a href="/services/web-development/lawyers">בניית אתר לעורך דין</a>, <a href="/services/web-development/clinics">בניית אתר לקליניקה</a> ו<a href="/services/web-development/accountants">בניית אתר לרואה חשבון</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.</p>
           <h2><strong>מהו פיתוח אתרים מקצועי, ומה ההבדל בין אתר &quot;חובבני&quot; לאתר מנצח?</strong></h2>
           <p>בניית אתר היא תהליך הנדסי של הפיכת עיצוב גרפי למערכת חיה, פונקציונלית ואינטראקטיבית. בעוד שכל אחד יכול &quot;לגרור ולשחרר&quot; אלמנטים בפלטפורמה כזו או אחרת, פיתוח מקצועי מתמקד ביסודות הבלתי נראים שקובעים את הצלחת האתר:</p>
           <ul>

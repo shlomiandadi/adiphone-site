@@ -14,6 +14,9 @@ function dateFromMap(path: string, lastmod: LastmodMap): Date | undefined {
 /** Always emit these paths, even if CMS excludes or the posts query misses them. */
 export const REQUIRED_SITEMAP_PATHS = [
   '/services/website-tadmit',
+  '/services/web-development/lawyers',
+  '/services/web-development/clinics',
+  '/services/web-development/accountants',
   '/services/aeo-geo',
   '/blog/mh-zh-seo',
   '/blog/ayk-lbchvr-chbrt-kydvm-atrym',

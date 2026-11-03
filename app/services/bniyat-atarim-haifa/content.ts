@@ -1,4 +1,4 @@
-import type { LocalCityContent } from '../../../lib/local-website-building';
+import { REGIONAL_PORTFOLIO_INTRO, type LocalCityContent } from '../../../lib/local-website-building';
 
 export const haifaContent: LocalCityContent = {
   path: '/services/bniyat-atarim-haifa',
@@ -92,9 +92,7 @@ export const haifaContent: LocalCityContent = {
   },
   localExamples: {
     title: 'פרויקטים מהאזור',
-    paragraphs: [
-      'בתיק העבודות באתר אין כרגע פרויקט שמשויך במפורש לחיפה או לקריות. לא נציין לקוח חיפאי שלא מופיע בפורטפוליו. דוגמאות אתרים שבנינו נמצאות בתיק העבודות.',
-    ],
+    paragraphs: [REGIONAL_PORTFOLIO_INTRO],
     href: '/portfolio',
     label: 'לתיק העבודות',
   },

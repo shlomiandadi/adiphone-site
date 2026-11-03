@@ -1,4 +1,4 @@
-import type { LocalCityContent } from '../../../lib/local-website-building';
+import { REGIONAL_PORTFOLIO_INTRO, type LocalCityContent } from '../../../lib/local-website-building';
 
 export const binyaminaContent: LocalCityContent = {
   path: '/services/bniyat-atarim-binyamina',
@@ -92,9 +92,7 @@ export const binyaminaContent: LocalCityContent = {
   },
   localExamples: {
     title: 'פרויקטים מהאזור',
-    paragraphs: [
-      'בתיק העבודות באתר אין כרגע פרויקט שמשויך במפורש לבנימינה או לגבעת עדה. לא נציין יקב מקומי שלא מופיע בפורטפוליו. דוגמאות אתרים שבנינו נמצאות בתיק העבודות.',
-    ],
+    paragraphs: [REGIONAL_PORTFOLIO_INTRO],
     href: '/portfolio',
     label: 'לתיק העבודות',
   },

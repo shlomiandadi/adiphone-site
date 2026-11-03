@@ -1,4 +1,4 @@
-import type { LocalCityContent } from '../../../lib/local-website-building';
+import { REGIONAL_PORTFOLIO_INTRO, type LocalCityContent } from '../../../lib/local-website-building';
 
 export const afulaContent: LocalCityContent = {
   path: '/services/bniyat-atarim-afula',
@@ -92,9 +92,7 @@ export const afulaContent: LocalCityContent = {
   },
   localExamples: {
     title: 'פרויקטים מהאזור',
-    paragraphs: [
-      'בתיק העבודות באתר אין כרגע פרויקט שמשויך במפורש לעפולה או לעמק יזרעאל. לא נמציא לקוח מהעיר. דוגמאות אתרים שבנינו מופיעות בפורטפוליו.',
-    ],
+    paragraphs: [REGIONAL_PORTFOLIO_INTRO],
     href: '/portfolio',
     label: 'לתיק העבודות',
   },

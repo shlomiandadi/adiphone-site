@@ -1,0 +1,259 @@
+.nh-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 80% 20%, rgba(56, 189, 248, 0.22), transparent 55%),
+    radial-gradient(900px 500px at 10% 80%, rgba(37, 99, 235, 0.28), transparent 50%),
+    linear-gradient(135deg, #071433 0%, #1e3a8a 42%, #2563eb 72%, #0b1f4d 100%);
+}
+
+.nh-shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 1.5rem;
+  padding-block: 6.25rem 2.25rem;
+}
+
+.nh-copy h1 {
+  min-height: 2.25em;
+}
+
+.nh-copy > p {
+  min-height: 1.5em;
+}
+
+.nh-visual {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 18.5rem;
+  max-width: 22.5rem;
+  margin-inline: auto;
+  perspective: 1200px;
+  overflow: hidden;
+}
+
+.nh-scene {
+  position: absolute;
+  inset: 8% 7%;
+  transform: rotateX(8deg);
+  transform-style: preserve-3d;
+}
+
+.nh-card,
+.nh-back {
+  position: absolute;
+  border-radius: 1.1rem;
+  transform-style: preserve-3d;
+}
+
+.nh-back {
+  inset: 6% 8% auto;
+  height: 68%;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.34), rgba(56, 189, 248, 0.2));
+  box-shadow: 0 24px 48px rgba(2, 6, 23, 0.42);
+  transform: translateZ(-32px) rotateY(8deg);
+}
+
+.nh-card {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.78), rgba(7, 20, 51, 0.9));
+  border: 1px solid rgba(186, 230, 253, 0.42);
+  box-shadow:
+    0 22px 40px rgba(2, 6, 23, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  color: #fff;
+  padding: 0.95rem 1.05rem;
+}
+
+.nh-card-a {
+  inset-inline-start: 4%;
+  top: 8%;
+  width: 72%;
+  height: 58%;
+  transform: translateZ(28px);
+}
+
+.nh-card-b {
+  inset-inline-start: 26%;
+  top: 48%;
+  width: 64%;
+  height: 40%;
+  transform: translateZ(14px) rotateY(-6deg);
+}
+
+.nh-card-c {
+  inset-inline-end: 2%;
+  top: 2%;
+  width: 42%;
+  min-height: 5.75rem;
+  transform: translateZ(40px);
+}
+
+.nh-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #bae6fd;
+}
+
+.nh-title {
+  display: block;
+  margin-block-start: 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.nh-icon {
+  display: block;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-block-end: 0.5rem;
+}
+
+.nh-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+  height: 4.5rem;
+  margin-block-start: 0.75rem;
+}
+
+.nh-bars span {
+  flex: 1;
+  border-radius: 0.3rem 0.3rem 0 0;
+  background: #7dd3fc;
+}
+
+.nh-bars .b1 { height: 42%; }
+.nh-bars .b2 { height: 68%; }
+.nh-bars .b3 { height: 86%; }
+.nh-bars .b4 { height: 58%; }
+
+.nh-cal {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.28rem;
+  margin-block-start: 0.7rem;
+}
+
+.nh-cal i {
+  display: block;
+  height: 0.55rem;
+  border-radius: 0.2rem;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.nh-cal i.on {
+  background: #7dd3fc;
+}
+
+.nh-docs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-block-start: 0.65rem;
+}
+
+.nh-docs i {
+  display: block;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: rgba(186, 230, 253, 0.45);
+}
+
+.nh-docs i:nth-child(2) { width: 78%; }
+.nh-docs i:nth-child(3) { width: 62%; }
+
+@media (min-width: 768px) {
+  .nh-shell {
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 1fr);
+    gap: 2.5rem;
+    min-height: 34rem;
+    padding-block: 7.5rem 4rem;
+    align-items: center;
+  }
+
+  .nh-visual {
+    max-width: none;
+    height: 28rem;
+  }
+
+  .nh-scene {
+    inset: 4% 2%;
+    transform: rotateX(12deg) rotateY(-16deg);
+  }
+
+  .nh-card-a {
+    width: 70%;
+    height: 60%;
+  }
+
+  .nh-card-b {
+    width: 62%;
+    height: 42%;
+  }
+
+  .nh-card-c {
+    width: 40%;
+    min-height: 6.5rem;
+  }
+
+  .nh-title {
+    font-size: 1.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nh-card-a {
+    animation: nh-float-a 7s ease-in-out infinite;
+  }
+
+  .nh-card-b {
+    animation: nh-float-b 8.5s ease-in-out infinite;
+  }
+
+  .nh-card-c {
+    animation: nh-float-c 7.5s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nh-card-a,
+  .nh-card-b,
+  .nh-card-c {
+    animation: none;
+  }
+}
+
+@keyframes nh-float-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 28px);
+  }
+  50% {
+    transform: translate3d(0, -8px, 28px);
+  }
+}
+
+@keyframes nh-float-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 14px) rotateY(-6deg);
+  }
+  50% {
+    transform: translate3d(0, -6px, 14px) rotateY(-6deg);
+  }
+}
+
+@keyframes nh-float-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 40px);
+  }
+  50% {
+    transform: translate3d(0, -10px, 40px);
+  }
+}

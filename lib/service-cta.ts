@@ -102,6 +102,9 @@ const SERVICE_CTA_BY_KEY: Record<string, ServiceCtaCopy> = {
 
 const PATH_TO_KEY: Record<string, string> = {
   '/services/web-development': 'web-development',
+  '/services/web-development/lawyers': 'web-development',
+  '/services/web-development/clinics': 'web-development',
+  '/services/web-development/accountants': 'web-development',
   '/services/website-tadmit': 'website-tadmit',
   '/services/wordpress': 'wordpress',
   '/services/ecommerce': 'ecommerce',

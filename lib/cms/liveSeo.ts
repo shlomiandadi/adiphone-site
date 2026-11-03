@@ -22,6 +22,9 @@ import { metadata as softwareMeta } from '../../app/services/software/metadata';
 import { metadata as softwareDevMeta } from '../../app/services/software-development/metadata';
 import { metadata as uiDesignMeta } from '../../app/services/ui-design/metadata';
 import { metadata as webDevMeta } from '../../app/services/web-development/metadata';
+import { metadata as webDevLawyersMeta } from '../../app/services/web-development/lawyers/metadata';
+import { metadata as webDevClinicsMeta } from '../../app/services/web-development/clinics/metadata';
+import { metadata as webDevAccountantsMeta } from '../../app/services/web-development/accountants/metadata';
 import { metadata as wordpressMeta } from '../../app/services/wordpress/metadata';
 import { metadata as afulaMeta } from '../../app/services/bniyat-atarim-afula/metadata';
 import { metadata as binyaminaMeta } from '../../app/services/bniyat-atarim-binyamina/metadata';
@@ -190,6 +193,9 @@ const METADATA_PAGES: Array<{ path: string; meta: Metadata }> = [
   { path: '/services/software-development', meta: softwareDevMeta },
   { path: '/services/ui-design', meta: uiDesignMeta },
   { path: '/services/web-development', meta: webDevMeta },
+  { path: '/services/web-development/lawyers', meta: webDevLawyersMeta },
+  { path: '/services/web-development/clinics', meta: webDevClinicsMeta },
+  { path: '/services/web-development/accountants', meta: webDevAccountantsMeta },
   { path: '/services/wordpress', meta: wordpressMeta },
   { path: '/services/bniyat-atarim-afula', meta: afulaMeta },
   { path: '/services/bniyat-atarim-binyamina', meta: binyaminaMeta },

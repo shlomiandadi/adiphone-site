@@ -16,7 +16,7 @@ describe('web development niche pages', () => {
     for (const niche of WEB_DEV_NICHES) {
       assert.ok(niche.faq.length >= 6 && niche.faq.length <= 8);
       const graph = buildNicheJsonLd(niche)['@graph'];
-      assert.deepEqual(graph.map((node) => node['@type']), ['Service', 'FAQPage', 'BreadcrumbList']);
+      assert.deepEqual(graph.map((node) => node['@type']), ['Service', 'FAQPage']);
     }
   });
 

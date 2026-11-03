@@ -501,14 +501,6 @@ export function buildNicheJsonLd(content: WebDevNicheContent) {
           acceptedAnswer: { '@type': 'Answer', text: item.answer },
         })),
       },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'דף הבית', item: `${SITE_URL}/` },
-          { '@type': 'ListItem', position: 2, name: 'בניית אתרים', item: pageUrl('/services/web-development') },
-          { '@type': 'ListItem', position: 3, name: content.serviceName, item: url },
-        ],
-      },
     ],
   };
 }

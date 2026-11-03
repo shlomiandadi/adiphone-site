@@ -175,19 +175,31 @@
 
 @media (max-width: 767px) {
   .nh-scene {
-    width: min(16rem, 58vw);
-    height: 14rem;
-    inset-inline-end: -4%;
-    opacity: 0.55;
+    width: min(13.5rem, 46vw);
+    height: 11rem;
+    inset-inline-end: 4%;
+    top: auto;
+    bottom: 1.25rem;
+    transform: none;
+    opacity: 0.4;
   }
 
   .nh-copy {
     max-width: 100%;
   }
 
+  .nh-copy h1,
+  .nh-copy > p {
+    text-shadow: 0 1px 12px rgba(7, 20, 51, 0.45);
+  }
+
+  .nh-stage,
   .nh-content {
     min-height: 28rem;
-    padding-block-start: 6.5rem;
+  }
+
+  .nh-content {
+    padding-block: 6.25rem 7.5rem;
   }
 }
 

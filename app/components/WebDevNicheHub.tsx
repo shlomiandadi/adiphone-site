@@ -1,5 +1,9 @@
 import Link from 'next/link';
-import { SERVICE_AREA_CARD_CLASS, SERVICE_AREA_ICON_CLASS } from '../../lib/service-area-card-styles';
+import {
+  SERVICE_AREA_CARD_CLASS,
+  SERVICE_AREA_ICON_CLASS,
+  SERVICE_AREA_TITLE_CLASS,
+} from '../../lib/service-area-card-styles';
 import {
   WEB_DEV_NICHE_HUB_CARDS,
   WEB_DEV_NICHE_HUB_HEADING,
@@ -31,7 +35,7 @@ export default function WebDevNicheHub() {
                     <Icon className="h-4 w-4" />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="font-semibold text-blue-700 underline dark:text-blue-400">{card.name}</span>
+                    <span className={SERVICE_AREA_TITLE_CLASS}>{card.name}</span>
                     <span className="mt-2 block text-sm text-gray-600 dark:text-gray-300">{card.benefit}</span>
                   </span>
                 </Link>

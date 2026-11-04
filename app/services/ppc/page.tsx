@@ -62,6 +62,21 @@ const FAQ = [
     answer:
       'לפי מדדים כמו כמות הפניות (לידים), העלות לכל פנייה (CPL), ותשואת הפרסום (ROAS) בחנויות. המטרה היא לא רק קליקים – אלא פניות ומכירות במחיר שמשתלם לעסק.',
   },
+  {
+    question: 'כמה עולה ניהול קמפיינים ממומנים?',
+    answer:
+      'העלות מורכבת משני חלקים נפרדים: תקציב הפרסום שמשולם ישירות לגוגל או למטא, ודמי ניהול נפרדים על העבודה השוטפת. גובה דמי הניהול תלוי במספר הפלטפורמות, בהיקף תקציב הפרסום, במספר הקמפיינים, בהפקת קריאייטיב ובתדירות הדיווח. אין במחירון מחיר קבוע לניהול קמפיין – נשמח להציע הצעת מחיר אחרי שיחה קצרה.',
+  },
+  {
+    question: 'איך לבחור חברה לקידום ממומן?',
+    answer:
+      'בדקו שהחשבונות נשארים בבעלות העסק, שהדיווח שקוף, שאין חוזה נעילה ארוך, שיש מעקב המרות אמיתי, שיש ניסיון בתחום שלכם, ומי בפועל מנהל את החשבון. ב-Top Webstak, שם מסחרי של עדי פון תקשורת, אלה התנאים שאנחנו עובדים לפיהם.',
+  },
+  {
+    question: 'למי שייך חשבון הפרסום?',
+    answer:
+      'חשבון Google Ads וחשבון מטא צריכים להיות בבעלות העסק. אנחנו מקבלים הרשאת ניהול ומנהלים את הקמפיינים משם. כך הנתונים, ההיסטוריה והנכסים נשארים אצלכם גם אם תחליטו לנהל את החשבון בעצמכם בהמשך.',
+  },
 ];
 
 export default async function PpcServicePage() {
@@ -201,6 +216,91 @@ export default async function PpcServicePage() {
         </div>
       </section>
 
+      {/* Pricing model */}
+      <section data-reveal className="bg-gray-50 px-4 py-16">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">כמה עולה ניהול קמפיינים?</h2>
+          <p className="text-lg leading-relaxed text-gray-700">
+            ניהול קמפיין ממומן מורכב משני תשלומים שונים, וחשוב להפריד ביניהם מראש: תקציב
+            הפרסום משולם ישירות לגוגל או למטא עבור החשיפות והקליקים, ודמי הניהול משולמים
+            בנפרד על האפיון, ההקמה, המעקב והאופטימיזציה השוטפת. בהצעת המחיר נפרט כל חלק
+            בנפרד, כדי שיהיה ברור מה הולך לפלטפורמה ומה לעבודה.
+          </p>
+          <p className="mt-4 text-lg leading-relaxed text-gray-700">
+            אין במחירון שלנו מחיר קבוע לניהול קמפיינים, כי ההיקף משתנה מעסק לעסק. מה שכן
+            משפיע על הצעת המחיר: כמה פלטפורמות מנהלים (גוגל, פייסבוק, אינסטגרם), מה רמת
+            תקציב הפרסום שאתם מתכננים, כמה קמפיינים פעילים במקביל, האם נדרשת הפקת קריאייטיב
+            (מודעות, וידאו, דפי נחיתה), ומה תדירות הדיווח שאתם צריכים.
+          </p>
+          <p className="mt-4 text-lg leading-relaxed text-gray-700">
+            אם לקמפיין חסר עמוד יעד ברור, אפשר להתחיל מדף נחיתה או מאתר קיים – המחירים
+            המאושרים לבניית אתרים מופיעים ב
+            <Link href="/pricing" className="text-orange-600 underline">
+              מחירון בניית אתרים
+            </Link>
+            , ופירוט העבודה ב
+            <Link href="/services/web-development" className="text-orange-600 underline">
+              בניית אתרים
+            </Link>
+            . להצעת מחיר לניהול הקמפיין עצמו, פנו אלינו דרך{' '}
+            <Link href="/contact" className="text-orange-600 underline">
+              עמוד יצירת הקשר
+            </Link>
+            {' '}או חייגו {PHONE_DISPLAY}.
+          </p>
+        </div>
+      </section>
+
+      {/* How to choose a paid-ads company */}
+      <section data-reveal className="px-4 py-16">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">איך לבחור חברה לקידום ממומן?</h2>
+          <p className="text-lg leading-relaxed text-gray-700">
+            חיפוש &quot;חברה לקידום ממומן&quot; מחזיר הרבה הבטחות דומות. ב-Top Webstak, שם
+            מסחרי של עדי פון תקשורת, אנחנו מעדיפים רשימת בדיקה פשוטה שאפשר לבקש מכל ספק –
+            כולל מאיתנו – לפני שחותמים:
+          </p>
+          <ul className="mt-6 list-disc space-y-3 pr-6 text-lg text-gray-700">
+            <li>
+              <strong>בעלות על חשבונות הפרסום:</strong> חשבון Google Ads וחשבון מטא נפתחים
+              או נשארים על שם העסק. אנחנו מקבלים הרשאת ניהול, לא לוקחים את הנכס.
+            </li>
+            <li>
+              <strong>דיווח שקוף:</strong> אתם רואים הוצאה, קליקים, פניות ועלות לפנייה – לא
+              רק צילום מסך חלקי בסוף החודש.
+            </li>
+            <li>
+              <strong>בלי חוזה נעילה ארוך:</strong> התקשרות שניתן לעצור או לשנות לפי התוצאות,
+              בלי קנס על עזיבה אחרי כמה חודשים.
+            </li>
+            <li>
+              <strong>מעקב המרות אמיתי:</strong> שיחות, טפסים ורכישות מוגדרים לפני שמגדילים
+              תקציב. בלי מדידה אי אפשר לדעת אם הקמפיין עובד.
+            </li>
+            <li>
+              <strong>ניסיון בתחום של הלקוח:</strong> חשוב להבין את מחזור המכירה, את השפה
+              ואת המתחרים – לא רק &quot;ללחוץ על כפתור בגוגל&quot;.
+            </li>
+            <li>
+              <strong>מי מנהל בפועל:</strong> שאלו מי יושב על החשבון ביום-יום, ולא רק מי
+              חתם על ההצעה. אצלנו הניהול נשאר אצל הצוות שמכיר את העסק.
+            </li>
+          </ul>
+          <p className="mt-6 text-lg leading-relaxed text-gray-700">
+            אם אתם מחפשים חברה לקידום ממומן שגם יודעת לבנות את עמוד היעד, אפשר לשלב את
+            הקמפיין עם{' '}
+            <Link href="/services/web-development" className="text-orange-600 underline">
+              בניית אתרים
+            </Link>
+            . לשאלות או להצעת מחיר:{' '}
+            <Link href="/contact" className="text-orange-600 underline">
+              צרו קשר
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-3xl">
@@ -220,7 +320,10 @@ export default async function PpcServicePage() {
         <p className="text-gray-600">
           קשור:{' '}
           <Link href="/services/seo" className="underline">קידום אורגני (SEO)</Link> ·{' '}
-          <Link href="/services/aeo-geo" className="underline">קידום במנועי AI (AEO/GEO)</Link>
+          <Link href="/services/aeo-geo" className="underline">קידום במנועי AI (AEO/GEO)</Link> ·{' '}
+          <Link href="/services/web-development" className="underline">בניית אתרים</Link> ·{' '}
+          <Link href="/pricing" className="underline">מחירון</Link> ·{' '}
+          <Link href="/contact" className="underline">צור קשר</Link>
         </p>
       </section>
       <ServiceCtaBanner serviceKey="ppc" image={projectImage} imageAlt="פרויקט קידום ממומן" />

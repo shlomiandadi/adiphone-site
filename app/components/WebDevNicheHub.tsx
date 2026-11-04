@@ -21,7 +21,7 @@ export default function WebDevNicheHub() {
           {WEB_DEV_NICHE_HUB_HEADING}
         </h2>
         <p className="mb-10 text-center text-gray-600 dark:text-gray-300">{WEB_DEV_NICHE_HUB_SUBTITLE}</p>
-        <ul className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-3">
+        <ul className="grid grid-cols-1 items-stretch gap-4 pl-16 md:grid-cols-3 md:pl-0">
           {WEB_DEV_NICHE_HUB_CARDS.map((card) => {
             const Icon = ICONS[card.icon];
             return (

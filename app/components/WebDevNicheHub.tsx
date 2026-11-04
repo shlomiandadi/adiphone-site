@@ -15,7 +15,7 @@ const ICONS = {
 
 export default function WebDevNicheHub() {
   return (
-    <section className="bg-white py-16 dark:bg-gray-900" data-reveal aria-labelledby="web-dev-niche-hub-heading">
+    <section className="bg-white py-16 pb-32 dark:bg-gray-900 md:pb-16" data-reveal aria-labelledby="web-dev-niche-hub-heading">
       <div className="container mx-auto px-4">
         <h2 id="web-dev-niche-hub-heading" className="mb-4 text-center text-3xl font-bold dark:text-white">
           {WEB_DEV_NICHE_HUB_HEADING}

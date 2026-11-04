@@ -25,6 +25,41 @@ export function hasPageOverride(override: SeoAgentPageOverride | null | undefine
  * pages whose own title is already a full document title keep the stored string
  * as `{ absolute }` so `| Top Webstak` is not appended again.
  */
+/**
+ * Live /services/web-development once stored a description that attached
+ * 2,500 ₪ to אתר תדמית. Site pricing (and this page body) uses 2,500 ₪ for a
+ * landing page and 6,500 ₪ for a brochure site. Drop title/description fields
+ * from that override so hardcoded metadata can render the correct claim.
+ */
+export function isMisleadingWebDevPricingOverride(
+  path: string,
+  override: SeoAgentPageOverride | null | undefined
+): boolean {
+  if (path !== '/services/web-development' || !override) return false;
+  const texts = [override.description, override.ogDescription, override.title, override.ogTitle];
+  return texts.some((text) => {
+    if (!text) return false;
+    const has2500 = /2,500/.test(text);
+    const hasTadmit = /תדמית/.test(text);
+    const has6500 = /6,500/.test(text);
+    const hasLanding = /דף נחיתה/.test(text);
+    return has2500 && hasTadmit && !has6500 && !hasLanding;
+  });
+}
+
+export function sanitizeSeoAgentOverride(
+  path: string,
+  override: SeoAgentPageOverride | null
+): SeoAgentPageOverride | null {
+  if (!override || !isMisleadingWebDevPricingOverride(path, override)) return override;
+  const next: SeoAgentPageOverride = { ...override };
+  delete next.title;
+  delete next.description;
+  delete next.ogTitle;
+  delete next.ogDescription;
+  return hasPageOverride(next) ? next : null;
+}
+
 export function applySeoAgentOverride(
   base: Metadata,
   override: SeoAgentPageOverride | null

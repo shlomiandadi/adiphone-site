@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 import type { Metadata } from 'next';
-import { applySeoAgentOverride } from './override.ts';
+import { applySeoAgentOverride, sanitizeSeoAgentOverride } from './override.ts';
 import { reduceSeoAgentState, revalidatePlan } from './reduce.ts';
 import type { SeoAgentStoreState } from './types.ts';
 
@@ -102,6 +102,51 @@ describe('seo-agent service titles', () => {
     assert.equal(merged.description, 'תיאור מקורי');
     assert.equal(merged.keywords, 'ai');
     assert.equal(merged.alternates?.canonical, 'https://adi-phone.co.il/services/ai');
+  });
+});
+
+describe('/services/web-development pricing metadata', () => {
+  const liveWrongDescription =
+    'בניית אתר תדמית לעסק: עיצוב מותאם, התאמה מלאה לנייד ומהירות. החל מ-2,500 ₪, מוכן לרוב תוך 14–21 יום כשהתכנים מוכנים. חייגו 050-9159951';
+  const liveWrongTitle = 'בניית אתר תדמית לעסק: מקצועיות וקידום אורגני | Top Webstak';
+
+  const codeTitle = 'בניית אתרים לעסקים | Top Webstak';
+  const codeDescription =
+    'דף נחיתה מ-2,500 ₪, אתר תדמית מ-6,500 ₪. עיצוב מותאם, מובייל ומהירות. חייגו 050-9159951';
+
+  test('hardcoded title and description stay within SEO length and match /pricing', () => {
+    assert.ok(codeTitle.length <= 60);
+    assert.ok(codeDescription.length <= 155);
+    assert.match(codeDescription, /דף נחיתה מ-2,500 ₪/);
+    assert.match(codeDescription, /אתר תדמית מ-6,500 ₪/);
+    assert.equal(codeDescription.includes('החל מ-2,500'), false);
+  });
+
+  test('drops a stored override that prices אתר תדמית from 2,500 ₪', () => {
+    const sanitized = sanitizeSeoAgentOverride('/services/web-development', {
+      title: liveWrongTitle,
+      description: liveWrongDescription,
+      ogTitle: liveWrongTitle,
+      ogDescription: liveWrongDescription,
+    });
+    assert.equal(sanitized, null);
+
+    const merged = applySeoAgentOverride(
+      { title: { absolute: codeTitle }, description: codeDescription },
+      sanitized
+    );
+    assert.deepEqual(merged.title, { absolute: codeTitle });
+    assert.equal(merged.description, codeDescription);
+  });
+
+  test('keeps an override that already states both package prices', () => {
+    const ok =
+      'דף נחיתה מ-2,500 ₪, אתר תדמית מ-6,500 ₪. עיצוב מותאם, מובייל ומהירות. חייגו 050-9159951';
+    const sanitized = sanitizeSeoAgentOverride('/services/web-development', {
+      title: 'בניית אתרים לעסקים | Top Webstak',
+      description: ok,
+    });
+    assert.equal(sanitized?.description, ok);
   });
 });
 

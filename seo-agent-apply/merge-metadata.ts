@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { mergeCmsMetadata } from '../lib/cms/seo';
-import { applySeoAgentOverride } from './override';
+import { applySeoAgentOverride, sanitizeSeoAgentOverride } from './override';
 import { getSeoAgentPageOverride } from './state';
 
 export { applySeoAgentOverride } from './override';
@@ -12,9 +12,10 @@ export { applySeoAgentOverride } from './override';
  */
 export async function mergeSeoAgentMetadata(path: string, base: Metadata): Promise<Metadata> {
   const withCms = await mergeCmsMetadata(path, base);
-  const override = await getSeoAgentPageOverride(path);
+  const override = sanitizeSeoAgentOverride(path, await getSeoAgentPageOverride(path));
   // Agent overrides win over CMS and hardcoded metadata. Title-only payloads
-  // leave canonical and other omitted fields untouched.
+  // leave canonical and other omitted fields untouched. Misleading web-dev
+  // pricing copy is stripped in sanitizeSeoAgentOverride.
   return override ? applySeoAgentOverride(withCms, override) : withCms;
 }
 

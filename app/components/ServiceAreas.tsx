@@ -1,5 +1,10 @@
 import Link from 'next/link';
 import { CITY_SERVICE_AREAS, EXTRA_SERVICE_AREA_LINKS } from '../../lib/service-areas';
+import {
+  SERVICE_AREA_CARD_CLASS,
+  SERVICE_AREA_ICON_CLASS,
+  SERVICE_AREA_PILL_CLASS,
+} from '../../lib/service-area-card-styles';
 import { MapPinIcon } from './icons';
 
 type Props = {
@@ -7,12 +12,6 @@ type Props = {
   showBlurbs?: boolean;
   includeExtraServices?: boolean;
 };
-
-const cardClassName =
-  'flex h-full min-h-[44px] items-center gap-3 rounded-xl border border-gray-100 bg-gray-50 p-4 text-right shadow-sm transition-colors hover:border-[#22DEFB] hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus-visible:ring-offset-gray-900';
-
-const iconClassName =
-  'inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#02336E] text-[#22DEFB]';
 
 export default function ServiceAreas({
   heading = 'אזורי שירות',
@@ -31,8 +30,8 @@ export default function ServiceAreas({
         <ul className="grid grid-cols-2 items-stretch gap-4 lg:grid-cols-5">
           {CITY_SERVICE_AREAS.map((city) => (
             <li key={city.href} className="min-w-0">
-              <Link href={city.href} className={`${cardClassName} ${showBlurbs ? 'items-start' : 'items-center'}`}>
-                <span className={`${iconClassName} ${showBlurbs ? 'mt-0.5' : ''}`}>
+              <Link href={city.href} className={`${SERVICE_AREA_CARD_CLASS} ${showBlurbs ? 'items-start' : 'items-center'}`}>
+                <span className={`${SERVICE_AREA_ICON_CLASS} ${showBlurbs ? 'mt-0.5' : ''}`}>
                   <MapPinIcon className="h-4 w-4" />
                 </span>
                 <span className="min-w-0 flex-1">
@@ -51,7 +50,7 @@ export default function ServiceAreas({
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="inline-flex min-h-[44px] items-center rounded-full border border-gray-100 bg-gray-50 px-4 text-sm font-semibold text-blue-700 underline transition-colors hover:border-[#22DEFB] hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-gray-700 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700 dark:focus-visible:ring-offset-gray-900"
+                  className={SERVICE_AREA_PILL_CLASS}
                 >
                   {item.name}
                 </Link>

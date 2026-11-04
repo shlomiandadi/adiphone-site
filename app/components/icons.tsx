@@ -125,6 +125,12 @@ export const MapPinIcon = ({ className = 'w-6 h-6' }: IconProps) => (
   </svg>
 );
 
+export const CalculatorIcon = ({ className = 'w-6 h-6' }: IconProps) => (
+  <svg className={className} {...stroke}>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2zm1 8h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01" />
+  </svg>
+);
+
 const BUSINESS_ICONS = [WrenchIcon, ClinicIcon, RestaurantIcon, BriefcaseIcon, HomeIcon, WarehouseIcon];
 const INCLUDED_ICONS = [GlobeIcon, CartIcon, CodeIcon, PhoneIcon, SearchIcon, ShieldIcon];
 

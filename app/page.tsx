@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Services from './components/Services';
 import ServiceAreas from './components/ServiceAreas';
+import WebDevNicheHub from './components/WebDevNicheHub';
 import Portfolio from './components/Portfolio';
 import Team from './components/Team';
 import Contact from './components/Contact';
@@ -54,6 +55,8 @@ export default function Home() {
         <section data-reveal>
           <Services />
         </section>
+
+        <WebDevNicheHub />
 
         <ServiceAreas includeExtraServices />
 

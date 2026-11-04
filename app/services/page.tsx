@@ -10,6 +10,7 @@ import { absoluteUrl } from '../../lib/seo';
 import { CITY_SERVICE_AREAS } from '../../lib/service-areas';
 import Hero3D from '../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../components/ServiceCtaBanner';
+import WebDevNicheHub from '../components/WebDevNicheHub';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -233,6 +234,8 @@ export default function ServicesPage() {
           ))}
         </motion.div>
       </div>
+
+      <WebDevNicheHub />
 
       <section data-reveal className="container mx-auto px-4 pb-16">
         <h2 className="text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">בניית אתרים לפי אזור</h2>

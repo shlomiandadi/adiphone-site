@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 import type { Metadata } from 'next';
-import { applySeoAgentOverride, sanitizeSeoAgentOverride } from './override.ts';
+import {
+  applySeoAgentOverride,
+  preferAccurateWebDevCopy,
+  sanitizeSeoAgentOverride,
+} from './override.ts';
 import { reduceSeoAgentState, revalidatePlan } from './reduce.ts';
 import type { SeoAgentStoreState } from './types.ts';
 
@@ -137,6 +141,21 @@ describe('/services/web-development pricing metadata', () => {
     );
     assert.deepEqual(merged.title, { absolute: codeTitle });
     assert.equal(merged.description, codeDescription);
+  });
+
+  test('replaces a CMS description that never mentions the two package prices', () => {
+    const cmsMerged = {
+      title: { absolute: 'בניית אתר תדמית לעסקים | בהתאמה אישית | Top Webstak' },
+      description:
+        'זקוקים לאתר תדמית מקצועי? אנו ב-Top Webstak מתמחים בבניית אתרים בהתאמה אישית לעסקים, המעוצבים בקפידה ומותאמים לצרכים הייחודיים שלכם. צרו קשר עוד היום!',
+    };
+    const fixed = preferAccurateWebDevCopy(
+      '/services/web-development',
+      { title: { absolute: codeTitle }, description: codeDescription },
+      cmsMerged
+    );
+    assert.deepEqual(fixed.title, { absolute: codeTitle });
+    assert.equal(fixed.description, codeDescription);
   });
 
   test('keeps an override that already states both package prices', () => {

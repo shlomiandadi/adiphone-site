@@ -84,6 +84,10 @@ interface ServiceLayoutProps {
   extraHeadingAs?: 'h2' | 'p';
   /** Override the shared pricing-block heading on this service page only. */
   pricingHeading?: string;
+  /** Override intro copy in the shared pricing block (e.g. software pages). */
+  pricingIntro?: string;
+  /** Hide links to /pricing in the shared pricing block footer. */
+  pricingOmitWebsitePriceList?: boolean;
   /** Replace the shared website-packages teaser with a page-specific pricing section. */
   pricingContent?: React.ReactNode;
   /** Deprecated: placeholder testimonials were removed. Kept optional for back-compat. */
@@ -176,6 +180,8 @@ export default function ServiceLayout({
   extraHeading,
   extraHeadingAs,
   pricingHeading,
+  pricingIntro,
+  pricingOmitWebsitePriceList,
   pricingContent,
 }: ServiceLayoutProps) {
   const motionInitial = disableMotionHide ? false : 'hidden';
@@ -619,7 +625,12 @@ export default function ServiceLayout({
       {pricingContent
         ? pricingContent
         : serviceType && !hidePricing && (
-            <ServicePricing serviceType={serviceType} heading={pricingHeading} />
+            <ServicePricing
+              serviceType={serviceType}
+              heading={pricingHeading}
+              intro={pricingIntro}
+              omitWebsitePriceList={pricingOmitWebsitePriceList}
+            />
           )}
 
       <ServiceCtaBanner

@@ -3,6 +3,9 @@
 import ServiceLayout from '../../components/ServiceLayout';
 import { FaCode, FaMobileAlt, FaShieldAlt } from 'react-icons/fa';
 
+const SOFTWARE_PRICING_INTRO =
+  'מחיר פתיחה מאושר, לא כולל מע״מ. המחיר הסופי נקבע לפי היקף הפרויקט.';
+
 const softwareDevelopmentContent = `
 <h2>פיתוח תוכנה מתקדם</h2>
 <p>אנו מתמחים בפיתוח פתרונות תוכנה מתקדמים ומותאמים אישית לצרכי העסק שלך. הצוות המקצועי שלנו משלב ניסיון עשיר עם טכנולוגיות חדשניות.</p>
@@ -42,6 +45,8 @@ export default function SoftwareDevelopmentPage() {
       title="פיתוח תוכנה בהתאמה אישית לעסקים"
       subtitle="פתרונות תוכנה מותאמים אישית לעסקים"
       pricingHeading="כמה עולה פיתוח תוכנה בהתאמה אישית"
+      pricingIntro={SOFTWARE_PRICING_INTRO}
+      pricingOmitWebsitePriceList
       featuresHeading="היתרונות שלנו בפיתוח תוכנה בהתאמה אישית"
       benefitsHeading="היתרונות של תוכנה מותאמת לעסק"
       processHeading="תהליך העבודה על התוכנה המותאמת שלך"

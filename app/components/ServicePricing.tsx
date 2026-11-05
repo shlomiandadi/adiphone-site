@@ -13,6 +13,10 @@ import {
 interface ServicePricingProps {
   serviceType: string;
   heading?: string;
+  /** Replaces the default intro (including links to /pricing). */
+  intro?: string;
+  /** Hide website price-list links; footer CTA goes to /contact instead. */
+  omitWebsitePriceList?: boolean;
 }
 
 const fadeInUp = {
@@ -83,9 +87,16 @@ function PricingPageLink({ className = '' }: { className?: string }) {
   );
 }
 
-export default function ServicePricing({ serviceType, heading }: ServicePricingProps) {
+export default function ServicePricing({
+  serviceType,
+  heading,
+  intro,
+  omitWebsitePriceList = false,
+}: ServicePricingProps) {
   const plans = packagesForService(serviceType);
   const blockHeading = heading || 'מחירון בניית אתרים';
+  const defaultIntroWithPlans =
+    'מחירי פתיחה מאושרים, לא כוללים מע״מ. הפירוט המלא, תוספות והשוואת חבילות נמצאים ב';
 
   return (
     <section className="bg-gradient-to-b from-gray-50 to-white px-4 py-16 dark:from-gray-900 dark:to-gray-800">
@@ -102,8 +113,12 @@ export default function ServicePricing({ serviceType, heading }: ServicePricingP
           </h2>
           {plans.length > 0 ? (
             <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-              מחירי פתיחה מאושרים, לא כוללים מע״מ. הפירוט המלא, תוספות והשוואת חבילות נמצאים ב
-              <PricingPageLink />.
+              {intro ?? (
+                <>
+                  {defaultIntroWithPlans}
+                  <PricingPageLink />.
+                </>
+              )}
             </p>
           ) : (
             <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">
@@ -140,17 +155,30 @@ export default function ServicePricing({ serviceType, heading }: ServicePricingP
           variants={fadeInUp}
           className="mt-12 text-center"
         >
-          <p className="mb-4 text-gray-600 dark:text-gray-400">
-            {plans.length > 0
-              ? 'המחיר הסופי נקבע לפי היקף הפרויקט. לפירוט מלא ולתוספות (תחזוקה, אחסון, תוכן ו-SEO):'
-              : 'רוצים לראות כמה עולה לבנות אתר?'}
-          </p>
-          <Link
-            href="/pricing"
-            className="inline-block rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-blue-700"
-          >
-            למחירון בניית אתרים
-          </Link>
+          {omitWebsitePriceList && plans.length > 0 ? (
+            <Link
+              href="/contact"
+              data-cta="true"
+              data-cta-location="pricing"
+              className="inline-block rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-blue-700"
+            >
+              קבלו הצעת מחיר
+            </Link>
+          ) : (
+            <>
+              <p className="mb-4 text-gray-600 dark:text-gray-400">
+                {plans.length > 0
+                  ? 'המחיר הסופי נקבע לפי היקף הפרויקט. לפירוט מלא ולתוספות (תחזוקה, אחסון, תוכן ו-SEO):'
+                  : 'רוצים לראות כמה עולה לבנות אתר?'}
+              </p>
+              <Link
+                href="/pricing"
+                className="inline-block rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-blue-700"
+              >
+                למחירון בניית אתרים
+              </Link>
+            </>
+          )}
         </motion.div>
       </div>
     </section>

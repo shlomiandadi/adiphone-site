@@ -1,6 +1,7 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import SoftwareServiceQuote from '../../components/SoftwareServiceQuote';
 import { FaCode, FaLaptopCode, FaShieldAlt, FaCogs } from 'react-icons/fa';
 
 export default function SoftwareService() {
@@ -10,6 +11,7 @@ export default function SoftwareService() {
     featuresHeading: "היתרונות שלנו בפתרונות תוכנה",
     benefitsHeading: "היתרונות של פתרון תוכנה לעסק",
     processHeading: "תהליך העבודה על פתרון התוכנה שלך",
+    pricingContent: <SoftwareServiceQuote />,
     serviceType: "software-development",
     description: (
       <>

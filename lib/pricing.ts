@@ -99,8 +99,6 @@ const PACKAGES_FOR_SERVICE: Record<string, PricingPackageId[]> = {
   'web-development': ['landing', 'brochure', 'store', 'custom'],
   wordpress: ['landing', 'brochure', 'store', 'custom'],
   ecommerce: ['store'],
-  'software-development': ['custom'],
-  software: ['custom'],
 };
 
 export function packagesForService(serviceType: string): PricingPackage[] {

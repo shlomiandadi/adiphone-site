@@ -151,6 +151,34 @@ export default async function SeoServicePage() {
         </div>
       </section>
 
+      <section data-reveal className="px-4 py-16">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">איך לבחור חברה לקידום אורגני</h2>
+          <ul className="list-disc space-y-3 pr-6 text-lg text-gray-700">
+            <li>דיווח שקוף וקבוע — מה נעשה, מה השתנה, ומה היעדים להמשך (בלי הבטחות דירוג).</li>
+            <li>גישה משולבת: SEO טכני, תוכן איכותי וחיזוק סמכות — לא קיצורי דרך חד-פעמיים.</li>
+            <li>ניסיון בשוק הישראלי, בעברית ובקידום מקומי כשהעסק תלוי באזור גיאוגרפי.</li>
+            <li>יעדים מדידים: תנועה אורגנית, פניות והמרות — לא רק מיקום של ביטוי בודד.</li>
+            <li>התאמה לתחרות בתחום ולמשאבים של העסק, עם ציפיות ריאליות לטווח הארוך.</li>
+          </ul>
+          <p className="mt-6 text-lg leading-relaxed text-gray-700">
+            להעמקה:{' '}
+            <Link href="/blog/ayk-lbchvr-chbrt-kydvm-atrym" className="text-green-700 underline">
+              איך לבחור חברת קידום אתרים
+            </Link>
+            ,{' '}
+            <Link href="/blog/mh-zh-seo" className="text-green-700 underline">
+              מדריך SEO למתחילים
+            </Link>
+            {' '}ו{' '}
+            <Link href="/blog/seo-tips-google-ranking-guide" className="text-green-700 underline">
+              טיפים לקידום אתרים בגוגל
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+
       {/* What's included */}
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">

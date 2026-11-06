@@ -18,6 +18,15 @@ export const PORTFOLIO_LIST_SELECT = {
   date: true,
 } as const;
 
+/** Homepage cards only — omit fields not rendered above the fold. */
+export const PORTFOLIO_HOME_SELECT = {
+  id: true,
+  name: true,
+  slug: true,
+  image: true,
+  description: true,
+} as const;
+
 export const getPublishedPortfolioList = contentCache(
   'portfolio-list',
   [PORTFOLIO_CACHE_TAG],
@@ -28,6 +37,20 @@ export const getPublishedPortfolioList = contentCache(
       select: PORTFOLIO_LIST_SELECT,
     });
     return projects.map(reviveDates);
+  }
+);
+
+export const getHomepagePortfolioPreview = contentCache(
+  'portfolio-home-preview',
+  [PORTFOLIO_CACHE_TAG],
+  async () => {
+    const projects = await prisma.portfolioProject2.findMany({
+      where: { published: true },
+      orderBy: { date: 'desc' },
+      take: 3,
+      select: PORTFOLIO_HOME_SELECT,
+    });
+    return projects;
   }
 );
 

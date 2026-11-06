@@ -107,6 +107,10 @@ export const BLOG_META_OVERRIDES: Record<
     relatedService: SERVICE_CANONICALS.aeoGeo,
     relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
   },
+  'What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change': {
+    relatedService: SERVICE_CANONICALS.aeoGeo,
+    relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
+  },
 };
 
 export function getSiteUrl(): string {

@@ -20,6 +20,20 @@ export default function EcommerceService() {
         <h2><strong>הקמת חנויות אינטרנטיות: לא רק אתר, אלא מכונת מכירות משומנת שעובדת 24/7</strong></h2>
         <p>המסחר עבר מהפכה. הקניון הפיזי הוחלף בחנות הדיגיטלית, והלקוחות שלכם מצפים לחוויית קנייה מהירה, נוחה ומאובטחת, זמינה עבורם בכל שעה ומכל מכשיר. חנות אינטרנט בהתאמה אישית (Ecommerce) היא כבר לא אופציה לעסקים – היא חובה. זוהי הזרוע המכירתית החזקה ביותר שלכם, המאפשרת להגיע לקהלים חדשים, לשבור גבולות גיאוגרפיים ולבנות מותג חזק ורווחי.</p>
         <p>ב-Top Webstak (מבית עדי פון תקשורת), אנו מבינים שהקמת חנות אונליין מוצלחת היא הרבה יותר מ<a href="https://adi-phone.co.il/services/web-development"><strong>פיתוח אתר</strong></a> יפה. זוהי מלאכת מחשבת המשלבת אסטרטגיה עסקית, <a href="https://adi-phone.co.il/services/ui-design"><strong>עיצוב חווית משתמש (UI/UX)</strong></a> שמניעה לפעולה, טכנולוגיה אמינה, אבטחת מידע בלתי מתפשרת ואסטרטגיית שיווק חכמה. אנו כאן כדי להוביל אתכם בכל שלב במסע, ולהפוך את החזון שלכם לחנות דיגיטלית שמכניסה כסף. דוגמה מהתיק: <a href="/portfolio/oil-cbd"><strong>חנות אונליין לשמני CBD</strong></a>.</p>
+        <aside className="not-prose my-8 rounded-xl border border-blue-100 bg-blue-50 p-6 text-right">
+          <p className="mb-4 text-gray-700">
+            לפני שבוחרים פלטפורמה וספק, כדאי להבין את שלבי הקמת חנות אונליין – כתבנו מדריך נפרד בבלוג.
+          </p>
+          <a
+            href="/blog/bnyyt-chnvyvt-avnlyyn"
+            className="inline-flex items-center text-lg font-semibold text-blue-700 underline-offset-4 hover:text-blue-900 hover:underline"
+          >
+            מדריך: בניית חנות אונליין
+            <span className="mr-2" aria-hidden>
+              ←
+            </span>
+          </a>
+        </aside>
         <h2><strong>מה הופך חנות אינטרנטית למצליחה? הנוסחה שלנו ב-Top Webstak</strong></h2>
         <p>חנויות רבות נכשלות לא בגלל מוצרים גרועים, אלא בגלל חווית קנייה מתסכלת, חוסר אמון או קושי למצוא אותן בגוגל. הנוסחה שלנו להצלחה מבוססת על יסודות ברזל:</p>
         <ul>

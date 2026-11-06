@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import ReactDOM from 'react-dom';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -63,6 +64,11 @@ const belowFoldStyle = (containIntrinsicSize: string): React.CSSProperties => ({
 });
 
 const BLOG_BELOW_FOLD_CSS = `.blog-post-article .faq-section .faq-item,.blog-post-article .faq-section .blog-faq-item,.blog-post-article .blog-faq-section .faq-item,.blog-post-article .blog-faq-section .blog-faq-item{content-visibility:auto;contain-intrinsic-size:${CV_FAQ_ITEM}}`;
+
+const AEO_BLOG_SLUG = 'What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change';
+
+const AEO_DIRECT_ANSWER =
+  'AEO (Answer Engine Optimization), או אופטימיזציה למנועי תשובות, הוא קידום שמטרתו להופיע בתשובות של מנועי AI כמו ChatGPT, Gemini ו-Google AI Overviews. במקום להתחרות רק בדירוג בגוגל, העסק צריך להיות התשובה הישירה לשאלות הלקוחות. זה משלים SEO ו-GEO, ולא מחליף אותם.';
 
 /**
  * AVIF q=50 held the same crop as the original on the cloud and SEO heroes
@@ -282,6 +288,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     optimizeContentImages(demoteContentHeadings(cleanupBlogHtml(post.content, post.slug)))
   );
   const override = BLOG_META_OVERRIDES[post.slug];
+  const isAeoArticle = post.slug === AEO_BLOG_SLUG;
 
   return (
     <main className="pt-24">
@@ -342,6 +349,31 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </div>
       </section>
+      {isAeoArticle ? (
+        <section className="px-4 pb-4 pt-2">
+          <div className="container mx-auto max-w-[42rem] text-right">
+            <div className="rounded-xl border-r-4 border-blue-600 bg-blue-50 p-6">
+              <h2 className="mb-3 text-2xl font-bold text-gray-900">מה זה AEO?</h2>
+              <p className="text-lg leading-relaxed text-gray-800">{AEO_DIRECT_ANSWER}</p>
+            </div>
+            <aside className="mt-6 rounded-xl border border-blue-100 bg-blue-50 p-6 text-right">
+              <p className="mb-2 text-sm font-medium text-blue-800">רוצים ליישם את זה בעסק?</p>
+              <Link
+                href="/services/aeo-geo"
+                className="inline-flex items-center text-xl font-semibold text-blue-700 underline-offset-4 hover:text-blue-900 hover:underline"
+              >
+                שירותי AEO ו-GEO לעסקים
+                <span className="mr-2" aria-hidden>
+                  ←
+                </span>
+              </Link>
+              <p className="mt-3 text-gray-700">
+                ליווי מקצועי להופעה בתשובות של ChatGPT, Gemini ו-Google AI Overviews – לצד SEO קלאסי.
+              </p>
+            </aside>
+          </div>
+        </section>
+      ) : null}
       {post.articleStyles && (
         <style dangerouslySetInnerHTML={{ __html: post.articleStyles }} />
       )}

@@ -46,6 +46,11 @@
 - [בניית אתרים ביוקנעם](https://adi-phone.co.il/services/bniyat-atarim-yokneam)
 - [בניית אתרים בעפולה](https://adi-phone.co.il/services/bniyat-atarim-afula)
 
+## אתרים לפי תחום
+- [בניית אתר לעורך דין ולמשרדי עורכי דין](https://adi-phone.co.il/services/web-development/lawyers)
+- [בניית אתר לקליניקה ולמטפלים](https://adi-phone.co.il/services/web-development/clinics)
+- [בניית אתר לרואה חשבון ולהנהלת חשבונות](https://adi-phone.co.il/services/web-development/accountants)
+
 ## מחירי פתיחה ואזורי שירות
 - דף נחיתה: מ-2,500 ₪
 - אתר תדמית: מ-6,500 ₪

@@ -1,4 +1,4 @@
-import { GOOGLE_MAPS_REVIEWS_URL, GOOGLE_RATING } from './reviews';
+import { GOOGLE_MAPS_REVIEWS_URL } from './reviews';
 import { getSiteUrl, organizationLogo } from './seo';
 import { organizationSameAs } from './social';
 
@@ -90,12 +90,6 @@ export function buildLocalBusinessJsonLd(options: BuildOptions = {}) {
           url: `${siteUrl}${service.path}`,
         },
       })),
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: GOOGLE_RATING.ratingValue,
-      reviewCount: String(GOOGLE_RATING.reviewCount),
-      bestRating: GOOGLE_RATING.bestRating,
     },
   };
 }

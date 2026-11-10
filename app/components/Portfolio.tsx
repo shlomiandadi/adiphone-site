@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getPublishedPortfolioList } from '../../lib/portfolioPublic';
+import { getHomepagePortfolioPreview } from '../../lib/portfolioPublic';
 import { FEATURED_HOME_PORTFOLIO } from '../../lib/related-content';
 
 interface Project {
@@ -15,7 +15,7 @@ const cloudinaryBase = 'https://res.cloudinary.com/dooxg35gj/image/upload/v17533
 
 async function fetchProjects(): Promise<Project[]> {
   try {
-    return await getPublishedPortfolioList();
+    return (await getHomepagePortfolioPreview()) as Project[];
   } catch {
     return [];
   }
@@ -32,7 +32,7 @@ export default async function Portfolio() {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {projects.slice(0, 3).map((project) => (
+              {projects.map((project) => (
                 <Link href={`/portfolio/${project.slug}`} key={project.id}>
                   <div className="group relative bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div className="relative h-64 overflow-hidden" data-clip-reveal>

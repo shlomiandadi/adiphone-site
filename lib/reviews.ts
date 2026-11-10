@@ -41,3 +41,17 @@ export const SITE_REVIEWS: readonly SiteReview[] = [
 ] as const;
 
 export const CONTACT_PAGE_REVIEWS = SITE_REVIEWS.slice(0, 3);
+
+/** קידום אורגני והמרות — לעמוד /services/seo */
+export const SEO_SERVICE_PAGE_REVIEWS: readonly SiteReview[] = [
+  SITE_REVIEWS[2],
+  SITE_REVIEWS[0],
+  SITE_REVIEWS[3],
+];
+
+/** בנייה והעברת אתרים — לעמוד /services/web-development */
+export const WEB_DEVELOPMENT_SERVICE_PAGE_REVIEWS: readonly SiteReview[] = [
+  SITE_REVIEWS[1],
+  SITE_REVIEWS[4],
+  SITE_REVIEWS[5],
+];

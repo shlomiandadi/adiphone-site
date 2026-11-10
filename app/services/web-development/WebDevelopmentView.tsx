@@ -1,12 +1,15 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import GoogleReviews from '../../components/GoogleReviews';
 import Hero3D from '../../components/hero3d/Hero3D';
+import { WEB_DEVELOPMENT_SERVICE_PAGE_REVIEWS } from '../../../lib/reviews';
 import { FaLaptopCode, FaMobileAlt, FaTachometerAlt } from 'react-icons/fa';
 import { LOCAL_WEBSITE_PAGES } from '../../../lib/local-website-building';
 import type { WebsiteProjectCard } from '../../../lib/website-projects';
 
 const FALLBACK_IMAGE = '/images/portfolio/project1.svg';
+const HAIFA_LOCAL_PATH = '/services/bniyat-atarim-haifa';
 
 type Props = {
   projects: WebsiteProjectCard[];
@@ -84,13 +87,21 @@ export default function WebDevelopmentView({ projects }: Props) {
           <h2><strong>בניית אתרים: האתר שלכם הוא לא כרטיס ביקור – הוא המשרד, חלון הראווה והמוכרן הראשי שלכם</strong></h2>
           <p>בעידן הדיגיטלי, אתר אינטרנט הוא הרבה יותר מכתובת שמופיעה על כרטיס ביקור. הוא המרכז העצבי של כל הפעילות השיווקית והעסקית שלכם. זה המקום הראשון שלקוחות פוטנציאליים פוגשים אתכם, המקום בו הם לומדים עליכם, בונים אמון, ובסופו של דבר, מקבלים החלטה האם לעשות אתכם עסקים. אתר אינטרנט שלא בנוי כהלכה – אתר איטי, לא מאובטח, או שלא מותאם למובייל – לא רק שלא עוזר לעסק, הוא פוגע בו באופן אקטיבי.</p>
           <p>ב-Top Webstak, אנו ניגשים לכל פרויקט של בניית אתר כאל בניית נכס דיגיטלי אסטרטגי. אנו משלבים <a href="/services/ui-design"><strong>עיצוב UI/UX</strong></a> מרהיב עם הנדסה טכנולוגית בלתי מתפשרת, כדי ליצור אתרים שהם לא רק יפים למראה, אלא מהווים מכונה עסקית משומנת היטב.</p>
-          <p>אנחנו בונים אתרים לעסקים בכל אזור השרון והצפון, כולל {LOCAL_WEBSITE_PAGES.map((city, index) => (
-            <span key={city.path}>
-              {index > 0 ? (index === LOCAL_WEBSITE_PAGES.length - 1 ? ' ו' : ', ') : null}
-              <a href={city.path}>{`בניית אתרים ב${city.name}`}</a>
-            </span>
-          ))}
-          . לפירוט על אתר שמציג את העסק ומביא פניות ראו <a href="/services/website-tadmit">אתרי תדמית</a>. לעסקים במקצועות ספציפיים יש גם דפים על <a href="/services/web-development/lawyers">בניית אתר לעורך דין</a>, <a href="/services/web-development/clinics">בניית אתר לקליניקה</a> ו<a href="/services/web-development/accountants">בניית אתר לרואה חשבון</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.</p>
+          <p>
+            אנחנו בונים אתרים לעסקים בכל אזור השרון והצפון, כולל{' '}
+            {LOCAL_WEBSITE_PAGES.filter((city) => city.path !== HAIFA_LOCAL_PATH).map((city, index, arr) => (
+              <span key={city.path}>
+                {index > 0 ? (index === arr.length - 1 ? ' ו' : ', ') : null}
+                <a href={city.path}>{`בניית אתרים ב${city.name}`}</a>
+              </span>
+            ))}
+            . לעסקים בחיפה ובקריות יש עמוד ייעודי ל
+            <a href={HAIFA_LOCAL_PATH}>בניית אתרים בחיפה</a>
+            {' '}— פגישה בעיר או ליווי מרחוק מפרדס חנה.
+          </p>
+          <p>
+            לפירוט על אתר שמציג את העסק ומביא פניות ראו <a href="/services/website-tadmit">אתרי תדמית</a>. לעסקים במקצועות ספציפיים יש גם דפים על <a href="/services/web-development/lawyers">בניית אתר לעורך דין</a>, <a href="/services/web-development/clinics">בניית אתר לקליניקה</a> ו<a href="/services/web-development/accountants">בניית אתר לרואה חשבון</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.
+          </p>
           <h2><strong>מהו פיתוח אתרים מקצועי, ומה ההבדל בין אתר &quot;חובבני&quot; לאתר מנצח?</strong></h2>
           <p>בניית אתר היא תהליך הנדסי של הפיכת עיצוב גרפי למערכת חיה, פונקציונלית ואינטראקטיבית. בעוד שכל אחד יכול &quot;לגרור ולשחרר&quot; אלמנטים בפלטפורמה כזו או אחרת, פיתוח מקצועי מתמקד ביסודות הבלתי נראים שקובעים את הצלחת האתר:</p>
           <ul>
@@ -204,6 +215,13 @@ export default function WebDevelopmentView({ projects }: Props) {
         description: project.description || '',
         link: `/portfolio/${project.slug}`,
       }))}
+      beforeCta={(
+        <section data-reveal className="px-4 py-16">
+          <div className="container mx-auto max-w-5xl">
+            <GoogleReviews heading="מה הלקוחות אומרים" reviews={WEB_DEVELOPMENT_SERVICE_PAGE_REVIEWS} />
+          </div>
+        </section>
+      )}
     />
   );
 }

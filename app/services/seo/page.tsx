@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { getSiteUrl, organizationLogo } from '../../../lib/seo';
 import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
+import GoogleReviews from '../../components/GoogleReviews';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
+import { SEO_SERVICE_PAGE_REVIEWS } from '../../../lib/reviews';
 
 const PHONE_DISPLAY = '050-9159951';
 const PHONE_TEL = '+972509159951';
@@ -260,6 +262,13 @@ export default async function SeoServicePage() {
           <Link href="/services/aeo-geo" className="underline">קידום במנועי AI (AEO/GEO)</Link>
         </p>
       </section>
+
+      <section data-reveal className="px-4 py-16">
+        <div className="container mx-auto max-w-5xl">
+          <GoogleReviews heading="מה הלקוחות אומרים" reviews={SEO_SERVICE_PAGE_REVIEWS} />
+        </div>
+      </section>
+
       <ServiceCtaBanner serviceKey="seo" image={projectImage} imageAlt="פרויקט קידום אתרים" />
     </div>
   );

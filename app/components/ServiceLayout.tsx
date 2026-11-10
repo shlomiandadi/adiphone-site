@@ -88,6 +88,8 @@ interface ServiceLayoutProps {
   pricingIntro?: string;
   /** Hide links to /pricing in the shared pricing block footer. */
   pricingOmitWebsitePriceList?: boolean;
+  /** Optional content immediately above the shared service CTA banner. */
+  beforeCta?: React.ReactNode;
   /** Replace the shared website-packages teaser with a page-specific pricing section. */
   pricingContent?: React.ReactNode;
   /** Deprecated: placeholder testimonials were removed. Kept optional for back-compat. */
@@ -183,6 +185,7 @@ export default function ServiceLayout({
   pricingIntro,
   pricingOmitWebsitePriceList,
   pricingContent,
+  beforeCta,
 }: ServiceLayoutProps) {
   const motionInitial = disableMotionHide ? false : 'hidden';
   const [topicPortfolio, setTopicPortfolio] = useState(portfolioTopic ? [] : portfolio);
@@ -632,6 +635,8 @@ export default function ServiceLayout({
               omitWebsitePriceList={pricingOmitWebsitePriceList}
             />
           )}
+
+      {beforeCta}
 
       <ServiceCtaBanner
         serviceKey={servicePath || serviceType}

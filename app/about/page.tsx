@@ -66,7 +66,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <Hero3D
         theme="about"
-        title="אודות החברה"
+        title="אודות Top Webstak | פרדס חנה"
         subtitle="מובילים את המהפכה הדיגיטלית כבר למעלה מ-15 שנה"
         align="center"
         ctas={[

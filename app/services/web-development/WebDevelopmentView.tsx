@@ -144,6 +144,45 @@ export default function WebDevelopmentView({ projects }: Props) {
           <p><strong>בין אם אתם צריכים לרענן אתר קיים או לבנות נוכחות דיגיטלית מאפס, צוות המפתחים של Top Webstak כאן כדי לבנות לכם אתר שתהיו גאים בו, והכי חשוב – אתר שעובד בשבילכם.</strong></p>
         </>
       )}
+      beforeFaq={(
+        <section data-reveal className="bg-gray-50 px-4 py-16 dark:bg-gray-800">
+          <div className="container mx-auto max-w-3xl text-right">
+            <h2 className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+              איך בוחרים חברה לבניית אתרים
+            </h2>
+            <p className="mb-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+              כשאתם משווים הצעות, כדאי לבדוק כמה דברים בסיסיים לפני שחותמים — בין אם מדובר בחברת בניית אתרים
+              {' '}גדולה או בחברה לבניית אתרים שמלווה אתכם באופן אישי.
+            </p>
+            <ul className="mb-6 list-disc space-y-3 pr-6 text-lg text-gray-800 dark:text-gray-200">
+              <li>
+                <strong>תיק עבודות אמיתי:</strong> דפים שעלו לאוויר, לא רק מוקאפים. אפשר לראות דוגמאות ב
+                <a href="/portfolio" className="font-semibold text-blue-700 underline dark:text-blue-400">
+                  תיק העבודות
+                </a>
+                .
+              </li>
+              <li>
+                <strong>ביקורות גוגל אמיתיות:</strong> דירוג וחוות דעת של לקוחות, לא ציטוטים ללא מקור. ראו את
+                {' '}
+                <a href="#google-reviews" className="font-semibold text-blue-700 underline dark:text-blue-400">
+                  הביקורות בעמוד הזה
+                </a>
+                .
+              </li>
+              <li>
+                <strong>מהירות ו-SEO מהיום הראשון:</strong> אתר שנטען מהר בנייד, עם בסיס טכני שאפשר להמשיך ממנו לקידום.
+              </li>
+              <li>
+                <strong>מחיר ותהליך ברורים:</strong> מה כלול, מה לוח הזמנים ומה קורה אחרי אישור ההצעה — בלי הפתעות באמצע.
+              </li>
+              <li>
+                <strong>ליווי אחרי ההשקה:</strong> הדרכה, תיקונים קטנים מהשקה ואפשרות לתחזוקה כשצריך — האתר לא נשאר לבד.
+              </li>
+            </ul>
+          </div>
+        </section>
+      )}
       features={[
         {
           icon: FaLaptopCode,
@@ -216,7 +255,7 @@ export default function WebDevelopmentView({ projects }: Props) {
         link: `/portfolio/${project.slug}`,
       }))}
       beforeCta={(
-        <section data-reveal className="px-4 py-16">
+        <section id="google-reviews" data-reveal className="scroll-mt-24 px-4 py-16">
           <div className="container mx-auto max-w-5xl">
             <GoogleReviews heading="מה הלקוחות אומרים" reviews={WEB_DEVELOPMENT_SERVICE_PAGE_REVIEWS} />
           </div>

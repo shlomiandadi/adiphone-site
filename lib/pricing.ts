@@ -71,13 +71,14 @@ export const PRICING_PACKAGES: PricingPackage[] = [
   },
   {
     id: 'custom',
-    name: 'פיתוח מותאם / מערכת',
+    name: 'פיתוח מותאם / מערכת / פורטל',
     startingPrice: 20000,
     priceLabel: 'מ-20,000 ₪',
-    summary: 'מערכת או אתר מורכב לפי אפיון.',
+    summary: 'מערכת, פורטל או אתר מורכב לפי אפיון.',
     includes: [
       'אפיון משותף',
       'פיתוח לפי מפרט',
+      'פורטל לקוחות או ספקים עם אזור אישי',
       'התאמה לתהליך העסקי שלכם',
     ],
     serviceHref: '/services/software-development',
@@ -87,7 +88,16 @@ export const PRICING_PACKAGES: PricingPackage[] = [
 ];
 
 export const PRICING_ADDONS = [
-  { name: 'תחזוקה', priceLabel: '250–500 ₪ לחודש', detail: 'עדכונים, גיבויים ותמיכה שוטפת.' },
+  {
+    name: 'תחזוקה בסיסית',
+    priceLabel: '250 ₪ לחודש',
+    detail: 'עדכונים, גיבויים ובדיקת זמינות (uptime).',
+  },
+  {
+    name: 'תחזוקה מורחבת',
+    priceLabel: '500 ₪ לחודש',
+    detail: 'כולל שינויי תוכן ותמיכה בעדיפות.',
+  },
   { name: 'אחסון מנוהל', priceLabel: '50–150 ₪ לחודש', detail: 'אחסון ותפעול טכני של האתר.' },
   { name: 'כתיבת תוכן', priceLabel: '250–400 ₪ לעמוד', detail: 'ניסוח מקצועי לעמוד חדש או קיים.' },
   { name: 'SEO / GEO חודשי', priceLabel: 'לפי הצעת מחיר', detail: 'קידום אורגני ומוכנות לחיפוש מבוסס בינה מלאכותית.' },

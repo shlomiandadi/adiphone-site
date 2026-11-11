@@ -33,6 +33,8 @@ export type WebDevNicheContent = {
   buildTitle: string;
   buildItems: NicheCard[];
   extraSections: { title: string; paragraphs: string[]; list?: string[] }[];
+  /** Optional pricing block (visible H2 + bullets) shown before FAQ on niche pages. */
+  pricingSection?: { title: string; items: string[] };
   processTitle: string;
   process: NicheCard[];
   trustTitle: string;
@@ -136,6 +138,13 @@ export const LAWYERS_NICHE: WebDevNicheContent = {
       ],
     },
   ],
+  pricingSection: {
+    title: 'כמה עולה אתר לעורך דין?',
+    items: [
+      'דף נחיתה החל מ-2,500 ₪ + מע״מ',
+      'אתר תדמית למשרד עורכי דין החל מ-6,500 ₪ + מע״מ',
+    ],
+  },
   processTitle: 'איך נבנה האתר',
   process: [
     { title: 'שיחת אפיון', description: 'תחומי העיסוק, מבנה המשרד ואיך אתם מעדיפים לקבל פניות.' },
@@ -174,7 +183,8 @@ export const LAWYERS_NICHE: WebDevNicheContent = {
     },
     {
       question: 'כמה עולה אתר למשרד עורכי דין?',
-      answer: 'המחיר תלוי במספר עמודי התחומים, מי כותב את התוכן ואם יש חיבור למערכת קיימת. אחרי אפיון תקבלו הצעה. אין כאן מחיר גורף.',
+      answer:
+        'דף נחיתה החל מ-2,500 ₪ + מע״מ, ואתר תדמית למשרד עורכי דין החל מ-6,500 ₪ + מע״מ. המחיר הסופי תלוי במספר עמודי התחומים, בכתיבת התוכן ובחיבורים למערכות קיימות.',
     },
     {
       question: 'האם צריך עמוד לכל תחום עיסוק?',

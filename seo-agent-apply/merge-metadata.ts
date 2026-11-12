@@ -30,7 +30,10 @@ function withVersionedServiceOgImage(path: string, meta: Metadata): Metadata {
 
   const openGraph =
     meta.openGraph && typeof meta.openGraph === 'object' ? { ...meta.openGraph } : {};
-  const twitter = meta.twitter && typeof meta.twitter === 'object' ? { ...meta.twitter } : {};
+  const twitter =
+    meta.twitter && typeof meta.twitter === 'object' ? ({ ...meta.twitter } as Record<string, unknown>) : {};
+  const twitterCard =
+    typeof twitter.card === 'string' && twitter.card ? twitter.card : 'summary_large_image';
 
   return {
     ...meta,
@@ -47,7 +50,7 @@ function withVersionedServiceOgImage(path: string, meta: Metadata): Metadata {
     },
     twitter: {
       ...twitter,
-      card: twitter.card || 'summary_large_image',
+      card: twitterCard,
       images: [imageUrl],
     },
     other: {

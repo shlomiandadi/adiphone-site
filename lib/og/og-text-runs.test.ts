@@ -12,10 +12,9 @@ describe('displayRuns', () => {
 
   test('orders ב hyphen and Latin phrase for RTL reading', () => {
     const runs = displayRuns('ב-ChatGPT Business Hub');
-    assert.deepEqual(
-      runs.map((run) => run.text),
-      ['ChatGPT Business Hub', 'ב-'],
-    );
+    assert.deepEqual(runs.map((run) => run.text), ['ChatGPT Business Hub']);
+    assert.equal(runs[0]?.gluePrefix, 'ב-');
+    assert.equal(runs.length, 1);
   });
 
   test('handles AEO/GEO and AI in Hebrew titles', () => {
@@ -28,15 +27,19 @@ describe('displayRuns', () => {
     const lines = splitOgTitleLines('פרסום ממומן ב-ChatGPT לעסקים בישראל');
     assert.equal(lines.length, 2);
     const runs = displayRuns(lines[1]);
-    const latin = runs.find((r) => r.latin);
-    assert.equal(latin?.text, 'ChatGPT');
-    assert.ok(runs.some((r) => r.text === 'ב-' && r.glueRight));
-    assert.equal(runs[runs.length - 1]?.text, 'ב-');
+    const glued = runs[runs.length - 1];
+    assert.equal(glued?.gluePrefix, 'ב-');
+    assert.equal(glued?.text, 'ChatGPT');
+    assert.equal(runs[0]?.text, 'לארשיב');
   });
 
   test('pure Hebrew still produces only Hebrew runs', () => {
     const runs = displayRuns('קידום אתרים');
     assert.equal(runs.every((run) => !run.latin), true);
     assert.equal(runs.length, 2);
+    assert.deepEqual(
+      runs.map((run) => run.text),
+      ['םירתא', 'םודיק'],
+    );
   });
 });

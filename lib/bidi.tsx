@@ -108,8 +108,13 @@ export function chatgptBusinessHubCrumbLabel(): ReactNode {
 export function chatgptAdsHeroTitle(): ReactNode {
   return (
     <>
-      פרסום ממומן{' '}
-      <BdiLatin>ב-ChatGPT</BdiLatin> לעסקים בישראל
+      <span className="block text-balance sm:text-pretty">
+        פרסום ממומן{' '}
+        <span className="inline-block whitespace-nowrap">
+          <BdiLatin>ב-ChatGPT</BdiLatin>
+        </span>
+      </span>
+      <span className="block">לעסקים בישראל</span>
     </>
   );
 }

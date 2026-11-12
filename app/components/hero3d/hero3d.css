@@ -477,19 +477,43 @@
   font-weight: 700;
 }
 
+.h3d-theme-chatgpt-ads .h3d-ad-card {
+  display: none;
+}
+
 .h3d-theme-chatgpt-ads .h3d-scene {
-  opacity: 0.55;
+  opacity: 0.45;
+  inset-inline-start: auto;
+  inset-inline-end: -10%;
+  top: 58%;
+  width: min(40rem, 46vw);
+}
+
+.h3d-theme-chatgpt-ads .h3d-chat.chat-sponsored {
+  inset-inline-end: 6%;
+  inset-inline-start: auto;
+  bottom: 12%;
+  max-width: 52%;
 }
 
 @media (max-width: 1023px) {
   .h3d-theme-chatgpt-ads .h3d-scene {
-    top: 30%;
-    opacity: 0.35;
+    top: 26%;
+    inset-inline-end: -18%;
+    width: min(22rem, 72vw);
+    opacity: 0.22;
   }
   .h3d-theme-chatgpt-ads .h3d-chat.chat-sponsored {
-    bottom: 4%;
-    inset-inline-end: 2%;
-    max-width: 46%;
+    bottom: 0%;
+    inset-inline-end: 4%;
+    max-width: 40%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .h3d-theme-chatgpt-ads .h3d-copy h1 {
+    position: relative;
+    z-index: 2;
   }
 }
 

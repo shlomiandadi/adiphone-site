@@ -7,7 +7,7 @@ export const serviceOgSize = { width: 1200, height: 630 };
 export const serviceOgContentType = 'image/png';
 
 /** Bump when OG PNG pixels change so link previews refetch (WhatsApp, Facebook). */
-export const SERVICE_OG_CACHE_VERSION = 5;
+export const SERVICE_OG_CACHE_VERSION = 11;
 
 export function versionedServiceOgImagePath(routePath: string): string {
   const base = routePath.replace(/\/$/, '');
@@ -49,25 +49,107 @@ function OgLine({
         }}
       >
         {runs.map((run, index) => {
-          const prev = runs[index - 1];
-          const tight = index > 0 && (run.glueLeft || Boolean(prev?.glueRight));
+          const latinWords =
+            run.latin && run.text.includes(' ') ? run.text.split(/\s+/).filter(Boolean) : null;
+
           return (
             <div
-              key={index}
+              key={`${run.text}-${index}`}
               style={{
                 display: 'flex',
                 flexShrink: 0,
-                marginLeft: index === 0 ? 0 : tight ? 0 : RUN_GAP,
+                marginLeft: index === 0 ? 0 : RUN_GAP,
                 fontFamily: run.latin ? 'HeeboLatin' : 'HeeboHebrew',
                 fontSize,
                 fontWeight: 700,
                 color,
                 whiteSpace: 'nowrap',
-                direction: run.latin ? 'ltr' : 'rtl',
-                unicodeBidi: run.latin ? 'isolate' : 'plaintext',
+                unicodeBidi: 'isolate',
               }}
             >
-              {run.text}
+              {run.gluePrefix ? (
+                (() => {
+                  const words = latinWords ?? [run.text];
+                  const multiLatin = words.length > 1;
+                  const latinSpan = (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'nowrap',
+                        direction: 'ltr',
+                      }}
+                    >
+                      {words.map((word, wordIndex) => (
+                        <span
+                          key={`${word}-${wordIndex}`}
+                          style={{
+                            fontFamily: 'HeeboLatin',
+                            marginLeft: wordIndex === 0 ? 0 : 10,
+                          }}
+                        >
+                          {word}
+                        </span>
+                      ))}
+                    </div>
+                  );
+                  const prefixSpan = (
+                    <span
+                      style={{
+                        fontFamily: 'HeeboHebrew',
+                        marginLeft: multiLatin ? 6 : 0,
+                        marginRight: multiLatin ? 0 : 6,
+                      }}
+                    >
+                      {run.gluePrefix}
+                    </span>
+                  );
+
+                  return (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: multiLatin ? 'row' : 'row-reverse',
+                        flexWrap: 'nowrap',
+                        alignItems: 'baseline',
+                        direction: 'ltr',
+                      }}
+                    >
+                      {multiLatin ? (
+                        <>
+                          {latinSpan}
+                          {prefixSpan}
+                        </>
+                      ) : (
+                        <>
+                          {prefixSpan}
+                          {latinSpan}
+                        </>
+                      )}
+                    </div>
+                  );
+                })()
+              ) : latinWords ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'nowrap',
+                    direction: 'ltr',
+                  }}
+                >
+                  {latinWords.map((word, wordIndex) => (
+                    <span
+                      key={`${word}-${wordIndex}`}
+                      style={{ marginLeft: wordIndex === 0 ? 0 : 10 }}
+                    >
+                      {word}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                run.text
+              )}
             </div>
           );
         })}

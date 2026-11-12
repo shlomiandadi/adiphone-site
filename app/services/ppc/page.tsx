@@ -158,6 +158,19 @@ export default async function PpcServicePage() {
         </div>
       </section>
 
+      <section data-reveal className="border-y border-orange-100 bg-orange-50 px-4 py-10">
+        <div className="container mx-auto max-w-3xl text-center">
+          <p className="text-lg text-gray-800">
+            מודעה מסומנת מתחת לתשובת ChatGPT היא ערוץ נפרד מגוגל Ads וממטא — לא אותו חשבון ולא אותה
+            מדידה. לפרסום ב-Ads Manager ראו{' '}
+            <Link href="/services/chatgpt-ads" className="font-semibold text-orange-700 underline">
+              פרסום ממומן ב-ChatGPT
+            </Link>
+            . תקציב המדיה נקבע בנפרד לכל פלטפורמה.
+          </p>
+        </div>
+      </section>
+
       {/* What's included */}
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">
@@ -321,7 +334,6 @@ export default async function PpcServicePage() {
           קשור:{' '}
           <Link href="/services/seo" className="underline">קידום אורגני (SEO)</Link> ·{' '}
           <Link href="/services/aeo-geo" className="underline">קידום במנועי AI (AEO/GEO)</Link> ·{' '}
-          <Link href="/services/chatgpt-ads" className="underline">פרסום ב-ChatGPT Ads</Link> ·{' '}
           <Link href="/services/web-development" className="underline">בניית אתרים</Link> ·{' '}
           <Link href="/pricing" className="underline">מחירון</Link> ·{' '}
           <Link href="/contact" className="underline">צור קשר</Link>

@@ -205,18 +205,70 @@ export default function ChatGptAdsPage() {
         </div>
       </section>
 
+      <section data-reveal className="border-y border-blue-100 bg-blue-50 px-4 py-12">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-4 text-2xl font-bold text-gray-900">
+            מודעה בתשלום לעומת פרופיל עסקי ב-{isolateLatinPhrases('Business Hub')}
+          </h2>
+          <div className="space-y-4 text-lg leading-relaxed text-gray-800">
+            <p>
+              <strong>{isolateLatinPhrases('ChatGPT Ads')}:</strong> כרטיס מודעה מסומן שמופיע בדרך כלל
+              מתחת לתשובת ChatGPT. משלמים ל-OpenAI על חשיפות/קליקים לפי הגדרות הקמפיין. המודעה לא
+              משנה את התשובה האורגנית ולא נראית כהמלצה של ChatGPT (לפי{' '}
+              <a
+                href="https://help.openai.com/he-il/articles/20001207-ads-in-chatgpt-the-basics"
+                className="text-blue-700 underline"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                מרכז העזרה של OpenAI
+              </a>
+              ).
+            </p>
+            <p>
+              <strong>{isolateLatinPhrases('Business Hub')}:</strong> לוח לתביעת הפרופיל הרשמי,
+              עדכון פרטי העסק ומעקב אחרי אזכורים וקליקים אורגניים — בלי לשלם על מודעה מתחת לתשובה.
+              השירות שלנו לפרופיל:{' '}
+              <Link href="/services/chatgpt-business-hub" className="text-blue-700 underline">
+                עסק ב-ChatGPT Business Hub
+              </Link>
+              . אפשר לשלב את שני הערוצים, אבל הם לא מחליפים זה את זה.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <div className="rounded-xl border-r-4 border-blue-600 bg-blue-50 p-6">
             <h2 className="mb-3 text-2xl font-bold text-gray-900">למי מוצגות מודעות?</h2>
             <p className="mb-4 text-lg leading-relaxed text-gray-800">
-              לפי OpenAI, מודעות מוצגות במסלולי Free ו-Go בלבד — לא ב-Plus, Pro או תוכניות Business. אין
-              מודעות למשתמשים שזוהו כמתחת לגיל 18. המודעות מסומנות ומופרדות מהתשובה, והמפרסם מקבל
-              מדדים מצטברים בלבד, בלי תוכן השיחות.
+              לפי{' '}
+              <a
+                href="https://help.openai.com/he-il/articles/20001207-ads-in-chatgpt-the-basics"
+                className="text-blue-700 underline"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                מרכז העזרה של OpenAI
+              </a>
+              , מודעות מוצגות במסלולי Free ו-Go בלבד — לא ב-Plus, Pro או תוכניות Business. אין מודעות
+              למשתמשים שזוהו כמתחת לגיל 18. המודעות מסומנות ומופרדות מהתשובה, והמפרסם מקבל מדדים
+              מצטברים בלבד, בלי תוכן השיחות.
             </p>
             <p className="text-lg leading-relaxed text-gray-800">
-              בישראל ניתן לפתוח חשבון בשירות עצמי ב-Ads Manager, והצגת מודעות למשתמשים החלה בהדרגה.
-              אין להבטיח שכל משתמש בישראל רואה מודעות בכל רגע נתון.
+              ברשימת OpenAI ל-{isolateLatinPhrases('Ads Manager')} ישראל מסומנת כ-
+              <strong>Available</strong> לשירות עצמי (
+              <a
+                href="https://help.openai.com/en/articles/20001245-ads-manager-availability"
+                className="text-blue-700 underline"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Ads Manager Availability
+              </a>
+              ). הישות המשפטית שמפרסמת צריכה להיות רשומה במדינה זמינה. הפריסה למשתמשים בישראל עשויה
+              להיות הדרגתית — אין להבטיח שכל משתמש רואה מודעות בכל רגע, ואין להבטיח חשיפה מלאה.
             </p>
           </div>
         </div>
@@ -227,7 +279,16 @@ export default function ChatGptAdsPage() {
           <h2 className="mb-4 text-3xl font-bold text-gray-900">למי זה מתאים — ולמי לא</h2>
           <p className="mb-4 text-lg text-gray-700">
             <strong>מתאים בעיקר ל:</strong> מוצרים לצרכן, שירותים מקומיים, תיירות וחוויות, ומוצרים
-            דיגיטליים והשכלה — לפי מדיניות OpenAI לקטגוריות מותרות.
+            דיגיטליים והשכלה — לפי{' '}
+            <a
+              href="https://openai.com/policies/ad-policies/"
+              className="text-blue-700 underline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              מדיניות המודעות של OpenAI
+            </a>
+            .
           </p>
           <p className="text-lg text-gray-700">
             <strong>לא מתאים כרגע (מחוץ לארה״ב, לפי המדיניות):</strong> שירותים פיננסיים, רפואיים
@@ -238,6 +299,52 @@ export default function ChatGptAdsPage() {
       </section>
 
       <section data-reveal className="bg-gray-50 px-4 py-16">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">פורמט, מיקוד וחיוב — לפי OpenAI</h2>
+          <p className="mb-4 text-lg leading-relaxed text-gray-700">
+            פורמט מודעה סטנדרטי כולל שם מפרסם, כותרת, תיאור, דף נחיתה וקריאייטיב; ייתכנו אפשרויות
+            נוספות (למשל תמונה בודדת או ריבוי תמונות) לפי מה שפתוח בחשבון — ראו{' '}
+            <a
+              href="https://help.openai.com/en/articles/20001212-create-ads-for-chatgpt-ads"
+              className="text-blue-700 underline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Creating ads for ChatGPT Ads
+            </a>
+            .
+          </p>
+          <p className="mb-4 text-lg leading-relaxed text-gray-700">
+            מיקוד כולל מדינות ולעיתים מיקומים מדויקים יותר, פלטפורמות אופציונליות וקהלים מותאמים כשהם
+            זמינים. <strong>רמזי הקשר (Context hints)</strong> מתארים נושאים רלוונטיים — הם אינם מילות
+            מפתח בהתאמה מדויקת ואינם מבטיחים הופעה בשיחה מסוימת. זמינות אפשרויות המיקוד משתנה לפי
+            מדינה, סוג קמפיין והחשבון; אנחנו לא מבטיחים מיקוד דמוגרפי או כיסוי מלא של כל המשתמשים.
+          </p>
+          <p className="text-lg leading-relaxed text-gray-700">
+            חיוב המדיה הוא לאחר הצגת המודעות (פוסטפיי). יעדי קמפיין ותקציב מוגדרים לפי{' '}
+            <a
+              href="https://help.openai.com/en/articles/20001210"
+              className="text-blue-700 underline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              יצירת קמפיינים
+            </a>{' '}
+            ו
+            <a
+              href="https://help.openai.com/en/articles/20001216-billing-payment"
+              className="text-blue-700 underline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              חיוב ותשלום
+            </a>{' '}
+            של OpenAI.
+          </p>
+        </div>
+      </section>
+
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">מה אנחנו עושים</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -273,15 +380,24 @@ export default function ChatGptAdsPage() {
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">איך משלמים ל-OpenAI</h2>
           <p className="mb-4 text-lg leading-relaxed text-gray-700">
-            יעדי קמפיין: חשיפות (CPM), קליקים (CPC) או אופטימיזציה להמרות — בלי תשלום פר המרה בפני
-            עצמו. בחשבון שקלי OpenAI מגדירה תקציב יומי מינימלי של{' '}
-            <strong>60 ₪</strong>, כממוצע על פני שבעה ימים (ביום בודד ההוצאה עשויה להגיע עד פי שניים).
-            התשלום למדיה הוא ישירות ל-OpenAI, נפרד מדמי הניהול שלנו.
+            לפי{' '}
+            <a
+              href="https://help.openai.com/en/articles/20001210"
+              className="text-blue-700 underline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              תיעוד OpenAI ליצירת קמפיינים
+            </a>
+            , יעדי קמפיין כוללים חשיפות (CPM), קליקים (CPC) או אופטימיזציה להמרות — בלי תשלום פר
+            המרה בפני עצמו. בחשבון שקלי מוגדר תקציב יומי מינימלי של <strong>60 ₪</strong>, כממוצע על
+            פני שבעה ימים (ביום בודד ההוצאה עשויה להגיע עד פי שניים). התשלום למדיה הוא ישירות ל-OpenAI,
+            נפרד מדמי הניהול שלנו.
           </p>
           <p className="text-lg leading-relaxed text-gray-700">
             לשילוב עם{' '}
             <Link href="/services/ppc" className="text-blue-700 underline">
-              קידום ממומן בגוגל וברשתות חברתיות
+              קידום ממומן בגוגל וברשתות חברתיות (PPC)
             </Link>
             , עם{' '}
             <Link href="/services/chatgpt-business-hub" className="text-blue-700 underline">
@@ -357,6 +473,18 @@ export default function ChatGptAdsPage() {
               בניית אתרים
             </Link>
             .
+          </p>
+        </div>
+      </section>
+
+      <section data-reveal className="border-t border-gray-100 px-4 py-10">
+        <div className="container mx-auto max-w-3xl text-center">
+          <p className="text-lg text-gray-700">
+            מחפשים קמפיינים בגוגל ובמטא? ראו{' '}
+            <Link href="/services/ppc" className="font-semibold text-blue-700 underline">
+              קידום ממומן (PPC)
+            </Link>
+            — ערוץ נפרד, עם חשבונות פרסום נפרדים ותקציב מדיה משלו.
           </p>
         </div>
       </section>

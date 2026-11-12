@@ -3,14 +3,20 @@ export type OgRun = {
   latin: boolean;
   glueLeft?: boolean;
   glueRight?: boolean;
+  /** Hebrew prefix glued to the following Latin phrase (e.g. ב-ChatGPT). */
+  gluePrefix?: string;
 };
 
 const HEBREW = /[\u0590-\u05FF]/;
 const LATIN_START = /[A-Za-z0-9]/;
 const LATIN_CONTINUE = /[A-Za-z0-9./()+\-_]/;
 
-/** Satori has no bidi: reverse Hebrew graphemes per word; leave Latin in logical order. */
+/** Satori paints LTR; reverse Hebrew graphemes per word for correct RTL glyphs. */
 function reverseHebrewVisual(text: string): string {
+  // Glued Hebrew–Latin prefixes (e.g. ב-) must stay in logical order for Satori.
+  if (/^[\u0590-\u05FF]+-$/.test(text)) {
+    return text;
+  }
   return text.split('').reverse().join('');
 }
 
@@ -129,7 +135,23 @@ export function displayRuns(text: string): OgRun[] {
     i += 1;
   }
 
-  return runs.reverse();
+  const coalesced: OgRun[] = [];
+  for (let i = 0; i < runs.length; i += 1) {
+    const run = runs[i];
+    const next = runs[i + 1];
+    if (run.glueRight && next?.latin && next.glueLeft) {
+      coalesced.push({
+        text: next.text,
+        latin: true,
+        gluePrefix: run.text,
+      });
+      i += 1;
+      continue;
+    }
+    coalesced.push(run);
+  }
+
+  return coalesced.reverse();
 }
 
 /** Break long mixed titles into stacked OG lines without changing wording. */

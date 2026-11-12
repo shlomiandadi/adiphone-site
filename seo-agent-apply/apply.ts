@@ -9,6 +9,8 @@ import {
 import { readSeoAgentState, writeSeoAgentState } from './state';
 import type { SeoAgentApplyPayload } from './types';
 
+export const SEO_AGENT_PROTECTED_SKIP = 'skipped: protected path';
+
 export { isSeoAgentApplyPayload, isSeoAgentArticlePayload };
 
 export function revalidateSeoAgentPaths(paths: string[]) {
@@ -34,20 +36,36 @@ export async function applySeoAgentPayload(payload: SeoAgentApplyPayload) {
   const action = String(payload.action || payload.type || 'apply').toLowerCase();
   const current = await readSeoAgentState();
   const reduced = reduceSeoAgentState(current, payload);
+  const pageWrites = reduced.touched.filter((path) => path !== '/llms.txt');
+  const wrotePagesOrStore =
+    pageWrites.length > 0 || reduced.redirectsUpdated || reduced.llmsUpdated;
 
-  if (action !== 'revalidate') {
+  if (action !== 'revalidate' && wrotePagesOrStore) {
     await writeSeoAgentState(reduced.state);
   }
 
-  revalidateSeoAgentPaths(reduced.touched);
+  if (action !== 'revalidate' && !wrotePagesOrStore && reduced.skippedProtected.length > 0) {
+    return {
+      success: false as const,
+      skipped: SEO_AGENT_PROTECTED_SKIP,
+      paths: reduced.skippedProtected,
+      storage: 'neon' as const,
+    };
+  }
+
+  if (reduced.touched.length > 0) {
+    revalidateSeoAgentPaths(reduced.touched);
+  }
 
   return {
     success: true as const,
     applied: {
-      pages: reduced.touched.filter((path) => path !== '/llms.txt'),
+      pages: pageWrites,
       redirects: reduced.redirectsUpdated ? reduced.state.redirects.length : 0,
       llms: reduced.llmsUpdated,
     },
+    skipped: reduced.skippedProtected.length ? SEO_AGENT_PROTECTED_SKIP : undefined,
+    skippedPaths: reduced.skippedProtected,
     revalidated: reduced.touched,
     storage: 'neon' as const,
   };

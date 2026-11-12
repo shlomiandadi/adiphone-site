@@ -34,4 +34,5 @@ https://adi-phone.co.il/api/seo-agent/webhook
 - 301/302 redirects in `middleware.ts` (existing `next.config.js` / `netlify.toml` redirects stay)
 - `/llms.txt` served by `app/llms.txt/route.ts` (same body as the previous public file; store additions are appended)
 - `revalidatePath` for the page, its layout, and the parent layout after each successful apply (service metadata lives on the nested layout)
+- `/services` and `/services/*` are protected: webhook apply/override payloads are skipped (`skipped: protected path` / 403) and stored rows are ignored at render
 - Existing article-publish payloads (`title` + `slug` + `contentHtml`) still write to Prisma

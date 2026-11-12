@@ -4,6 +4,7 @@ export {
   isSeoAgentApplyPayload,
   isSeoAgentArticlePayload,
   revalidateSeoAgentPaths,
+  SEO_AGENT_PROTECTED_SKIP,
 } from './apply';
 export {
   applySeoAgentOverride,
@@ -13,10 +14,10 @@ export {
 export { applySeoAgentRedirects } from './middleware';
 export { buildLlmsTxt } from './llms';
 export { SeoAgentPageExtras } from './components';
-export { hasPageOverride } from './override';
+export { hasPageOverride, resolveSeoAgentPageOverride } from './override';
 export { probeSeoAgentBlobs } from './store';
 export { getSeoAgentPageOverride, readSeoAgentState, syncSeoAgentStore } from './state';
-export { normalizeSeoAgentPath } from './paths';
+export { isSeoAgentProtectedPath, normalizeSeoAgentPath } from './paths';
 export type {
   SeoAgentApplyPayload,
   SeoAgentFaqItem,

@@ -21,11 +21,14 @@ export function normalizeSeoAgentPath(input: string | null | undefined): string 
   return path || '/';
 }
 
+/** Paths whose title/meta/FAQ/schema may only change in code, never via webhook. */
 export function isSeoAgentProtectedPath(path: string): boolean {
   return (
     path.startsWith('/api/') ||
     path.startsWith('/admin') ||
     path.startsWith('/_next/') ||
-    path === '/api'
+    path === '/api' ||
+    path === '/services' ||
+    path.startsWith('/services/')
   );
 }

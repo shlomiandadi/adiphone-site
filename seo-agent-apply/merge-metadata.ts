@@ -31,14 +31,22 @@ function withVersionedServiceOgImage(path: string, meta: Metadata): Metadata {
   const openGraph =
     meta.openGraph && typeof meta.openGraph === 'object' ? { ...meta.openGraph } : {};
   const twitter =
-    meta.twitter && typeof meta.twitter === 'object' ? ({ ...meta.twitter } as Record<string, unknown>) : {};
+    meta.twitter && typeof meta.twitter === 'object' ? { ...meta.twitter } : {};
   const twitterCard: 'summary' | 'summary_large_image' | 'player' | 'app' =
-    twitter.card === 'summary' ||
-    twitter.card === 'summary_large_image' ||
-    twitter.card === 'player' ||
-    twitter.card === 'app'
+    'card' in twitter &&
+    (twitter.card === 'summary' ||
+      twitter.card === 'summary_large_image' ||
+      twitter.card === 'player' ||
+      twitter.card === 'app')
       ? twitter.card
       : 'summary_large_image';
+
+  const otherEntries =
+    meta.other && typeof meta.other === 'object'
+      ? Object.entries(meta.other).filter(
+          (entry): entry is [string, string | number | (string | number)[]] => entry[1] !== undefined
+        )
+      : [];
 
   return {
     ...meta,
@@ -59,7 +67,7 @@ function withVersionedServiceOgImage(path: string, meta: Metadata): Metadata {
       images: [imageUrl],
     },
     other: {
-      ...(meta.other && typeof meta.other === 'object' ? meta.other : {}),
+      ...Object.fromEntries(otherEntries),
       'og:image:secure_url': imageUrl,
       'og:image:cache_version': String(SERVICE_OG_CACHE_VERSION),
     },

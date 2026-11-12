@@ -12,7 +12,7 @@ import {
   LOCAL_WEBSITE_PAGES,
   PHONE_DISPLAY,
   PHONE_TEL,
-  PROVIDER_EMAIL,
+  PROVIDER_EMAILS,
   PROVIDER_LOCALITY,
   PROVIDER_NAME,
   PROVIDER_STREET,
@@ -65,7 +65,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
       '@type': 'ProfessionalService',
       name: PROVIDER_NAME,
       telephone: '+972-50-9159951',
-      email: PROVIDER_EMAIL,
+      email: [...PROVIDER_EMAILS],
       address: {
         '@type': 'PostalAddress',
         streetAddress: PROVIDER_STREET,

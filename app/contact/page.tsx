@@ -35,7 +35,7 @@ export default function Contact() {
                 מענה תוך שעתיים בשעות הפעילות (א׳–ה׳, 9:00–18:00)
               </p>
               <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed">
-                אם אתם באזור פרדס חנה, חדרה, קיסריה, זכרון יעקב, נתניה או חיפה, אפשר גם לתאם פגישה. המפה למטה מציגה את הכתובת. אפשר להתקשר ל־<a href="tel:0509159951" className="text-blue-600 hover:underline">050-9159951</a> או לכתוב ל־<a href="mailto:adiphoneseo@gmail.com" className="text-blue-600 hover:underline">adiphoneseo@gmail.com</a>.
+                אם אתם באזור פרדס חנה, חדרה, קיסריה, זכרון יעקב, נתניה או חיפה, אפשר גם לתאם פגישה. המפה למטה מציגה את הכתובת. אפשר להתקשר ל־<a href="tel:0509159951" className="text-blue-600 hover:underline">050-9159951</a> או לכתוב ל־<a href="mailto:adiphoneseo@gmail.com" className="text-blue-600 hover:underline">adiphoneseo@gmail.com</a> או ל־<a href="mailto:info@adi-phone.co.il" className="text-blue-600 hover:underline">info@adi-phone.co.il</a>.
               </p>
             </div>
 

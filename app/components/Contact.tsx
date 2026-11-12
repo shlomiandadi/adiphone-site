@@ -40,7 +40,12 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white">אימייל</h4>
-                    <p className="text-gray-600 dark:text-gray-300">adiphoneseo@gmail.com</p>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      <a href="mailto:adiphoneseo@gmail.com" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">adiphoneseo@gmail.com</a>
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      <a href="mailto:info@adi-phone.co.il" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">info@adi-phone.co.il</a>
+                    </p>
                   </div>
                 </div>
 

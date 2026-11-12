@@ -15,6 +15,7 @@ export const generateMetadata = createSeoAgentGenerateMetadata('/privacy-policy'
 
 const CONTACT_EMAIL = 'shlomiandadi@gmail.com';
 const CONTACT_EMAIL_ALT = 'shlomimalfuf1@gmail.com';
+const CONTACT_EMAIL_INFO = 'info@adi-phone.co.il';
 const CONTACT_EMAIL_SUBJECT = encodeURIComponent('פנייה בנושא מדיניות פרטיות');
 
 const TOC = [
@@ -152,6 +153,10 @@ export default function PrivacyPolicy() {
               {' '}או{' '}
               <a className="text-blue-700 hover:underline" href={`mailto:${CONTACT_EMAIL_ALT}?subject=${CONTACT_EMAIL_SUBJECT}`}>
                 {CONTACT_EMAIL_ALT}
+              </a>
+              {' '}או{' '}
+              <a className="text-blue-700 hover:underline" href={`mailto:${CONTACT_EMAIL_INFO}?subject=${CONTACT_EMAIL_SUBJECT}`}>
+                {CONTACT_EMAIL_INFO}
               </a>
             </li>
             <li><b>טלפון:</b> 050-9159951</li>

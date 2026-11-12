@@ -11,7 +11,7 @@ import { chatbotReplyText, chatbotRequestBody, readTurnstileToken } from '@/lib/
 // Robot Icon Component for Chatbot
 function RobotIcon() {
   return (
-    <img src="/icon-64.png" alt="" width={28} height={28} decoding="async" />
+    <img src="/brand/logo-symbol-96.png" alt="" width={28} height={28} decoding="async" />
   );
 }
 

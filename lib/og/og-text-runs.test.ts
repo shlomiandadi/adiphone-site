@@ -1,23 +1,32 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { displayRuns } from './og-text-runs.ts';
-
-function runText(runs: ReturnType<typeof displayRuns>) {
-  return runs.map((run) => run.text).join(' ');
-}
+import { displayRuns, ogLineUsesLatinPhraseFlip } from './og-text-runs.ts';
 
 describe('displayRuns', () => {
-  test('keeps Latin words and letter order for ChatGPT Business Hub', () => {
+  test('keeps multi-word Latin as one LTR phrase for ChatGPT Business Hub', () => {
     const runs = displayRuns('פרופיל עסקי ב-ChatGPT Business Hub');
     const latin = runs.filter((run) => run.latin).map((run) => run.text);
-    assert.deepEqual(latin, ['Hub', 'Business', 'ChatGPT']);
+    assert.deepEqual(latin, ['ChatGPT Business Hub']);
     assert.ok(!latin.join('').includes('TPGtahC'));
+  });
+
+  test('orders ב hyphen and Latin phrase for RTL reading', () => {
+    const runs = displayRuns('ב-ChatGPT Business Hub');
+    assert.deepEqual(
+      runs.map((run) => run.text),
+      ['ChatGPT Business Hub', 'ב-'],
+    );
   });
 
   test('handles AEO/GEO and AI in Hebrew titles', () => {
     const runs = displayRuns('קידום במנועי AI (AEO/GEO)');
     const latin = runs.filter((run) => run.latin).map((run) => run.text);
-    assert.deepEqual(latin, ['(AEO/GEO)', 'AI']);
+    assert.deepEqual(latin, ['AI (AEO/GEO)']);
+  });
+
+  test('detects multi-word Latin lines for Satori paint flip', () => {
+    assert.equal(ogLineUsesLatinPhraseFlip('ב-ChatGPT Business Hub'), true);
+    assert.equal(ogLineUsesLatinPhraseFlip('פרופיל עסקי'), false);
   });
 
   test('pure Hebrew still produces only Hebrew runs', () => {

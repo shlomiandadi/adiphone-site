@@ -115,7 +115,9 @@ export default function ChatGptBusinessHubPage() {
       <Hero3D
         theme="aeo-geo"
         title="הקמה וניהול של העסק שלכם ב-ChatGPT"
-        subtitle="תביעת הפרופיל ב-ChatGPT Business Hub, אימות, עדכון פרטים ומעקב אחרי אזכורים וקליקים לאתר — לעסקים בישראל עם אתר."
+        subtitle={isolateLatinPhrases(
+          'תביעת הפרופיל ב-ChatGPT Business Hub, אימות, עדכון פרטים ומעקב אחרי אזכורים וקליקים לאתר — לעסקים בישראל עם אתר.'
+        )}
         align="center"
         ctas={[
           { href: '/contact', label: 'שיחת ייעוץ של 15 דקות' },
@@ -128,8 +130,9 @@ export default function ChatGptBusinessHubPage() {
         ]}
       >
         <p className="mt-4 max-w-2xl text-center text-sm text-white/85">
-          השירות בבטא אצל OpenAI, והזכאות תלויה בסוג העסק ובאישור שלהם. תביעת פרופיל לא מבטיחה ש-ChatGPT
-          ימליץ עליכם יותר.
+          {isolateLatinPhrases(
+            'השירות בבטא אצל OpenAI, והזכאות תלויה בסוג העסק ובאישור שלהם. תביעת פרופיל לא מבטיחה ש-ChatGPT ימליץ עליכם יותר.'
+          )}
         </p>
       </Hero3D>
 

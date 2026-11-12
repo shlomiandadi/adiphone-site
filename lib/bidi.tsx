@@ -32,12 +32,18 @@ export function isolateLatinPhrases(text: string): ReactNode {
       nodes.push(<span key={key++}>{remaining.slice(0, match.index)}</span>);
     }
 
+    remaining = remaining.slice(match.index + match.phrase.length);
+    const punctMatch = remaining.match(/^[?!.,:;]+/);
+    const phraseWithPunct = punctMatch ? `${match.phrase}${punctMatch[0]}` : match.phrase;
+    if (punctMatch) {
+      remaining = remaining.slice(punctMatch[0].length);
+    }
+
     nodes.push(
       <bdi key={key++} dir="ltr" className="whitespace-nowrap">
-        {match.phrase}
+        {phraseWithPunct}
       </bdi>
     );
-    remaining = remaining.slice(match.index + match.phrase.length);
   }
 
   return nodes;

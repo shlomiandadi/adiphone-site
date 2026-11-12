@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { PHONE_TEL, whatsappUrl } from '../../lib/pricing';
+import { isolateLatinPhrases } from '../../lib/bidi';
 import { getServiceCta } from '../../lib/service-cta';
 
 type Props = {
@@ -46,7 +47,7 @@ export default function ServiceCtaBanner({
       />
       <div className="relative container mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-[1.2fr_0.8fr]">
         <div className="text-center md:text-right">
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">{heading}</h2>
+          <h2 className="mb-4 text-3xl font-bold md:text-4xl">{isolateLatinPhrases(heading)}</h2>
           <p className="mb-8 text-lg text-white/90">{body}</p>
           <div className="flex flex-wrap items-center justify-center gap-4 md:justify-start">
             <Link

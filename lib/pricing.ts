@@ -107,7 +107,7 @@ export const PRICING_ADDONS = [
     detail: 'תביעה, אימות, בניית פרופיל וחיבור ל-Insights — לפי זכאות OpenAI.',
   },
   {
-    name: 'פרופיל עסקי ב-ChatGPT: ניהול חודשי',
+    name: 'פרופיל עסקי ב-ChatGPT: ניהול',
     priceLabel: '250 ₪ לחודש',
     detail: 'מעקב Insights, עדכוני פרטים בפרופיל ודוח תקופתי.',
   },

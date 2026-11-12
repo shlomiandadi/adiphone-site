@@ -32,7 +32,7 @@ export type HeroCta = {
 export type Hero3DProps = {
   theme: HeroTheme;
   title: string;
-  subtitle?: string;
+  subtitle?: React.ReactNode;
   eyebrow?: string;
   extraHeading?: string;
   extraHeadingAs?: 'h2' | 'p';

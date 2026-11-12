@@ -50,6 +50,7 @@ export const FOOTER_SERVICE_LINKS: FooterLinkView[] = [
   { title: 'קידום אתרים SEO', url: '/services/seo' },
   { title: 'קידום במנועי AI (AEO/GEO)', url: '/services/aeo-geo' },
   { title: 'עסק ב-ChatGPT', url: '/services/chatgpt-business-hub' },
+  { title: 'מודעות ב-ChatGPT', url: '/services/chatgpt-ads' },
   { title: 'קידום ממומן PPC', url: '/services/ppc' },
   { title: 'חנויות אונליין', url: '/services/ecommerce' },
   { title: 'פיתוח אפליקציות', url: '/services/mobile-apps' },
@@ -163,9 +164,14 @@ export function columnKind(title: string, links: FooterLinkView[]): FooterColumn
   return 'links';
 }
 
-const REQUIRED_FOOTER_SERVICE_LINK: FooterLinkView = {
+const REQUIRED_FOOTER_HUB_LINK: FooterLinkView = {
   title: 'עסק ב-ChatGPT',
   url: '/services/chatgpt-business-hub',
+};
+
+const REQUIRED_FOOTER_ADS_LINK: FooterLinkView = {
+  title: 'מודעות ב-ChatGPT',
+  url: '/services/chatgpt-ads',
 };
 
 /** Ensure CMS footers list new service links (e.g. after AEO/GEO). */
@@ -176,14 +182,19 @@ export function withRequiredServiceLinks(data: FooterView): FooterView {
   if (index < 0) return data;
 
   const column = data.columns[index];
-  const links = [...column.links];
-  if (links.some((link) => link.url === REQUIRED_FOOTER_SERVICE_LINK.url)) {
-    return data;
+  let links = [...column.links];
+
+  if (!links.some((link) => link.url === REQUIRED_FOOTER_HUB_LINK.url)) {
+    const aeoIndex = links.findIndex((link) => link.url === '/services/aeo-geo');
+    const insertAt = aeoIndex >= 0 ? aeoIndex + 1 : links.length;
+    links.splice(insertAt, 0, REQUIRED_FOOTER_HUB_LINK);
   }
 
-  const aeoIndex = links.findIndex((link) => link.url === '/services/aeo-geo');
-  const insertAt = aeoIndex >= 0 ? aeoIndex + 1 : links.length;
-  links.splice(insertAt, 0, REQUIRED_FOOTER_SERVICE_LINK);
+  if (!links.some((link) => link.url === REQUIRED_FOOTER_ADS_LINK.url)) {
+    const hubIndex = links.findIndex((link) => link.url === REQUIRED_FOOTER_HUB_LINK.url);
+    const insertAt = hubIndex >= 0 ? hubIndex + 1 : links.length;
+    links.splice(insertAt, 0, REQUIRED_FOOTER_ADS_LINK);
+  }
 
   const columns = [...data.columns];
   columns[index] = { ...column, links };

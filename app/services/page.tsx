@@ -136,6 +136,19 @@ export default function ServicesPage() {
       ],
     },
     {
+      title: "מודעות ב-ChatGPT",
+      description: "פרסום ממומן ב-ChatGPT Ads Manager: הקמת חשבון, מודעות, מדידה וניהול קמפיינים",
+      icon: <FaBrain className="w-8 h-8 text-blue-600" />,
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
+      link: "/services/chatgpt-ads",
+      features: [
+        "בדיקת זכאות ומדיניות",
+        "הקמת חשבון ובעלות אצלכם",
+        "רמזי הקשר וקריאייטיב",
+        "אופטימיזציה ודיווח",
+      ],
+    },
+    {
       title: "שירותי ענן",
       description: "פתרונות ענן מתקדמים לעסקים צומחים",
       icon: <FaCloud className="w-8 h-8 text-blue-600" />,

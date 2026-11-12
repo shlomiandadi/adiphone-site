@@ -298,7 +298,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
           <div className="max-w-7xl mx-auto">
             <div className="marquee-container">
               <div className="marquee-content">
-                {promotions.map((promo, index) => (
+                {[...promotions, ...promotions].map((promo, index) => (
                   <span key={index}>
                     <FaTag />
                     {promo}

@@ -17,6 +17,7 @@ export const STATIC_ROUTES = [
   '/services/seo',
   '/services/aeo-geo',
   '/services/chatgpt-business-hub',
+  '/services/chatgpt-ads',
   '/services/software-development',
   '/services/ui-design',
   '/services/web-development',

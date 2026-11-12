@@ -111,6 +111,16 @@ export const PRICING_ADDONS = [
     priceLabel: '250 ₪ לחודש',
     detail: 'מעקב Insights, עדכוני פרטים בפרופיל ודוח תקופתי.',
   },
+  {
+    name: 'פרסום ב-ChatGPT Ads: הקמה',
+    priceLabel: '1,500 ₪',
+    detail: 'בדיקת זכאות, הקמת חשבון, מדידה, מודעות ראשונות ורמזי הקשר — לפי מדיניות OpenAI.',
+  },
+  {
+    name: 'פרסום ב-ChatGPT Ads: ניהול',
+    priceLabel: 'מ-1,000 ₪ לחודש',
+    detail: 'ניהול קמפיינים ב-Ads Manager לפי חבילה (1,000 / 1,500 / 2,000 / 2,500 ₪). תקציב מדיה ל-OpenAI בנפרד.',
+  },
   { name: 'עמודים נוספים', priceLabel: 'לפי היקף העמוד', detail: 'מעבר להיקף החבילה שנבחרה.' },
 ] as const;
 

@@ -23,6 +23,7 @@ describe('withRequiredHeaderMenu', () => {
       '/services/seo',
       '/services/aeo-geo',
       '/services/chatgpt-business-hub',
+      '/services/chatgpt-ads',
       '/services/web-development',
     ]);
   });

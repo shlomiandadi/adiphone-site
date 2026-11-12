@@ -294,8 +294,8 @@ export default function ChatGptBusinessHubPage() {
               מחירון
             </Link>
             . מודעות ב-ChatGPT — מוצר נפרד; ראו{' '}
-            <Link href="/services/ppc" className="text-blue-700 underline">
-              קמפיינים ממומנים
+            <Link href="/services/chatgpt-ads" className="text-blue-700 underline">
+              פרסום ממומן ב-ChatGPT
             </Link>
             .
           </p>

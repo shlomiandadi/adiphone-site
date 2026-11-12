@@ -147,6 +147,27 @@ function PpcScene() {
   );
 }
 
+function ChatGptAdsScene() {
+  return (
+    <>
+      <div className="h3d-back-card" />
+      <div className="h3d-chat chat-q">איך לבחור ספק לעסק מקומי?</div>
+      <div className="h3d-chat chat-a">
+        לפי האתר של העסק, אפשר להשוות אפשרויות פרסום וקידום.
+      </div>
+      <div className="h3d-chat chat-sponsored">
+        <em>מודעה</em>
+        <bdi dir="ltr" style={{ unicodeBidi: 'isolate' }}>
+          ChatGPT Ads
+        </bdi>
+        <span>למידע נוסף</span>
+      </div>
+      <FloatCard className="h3d-float-a">רמזי הקשר</FloatCard>
+      <FloatCard className="h3d-float-b">מדידה</FloatCard>
+    </>
+  );
+}
+
 function AeoScene() {
   return (
     <>
@@ -440,6 +461,8 @@ export default function Hero3DScene({ theme, cityName }: Props) {
       return <SeoScene />;
     case 'ppc':
       return <PpcScene />;
+    case 'chatgpt-ads':
+      return <ChatGptAdsScene />;
     case 'aeo-geo':
       return <AeoScene />;
     case 'ecommerce':

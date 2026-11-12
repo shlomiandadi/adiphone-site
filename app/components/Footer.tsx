@@ -9,6 +9,7 @@ import {
   type FooterLinkView,
   type FooterView,
 } from '../../lib/cms/footerData';
+import { isolateLatinPhrases } from '../../lib/bidi';
 import BrandLogo from './BrandLogo';
 import BusinessDetails from './BusinessDetails';
 
@@ -98,7 +99,7 @@ function LinkColumn({ title, links, services }: { title: string; links: FooterLi
         {links.map((link) => (
           <li key={link.id || `${link.title}-${link.url}`}>
             <Link href={link.url || '/'} prefetch={false} className="text-gray-400 hover:text-white transition-colors">
-              {link.title}
+              {isolateLatinPhrases(link.title)}
             </Link>
           </li>
         ))}

@@ -39,6 +39,9 @@ function OgLine({
     }
     return [{ ...run, key: String(index) }];
   });
+  if (flipLatinPhrase) {
+    layoutRuns.reverse();
+  }
 
   return (
     <div

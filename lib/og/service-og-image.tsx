@@ -1,13 +1,14 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
-import { displayRuns, splitOgTitleLines } from './og-text-runs';
+import { ltrPaintRuns, splitOgTitleLines } from './og-text-runs';
+import type { OgRun } from './og-text-runs';
 
 export const serviceOgSize = { width: 1200, height: 630 };
 export const serviceOgContentType = 'image/png';
 
 /** Bump when OG PNG pixels change so link previews refetch (WhatsApp, Facebook). */
-export const SERVICE_OG_CACHE_VERSION = 11;
+export const SERVICE_OG_CACHE_VERSION = 12;
 
 export function versionedServiceOgImagePath(routePath: string): string {
   const base = routePath.replace(/\/$/, '');
@@ -15,6 +16,62 @@ export function versionedServiceOgImagePath(routePath: string): string {
 }
 
 const RUN_GAP = 14;
+
+function glueHebrewLetter(gluePrefix: string | undefined): string {
+  return gluePrefix?.replace(/-$/, '') ?? '';
+}
+
+function GluedLatinCluster({
+  run,
+  fontSize,
+  color,
+}: {
+  run: OgRun;
+  fontSize: number;
+  color: string;
+}) {
+  const words = run.text.includes(' ') ? run.text.split(/\s+/).filter(Boolean) : [run.text];
+  const letter = glueHebrewLetter(run.gluePrefix);
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        alignItems: 'baseline',
+        direction: 'ltr',
+      }}
+    >
+      {words.map((word, wordIndex) => (
+        <span
+          key={`${word}-${wordIndex}`}
+          style={{
+            fontFamily: 'HeeboLatin',
+            fontSize,
+            fontWeight: 700,
+            color,
+            marginLeft: wordIndex === 0 ? 0 : 10,
+          }}
+        >
+          {word}
+        </span>
+      ))}
+      <span
+        style={{
+          fontFamily: 'HeeboHebrew',
+          fontSize,
+          fontWeight: 700,
+          color,
+          direction: 'ltr',
+          unicodeBidi: 'isolate',
+        }}
+      >
+        {`-${letter}`}
+      </span>
+    </div>
+  );
+}
 
 function OgLine({
   text,
@@ -25,135 +82,70 @@ function OgLine({
   fontSize: number;
   color: string;
 }) {
-  const runs = displayRuns(text);
+  const runs = ltrPaintRuns(text);
 
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'row',
+        flexWrap: 'nowrap',
         justifyContent: 'flex-end',
+        alignItems: 'baseline',
         width: '100%',
         maxWidth: '100%',
         direction: 'ltr',
+        unicodeBidi: 'bidi-override',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'nowrap',
-          alignItems: 'baseline',
-          direction: 'ltr',
-          maxWidth: '100%',
-        }}
-      >
-        {runs.map((run, index) => {
-          const latinWords =
-            run.latin && run.text.includes(' ') ? run.text.split(/\s+/).filter(Boolean) : null;
+      {runs.map((run, index) => {
+        const latinWords =
+          run.latin && !run.gluePrefix && run.text.includes(' ')
+            ? run.text.split(/\s+/).filter(Boolean)
+            : null;
 
-          return (
-            <div
-              key={`${run.text}-${index}`}
-              style={{
-                display: 'flex',
-                flexShrink: 0,
-                marginLeft: index === 0 ? 0 : RUN_GAP,
-                fontFamily: run.latin ? 'HeeboLatin' : 'HeeboHebrew',
-                fontSize,
-                fontWeight: 700,
-                color,
-                whiteSpace: 'nowrap',
-                unicodeBidi: 'isolate',
-              }}
-            >
-              {run.gluePrefix ? (
-                (() => {
-                  const words = latinWords ?? [run.text];
-                  const multiLatin = words.length > 1;
-                  const latinSpan = (
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'nowrap',
-                        direction: 'ltr',
-                      }}
-                    >
-                      {words.map((word, wordIndex) => (
-                        <span
-                          key={`${word}-${wordIndex}`}
-                          style={{
-                            fontFamily: 'HeeboLatin',
-                            marginLeft: wordIndex === 0 ? 0 : 10,
-                          }}
-                        >
-                          {word}
-                        </span>
-                      ))}
-                    </div>
-                  );
-                  const prefixSpan = (
-                    <span
-                      style={{
-                        fontFamily: 'HeeboHebrew',
-                        marginLeft: multiLatin ? 6 : 0,
-                        marginRight: multiLatin ? 0 : 6,
-                      }}
-                    >
-                      {run.gluePrefix}
-                    </span>
-                  );
-
-                  return (
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: multiLatin ? 'row' : 'row-reverse',
-                        flexWrap: 'nowrap',
-                        alignItems: 'baseline',
-                        direction: 'ltr',
-                      }}
-                    >
-                      {multiLatin ? (
-                        <>
-                          {latinSpan}
-                          {prefixSpan}
-                        </>
-                      ) : (
-                        <>
-                          {prefixSpan}
-                          {latinSpan}
-                        </>
-                      )}
-                    </div>
-                  );
-                })()
-              ) : latinWords ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'nowrap',
-                    direction: 'ltr',
-                  }}
-                >
-                  {latinWords.map((word, wordIndex) => (
-                    <span
-                      key={`${word}-${wordIndex}`}
-                      style={{ marginLeft: wordIndex === 0 ? 0 : 10 }}
-                    >
-                      {word}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                run.text
-              )}
-            </div>
-          );
-        })}
-      </div>
+        return (
+          <div
+            key={`${run.text}-${index}`}
+            style={{
+              display: 'flex',
+              flexShrink: 0,
+              marginLeft: index === 0 ? 0 : RUN_GAP,
+              fontFamily: run.latin ? 'HeeboLatin' : 'HeeboHebrew',
+              fontSize,
+              fontWeight: 700,
+              color,
+              whiteSpace: 'nowrap',
+              direction: 'ltr',
+              unicodeBidi: 'embed',
+            }}
+          >
+            {run.gluePrefix ? (
+              <GluedLatinCluster run={run} fontSize={fontSize} color={color} />
+            ) : latinWords ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flexWrap: 'nowrap',
+                  direction: 'ltr',
+                }}
+              >
+                {latinWords.map((word, wordIndex) => (
+                  <span
+                    key={`${word}-${wordIndex}`}
+                    style={{ marginLeft: wordIndex === 0 ? 0 : 10 }}
+                  >
+                    {word}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              run.text
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

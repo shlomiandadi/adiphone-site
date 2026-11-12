@@ -11,6 +11,11 @@ const HEBREW = /[\u0590-\u05FF]/;
 const LATIN_START = /[A-Za-z0-9]/;
 const LATIN_CONTINUE = /[A-Za-z0-9./()+\-_]/;
 
+/** Undo `reverseHebrewVisual` for tests and glue letter extraction. */
+export function undoHebrewVisual(reversed: string): string {
+  return reversed.split('').reverse().join('');
+}
+
 /** Satori paints LTR; reverse Hebrew graphemes per word for correct RTL glyphs. */
 function reverseHebrewVisual(text: string): string {
   // Glued Hebrew–Latin prefixes (e.g. ב-) must stay in logical order for Satori.
@@ -105,12 +110,14 @@ export function displayRuns(text: string): OgRun[] {
 
     if (ch === '-' && i + 1 < text.length && LATIN_START.test(text[i + 1])) {
       const prev = runs[runs.length - 1];
-      const afterBet = Boolean(prev && !prev.latin && prev.text === 'ב');
-      if (afterBet) {
-        const bet = runs[runs.length - 1];
-        if (bet && !bet.latin) {
-          bet.text = 'ב-';
-          bet.glueRight = true;
+      const glueLetter =
+        prev && !prev.latin ? undoHebrewVisual(prev.text) : '';
+      const gluable = Boolean(glueLetter && /^[\u0590-\u05FF]$/.test(glueLetter));
+      if (gluable) {
+        const particle = runs[runs.length - 1];
+        if (particle && !particle.latin) {
+          particle.text = `${glueLetter}-`;
+          particle.glueRight = true;
         }
         i += 1;
         i = pushLatinPhrase(text, i, runs, true);
@@ -151,7 +158,39 @@ export function displayRuns(text: string): OgRun[] {
     coalesced.push(run);
   }
 
-  return coalesced.reverse();
+  return coalesced;
+}
+
+/** Drawable runs in right-to-left logical order (rightmost run first). */
+export function logicalRuns(text: string): OgRun[] {
+  return displayRuns(text);
+}
+
+/** Runs laid out left-to-right on the OG line (for tests). */
+export function ltrPaintRuns(text: string): OgRun[] {
+  return displayRuns(text).slice().reverse();
+}
+
+/**
+ * Left-to-right pixel order of painted segments (for tests).
+ * Hebrew words are logical (unreversed); glued prefixes become `…, '-', letter`.
+ */
+export function ltrVisualSegments(text: string): string[] {
+  const segments: string[] = [];
+  for (const run of ltrPaintRuns(text)) {
+    if (run.gluePrefix) {
+      const letter = run.gluePrefix.replace(/-$/, '');
+      const words = run.text.split(/\s+/).filter(Boolean);
+      segments.push(...words, '-', letter);
+      continue;
+    }
+    if (run.latin) {
+      segments.push(...(run.text.includes(' ') ? run.text.split(/\s+/) : [run.text]));
+      continue;
+    }
+    segments.push(undoHebrewVisual(run.text));
+  }
+  return segments;
 }
 
 /** Break long mixed titles into stacked OG lines without changing wording. */

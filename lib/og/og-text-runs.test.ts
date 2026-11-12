@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { displayRuns, splitOgTitleLines } from './og-text-runs.ts';
+import { displayRuns, ltrPaintRuns, ltrVisualSegments, splitOgTitleLines } from './og-text-runs.ts';
 
 describe('displayRuns', () => {
   test('keeps multi-word Latin as one LTR phrase for ChatGPT Business Hub', () => {
@@ -15,6 +15,30 @@ describe('displayRuns', () => {
     assert.deepEqual(runs.map((run) => run.text), ['ChatGPT Business Hub']);
     assert.equal(runs[0]?.gluePrefix, 'ב-');
     assert.equal(runs.length, 1);
+    assert.deepEqual(ltrPaintRuns('ב-ChatGPT Business Hub').map((r) => r.text), [
+      'ChatGPT Business Hub',
+    ]);
+  });
+
+  test('LTR pixel order for Ads OG line 2', () => {
+    const lines = splitOgTitleLines('פרסום ממומן ב-ChatGPT לעסקים בישראל');
+    assert.deepEqual(ltrVisualSegments(lines[1]), [
+      'בישראל',
+      'לעסקים',
+      'ChatGPT',
+      '-',
+      'ב',
+    ]);
+  });
+
+  test('LTR pixel order for Hub OG line 2', () => {
+    assert.deepEqual(ltrVisualSegments('ב-ChatGPT Business Hub'), [
+      'ChatGPT',
+      'Business',
+      'Hub',
+      '-',
+      'ב',
+    ]);
   });
 
   test('handles AEO/GEO and AI in Hebrew titles', () => {
@@ -27,19 +51,16 @@ describe('displayRuns', () => {
     const lines = splitOgTitleLines('פרסום ממומן ב-ChatGPT לעסקים בישראל');
     assert.equal(lines.length, 2);
     const runs = displayRuns(lines[1]);
-    const glued = runs[runs.length - 1];
+    const glued = runs[0];
     assert.equal(glued?.gluePrefix, 'ב-');
     assert.equal(glued?.text, 'ChatGPT');
-    assert.equal(runs[0]?.text, 'לארשיב');
+    assert.equal(ltrPaintRuns(lines[1])[0]?.text, 'לארשיב');
   });
 
   test('pure Hebrew still produces only Hebrew runs', () => {
     const runs = displayRuns('קידום אתרים');
     assert.equal(runs.every((run) => !run.latin), true);
     assert.equal(runs.length, 2);
-    assert.deepEqual(
-      runs.map((run) => run.text),
-      ['םירתא', 'םודיק'],
-    );
+    assert.deepEqual(ltrPaintRuns('קידום אתרים').map((run) => run.text), ['םירתא', 'םודיק']);
   });
 });

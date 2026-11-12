@@ -7,6 +7,7 @@ export const SERVICE_CANONICALS = {
   seo: '/services/seo',
   webDevelopment: '/services/web-development',
   aeoGeo: '/services/aeo-geo',
+  chatgptBusinessHub: '/services/chatgpt-business-hub',
   ai: '/services/ai',
   mobileApps: '/services/mobile-apps',
   software: '/services/software-development',

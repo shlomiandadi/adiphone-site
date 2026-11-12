@@ -106,6 +106,12 @@ export const navigation: NavigationItem[] = [
         description: "שהעסק יופיע בתשובות של מנועי AI"
       },
       {
+        name: "עסק ב-ChatGPT (Business Hub)",
+        href: "/services/chatgpt-business-hub",
+        icon: "code",
+        description: "תביעת הפרופיל, עדכון פרטים ומעקב אחרי אזכורים וקליקים"
+      },
+      {
         name: "בניית אתרים",
         href: "/services/web-development",
         icon: "globe",

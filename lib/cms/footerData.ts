@@ -49,6 +49,10 @@ export const FOOTER_SERVICE_LINKS: FooterLinkView[] = [
   { title: 'אתרי וורדפרס', url: '/services/wordpress' },
   { title: 'קידום אתרים SEO', url: '/services/seo' },
   { title: 'קידום במנועי AI (AEO/GEO)', url: '/services/aeo-geo' },
+  {
+    title: 'עסק ב-ChatGPT (Business Hub)',
+    url: '/services/chatgpt-business-hub',
+  },
   { title: 'קידום ממומן PPC', url: '/services/ppc' },
   { title: 'חנויות אונליין', url: '/services/ecommerce' },
   { title: 'פיתוח אפליקציות', url: '/services/mobile-apps' },

@@ -101,6 +101,16 @@ export const PRICING_ADDONS = [
   { name: 'אחסון מנוהל', priceLabel: '50–150 ₪ לחודש', detail: 'אחסון ותפעול טכני של האתר.' },
   { name: 'כתיבת תוכן', priceLabel: '250–400 ₪ לעמוד', detail: 'ניסוח מקצועי לעמוד חדש או קיים.' },
   { name: 'SEO / GEO חודשי', priceLabel: 'לפי הצעת מחיר', detail: 'קידום אורגני ומוכנות לחיפוש מבוסס בינה מלאכותית.' },
+  {
+    name: 'הקמת פרופיל ב-ChatGPT Business Hub',
+    priceLabel: 'מ-2,500 ₪',
+    detail: 'תביעה, אימות, בניית פרופיל וחיבור ל-Insights — לפי זכאות OpenAI.',
+  },
+  {
+    name: 'ניהול שוטף פרופיל ChatGPT Business Hub',
+    priceLabel: '250 ₪ לחודש',
+    detail: 'מעקב Insights, עדכוני פרטים בפרופיל ודוח תקופתי.',
+  },
   { name: 'עמודים נוספים', priceLabel: 'לפי היקף העמוד', detail: 'מעבר להיקף החבילה שנבחרה.' },
 ] as const;
 

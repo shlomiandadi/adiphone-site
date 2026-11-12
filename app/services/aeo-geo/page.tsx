@@ -148,6 +148,18 @@ export default async function AeoGeoPage() {
         </div>
       </section>
 
+      <section data-reveal className="border-y border-blue-100 bg-blue-50 px-4 py-10">
+        <div className="container mx-auto max-w-3xl text-center">
+          <p className="text-lg text-gray-800">
+            רוצים גם לנהל את הפרופיל הרשמי ב-ChatGPT?{' '}
+            <Link href="/services/chatgpt-business-hub" className="font-semibold text-blue-700 underline">
+              הקמת פרופיל עסקי ב-ChatGPT
+            </Link>
+            — שירות נפרד ל-Business Hub.
+          </p>
+        </div>
+      </section>
+
       {/* Why it matters */}
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">

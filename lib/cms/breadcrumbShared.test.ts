@@ -27,6 +27,17 @@ describe('fallbackBreadcrumbItems', () => {
     ]);
   });
 
+  test('chatgpt-business-hub uses the Hebrew service name', () => {
+    assert.deepEqual(fallbackBreadcrumbItems('/services/chatgpt-business-hub'), [
+      { url: '/services', title: 'שירותים', isActive: false },
+      {
+        url: '/services/chatgpt-business-hub',
+        title: 'עסק ב-ChatGPT (Business Hub)',
+        isActive: true,
+      },
+    ]);
+  });
+
   test('pricing article uses the Hebrew title', () => {
     assert.deepEqual(fallbackBreadcrumbItems('/blog/kama-oleh-bniyat-atar-2026'), [
       { url: '/blog', title: 'בלוג', isActive: false },

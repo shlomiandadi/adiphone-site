@@ -40,6 +40,7 @@ const SEGMENT_TITLES: Record<string, string> = {
   software: 'פתרונות תוכנה',
   'software-development': 'פיתוח תוכנה',
   'aeo-geo': 'קידום במנועי AI (AEO/GEO)',
+  'chatgpt-business-hub': 'עסק ב-ChatGPT (Business Hub)',
   'bniyat-atarim-pardes-hana': 'בניית אתרים בפרדס חנה',
   'bniyat-atarim-hadera': 'בניית אתרים בחדרה',
   'bniyat-atarim-caesarea': 'בניית אתרים בקיסריה',

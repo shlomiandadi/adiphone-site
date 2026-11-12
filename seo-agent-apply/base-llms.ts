@@ -27,6 +27,7 @@ export const BASE_LLMS_TXT = `# Top Webstak (מבית עדי פון תקשורת
 - [קידום אתרים אורגני (SEO)](https://adi-phone.co.il/services/seo)
 - [קידום ממומן (PPC)](https://adi-phone.co.il/services/ppc)
 - [קידום במנועי AI – AEO ו-GEO](https://adi-phone.co.il/services/aeo-geo)
+- [עסק ב-ChatGPT Business Hub](https://adi-phone.co.il/services/chatgpt-business-hub): תביעת פרופיל, אימות וניהול Insights
 - [פיתוח אפליקציות](https://adi-phone.co.il/services/mobile-apps)
 - [עיצוב UI/UX](https://adi-phone.co.il/services/ui-design)
 - [אנליטיקס וניתוח נתונים](https://adi-phone.co.il/services/analytics)

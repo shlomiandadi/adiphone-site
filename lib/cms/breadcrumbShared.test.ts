@@ -32,7 +32,7 @@ describe('fallbackBreadcrumbItems', () => {
       { url: '/services', title: 'שירותים', isActive: false },
       {
         url: '/services/chatgpt-business-hub',
-        title: 'עסק ב-ChatGPT (Business Hub)',
+        title: 'עסק ב-ChatGPT Business Hub',
         isActive: true,
       },
     ]);

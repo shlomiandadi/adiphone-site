@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { isolateLatinPhrases } from '../../../lib/bidi';
 import { FAQ } from './content';
 
 export default function ChatGptBusinessHubFaq() {
@@ -24,7 +25,7 @@ export default function ChatGptBusinessHubFaq() {
                   className="flex w-full items-center justify-between gap-4 px-6 py-5 text-right"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-lg font-semibold text-gray-900">{item.question}</span>
+                  <span className="text-lg font-semibold text-gray-900">{isolateLatinPhrases(item.question)}</span>
                   <span
                     className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 transition-transform duration-200 ${
                       isOpen ? 'rotate-180' : ''

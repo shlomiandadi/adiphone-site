@@ -6,7 +6,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { FaTimes, FaSearch, FaTag, FaHome, FaCode, FaMobile, FaGlobe, FaChartLine, FaEnvelope, FaBars, FaUsers, FaBlog, FaShoppingCart, FaPaintBrush } from 'react-icons/fa';
 import React from 'react';
 import SearchResult from './SearchResult';
-import { navigation, promotions, type NavigationItem } from './navigation-data';
+import { promotions, type NavigationItem } from './navigation-data';
+import { withRequiredHeaderMenu } from '../../lib/cms/headerMenu';
 import { IconType } from 'react-icons';
 import BrandLogo from './BrandLogo';
 import { bootHeroLogo } from './logo3d/bootHeroLogo';
@@ -39,7 +40,7 @@ function getIcon(iconName: string | undefined) {
 }
 
 export default function ClientHeader({ items }: { items?: NavigationItem[] | null }) {
-  const navItems = items && items.length > 0 ? items : navigation;
+  const navItems = withRequiredHeaderMenu(items);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);

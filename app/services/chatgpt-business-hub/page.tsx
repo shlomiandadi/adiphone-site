@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import {
   FaChartLine,
+  FaCheck,
   FaClipboardCheck,
   FaIdCard,
-  FaLink,
   FaShieldAlt,
   FaStore,
   FaUserCheck,
-  FaUsers,
 } from 'react-icons/fa';
+import { isolateLatinPhrases } from '../../../lib/bidi';
 import { getSiteUrl } from '../../../lib/seo';
 import Hero3D from '../../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
@@ -56,18 +56,6 @@ const WHAT_WE_DO = [
     description:
       'מחברים גישה מסודרת לצוות שלנו, ועוקבים אחרי אזכורים, קליקים ונושאי גילוי בחלון של 28 ימים.',
     icon: FaChartLine,
-  },
-  {
-    title: 'חיבור לתשתית AI באתר',
-    description:
-      'תביעת הפרופיל לא מחליפה תוכן וסכמות באתר. משלבים עם קידום במנועי AI ועם קידום אורגני.',
-    icon: FaLink,
-  },
-  {
-    title: 'הכנה להרחבות',
-    description:
-      'עוקבים מתי Business Agents או יכולות נוספות נפתחים לשוק הישראלי, ומעדכנים בלי למכור מה שעדיין לא קיים.',
-    icon: FaUsers,
   },
 ];
 
@@ -167,7 +155,9 @@ export default function ChatGptBusinessHubPage() {
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <div className="rounded-xl border-r-4 border-blue-600 bg-blue-50 p-6">
-            <h2 className="mb-3 text-2xl font-bold text-gray-900">מה זה ChatGPT Business Hub?</h2>
+            <h2 className="mb-3 text-2xl font-bold text-gray-900">
+              מה זה {isolateLatinPhrases('ChatGPT Business Hub')}?
+            </h2>
             <p className="mb-4 text-lg leading-relaxed text-gray-800">
               Business Hub הוא לוח הניהול של התוכנית &quot;עסקים ב-ChatGPT&quot; (Businesses in ChatGPT),
               שהושקה בבטא ב-10 בנובמבר 2026. אחרי אימות בעלות ואימות זהות ב-Persona, אפשר לעדכן אתר,
@@ -270,19 +260,13 @@ export default function ChatGptBusinessHubPage() {
               <p className="mb-4 text-gray-600">
                 תביעה, אימות, בניית פרופיל, חיבור פיד אם זמין והגדרת גישה ל-Insights.
               </p>
-              <ul className="flex-1 space-y-2 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="mt-1 text-blue-600" aria-hidden>
-                    •
-                  </span>
-                  <span>בדיקת זכאות וליווי אימות Persona</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-1 text-blue-600" aria-hidden>
-                    •
-                  </span>
-                  <span>כתיבה ועדכון פרטי הפרופיל</span>
-                </li>
+              <ul className="flex-1 space-y-3">
+                {['בדיקת זכאות וליווי אימות Persona', 'כתיבה ועדכון פרטי הפרופיל'].map((line) => (
+                  <li key={line} className="flex items-start gap-3">
+                    <FaCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" aria-hidden />
+                    <span className="text-gray-700">{line}</span>
+                  </li>
+                ))}
               </ul>
             </article>
             <article className="flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
@@ -291,19 +275,13 @@ export default function ChatGptBusinessHubPage() {
                 250 ₪ לחודש <span className="text-base font-medium text-gray-600">+ מע״מ</span>
               </p>
               <p className="mb-4 text-gray-600">מעקב Insights, עדכוני פרטים בפרופיל ודוח תקופתי.</p>
-              <ul className="flex-1 space-y-2 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="mt-1 text-blue-600" aria-hidden>
-                    •
-                  </span>
-                  <span>אופציונלי — לא חובה עם ההקמה</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-1 text-blue-600" aria-hidden>
-                    •
-                  </span>
-                  <span>ניתן לשלב עם קידום במנועי AI</span>
-                </li>
+              <ul className="flex-1 space-y-3">
+                {['אופציונלי — לא חובה עם ההקמה', 'ניתן לשלב עם קידום במנועי AI'].map((line) => (
+                  <li key={line} className="flex items-start gap-3">
+                    <FaCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" aria-hidden />
+                    <span className="text-gray-700">{line}</span>
+                  </li>
+                ))}
               </ul>
             </article>
           </div>

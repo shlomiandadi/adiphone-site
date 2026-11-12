@@ -1,18 +1,20 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
-import { displayRuns } from './og-text-runs';
+import { displayRuns, ogLineUsesLatinPhraseFlip, splitOgTitleLines } from './og-text-runs';
 
 export const serviceOgSize = { width: 1200, height: 630 };
 export const serviceOgContentType = 'image/png';
 
 /** Bump when OG PNG pixels change so link previews refetch (WhatsApp, Facebook). */
-export const SERVICE_OG_CACHE_VERSION = 2;
+export const SERVICE_OG_CACHE_VERSION = 4;
 
 export function versionedServiceOgImagePath(routePath: string): string {
   const base = routePath.replace(/\/$/, '');
   return `${base}/opengraph-image?v=${SERVICE_OG_CACHE_VERSION}`;
 }
+
+const RUN_GAP = 14;
 
 function OgLine({
   text,
@@ -23,22 +25,66 @@ function OgLine({
   fontSize: number;
   color: string;
 }) {
+  const runs = displayRuns(text);
+  const flipLatinPhrase = ogLineUsesLatinPhraseFlip(text);
+  type LayoutRun = (typeof runs)[number] & { key: string };
+  const layoutRuns: LayoutRun[] = runs.flatMap((run, index) => {
+    if (flipLatinPhrase && run.latin && run.text.includes(' ')) {
+      return run.text.split(/\s+/).map((word, partIndex) => ({
+        ...run,
+        text: word,
+        glueLeft: partIndex === 0 ? run.glueLeft : undefined,
+        key: `${index}-${partIndex}`,
+      }));
+    }
+    return [{ ...run, key: String(index) }];
+  });
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'baseline', gap: 14 }}>
-      {displayRuns(text).map((run, index) => (
-        <div
-          key={index}
-          style={{
-            display: 'flex',
-            fontFamily: run.latin ? 'HeeboLatin' : 'HeeboHebrew',
-            fontSize,
-            fontWeight: 700,
-            color,
-          }}
-        >
-          {run.text}
-        </div>
-      ))}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        width: '100%',
+        maxWidth: '100%',
+        direction: 'ltr',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'nowrap',
+          alignItems: 'baseline',
+          direction: 'ltr',
+          maxWidth: '100%',
+        }}
+      >
+        {layoutRuns.map((run, index) => {
+          const prev = layoutRuns[index - 1];
+          const tight =
+            index > 0 &&
+            (run.glueLeft || Boolean(prev?.glueRight));
+          return (
+            <div
+              key={run.key}
+              style={{
+                display: 'flex',
+                flexShrink: 0,
+                marginLeft: index === 0 ? 0 : tight ? 0 : RUN_GAP,
+                fontFamily: run.latin ? 'HeeboLatin' : 'HeeboHebrew',
+                fontSize,
+                fontWeight: 700,
+                color,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {run.text}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -57,7 +103,9 @@ export async function serviceOgImage(title: string) {
     loadFonts(),
     readFile(join(process.cwd(), 'lib/og/brand-mark.png')),
   ]);
-  const titleSize = title.length > 22 ? 64 : 76;
+  const titleLines = splitOgTitleLines(title);
+  const longestLine = Math.max(...titleLines.map((line) => line.length));
+  const titleSize = titleLines.length > 1 ? 52 : longestLine > 26 ? 56 : longestLine > 22 ? 64 : 76;
   const markSrc = `data:image/png;base64,${mark.toString('base64')}`;
 
   return new ImageResponse(
@@ -89,8 +137,28 @@ export async function serviceOgImage(title: string) {
           />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-          <OgLine text={title} fontSize={titleSize} color="#ffffff" />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            width: '100%',
+            maxWidth: '100%',
+          }}
+        >
+          {titleLines.map((line, index) => (
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                width: '100%',
+                justifyContent: 'flex-end',
+                marginTop: index === 0 ? 0 : 10,
+              }}
+            >
+              <OgLine text={line} fontSize={titleSize} color="#ffffff" />
+            </div>
+          ))}
           <div style={{ display: 'flex', marginTop: 28 }}>
             <OgLine text="בנייה וקידום אתרים · עדי פון תקשורת" fontSize={30} color="#cbd5e1" />
           </div>

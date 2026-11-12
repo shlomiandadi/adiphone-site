@@ -112,6 +112,12 @@ export const navigation: NavigationItem[] = [
         description: "תביעת הפרופיל, עדכון פרטים ומעקב אחרי אזכורים וקליקים"
       },
       {
+        name: "מודעות ב-ChatGPT",
+        href: "/services/chatgpt-ads",
+        icon: "code",
+        description: "הקמת חשבון, מודעות ומדידה ב-ChatGPT Ads Manager"
+      },
+      {
         name: "בניית אתרים",
         href: "/services/web-development",
         icon: "globe",

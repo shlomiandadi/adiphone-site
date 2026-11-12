@@ -19,6 +19,7 @@ Top Webstak היא סוכנות דיגיטל מבית עדי פון תקשורת
 - קידום ממומן (PPC): ניהול קמפיינים בגוגל וברשתות החברתיות. https://adi-phone.co.il/services/ppc
 - קידום במנועי AI (AEO / GEO): אופטימיזציה להופעה בתשובות של מנועי AI כמו ChatGPT, Google AI Overviews ו-Perplexity. https://adi-phone.co.il/services/aeo-geo
 - ChatGPT Business Hub: תביעת פרופיל עסקי, אימות וניהול Insights ב-ChatGPT. https://adi-phone.co.il/services/chatgpt-business-hub
+- ChatGPT Ads: פרסום ממומן ב-ChatGPT — Ads Manager, מודעות ומדידה. https://adi-phone.co.il/services/chatgpt-ads
 - פיתוח אפליקציות: אפליקציות לאנדרואיד ול-iOS. https://adi-phone.co.il/services/mobile-apps
 - עיצוב UI/UX: עיצוב חוויית משתמש וממשק. https://adi-phone.co.il/services/ui-design
 - אנליטיקס: איסוף וניתוח נתונים לקבלת החלטות. https://adi-phone.co.il/services/analytics

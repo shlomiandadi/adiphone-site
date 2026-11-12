@@ -155,7 +155,11 @@ export default async function AeoGeoPage() {
             <Link href="/services/chatgpt-business-hub" className="font-semibold text-blue-700 underline">
               הקמת פרופיל עסקי ב-ChatGPT
             </Link>
-            — שירות נפרד ל-Business Hub.
+            — שירות נפרד ל-Business Hub. מודעה בתשלום מתחת לתשובה היא{' '}
+            <Link href="/services/chatgpt-ads" className="font-semibold text-blue-700 underline">
+              פרסום ממומן ב-ChatGPT
+            </Link>
+            , לא אותו דבר כמו AEO/GEO.
           </p>
         </div>
       </section>

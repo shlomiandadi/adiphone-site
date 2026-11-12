@@ -9,6 +9,7 @@ import { metadata as contactMeta } from '../../app/contact/metadata';
 import { metadata as pricingMeta } from '../../app/pricing/metadata';
 import { metadata as aeoGeoMeta } from '../../app/services/aeo-geo/metadata';
 import { metadata as chatGptBusinessHubMeta } from '../../app/services/chatgpt-business-hub/metadata';
+import { metadata as chatGptAdsMeta } from '../../app/services/chatgpt-ads/metadata';
 import { metadata as analyticsMeta } from '../../app/services/analytics/metadata';
 import { metadata as aiMeta } from '../../app/services/ai/metadata';
 import { metadata as appDevMeta } from '../../app/services/app-development/metadata';
@@ -181,6 +182,7 @@ const METADATA_PAGES: Array<{ path: string; meta: Metadata }> = [
   { path: '/pricing', meta: pricingMeta },
   { path: '/services/aeo-geo', meta: aeoGeoMeta },
   { path: '/services/chatgpt-business-hub', meta: chatGptBusinessHubMeta },
+  { path: '/services/chatgpt-ads', meta: chatGptAdsMeta },
   { path: '/services/analytics', meta: analyticsMeta },
   { path: '/services/ai', meta: aiMeta },
   { path: '/services/app-development', meta: appDevMeta },

@@ -61,6 +61,7 @@ const SERVICE_NAMES: Record<string, string> = {
   '/services/organic-seo': 'קידום אורגני',
   '/services/aeo-geo': 'קידום במנועי AI (AEO/GEO)',
   '/services/chatgpt-business-hub': 'עסק ב-ChatGPT (Business Hub)',
+  '/services/chatgpt-ads': 'פרסום ממומן ב-ChatGPT (Ads)',
   '/services/web-development': 'בניית אתרים',
   '/services/wordpress': 'אתרי וורדפרס',
   '/services/ecommerce': 'חנויות אונליין',

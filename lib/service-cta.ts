@@ -50,6 +50,12 @@ const SERVICE_CTA_BY_KEY: Record<string, ServiceCtaCopy> = {
     whatsappText: 'שלום, אשמח לשיחת ייעוץ על הקמת פרופיל ב-ChatGPT Business Hub.',
     topic: 'seo',
   },
+  'chatgpt-ads': {
+    title: 'רוצים לבדוק אם אפשר לפרסם ב-ChatGPT?',
+    text: 'שיחת ייעוץ של 15 דקות – בחינם. נבדוק זכאות וקטגוריה לפני הקמת חשבון — בלי הבטחת פניות.',
+    whatsappText: 'שלום, אשמח לשיחת ייעוץ על פרסום ממומן ב-ChatGPT.',
+    topic: 'seo',
+  },
   ai: {
     title: 'בוט AI שעונה ללקוחות באתר ובוואטסאפ',
     text: 'שיחת ייעוץ של 15 דקות – בחינם. נאפיין מה הבוט צריך לענות ומה לא.',
@@ -113,6 +119,7 @@ const PATH_TO_KEY: Record<string, string> = {
   '/services/paid-promotion': 'ppc',
   '/services/aeo-geo': 'aeo-geo',
   '/services/chatgpt-business-hub': 'chatgpt-business-hub',
+  '/services/chatgpt-ads': 'chatgpt-ads',
   '/services/ai': 'ai',
   '/services/analytics': 'analytics',
   '/services/mobile-apps': 'mobile-apps',

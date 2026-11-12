@@ -27,7 +27,8 @@ describe('withRequiredServiceLinks', () => {
     const urls = column?.links.map((link) => link.url) || [];
     const aeo = urls.indexOf('/services/aeo-geo');
     const hub = urls.indexOf('/services/chatgpt-business-hub');
-    assert.ok(aeo >= 0 && hub === aeo + 1);
+    const ads = urls.indexOf('/services/chatgpt-ads');
+    assert.ok(aeo >= 0 && hub === aeo + 1 && ads === hub + 1);
   });
 });
 

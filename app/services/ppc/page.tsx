@@ -321,6 +321,7 @@ export default async function PpcServicePage() {
           קשור:{' '}
           <Link href="/services/seo" className="underline">קידום אורגני (SEO)</Link> ·{' '}
           <Link href="/services/aeo-geo" className="underline">קידום במנועי AI (AEO/GEO)</Link> ·{' '}
+          <Link href="/services/chatgpt-ads" className="underline">פרסום ב-ChatGPT Ads</Link> ·{' '}
           <Link href="/services/web-development" className="underline">בניית אתרים</Link> ·{' '}
           <Link href="/pricing" className="underline">מחירון</Link> ·{' '}
           <Link href="/contact" className="underline">צור קשר</Link>

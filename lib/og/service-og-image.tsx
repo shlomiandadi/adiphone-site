@@ -1,27 +1,17 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
+import { displayRuns } from './og-text-runs';
 
 export const serviceOgSize = { width: 1200, height: 630 };
 export const serviceOgContentType = 'image/png';
 
-type OgRun = { text: string; latin: boolean };
+/** Bump when OG PNG pixels change so link previews refetch (WhatsApp, Facebook). */
+export const SERVICE_OG_CACHE_VERSION = 2;
 
-/**
- * Satori draws glyphs left-to-right and does not apply the Unicode bidi
- * algorithm. Reverse each Hebrew token (leave Latin, digits, and punctuation
- * as-is) and reverse token order so the first Hebrew word lands on the right.
- */
-function displayRuns(text: string): OgRun[] {
-  const tokens = text.split(/\s+/).filter((token) => token.length > 0);
-  const shaped = tokens.map((token) => {
-    const hebrew = /[\u0590-\u05FF]/.test(token);
-    return {
-      text: hebrew ? token.split('').reverse().join('') : token,
-      latin: !hebrew,
-    };
-  });
-  return shaped.reverse();
+export function versionedServiceOgImagePath(routePath: string): string {
+  const base = routePath.replace(/\/$/, '');
+  return `${base}/opengraph-image?v=${SERVICE_OG_CACHE_VERSION}`;
 }
 
 function OgLine({

@@ -8,7 +8,7 @@ import {
   FaPen,
   FaShieldAlt,
 } from 'react-icons/fa';
-import { isolateLatinPhrases } from '../../../lib/bidi';
+import { chatgptAdsHeroTitle, isolateLatinPhrases } from '../../../lib/bidi';
 import { getSiteUrl } from '../../../lib/seo';
 import Hero3D from '../../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
@@ -164,8 +164,8 @@ export default function ChatGptAdsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <Hero3D
-        theme="ppc"
-        title="פרסום ממומן ב-ChatGPT לעסקים בישראל"
+        theme="chatgpt-ads"
+        title={chatgptAdsHeroTitle()}
         subtitle={isolateLatinPhrases(
           'הקמת חשבון ב-ChatGPT Ads Manager, מודעות, מדידה וניהול קמפיינים — תקציב המדיה ל-OpenAI בנפרד מדמי הניהול.'
         )}
@@ -181,8 +181,9 @@ export default function ChatGptAdsPage() {
         ]}
       >
         <p className="mt-4 max-w-2xl text-center text-sm text-white/85">
-          Top Webstak אינה קשורה ל-OpenAI. מודעה בתשלום אינה המלצה של ChatGPT ואינה משנה את התשובה
-          האורגנית.
+          {isolateLatinPhrases(
+            'Top Webstak אינה קשורה ל-OpenAI. מודעה בתשלום אינה המלצה של ChatGPT ואינה משנה את התשובה האורגנית.'
+          )}
         </p>
       </Hero3D>
 
@@ -252,23 +253,27 @@ export default function ChatGptAdsPage() {
               >
                 מרכז העזרה של OpenAI
               </a>
-              , מודעות מוצגות במסלולי Free ו-Go בלבד — לא ב-Plus, Pro או תוכניות Business. אין מודעות
+              , {isolateLatinPhrases(
+                'מודעות מוצגות במסלולי Free ו-Go בלבד — לא ב-Plus, Pro או תוכניות Business. אין מודעות'
+              )}
               למשתמשים שזוהו כמתחת לגיל 18. המודעות מסומנות ומופרדות מהתשובה, והמפרסם מקבל מדדים
               מצטברים בלבד, בלי תוכן השיחות.
             </p>
             <p className="text-lg leading-relaxed text-gray-800">
-              ברשימת OpenAI ל-{isolateLatinPhrases('Ads Manager')} ישראל מסומנת כ-
-              <strong>Available</strong> לשירות עצמי (
+              {isolateLatinPhrases(
+                'ברשימת OpenAI ל-Ads Manager ישראל מסומנת כ-Available לשירות עצמי ('
+              )}
               <a
                 href="https://help.openai.com/en/articles/20001245-ads-manager-availability"
                 className="text-blue-700 underline"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Ads Manager Availability
+                {isolateLatinPhrases('Ads Manager Availability')}
               </a>
-              ). הישות המשפטית שמפרסמת צריכה להיות רשומה במדינה זמינה. הפריסה למשתמשים בישראל עשויה
-              להיות הדרגתית — אין להבטיח שכל משתמש רואה מודעות בכל רגע, ואין להבטיח חשיפה מלאה.
+              {isolateLatinPhrases(
+                '). הישות המשפטית שמפרסמת צריכה להיות רשומה במדינה זמינה. הפריסה למשתמשים בישראל עשויה להיות הדרגתית — אין להבטיח שכל משתמש רואה מודעות בכל רגע, ואין להבטיח חשיפה מלאה.'
+              )}
             </p>
           </div>
         </div>
@@ -293,35 +298,37 @@ export default function ChatGptAdsPage() {
           <p className="text-lg text-gray-700">
             <strong>לא מתאים כרגע (מחוץ לארה״ב, לפי המדיניות):</strong> שירותים פיננסיים, רפואיים
             ומשפטיים ככלל; ובכל מקום — הימורים, פוליטיקה, היכרויות, אלכוהול וטבק. בודקים זכאות לפני
-            כל התחייבות. האישור הסופי הוא של OpenAI.
+            כל התחייבות. {isolateLatinPhrases('האישור הסופי הוא של OpenAI.')}.
           </p>
         </div>
       </section>
 
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
-          <h2 className="mb-4 text-3xl font-bold text-gray-900">פורמט, מיקוד וחיוב — לפי OpenAI</h2>
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">
+            פורמט, מיקוד וחיוב — לפי {isolateLatinPhrases('OpenAI')}
+          </h2>
           <p className="mb-4 text-lg leading-relaxed text-gray-700">
-            פורמט מודעה סטנדרטי כולל שם מפרסם, כותרת, תיאור, דף נחיתה וקריאייטיב; ייתכנו אפשרויות
-            נוספות (למשל תמונה בודדת או ריבוי תמונות) לפי מה שפתוח בחשבון — ראו{' '}
+            {isolateLatinPhrases(
+              'פורמט מודעה סטנדרטי כולל שם מפרסם, כותרת, תיאור, דף נחיתה וקריאייטיב; ייתכנו אפשרויות נוספות (למשל תמונה בודדת או ריבוי תמונות) לפי מה שפתוח בחשבון — ראו '
+            )}
             <a
               href="https://help.openai.com/en/articles/20001212-create-ads-for-chatgpt-ads"
               className="text-blue-700 underline"
               rel="noopener noreferrer"
               target="_blank"
             >
-              Creating ads for ChatGPT Ads
+              {isolateLatinPhrases('Creating ads for ChatGPT Ads')}
             </a>
             .
           </p>
           <p className="mb-4 text-lg leading-relaxed text-gray-700">
-            מיקוד כולל מדינות ולעיתים מיקומים מדויקים יותר, פלטפורמות אופציונליות וקהלים מותאמים כשהם
-            זמינים. <strong>רמזי הקשר (Context hints)</strong> מתארים נושאים רלוונטיים — הם אינם מילות
-            מפתח בהתאמה מדויקת ואינם מבטיחים הופעה בשיחה מסוימת. זמינות אפשרויות המיקוד משתנה לפי
-            מדינה, סוג קמפיין והחשבון; אנחנו לא מבטיחים מיקוד דמוגרפי או כיסוי מלא של כל המשתמשים.
+            {isolateLatinPhrases(
+              'מיקוד כולל מדינות ולעיתים מיקומים מדויקים יותר, פלטפורמות אופציונליות וקהלים מותאמים כשהם זמינים. רמזי הקשר (Context hints) מתארים נושאים רלוונטיים — הם אינם מילות מפתח בהתאמה מדויקת ואינם מבטיחים הופעה בשיחה מסוימת. זמינות אפשרויות המיקוד משתנה לפי מדינה, סוג קמפיין והחשבון; אנחנו לא מבטיחים מיקוד דמוגרפי או כיסוי מלא של כל המשתמשים.'
+            )}
           </p>
           <p className="text-lg leading-relaxed text-gray-700">
-            חיוב המדיה הוא לאחר הצגת המודעות (פוסטפיי). יעדי קמפיין ותקציב מוגדרים לפי{' '}
+            {isolateLatinPhrases('חיוב המדיה הוא לאחר הצגת המודעות (פוסטפיי). יעדי קמפיין ותקציב מוגדרים לפי ')}
             <a
               href="https://help.openai.com/en/articles/20001210"
               className="text-blue-700 underline"
@@ -339,7 +346,7 @@ export default function ChatGptAdsPage() {
             >
               חיוב ותשלום
             </a>{' '}
-            של OpenAI.
+            {isolateLatinPhrases('של OpenAI.')}
           </p>
         </div>
       </section>
@@ -352,7 +359,7 @@ export default function ChatGptAdsPage() {
               <div key={item.title} className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
                 <item.icon className="mb-3 h-8 w-8 text-blue-600" aria-hidden />
                 <h3 className="mb-2 text-xl font-semibold text-gray-900">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
+                <p className="text-gray-600">{isolateLatinPhrases(item.description)}</p>
               </div>
             ))}
           </div>
@@ -369,7 +376,7 @@ export default function ChatGptAdsPage() {
                   {index + 1}
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-gray-900">{step.title}</h3>
-                <p className="text-sm text-gray-600">{step.description}</p>
+                <p className="text-sm text-gray-600">{isolateLatinPhrases(step.description)}</p>
               </div>
             ))}
           </div>

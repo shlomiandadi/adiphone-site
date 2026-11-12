@@ -455,6 +455,43 @@
   color: #38bdf8;
   transform: translateZ(48px);
 }
+.h3d-chat.chat-sponsored {
+  bottom: 8%;
+  inset-inline-end: 6%;
+  max-width: 52%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #071433;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  transform: translateZ(52px);
+}
+.h3d-chat.chat-sponsored em {
+  display: block;
+  font-size: 0.62rem;
+  font-style: normal;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.2rem;
+}
+.h3d-chat.chat-sponsored bdi {
+  display: block;
+  font-weight: 700;
+}
+
+.h3d-theme-chatgpt-ads .h3d-scene {
+  opacity: 0.55;
+}
+
+@media (max-width: 1023px) {
+  .h3d-theme-chatgpt-ads .h3d-scene {
+    top: 30%;
+    opacity: 0.35;
+  }
+  .h3d-theme-chatgpt-ads .h3d-chat.chat-sponsored {
+    bottom: 4%;
+    inset-inline-end: 2%;
+    max-width: 46%;
+  }
+}
 
 .h3d-product {
   width: 28%;

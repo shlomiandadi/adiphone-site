@@ -1,13 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
-import { displayRuns, ogLineUsesLatinPhraseFlip, splitOgTitleLines } from './og-text-runs';
+import { displayRuns, splitOgTitleLines } from './og-text-runs';
 
 export const serviceOgSize = { width: 1200, height: 630 };
 export const serviceOgContentType = 'image/png';
 
 /** Bump when OG PNG pixels change so link previews refetch (WhatsApp, Facebook). */
-export const SERVICE_OG_CACHE_VERSION = 4;
+export const SERVICE_OG_CACHE_VERSION = 5;
 
 export function versionedServiceOgImagePath(routePath: string): string {
   const base = routePath.replace(/\/$/, '');
@@ -26,22 +26,6 @@ function OgLine({
   color: string;
 }) {
   const runs = displayRuns(text);
-  const flipLatinPhrase = ogLineUsesLatinPhraseFlip(text);
-  type LayoutRun = (typeof runs)[number] & { key: string };
-  const layoutRuns: LayoutRun[] = runs.flatMap((run, index) => {
-    if (flipLatinPhrase && run.latin && run.text.includes(' ')) {
-      return run.text.split(/\s+/).map((word, partIndex) => ({
-        ...run,
-        text: word,
-        glueLeft: partIndex === 0 ? run.glueLeft : undefined,
-        key: `${index}-${partIndex}`,
-      }));
-    }
-    return [{ ...run, key: String(index) }];
-  });
-  if (flipLatinPhrase) {
-    layoutRuns.reverse();
-  }
 
   return (
     <div
@@ -64,14 +48,12 @@ function OgLine({
           maxWidth: '100%',
         }}
       >
-        {layoutRuns.map((run, index) => {
-          const prev = layoutRuns[index - 1];
-          const tight =
-            index > 0 &&
-            (run.glueLeft || Boolean(prev?.glueRight));
+        {runs.map((run, index) => {
+          const prev = runs[index - 1];
+          const tight = index > 0 && (run.glueLeft || Boolean(prev?.glueRight));
           return (
             <div
-              key={run.key}
+              key={index}
               style={{
                 display: 'flex',
                 flexShrink: 0,
@@ -81,6 +63,8 @@ function OgLine({
                 fontWeight: 700,
                 color,
                 whiteSpace: 'nowrap',
+                direction: run.latin ? 'ltr' : 'rtl',
+                unicodeBidi: run.latin ? 'isolate' : 'plaintext',
               }}
             >
               {run.text}

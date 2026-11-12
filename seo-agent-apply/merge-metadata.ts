@@ -52,6 +52,7 @@ function withVersionedServiceOgImage(path: string, meta: Metadata): Metadata {
     ...meta,
     openGraph: {
       ...openGraph,
+      url: openGraph.url ?? absoluteUrl(path),
       images: [
         {
           url: imageUrl,

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { displayRuns, ogLineUsesLatinPhraseFlip } from './og-text-runs.ts';
+import { displayRuns, splitOgTitleLines } from './og-text-runs.ts';
 
 describe('displayRuns', () => {
   test('keeps multi-word Latin as one LTR phrase for ChatGPT Business Hub', () => {
@@ -24,9 +24,14 @@ describe('displayRuns', () => {
     assert.deepEqual(latin, ['AI (AEO/GEO)']);
   });
 
-  test('detects multi-word Latin lines for Satori paint flip', () => {
-    assert.equal(ogLineUsesLatinPhraseFlip('ב-ChatGPT Business Hub'), true);
-    assert.equal(ogLineUsesLatinPhraseFlip('פרופיל עסקי'), false);
+  test('second OG line for ads keeps ב-ChatGPT glued to Latin', () => {
+    const lines = splitOgTitleLines('פרסום ממומן ב-ChatGPT לעסקים בישראל');
+    assert.equal(lines.length, 2);
+    const runs = displayRuns(lines[1]);
+    const latin = runs.find((r) => r.latin);
+    assert.equal(latin?.text, 'ChatGPT');
+    assert.ok(runs.some((r) => r.text === 'ב-' && r.glueRight));
+    assert.equal(runs[runs.length - 1]?.text, 'ב-');
   });
 
   test('pure Hebrew still produces only Hebrew runs', () => {

@@ -39,7 +39,7 @@ export default function ChatGptAdsFaq() {
                 </button>
                 {isOpen ? (
                   <div className="border-t border-gray-100 px-6 pb-5">
-                    <p className="pt-4 leading-relaxed text-gray-700">{item.answer}</p>
+                    <p className="pt-4 leading-relaxed text-gray-700">{isolateLatinPhrases(item.answer)}</p>
                   </div>
                 ) : null}
               </div>

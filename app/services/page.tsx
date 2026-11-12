@@ -123,6 +123,19 @@ export default function ServicesPage() {
       features: ["מחקר שאלות", "תוכן בפורמט תשובה", "נתונים מובנים", "חיזוק זהות העסק"]
     },
     {
+      title: "עסק ב-ChatGPT (Business Hub)",
+      description: "תביעת הפרופיל, אימות וניהול Insights ב-ChatGPT Business Hub",
+      icon: <FaBrain className="w-8 h-8 text-blue-600" />,
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
+      link: "/services/chatgpt-business-hub",
+      features: [
+        "תביעת הפרופיל ואימות",
+        "עדכון פרטים וקטגוריה",
+        "מעקב אחרי אזכורים וקליקים",
+        "חיבור לקידום במנועי AI",
+      ],
+    },
+    {
       title: "שירותי ענן",
       description: "פתרונות ענן מתקדמים לעסקים צומחים",
       icon: <FaCloud className="w-8 h-8 text-blue-600" />,

@@ -58,6 +58,7 @@ const ROUTES = [
   '/services/ppc',
   '/services/seo',
   '/services/aeo-geo',
+  '/services/chatgpt-business-hub',
   '/services/software-development',
   '/services/ui-design',
   '/services/web-development',

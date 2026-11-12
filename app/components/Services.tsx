@@ -25,7 +25,14 @@ const services = [
     description: 'שילוב טכנולוגיות AI מתקדמות בעסק שלך. צ׳אטבוטים, אוטומציה, ומערכות המלצה חכמות.',
     image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
     link: '/services/ai'
-  }
+  },
+  {
+    title: 'עסק ב-ChatGPT',
+    description:
+      'תביעת הפרופיל ב-ChatGPT Business Hub, אימות, עדכון פרטים ומעקב אחרי אזכורים וקליקים לאתר.',
+    image: 'https://images.unsplash.com/photo-1526378722484-bd91ca387e72?w=800',
+    link: '/services/chatgpt-business-hub',
+  },
 ];
 
 export default function Services() {
@@ -37,7 +44,7 @@ export default function Services() {
           <h2 className="text-4xl font-bold mb-4 dark:text-white">השירותים שלנו</h2>
           <p className="text-xl text-gray-600 dark:text-gray-300">פתרונות דיגיטל מקצה לקצה לעסק שלך</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" data-reveal-stagger>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" data-reveal-stagger>
           {services.map((service, index) => (
             <Link href={service.link} key={index} className="block group h-full">
               <div data-tilt className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden flex flex-col h-full">

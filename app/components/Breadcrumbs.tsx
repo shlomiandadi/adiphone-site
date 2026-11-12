@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { fallbackBreadcrumbItems } from '../../lib/cms/breadcrumbShared';
+import { chatgptBusinessHubCrumbLabel, isolateLatinPhrases } from '../../lib/bidi';
 
 export default function Breadcrumbs() {
   const pathname = usePathname() || '/';
@@ -30,15 +31,19 @@ export default function Breadcrumbs() {
             <div className="flex items-center">
               <span className="mx-2 text-gray-400 dark:text-gray-500">/</span>
               {index === rest.length - 1 ? (
-                <span className="text-blue-600 dark:text-blue-400 font-semibold">
-                  {item.title}
+                <span className="font-semibold text-blue-600 dark:text-blue-400">
+                  {item.url === '/services/chatgpt-business-hub'
+                    ? chatgptBusinessHubCrumbLabel()
+                    : isolateLatinPhrases(item.title)}
                 </span>
               ) : (
                 <Link
                   href={item.url}
-                  className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 font-medium"
+                  className="font-medium text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                 >
-                  {item.title}
+                  {item.url === '/services/chatgpt-business-hub'
+                    ? chatgptBusinessHubCrumbLabel()
+                    : isolateLatinPhrases(item.title)}
                 </Link>
               )}
             </div>

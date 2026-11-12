@@ -17,6 +17,7 @@ export const REQUIRED_SITEMAP_PATHS = [
   '/services/web-development/clinics',
   '/services/web-development/accountants',
   '/services/aeo-geo',
+  '/services/chatgpt-business-hub',
   '/blog/mh-zh-seo',
   '/blog/ayk-lbchvr-chbrt-kydvm-atrym',
   '/blog/ptrvnvt-bann',

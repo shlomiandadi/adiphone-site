@@ -17,6 +17,7 @@ export const generateMetadata = createSeoAgentGenerateMetadata('/data-deletion',
 
 const DELETION_EMAIL = 'shlomiandadi@gmail.com';
 const DELETION_EMAIL_ALT = 'shlomimalfuf1@gmail.com';
+const DELETION_EMAIL_INFO = 'info@adi-phone.co.il';
 const DELETION_EMAIL_SUBJECT = encodeURIComponent('בקשה למחיקת נתונים');
 
 const TOC = [
@@ -52,6 +53,10 @@ export default function DataDeletion() {
               {' '}או{' '}
               <a className="text-blue-700 hover:underline" href={`mailto:${DELETION_EMAIL_ALT}?subject=${DELETION_EMAIL_SUBJECT}`}>
                 {DELETION_EMAIL_ALT}
+              </a>
+              {' '}או{' '}
+              <a className="text-blue-700 hover:underline" href={`mailto:${DELETION_EMAIL_INFO}?subject=${DELETION_EMAIL_SUBJECT}`}>
+                {DELETION_EMAIL_INFO}
               </a>
             </li>
             <li>

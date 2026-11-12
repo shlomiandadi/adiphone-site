@@ -95,7 +95,7 @@ export default async function PpcServicePage() {
       '@type': 'ProfessionalService',
       name: 'Top Webstak בנייה וקידום אתרים',
       telephone: '+972-50-9159951',
-      email: 'adiphoneseo@gmail.com',
+      email: ['adiphoneseo@gmail.com', 'info@adi-phone.co.il'],
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'זמיר 95',

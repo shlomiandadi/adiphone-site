@@ -26,6 +26,7 @@ export default function HomeSchema() {
       alternateName: 'Top Webstak בנייה וקידום אתרים',
       url: siteUrl,
       logo: organizationLogo(siteUrl),
+      email: ['adiphoneseo@gmail.com', 'info@adi-phone.co.il'],
       description,
       sameAs: organizationSameAs(GOOGLE_MAPS_URL),
     },
@@ -45,7 +46,7 @@ export default function HomeSchema() {
       url: siteUrl,
       logo: organizationLogo(siteUrl),
       telephone: '+972-50-9159951',
-      email: 'adiphoneseo@gmail.com',
+      email: ['adiphoneseo@gmail.com', 'info@adi-phone.co.il'],
       openingHours: 'Su-Th 09:00-18:00',
       openingHoursSpecification: [
         {

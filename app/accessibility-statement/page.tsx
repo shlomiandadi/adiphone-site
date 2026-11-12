@@ -71,7 +71,7 @@ export default function AccessibilityStatement() {
             אם נתקלתם בבעיה כלשהי בנגישות האתר, נשמח שתעדכנו אותנו ונפעל לתקנה בהקדם האפשרי.
           </p>
           <ul className="list-disc pr-6 text-gray-700">
-            <li>דוא"ל: <a href="mailto:shlomiandadi@gmail.com" className="text-blue-600 hover:underline">shlomiandadi@gmail.com</a></li>
+            <li>דוא"ל: <a href="mailto:shlomiandadi@gmail.com" className="text-blue-600 hover:underline">shlomiandadi@gmail.com</a> או <a href="mailto:info@adi-phone.co.il" className="text-blue-600 hover:underline">info@adi-phone.co.il</a></li>
             <li>טלפון: <a href="tel:0509159951" className="text-blue-600 hover:underline">050-9159951</a></li>
           </ul>
         </LegalSection>

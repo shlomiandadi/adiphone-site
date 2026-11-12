@@ -3,6 +3,7 @@ import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import {
   footerCopyrightLine,
   HARDCODED_FOOTER,
+  withRequiredContactEmails,
   withRequiredServiceLinks,
   withRequiredSocialLinks,
   withServiceAreaColumn,
@@ -209,9 +210,11 @@ function withTerms(data: FooterView): FooterView {
 export default function Footer({ cmsFooter }: { cmsFooter?: FooterView | null }) {
   return (
     <FooterMarkup
-      data={withRequiredSocialLinks(
-        withRequiredServiceLinks(
-          withServiceAreaColumn(withTerms(withDataDeletion(cmsFooter || HARDCODED_FOOTER)))
+      data={withRequiredContactEmails(
+        withRequiredSocialLinks(
+          withRequiredServiceLinks(
+            withServiceAreaColumn(withTerms(withDataDeletion(cmsFooter || HARDCODED_FOOTER)))
+          )
         )
       )}
     />

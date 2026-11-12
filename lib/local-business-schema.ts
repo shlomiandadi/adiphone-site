@@ -6,6 +6,8 @@ export const BUSINESS_NAME = 'Top Webstak בנייה וקידום אתרים';
 export const BUSINESS_ALTERNATE_NAME = 'עדי פון תקשורת';
 export const BUSINESS_PHONE = '+972-50-9159951';
 export const BUSINESS_EMAIL = 'adiphoneseo@gmail.com';
+export const BUSINESS_EMAIL_INFO = 'info@adi-phone.co.il';
+export const BUSINESS_EMAILS = [BUSINESS_EMAIL, BUSINESS_EMAIL_INFO] as const;
 export const BUSINESS_STREET = 'זמיר 95';
 export const BUSINESS_LOCALITY = 'פרדס חנה-כרכור';
 
@@ -57,7 +59,7 @@ export function buildLocalBusinessJsonLd(options: BuildOptions = {}) {
     url: pageUrl,
     logo: organizationLogo(siteUrl),
     telephone: BUSINESS_PHONE,
-    email: BUSINESS_EMAIL,
+    email: [...BUSINESS_EMAILS],
     openingHours: 'Su-Th 09:00-18:00',
     openingHoursSpecification: [
       {

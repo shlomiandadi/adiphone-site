@@ -21,7 +21,7 @@ const organizationSchema = {
     width: 1024,
     height: 1024,
   },
-  email: 'adiphoneseo@gmail.com',
+  email: ['adiphoneseo@gmail.com', 'info@adi-phone.co.il'],
   telephone: '+972-50-9159951',
   address: {
     '@type': 'PostalAddress',

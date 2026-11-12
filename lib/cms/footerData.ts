@@ -80,6 +80,7 @@ export const FOOTER_AREA_LINKS: FooterLinkView[] = [
 export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
   { title: '0509159951', url: 'tel:0509159951', icon: 'phone' },
   { title: 'adiphoneseo@gmail.com', url: 'mailto:adiphoneseo@gmail.com', icon: 'envelope' },
+  { title: 'info@adi-phone.co.il', url: 'mailto:info@adi-phone.co.il', icon: 'envelope' },
   { title: 'זמיר 95, פרדס חנה', url: '', icon: 'map-marker' },
   {
     title: 'Facebook',
@@ -116,6 +117,29 @@ export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
 const REQUIRED_SOCIAL_LINKS = FOOTER_CONTACT_LINKS.filter((link) =>
   ['facebook', 'instagram', 'linkedin', 'x'].includes(link.icon || '')
 );
+
+const REQUIRED_EMAIL_LINKS = FOOTER_CONTACT_LINKS.filter((link) => link.icon === 'envelope');
+
+/** Ensure CMS footers still list every public business email. */
+export function withRequiredContactEmails(data: FooterView): FooterView {
+  const index = data.columns.findIndex((column) => column.kind === 'contact');
+  if (index < 0) return data;
+  const column = data.columns[index];
+  const links = [...column.links];
+  for (const item of REQUIRED_EMAIL_LINKS) {
+    if (!links.some((link) => link.url === item.url)) {
+      const lastEmail = [...links].reverse().findIndex((link) => link.icon === 'envelope');
+      if (lastEmail >= 0) {
+        links.splice(links.length - lastEmail, 0, item);
+      } else {
+        links.unshift(item);
+      }
+    }
+  }
+  const columns = [...data.columns];
+  columns[index] = { ...column, links };
+  return { ...data, columns };
+}
 
 /** Ensure CMS footers still expose the verified public profiles. */
 export function withRequiredSocialLinks(data: FooterView): FooterView {

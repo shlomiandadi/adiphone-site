@@ -62,12 +62,6 @@ const SERVICE_CTA_BY_KEY: Record<string, ServiceCtaCopy> = {
     whatsappText: 'שלום, אשמח לשיחת ייעוץ על פיתוח אפליקציה.',
     topic: 'apps',
   },
-  'website-tadmit': {
-    title: 'אתר תדמית מוכן תוך 14–21 יום',
-    text: 'שיחת ייעוץ של 15 דקות – בחינם. נבין את העסק ונחזור עם מבנה והצעה ברורה, בלי התחייבות.',
-    whatsappText: 'שלום, אשמח לקבוע שיחת ייעוץ לבניית אתר תדמית.',
-    topic: 'websites',
-  },
   'software-development': {
     title: 'מערכת מותאמת לפי תהליך העסק – לא תבנית גנרית',
     text: 'שיחת ייעוץ של 15 דקות – בחינם. נמפה מה באמת צריך לבנות.',
@@ -105,7 +99,6 @@ const PATH_TO_KEY: Record<string, string> = {
   '/services/web-development/lawyers': 'web-development',
   '/services/web-development/clinics': 'web-development',
   '/services/web-development/accountants': 'web-development',
-  '/services/website-tadmit': 'website-tadmit',
   '/services/wordpress': 'wordpress',
   '/services/ecommerce': 'ecommerce',
   '/services/seo': 'seo',

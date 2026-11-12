@@ -132,6 +132,16 @@ const nextConfig = {
         destination: '/services/software-development',
         permanent: true,
       },
+      {
+        source: '/services/website-tadmit',
+        destination: '/services/web-development',
+        permanent: true,
+      },
+      {
+        source: '/services/website-tadmit/',
+        destination: '/services/web-development',
+        permanent: true,
+      },
       // Near-duplicate PPC blog posts → keep the stronger guide
       {
         source: '/blog/nyhvl-kmpyynym-mmvmnym',

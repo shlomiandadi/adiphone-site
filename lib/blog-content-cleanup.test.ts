@@ -30,7 +30,7 @@ describe('cleanupBlogHtml', () => {
   test('adds city and AEO contextual links on target slugs only', () => {
     const local = cleanupBlogHtml('<p>תוכן.</p>', 'bnyyt-atrym-laskym-ktnym');
     assert.equal(local.includes('/services/bniyat-atarim-haifa'), true);
-    assert.equal(local.includes('/services/website-tadmit'), true);
+    assert.equal(local.includes('/services/web-development'), true);
     const seo = cleanupBlogHtml('<p>תוכן.</p>', 'mh-zh-seo');
     assert.equal(seo.includes('/services/aeo-geo'), true);
     assert.equal(cleanupBlogHtml('<p>תוכן.</p>', 'other-post').includes('/services/aeo-geo'), false);

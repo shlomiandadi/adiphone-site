@@ -59,7 +59,6 @@ const CITY_LINKS: NicheLink[] = [
 
 const SHARED_RELATED: NicheLink[] = [
   { href: '/services/web-development', label: 'בניית אתרים' },
-  { href: '/services/website-tadmit', label: 'אתר תדמית' },
   { href: '/services/seo', label: 'קידום אתרים' },
   { href: '/portfolio', label: 'תיק עבודות' },
 ];

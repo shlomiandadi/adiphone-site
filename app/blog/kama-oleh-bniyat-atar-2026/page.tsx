@@ -117,7 +117,7 @@ export default function WebsiteCostGuidePage() {
               בניית אתרים
             </Link>
             {' '}ו{' '}
-            <Link href="/services/website-tadmit" className="font-semibold text-[#02336E] underline">
+            <Link href="/services/web-development" className="font-semibold text-[#02336E] underline">
               בניית אתר תדמית
             </Link>
             .

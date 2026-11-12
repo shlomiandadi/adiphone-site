@@ -131,6 +131,18 @@
   force = true
 
 [[redirects]]
+  from = "/services/website-tadmit"
+  to = "/services/web-development"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/services/website-tadmit/"
+  to = "/services/web-development"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/blog/nyhvl-kmpyynym-mmvmnym"
   to = "/blog/nyhvl-kmpyyn-mmvmn"
   status = 301

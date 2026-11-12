@@ -57,11 +57,6 @@ export default function WebDevelopmentView({ projects }: Props) {
           href: '/services/web-development/accountants',
         },
         {
-          title: 'אתר תדמית',
-          description: 'עד 6–8 עמודים לעסק מקומי. פירוט בעמוד בניית אתר תדמית.',
-          href: '/services/website-tadmit',
-        },
-        {
           title: 'דף נחיתה',
           description: 'עמוד אחד ממוקד לקמפיין או לשירות בודד.',
           href: '/pricing',
@@ -100,7 +95,7 @@ export default function WebDevelopmentView({ projects }: Props) {
             {' '}— פגישה בעיר או ליווי מרחוק מפרדס חנה.
           </p>
           <p>
-            לפירוט על אתר שמציג את העסק ומביא פניות ראו <a href="/services/website-tadmit">אתרי תדמית</a>. לעסקים במקצועות ספציפיים יש גם דפים על <a href="/services/web-development/lawyers">בניית אתר לעורך דין</a>, <a href="/services/web-development/clinics">בניית אתר לקליניקה</a> ו<a href="/services/web-development/accountants">בניית אתר לרואה חשבון</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.
+            לעסקים במקצועות ספציפיים יש גם דפים על <a href="/services/web-development/lawyers">בניית אתר לעורך דין</a>, <a href="/services/web-development/clinics">בניית אתר לקליניקה</a> ו<a href="/services/web-development/accountants">בניית אתר לרואה חשבון</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.
           </p>
           <h2><strong>מהו פיתוח אתרים מקצועי, ומה ההבדל בין אתר &quot;חובבני&quot; לאתר מנצח?</strong></h2>
           <p>בניית אתר היא תהליך הנדסי של הפיכת עיצוב גרפי למערכת חיה, פונקציונלית ואינטראקטיבית. בעוד שכל אחד יכול &quot;לגרור ולשחרר&quot; אלמנטים בפלטפורמה כזו או אחרת, פיתוח מקצועי מתמקד ביסודות הבלתי נראים שקובעים את הצלחת האתר:</p>
@@ -114,7 +109,7 @@ export default function WebDevelopmentView({ projects }: Props) {
           <h2><strong>סוגי האתרים שאנו בונים: פתרון לכל צורך ומטרה</strong></h2>
           <p>אנו מתאימים את הפתרון הטכנולוגי למטרה העסקית שלכם:</p>
           <ul>
-            <li><strong>אתרי תדמית:</strong> חלון הראווה הדיגיטלי שלכם. מטרתם היא להציג את המותג, השירותים והערכים שלכם בצורה מקצועית ומרשימה, ולייצר פניות ולידים איכותיים. פירוט בעמוד <a href="/services/website-tadmit"><strong>בניית אתר תדמית</strong></a>, ומחיר הפתיחה ב<a href="/pricing"><strong>מחירון בניית אתרים</strong></a>.</li>
+            <li><strong>אתרי תדמית:</strong> חלון הראווה הדיגיטלי שלכם. מטרתם היא להציג את המותג, השירותים והערכים שלכם בצורה מקצועית ומרשימה, ולייצר פניות ולידים איכותיים. מחיר הפתיחה ב<a href="/pricing"><strong>מחירון בניית אתרים</strong></a>.</li>
             <li><strong>אתרי קטלוג:</strong> פתרון מושלם לעסקים עם מגוון רחב של מוצרים, המעוניינים להציג אותם בצורה מסודרת ונוחה לחיפוש, גם אם המכירה עצמה לא מתבצעת אונליין.</li>
             <li><strong>פורטלים ותוכן:</strong> אתרים מורכבים המבוססים על תוכן רב, קהילות משתמשים, אינדקסים ומערכות חיפוש מתקדמות.</li>
             <li><strong>מערכות Web ייעודיות:</strong> כאשר האתר שלכם הוא למעשה <a href="/services/software-development"><strong>תוכנה</strong></a> שלמה (SaaS, פלטפורמה ייעודית), אנו מפתחים מערכות מורכבות מאפס.</li>
@@ -145,6 +140,42 @@ export default function WebDevelopmentView({ projects }: Props) {
         </>
       )}
       beforeFaq={(
+        <>
+        <section data-reveal className="bg-white px-4 py-16 dark:bg-gray-900">
+          <div className="container mx-auto max-w-3xl text-right text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">מהו אתר תדמית, ומה הוא לא</h2>
+            <p className="mb-5">
+              אתר תדמית הוא חלון הראווה הדיגיטלי של העסק. גולש שנכנס אליו צריך להבין בתוך דקה אם הוא במקום הנכון. לכן האתר בנוי מעמודים קצרים וברורים, לא ממאגר מאמרים ולא מקטלוג מוצרים. עמוד הבית אומר מה אתם עושים. עמוד השירותים מפרט. עמוד האודות מסביר מי עומד מאחורי העסק. עמוד יצירת הקשר נותן טלפון, וואטסאפ וטופס קצר.
+            </p>
+            <p className="mb-5">
+              זה לא דף נחיתה. דף נחיתה הוא עמוד אחד שמכוון לפעולה אחת, בדרך כלל לקמפיין ממומן. בניית אתר תדמית מתאימה כשיש כמה שירותים, קהל שבודק אתכם לפני שהוא מתקשר, ורצון שגוגל יוכל להציג עמוד נפרד לכל נושא. זה גם לא חנות. אין עגלה, אין מלאי ואין סליקה. אם המכירה עצמה צריכה לקרות באתר, השירות הנכון הוא{' '}
+              <a href="/services/ecommerce" className="font-semibold text-blue-700 underline dark:text-blue-400">חנות אונליין</a>
+              .
+            </p>
+            <p className="mb-5">
+              וזה לא אתר שנבנה &quot;על הדרך&quot; מתוך תבנית עמוסה. תבנית מוכנה מגיעה עם עשרות בלוקים שלא תשתמשו בהם, טעינה איטית בטלפון, ועיצוב שנראה כמו אתר של מישהו אחר. בבניית אתרי תדמית אנחנו מתחילים מהמסר של העסק, לא מהתבנית.
+            </p>
+            <h2 className="mb-4 mt-12 text-3xl font-bold text-gray-900 dark:text-white">בניית אתר תדמית מול אפשרויות אחרות</h2>
+            <p className="mb-5">
+              בניית אתרי תדמית היא חלק מבניית אתרים בכלל, לא תחליף לה. בעמוד הזה תמצאו גם קטלוג, פורטל ומערכת. ההחלטה הפשוטה: אם המטרה היא שיבינו את העסק ויתקשרו, אתר תדמית מספיק. אם המטרה היא למכור באתר, לעדכן מאות מוצרים, או לנהל תהליך פנימי – נגיד את זה בשיחה ולא נמתח אתר תדמית מעבר למה שהוא.
+            </p>
+            <p className="mb-5">
+              עיצוב הממשק יושב אצלנו בתוך הפרויקט, ואפשר גם להעמיק אותו כשירות{' '}
+              <a href="/services/ui-design" className="font-semibold text-blue-700 underline dark:text-blue-400">עיצוב UI/UX</a>
+              {' '}כשהמותג צריך שפה משלו. מהירות ואחסון נשענים על תשתית יציבה, לא על אחסון חינם שנרדם בשעות העומס.
+            </p>
+            <p className="mb-5">
+              אנחנו לא מבטיחים &quot;עמוד ראשון בגוגל&quot; בגלל שהאתר יפה. אתר תדמית טוב נותן לגוגל עמודים ברורים ולגולש סיבה להישאר. דירוג לוקח עבודה מתמשכת, תוכן ותחרות. מי שמבטיח מקום בגוגל לפני שראה את התחום, מוכר סיפור.
+            </p>
+            <h2 className="mb-4 mt-12 text-3xl font-bold text-gray-900 dark:text-white">מה כדאי להכין לפני השיחה</h2>
+            <p className="mb-5">
+              לא צריך מצגת. מספיק רשימת שירותים, אזור העבודה, וקישור לאתר הישן אם יש. אם יש לוגו וחמש תמונות אמיתיות מהעבודה, האפיון קצר יותר. אם אין תמונות, נגיד את זה מראש ולא נמלא את האתר בתמונות גנריות שנראות כמו כל אתר אחר.
+            </p>
+            <p className="mb-5">
+              כדאי גם להחליט מי מאשר טקסט ועיצוב. פרויקט שעובר בין שלושה אנשים בלי בעל החלטה נתקע, גם כשהבנייה עצמה פשוטה. בשיחה נשאל מי נמצא על הוואטסאפ ומי חותם על המבנה. ככה 14–21 הימים נשארים לוח זמנים, לא משאלה.
+            </p>
+          </div>
+        </section>
         <section data-reveal className="bg-gray-50 px-4 py-16 dark:bg-gray-800">
           <div className="container mx-auto max-w-3xl text-right">
             <h2 className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
@@ -182,6 +213,7 @@ export default function WebDevelopmentView({ projects }: Props) {
             </ul>
           </div>
         </section>
+        </>
       )}
       features={[
         {
@@ -233,7 +265,7 @@ export default function WebDevelopmentView({ projects }: Props) {
         },
         {
           question: 'מה ההבדל בין בניית אתרים לבניית אתר תדמית?',
-          answer: 'בניית אתרים כוללת גם קטלוג, חנות ומערכת. בניית אתר תדמית היא האתר שמציג את העסק ומביא פניות, בלי מכירה אונליין. פירוט בעמוד בניית אתר תדמית.',
+          answer: 'בניית אתרים כוללת גם קטלוג, חנות ומערכת. בניית אתר תדמית היא האתר שמציג את העסק ומביא פניות, בלי מכירה אונליין. ההבדלים וההשוואה מפורטים בעמוד זה למעלה.',
         },
         {
           question: 'כמה עולה בניית אתר?',

@@ -6,7 +6,6 @@ export const SERVICE_CANONICALS = {
   ppc: '/services/ppc',
   seo: '/services/seo',
   webDevelopment: '/services/web-development',
-  websiteTadmit: '/services/website-tadmit',
   aeoGeo: '/services/aeo-geo',
   ai: '/services/ai',
   mobileApps: '/services/mobile-apps',
@@ -92,15 +91,15 @@ export const BLOG_META_OVERRIDES: Record<
     relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
   },
   'pytvch-tvknh': {
-    relatedService: SERVICE_CANONICALS.websiteTadmit,
+    relatedService: SERVICE_CANONICALS.webDevelopment,
     relatedLabel: 'אתרי תדמית לעסקים',
   },
   'pytvch-atrym-seo-shyvvk-dygytly': {
-    relatedService: SERVICE_CANONICALS.websiteTadmit,
+    relatedService: SERVICE_CANONICALS.webDevelopment,
     relatedLabel: 'אתרי תדמית לעסקים',
   },
   'kama-oleh-bniyat-atar-2026': {
-    relatedService: SERVICE_CANONICALS.websiteTadmit,
+    relatedService: SERVICE_CANONICALS.webDevelopment,
     relatedLabel: 'אתרי תדמית לעסקים',
   },
   'ai-bot-for-businesses': {

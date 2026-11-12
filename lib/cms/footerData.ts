@@ -45,7 +45,6 @@ export const FOOTER_QUICK_LINKS: FooterLinkView[] = [
 
 export const FOOTER_SERVICE_LINKS: FooterLinkView[] = [
   { title: 'בניית אתרים', url: '/services/web-development' },
-  { title: 'אתרי תדמית לעסקים', url: '/services/website-tadmit' },
   { title: 'מחירון בניית אתרים', url: '/pricing' },
   { title: 'אתרי וורדפרס', url: '/services/wordpress' },
   { title: 'קידום אתרים SEO', url: '/services/seo' },
@@ -73,7 +72,6 @@ export const FOOTER_AREA_LINKS: FooterLinkView[] = [
   { title: 'בניית אתרים בבנימינה', url: '/services/bniyat-atarim-binyamina' },
   { title: 'בניית אתרים ביוקנעם', url: '/services/bniyat-atarim-yokneam' },
   { title: 'בניית אתרים בעפולה', url: '/services/bniyat-atarim-afula' },
-  { title: 'אתרי תדמית לעסקים', url: '/services/website-tadmit' },
   { title: 'קידום במנועי AI (AEO ו-GEO)', url: '/services/aeo-geo' },
 ];
 

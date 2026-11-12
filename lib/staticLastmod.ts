@@ -22,7 +22,6 @@ export const STATIC_ROUTES = [
   '/services/web-development/lawyers',
   '/services/web-development/clinics',
   '/services/web-development/accountants',
-  '/services/website-tadmit',
   '/services/wordpress',
   '/blog/kama-oleh-bniyat-atar-2026',
   '/services/bniyat-atarim-pardes-hana',

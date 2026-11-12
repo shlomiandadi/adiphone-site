@@ -174,22 +174,6 @@ function FooterMarkup({ data }: { data: FooterView }) {
   );
 }
 
-function withWebsiteTadmit(data: FooterView): FooterView {
-  return {
-    ...data,
-    columns: data.columns.map((column) => {
-      if (column.kind !== 'services') return column;
-      if (column.links.some((link) => link.url === '/services/website-tadmit')) return column;
-      const links = [...column.links];
-      const index = links.findIndex((link) => link.url === '/services/web-development');
-      const item = { title: 'אתרי תדמית לעסקים', url: '/services/website-tadmit' };
-      if (index >= 0) links.splice(index + 1, 0, item);
-      else links.unshift(item);
-      return { ...column, links };
-    }),
-  };
-}
-
 function withDataDeletion(data: FooterView): FooterView {
   return {
     ...data,
@@ -224,7 +208,7 @@ export default function Footer({ cmsFooter }: { cmsFooter?: FooterView | null })
   return (
     <FooterMarkup
       data={withRequiredSocialLinks(
-        withServiceAreaColumn(withTerms(withDataDeletion(withWebsiteTadmit(cmsFooter || HARDCODED_FOOTER))))
+        withServiceAreaColumn(withTerms(withDataDeletion(cmsFooter || HARDCODED_FOOTER)))
       )}
     />
   );

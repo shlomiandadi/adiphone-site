@@ -25,7 +25,6 @@ const SEGMENT_TITLES: Record<string, string> = {
   lawyers: 'עורכי דין',
   clinics: 'קליניקות',
   accountants: 'רואי חשבון',
-  'website-tadmit': 'אתרי תדמית לעסקים',
   wordpress: 'וורדפרס',
   ecommerce: 'חנויות אינטרנט',
   'mobile-apps': 'פיתוח אפליקציות',

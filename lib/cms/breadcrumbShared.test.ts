@@ -20,13 +20,6 @@ describe('fallbackBreadcrumbItems', () => {
     ]);
   });
 
-  test('website-tadmit uses the Hebrew service name', () => {
-    assert.deepEqual(fallbackBreadcrumbItems('/services/website-tadmit'), [
-      { url: '/services', title: 'שירותים', isActive: false },
-      { url: '/services/website-tadmit', title: 'אתרי תדמית לעסקים', isActive: true },
-    ]);
-  });
-
   test('aeo-geo uses the Hebrew service name', () => {
     assert.deepEqual(fallbackBreadcrumbItems('/services/aeo-geo'), [
       { url: '/services', title: 'שירותים', isActive: false },

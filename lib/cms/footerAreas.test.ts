@@ -10,12 +10,11 @@ import {
 import { SOCIAL_INSTAGRAM, SOCIAL_X } from '../social.ts';
 
 describe('withServiceAreaColumn', () => {
-  test('hardcoded footer already lists every city plus tadmit and aeo-geo', () => {
+  test('hardcoded footer already lists every city plus aeo-geo', () => {
     const urls = FOOTER_AREA_LINKS.map((link) => link.url);
     assert.ok(urls.includes('/services/bniyat-atarim-haifa'));
-    assert.ok(urls.includes('/services/website-tadmit'));
     assert.ok(urls.includes('/services/aeo-geo'));
-    assert.equal(urls.length, 12);
+    assert.equal(urls.length, 11);
   });
 
   test('injects the column when a CMS footer omitted it', () => {

@@ -62,7 +62,6 @@ export function relatedArticleLinks(slug: string, category = ''): RelatedLink[] 
   if (AI_SLUGS.has(slug) || looksAi(category)) pushAll(AI_GUIDES);
   if (WEBSITE_SLUGS.has(slug) || looksWebsite(category)) {
     pushAll([
-      { href: '/services/website-tadmit', label: 'אתרי תדמית לעסקים' },
       { href: '/services/web-development', label: 'בניית אתרים' },
       { href: '/services/bniyat-atarim-haifa', label: 'בניית אתרים בחיפה' },
       { href: '/services/bniyat-atarim-hadera', label: 'בניית אתרים בחדרה' },
@@ -97,12 +96,12 @@ export type PortfolioRelated = {
 /** Service mapping from published project type — no city claims. */
 export const PORTFOLIO_RELATED_SERVICE: Record<string, PortfolioRelated> = {
   'oil-cbd': { serviceHref: '/services/ecommerce', serviceLabel: 'חנות אונליין' },
-  'avora-home': { serviceHref: '/services/website-tadmit', serviceLabel: 'אתר תדמית' },
-  'top-aventa': { serviceHref: '/services/website-tadmit', serviceLabel: 'אתר תדמית' },
-  'lev-bagan': { serviceHref: '/services/website-tadmit', serviceLabel: 'אתר תדמית' },
-  'meditation-day': { serviceHref: '/services/website-tadmit', serviceLabel: 'אתר תדמית' },
-  'shaer-finance': { serviceHref: '/services/website-tadmit', serviceLabel: 'אתר תדמית' },
-  'work-accidents': { serviceHref: '/services/website-tadmit', serviceLabel: 'אתר תדמית' },
+  'avora-home': { serviceHref: '/services/web-development', serviceLabel: 'אתר תדמית' },
+  'top-aventa': { serviceHref: '/services/web-development', serviceLabel: 'אתר תדמית' },
+  'lev-bagan': { serviceHref: '/services/web-development', serviceLabel: 'אתר תדמית' },
+  'meditation-day': { serviceHref: '/services/web-development', serviceLabel: 'אתר תדמית' },
+  'shaer-finance': { serviceHref: '/services/web-development', serviceLabel: 'אתר תדמית' },
+  'work-accidents': { serviceHref: '/services/web-development', serviceLabel: 'אתר תדמית' },
   'topwebstack-landing': { serviceHref: '/services/web-development', serviceLabel: 'דף נחיתה' },
 };
 

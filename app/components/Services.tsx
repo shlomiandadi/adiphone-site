@@ -70,7 +70,7 @@ export default function Services() {
             בניית אתרים
           </Link>
           {', '}
-          <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline dark:text-blue-400">
+          <Link href="/services/web-development" className="font-semibold text-blue-700 underline dark:text-blue-400">
             אתרי תדמית לעסקים
           </Link>
           {' '}או{' '}

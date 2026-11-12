@@ -134,7 +134,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
           <div className="mt-6 rounded-2xl border border-gray-100 bg-[#02336E]/[0.04] p-6">
             <p className="text-lg leading-relaxed text-gray-700">
               בין אם אתם צריכים{' '}
-              <Link href="/services/website-tadmit" className="text-blue-700 underline">
+              <Link href="/services/web-development" className="text-blue-700 underline">
                 אתרי תדמית לעסקים
               </Link>
               ,{' '}
@@ -393,7 +393,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
               בניית אתרים
             </Link>
             {' '}ולעמוד{' '}
-            <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline">
+            <Link href="/services/web-development" className="font-semibold text-blue-700 underline">
               בניית אתר תדמית
             </Link>
             .

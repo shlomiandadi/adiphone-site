@@ -510,6 +510,15 @@
   }
 }
 
+@media (max-width: 767px) {
+  .h3d-theme-chatgpt-ads .h3d-float-a,
+  .h3d-theme-chatgpt-ads .h3d-float-b,
+  .h3d-theme-chatgpt-ads .h3d-chat.chat-q,
+  .h3d-theme-chatgpt-ads .h3d-chat.chat-a {
+    display: none;
+  }
+}
+
 @media (min-width: 1024px) {
   .h3d-theme-chatgpt-ads .h3d-copy h1 {
     position: relative;

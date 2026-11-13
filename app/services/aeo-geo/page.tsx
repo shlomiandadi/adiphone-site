@@ -3,73 +3,10 @@ import { getSiteUrl, organizationLogo } from '../../../lib/seo';
 import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
+import { AEO_BLOG_HREF, EXAMPLES, FAQ, PROCESS, WHATS_INCLUDED } from './content';
 
 const PHONE_DISPLAY = '050-9159951';
 const PHONE_TEL = '+972509159951';
-const AEO_BLOG_SLUG = 'What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change';
-
-const WHATS_INCLUDED = [
-  {
-    title: 'מחקר שאלות וכוונות',
-    description:
-      'מיפוי השאלות שהלקוחות שלכם שואלים מנועי AI על התחום שלכם, וזיהוי ההזדמנויות שבהן כדאי שהעסק יופיע בתשובה.',
-  },
-  {
-    title: 'תוכן בפורמט תשובה',
-    description:
-      'כתיבה ועריכה של תוכן שעונה ישירות על שאלות, עם הגדרות ברורות, רשימות ופסקאות פתיחה תמציתיות שמנועי AI יכולים לצטט.',
-  },
-  {
-    title: 'נתונים מובנים (Schema)',
-    description:
-      'הטמעת סכמות כמו FAQPage, Article ו-Organization שעוזרות למנועים להבין את התוכן ואת זהות העסק.',
-  },
-  {
-    title: 'ישות וזהות העסק (E-E-A-T)',
-    description:
-      'חיזוק הזהות הדיגיטלית של העסק: עמוד אודות, פרטי יצירת קשר עקביים (NAP) וקישורים לפרופילים קיימים.',
-  },
-  {
-    title: 'קובץ llms.txt',
-    description:
-      'הוספת קובץ שמסביר למנועי AI מי העסק, מה הוא מציע ואילו עמודים חשובים – בדומה ל-robots.txt עבור מנועי חיפוש.',
-  },
-  {
-    title: 'מדידה ומעקב',
-    description:
-      'מעקב אחר הופעות ותנועה ממנועי AI ככל שהנתונים זמינים, ועדכון התוכן בהתאם למה שעובד.',
-  },
-];
-
-const PROCESS = [
-  { title: 'אבחון', description: 'ניתוח הנוכחות הנוכחית של העסק בתוצאות חיפוש ובמנועי AI.' },
-  { title: 'אסטרטגיה', description: 'בחירת השאלות והנושאים שבהם כדאי שהעסק יופיע.' },
-  { title: 'יישום', description: 'כתיבת תוכן, הטמעת נתונים מובנים וחיזוק זהות העסק.' },
-  { title: 'אופטימיזציה', description: 'מדידה, הסקת מסקנות ושיפור מתמשך לאורך זמן.' },
-];
-
-const FAQ = [
-  {
-    question: 'מה זה AEO?',
-    answer:
-      'AEO (Answer Engine Optimization) הוא תהליך של אופטימיזציה של האתר והתוכן כך שהעסק יופיע בתשובות של מנועי שאלות ותשובות ועוזרי AI, במקום רק ברשימת הקישורים הקלאסית של גוגל.',
-  },
-  {
-    question: 'מה ההבדל בין AEO ל-GEO?',
-    answer:
-      'AEO מתמקד בהופעה בתשובות ישירות (כמו תיבות תשובה ועוזרי AI), ו-GEO (Generative Engine Optimization) מתמקד בהופעה בתוך תשובות שנוצרות על ידי מנועים גנרטיביים כמו ChatGPT, Google AI Overviews ו-Perplexity. בפועל שני התחומים משלימים זה את זה.',
-  },
-  {
-    question: 'האם AEO מחליף קידום אורגני (SEO)?',
-    answer:
-      'לא. AEO ו-GEO נבנים על גבי יסודות SEO טובים – תוכן איכותי, מבנה אתר תקין ומהירות. הם שכבה נוספת שמטרתה להתאים את התוכן גם לאופן שבו מנועי AI קוראים ומצטטים מידע.',
-  },
-  {
-    question: 'איך מודדים הצלחה ב-AEO ו-GEO?',
-    answer:
-      'בודקים אם העסק מוזכר בתשובות של מנועי AI על שאלות רלוונטיות, ועוקבים אחר תנועה והפניות ממקורות AI ככל שהנתונים זמינים בכלי המדידה. זהו תחום חדש, ולכן המדידה מתפתחת כל הזמן.',
-  },
-];
 
 export default async function AeoGeoPage() {
   const projects = await getPublishedPortfolioProjects('seo', 1);
@@ -145,6 +82,17 @@ export default async function AeoGeoPage() {
               שהגולש יקליק על התוצאה, המטרה היא שהעסק יוזכר כבר בתוך התשובה עצמה.
             </p>
           </div>
+          <p className="mt-6 text-lg leading-relaxed text-gray-700">
+            להסבר מעמיק יותר על המושג עצמו קראו את המדריך{' '}
+            <Link href={AEO_BLOG_HREF} className="text-blue-700 underline">
+              מה זה AEO ולמה זה משנה
+            </Link>
+            . לחיזוק הנראות בחיפוש הקלאסי של גוגל ראו את{' '}
+            <Link href="/services/seo" className="text-blue-700 underline">
+              שירות הקידום האורגני (SEO)
+            </Link>
+            — שני המסלולים עובדים יחד.
+          </p>
         </div>
       </section>
 
@@ -179,7 +127,7 @@ export default async function AeoGeoPage() {
           </p>
           <p className="text-lg leading-relaxed text-gray-700">
             רוצים להבין לעומק? קראו את המדריך שלנו:{' '}
-            <Link href={`/blog/${AEO_BLOG_SLUG}`} className="text-blue-700 underline">
+            <Link href={AEO_BLOG_HREF} className="text-blue-700 underline">
               מה זה AEO ולמה זה משנה
             </Link>
             .
@@ -202,13 +150,41 @@ export default async function AeoGeoPage() {
         </div>
       </section>
 
-      {/* Process */}
+      {/* Illustrative examples */}
       <section data-reveal className="bg-gray-50 px-4 py-16">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-3 text-3xl font-bold text-gray-900">איך נראית עבודת AEO ו-GEO בפועל</h2>
+          <p className="mb-10 text-lg leading-relaxed text-gray-700">
+            אלה תרחישים להמחשה בלבד — לא תיאורי לקוחות, לא תוצאות מדידות ולא הבטחות. המטרה היא
+            להראות איך נראית העבודה: תוכן שעונה קודם, נתונים מובנים, קובץ llms.txt ועקביות של
+            זהות העסק. לפירוט המושגים ראו את{' '}
+            <Link href={AEO_BLOG_HREF} className="text-blue-700 underline">
+              מדריך ה-AEO
+            </Link>
+            .
+          </p>
+          <ol className="space-y-6">
+            {EXAMPLES.map((item, index) => (
+              <li
+                key={item.title}
+                className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm"
+              >
+                <p className="mb-2 text-sm font-semibold text-blue-700">תרחיש {index + 1}</p>
+                <h3 className="mb-3 text-xl font-semibold text-gray-900">{item.title}</h3>
+                <p className="leading-relaxed text-gray-700">{item.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה על הקידום במנועי AI</h2>
           <div className="grid gap-6 md:grid-cols-4">
             {PROCESS.map((step, index) => (
-              <div key={step.title} className="rounded-xl bg-white p-6 text-center shadow-sm">
+              <div key={step.title} className="rounded-xl bg-gray-50 p-6 text-center shadow-sm">
                 <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
                   {index + 1}
                 </div>
@@ -220,16 +196,21 @@ export default async function AeoGeoPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section data-reveal className="px-4 py-16">
+      {/* FAQ — always visible, matches FAQPage JSON-LD */}
+      <section data-reveal className="bg-gray-50 px-4 py-16" aria-labelledby="aeo-faq-heading">
         <div className="container mx-auto max-w-3xl">
-          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">שאלות נפוצות</h2>
+          <h2 id="aeo-faq-heading" className="mb-10 text-center text-3xl font-bold text-gray-900">
+            שאלות נפוצות
+          </h2>
           <div className="space-y-4">
             {FAQ.map((item) => (
-              <div key={item.question} className="rounded-xl border border-gray-100 p-6 text-right shadow-sm">
+              <article
+                key={item.question}
+                className="rounded-xl border border-gray-100 bg-white p-6 text-right shadow-sm"
+              >
                 <h3 className="mb-2 text-xl font-semibold text-gray-900">{item.question}</h3>
-                <p className="text-gray-700">{item.answer}</p>
-              </div>
+                <p className="leading-relaxed text-gray-700">{item.answer}</p>
+              </article>
             ))}
           </div>
         </div>

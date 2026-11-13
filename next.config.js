@@ -148,6 +148,11 @@ const nextConfig = {
         destination: '/blog/nyhvl-kmpyyn-mmvmn',
         permanent: true,
       },
+      {
+        source: '/blog/aeo',
+        destination: '/blog/What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change',
+        permanent: true,
+      },
       // Pardes Hanna location posts → consolidated local service page
       {
         source: '/blog/bnyyt-atrym-prds-chnh',

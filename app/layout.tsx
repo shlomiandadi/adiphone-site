@@ -7,6 +7,8 @@ import Breadcrumbs from './components/Breadcrumbs';
 import PageOffset from './components/PageOffset';
 import WowEffects from './components/WowEffects';
 import BreadcrumbSchema from './components/BreadcrumbSchema';
+import { BreadcrumbLeafProvider } from './components/BreadcrumbLeaf';
+import { loadBreadcrumbLeaves } from '../lib/cms/breadcrumbLeaf';
 import FloatingButtons from './components/FloatingButtons';
 import CookieConsent from './components/CookieConsent';
 import DeferredTags from './components/DeferredTags';
@@ -91,6 +93,12 @@ export default async function RootLayout({
   }
   const gaId = cms.tracking.ga || GA4_MEASUREMENT_ID;
   const pixelId = cms.tracking.pixel || META_PIXEL_ID;
+  let breadcrumbLeaves: Record<string, string> = {};
+  try {
+    breadcrumbLeaves = await loadBreadcrumbLeaves();
+  } catch (error) {
+    console.warn('Breadcrumb leaf map unavailable:', error);
+  }
 
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
@@ -101,9 +109,10 @@ export default async function RootLayout({
             __html: `(function(){try{if(document.cookie.indexOf('cookie_consent_v1=')!==-1){document.documentElement.classList.add('has-consent');}}catch(e){}})();window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'denied','security_storage':'granted'});`,
           }}
         />
-        <BreadcrumbSchema />
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>
+        <BreadcrumbLeafProvider leaves={breadcrumbLeaves}>
+        <BreadcrumbSchema />
         <script
           id="a11y-restore"
           dangerouslySetInnerHTML={{
@@ -126,7 +135,7 @@ export default async function RootLayout({
         <Header items={cms.headerMenu} />
         <WowEffects />
         <PageOffset>
-          <div id="site-breadcrumbs" className="container mx-auto px-4">
+          <div id="site-breadcrumbs" className="container mx-auto min-w-0 max-w-full overflow-hidden px-4">
             <Breadcrumbs />
           </div>
         </PageOffset>
@@ -139,6 +148,7 @@ export default async function RootLayout({
         <DeferredTags gaId={gaId} pixelId={pixelId} />
         <DeferredAnalyticsTracker />
         <DeferredChatbotWidget />
+        </BreadcrumbLeafProvider>
       </body>
     </html>
   );

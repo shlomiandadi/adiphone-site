@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { fallbackBreadcrumbItems, omitBreadcrumbList } from './breadcrumbFallback.ts';
+import {
+  fallbackBreadcrumbItems,
+  lookupBreadcrumbLeaf,
+  omitBreadcrumbList,
+  pageOwnsBreadcrumbJsonLd,
+} from './breadcrumbFallback.ts';
 
 describe('fallbackBreadcrumbItems', () => {
   test('home has no trail items (URL-only crumbs stay empty)', () => {
@@ -48,12 +53,87 @@ describe('fallbackBreadcrumbItems', () => {
       },
     ]);
   });
+
+  test('unknown blog slug stays readable until a leaf title is supplied', () => {
+    assert.deepEqual(fallbackBreadcrumbItems('/blog/mh-zh-kydvm-avrgny'), [
+      { url: '/blog', title: 'בלוג', isActive: false },
+      {
+        url: '/blog/mh-zh-kydvm-avrgny',
+        title: 'mh zh kydvm avrgny',
+        isActive: true,
+      },
+    ]);
+  });
+
+  test('blog article leaf title replaces the dashed slug', () => {
+    assert.deepEqual(
+      fallbackBreadcrumbItems('/blog/mh-zh-kydvm-avrgny', 'מה זה קידום אורגני?'),
+      [
+        { url: '/blog', title: 'בלוג', isActive: false },
+        {
+          url: '/blog/mh-zh-kydvm-avrgny',
+          title: 'מה זה קידום אורגני?',
+          isActive: true,
+        },
+      ]
+    );
+  });
+
+  test('category and tag leaf titles replace the last slug', () => {
+    const categoryTrail = fallbackBreadcrumbItems('/blog/category/seo', 'קידום אתרים');
+    assert.equal(categoryTrail[categoryTrail.length - 1]?.title, 'קידום אתרים');
+    const tagTrail = fallbackBreadcrumbItems('/blog/tag/organic-seo', 'קידום אורגני');
+    assert.equal(tagTrail[tagTrail.length - 1]?.title, 'קידום אורגני');
+  });
+
+  test('portfolio leaf title replaces the project slug', () => {
+    const trail = fallbackBreadcrumbItems('/portfolio/some-client-site', 'אתר לקוח');
+    assert.equal(trail[trail.length - 1]?.title, 'אתר לקוח');
+  });
+
+  test('services path is unchanged when no leaf title is passed', () => {
+    assert.deepEqual(fallbackBreadcrumbItems('/services/seo'), [
+      { url: '/services', title: 'שירותים', isActive: false },
+      { url: '/services/seo', title: 'קידום אורגני', isActive: true },
+    ]);
+  });
+});
+
+describe('BreadcrumbList names follow the visible trail', () => {
+  test('last item name is the article title when a leaf title is supplied', () => {
+    const trail = fallbackBreadcrumbItems('/blog/mh-zh-kydvm-avrgny', 'מה זה קידום אורגני?');
+    const names = ['דף הבית', ...trail.map((item) => item.title)];
+    assert.deepEqual(names, ['דף הבית', 'בלוג', 'מה זה קידום אורגני?']);
+  });
 });
 
 describe('visible trail matches the Hebrew names', () => {
   test('services/seo is שירותים then קידום אורגני', () => {
     const names = ['דף הבית', ...fallbackBreadcrumbItems('/services/seo').map((item) => item.title)];
     assert.deepEqual(names, ['דף הבית', 'שירותים', 'קידום אורגני']);
+  });
+});
+
+describe('pageOwnsBreadcrumbJsonLd', () => {
+  test('blog posts, category, tag, and portfolio pages own the list', () => {
+    assert.equal(pageOwnsBreadcrumbJsonLd('/blog/mh-zh-kydvm-avrgny'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/blog/category/seo'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/blog/tag/organic'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/portfolio/some-client'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/blog'), false);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/services/seo'), false);
+  });
+});
+
+describe('lookupBreadcrumbLeaf', () => {
+  test('returns the title for a blog path', () => {
+    assert.equal(
+      lookupBreadcrumbLeaf(
+        { '/blog/mh-zh-kydvm-avrgny': 'מה זה קידום אורגני (SEO) ולמה הוא קריטי לעסק שלכם?' },
+        '/blog/mh-zh-kydvm-avrgny'
+      ),
+      'מה זה קידום אורגני (SEO) ולמה הוא קריטי לעסק שלכם?'
+    );
   });
 });
 

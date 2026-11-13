@@ -53,6 +53,9 @@ const SEGMENT_TITLES: Record<string, string> = {
   'bniyat-atarim-yokneam': 'בניית אתרים ביוקנעם',
   'bniyat-atarim-afula': 'בניית אתרים בעפולה',
   'kama-oleh-bniyat-atar-2026': 'כמה עולה בניית אתר ב-2026',
+  project1: 'פרויקט 1',
+  project2: 'פרויקט 2',
+  project3: 'פרויקט 3',
 };
 
 /** Hebrew label for one URL segment. Unknown segments keep a readable slug. */
@@ -90,7 +93,32 @@ export function omitBreadcrumbList(schema: unknown): unknown | null {
 }
 
 /** Visible breadcrumb items for a pathname. Home is rendered separately. */
-export function fallbackBreadcrumbItems(pathname: string): CmsBreadcrumbItem[] {
+/** True when the page (not the root layout) owns the single BreadcrumbList. */
+export function pageOwnsBreadcrumbJsonLd(pathname: string): boolean {
+  const parts = pathname.split('/').filter(Boolean);
+  if (parts[0] === 'blog' && parts[1] === 'category' && parts[2]) return true;
+  if (parts[0] === 'blog' && parts[1] === 'tag' && parts[2]) return true;
+  if (parts[0] === 'blog' && parts.length === 2) return true;
+  if (parts[0] === 'portfolio' && parts.length === 2) return true;
+  return false;
+}
+
+export function lookupBreadcrumbLeaf(
+  leaves: Record<string, string> | undefined,
+  pathname: string
+): string | undefined {
+  if (!leaves) return undefined;
+  if (leaves[pathname]) return leaves[pathname];
+  try {
+    const decoded = decodeURIComponent(pathname);
+    if (decoded !== pathname && leaves[decoded]) return leaves[decoded];
+  } catch {
+    // ignore malformed percent-encoding
+  }
+  return undefined;
+}
+
+export function fallbackBreadcrumbItems(pathname: string, leafTitle?: string): CmsBreadcrumbItem[] {
   const paths = pathname.split('/').filter(Boolean);
   const items: CmsBreadcrumbItem[] = [];
   let current = '';
@@ -102,5 +130,10 @@ export function fallbackBreadcrumbItems(pathname: string): CmsBreadcrumbItem[] {
       isActive: index === paths.length - 1,
     });
   });
+  const title = leafTitle?.trim();
+  if (title && items.length > 0) {
+    const last = items[items.length - 1];
+    items[items.length - 1] = { ...last, title };
+  }
   return items;
 }

@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { SetBreadcrumbLeaf } from '../../components/BreadcrumbLeaf';
+import PageBreadcrumbJsonLd from '../../components/PageBreadcrumbJsonLd';
 import BlogPostSchema from '../../components/BlogPostSchema';
 import Hero3D from '../../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
@@ -14,6 +16,7 @@ import {
   ARTICLE_IMAGE_PATH,
   ARTICLE_MODIFIED,
   ARTICLE_PUBLISHED,
+  ARTICLE_PATH,
   ARTICLE_SLUG,
 } from './article';
 
@@ -72,6 +75,8 @@ const articleContent = [
 export default function WebsiteCostGuidePage() {
   return (
     <div className="min-h-screen bg-white" dir="rtl">
+      <SetBreadcrumbLeaf title={ARTICLE_HEADLINE} />
+      <PageBreadcrumbJsonLd pathname={ARTICLE_PATH} leafTitle={ARTICLE_HEADLINE} />
       <BlogPostSchema
         post={{
           id: ARTICLE_SLUG,

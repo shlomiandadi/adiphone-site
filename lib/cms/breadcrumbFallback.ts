@@ -53,6 +53,9 @@ const SEGMENT_TITLES: Record<string, string> = {
   'bniyat-atarim-yokneam': 'בניית אתרים ביוקנעם',
   'bniyat-atarim-afula': 'בניית אתרים בעפולה',
   'kama-oleh-bniyat-atar-2026': 'כמה עולה בניית אתר ב-2026',
+  project1: 'פרויקט 1',
+  project2: 'פרויקט 2',
+  project3: 'פרויקט 3',
 };
 
 /** Hebrew label for one URL segment. Unknown segments keep a readable slug. */
@@ -90,7 +93,7 @@ export function omitBreadcrumbList(schema: unknown): unknown | null {
 }
 
 /** Visible breadcrumb items for a pathname. Home is rendered separately. */
-export function fallbackBreadcrumbItems(pathname: string): CmsBreadcrumbItem[] {
+export function fallbackBreadcrumbItems(pathname: string, leafTitle?: string): CmsBreadcrumbItem[] {
   const paths = pathname.split('/').filter(Boolean);
   const items: CmsBreadcrumbItem[] = [];
   let current = '';
@@ -102,5 +105,10 @@ export function fallbackBreadcrumbItems(pathname: string): CmsBreadcrumbItem[] {
       isActive: index === paths.length - 1,
     });
   });
+  const title = leafTitle?.trim();
+  if (title && items.length > 0) {
+    const last = items[items.length - 1];
+    items[items.length - 1] = { ...last, title };
+  }
   return items;
 }

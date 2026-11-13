@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { breadcrumbJsonLd, fallbackBreadcrumbItems } from '../../lib/cms/breadcrumbShared';
+import { useBreadcrumbLeafTitle } from './BreadcrumbLeaf';
 
 /**
  * The only BreadcrumbList on the page. Names come from the same Hebrew
@@ -9,7 +10,8 @@ import { breadcrumbJsonLd, fallbackBreadcrumbItems } from '../../lib/cms/breadcr
  */
 export default function BreadcrumbSchema() {
   const pathname = usePathname() || '/';
-  const trail = fallbackBreadcrumbItems(pathname);
+  const leafTitle = useBreadcrumbLeafTitle();
+  const trail = fallbackBreadcrumbItems(pathname, leafTitle);
   const items = trail[0]?.url === '/' ? trail : [{ url: '/', title: 'דף הבית' }, ...trail];
   const schema = breadcrumbJsonLd(items);
 

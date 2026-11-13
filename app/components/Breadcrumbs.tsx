@@ -5,10 +5,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { fallbackBreadcrumbItems } from '../../lib/cms/breadcrumbShared';
 import { chatgptBusinessHubCrumbLabel, isolateLatinPhrases } from '../../lib/bidi';
+import { useBreadcrumbLeafTitle } from './BreadcrumbLeaf';
 
 export default function Breadcrumbs() {
   const pathname = usePathname() || '/';
-  const trail = useMemo(() => fallbackBreadcrumbItems(pathname), [pathname]);
+  const leafTitle = useBreadcrumbLeafTitle();
+  const trail = useMemo(
+    () => fallbackBreadcrumbItems(pathname, leafTitle),
+    [pathname, leafTitle]
+  );
 
   if (trail.length === 0) return null;
 
@@ -31,7 +36,7 @@ export default function Breadcrumbs() {
             <div className="flex items-center">
               <span className="mx-2 text-gray-400 dark:text-gray-500">/</span>
               {index === rest.length - 1 ? (
-                <span className="font-semibold text-blue-600 dark:text-blue-400">
+                <span className="inline-block max-w-[min(70vw,28rem)] truncate align-bottom font-semibold text-blue-600 dark:text-blue-400">
                   {item.url === '/services/chatgpt-business-hub'
                     ? chatgptBusinessHubCrumbLabel()
                     : isolateLatinPhrases(item.title)}

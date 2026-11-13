@@ -5,7 +5,8 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { metadata as blogMetadata } from '../../metadata';
-import { getPostsByTagCached } from '../../../../lib/posts';
+import { getPostsByTagCached, getTagLabel } from '../../../../lib/posts';
+import { SetBreadcrumbLeaf } from '../../../components/BreadcrumbLeaf';
 
 export const revalidate = 3600;
 
@@ -41,10 +42,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TagPage({ params }: Props) {
   const decodedTag = decodeURIComponent(params.tag);
-  const posts = await getPostsByTagCached(decodedTag);
+  const [posts, tagLabel] = await Promise.all([
+    getPostsByTagCached(decodedTag),
+    getTagLabel(params.tag),
+  ]);
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SetBreadcrumbLeaf title={tagLabel} />
       <SeoAgentPageExtras path={`/blog/tag/${params.tag}`} />
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold mb-2">תוצאות עבור: {decodedTag}</h1>

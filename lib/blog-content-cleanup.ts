@@ -57,11 +57,17 @@ const AIO_SUMMARY_RE = /<div\b[^>]*\bclass=["'][^"']*\baio-summary\b[^"']*["'][^
 const AIO_LEAD_RE = /<p\b[^>]*\bclass=["'][^"']*\baio-lead\b[^"']*["'][^>]*>([\s\S]*?)<\/p>/i;
 const AIO_BULLETS_RE = /<ul\b[^>]*\bclass=["'][^"']*\baio-bullets\b[^"']*["'][^>]*>([\s\S]*?)<\/ul>/i;
 
+function eachMatch(source: string, re: RegExp, visit: (inner: string) => void) {
+  const pattern = new RegExp(re.source, re.flags.includes('g') ? re.flags : `${re.flags}g`);
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(source))) {
+    visit(match[1]);
+  }
+}
+
 function collectTakeaways(inner: string): string[] {
   const items: string[] = [];
   const seen = new Set<string>();
-  const liRe = /<li\b[^>]*>([\s\S]*?)<\/li>/gi;
-  const pRe = /<p\b[^>]*>([\s\S]*?)<\/p>/gi;
 
   const push = (value: string) => {
     const text = plainText(value);
@@ -75,18 +81,12 @@ function collectTakeaways(inner: string): string[] {
 
   const bullets = inner.match(AIO_BULLETS_RE);
   if (bullets) {
-    for (const match of bullets[1].matchAll(liRe)) {
-      push(match[1]);
-    }
+    eachMatch(bullets[1], /<li\b[^>]*>([\s\S]*?)<\/li>/i, push);
   }
 
   if (items.length === 0) {
-    for (const match of inner.matchAll(pRe)) {
-      push(match[1]);
-    }
-    for (const match of inner.matchAll(liRe)) {
-      push(match[1]);
-    }
+    eachMatch(inner, /<p\b[^>]*>([\s\S]*?)<\/p>/i, push);
+    eachMatch(inner, /<li\b[^>]*>([\s\S]*?)<\/li>/i, push);
   }
 
   return items.slice(0, 4);

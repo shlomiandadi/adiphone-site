@@ -11,7 +11,7 @@ import RelatedArticleLinks from '../../components/RelatedArticleLinks';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
 import BlogPostToc from '../../components/BlogPostToc';
 import BlogKeyTakeaways from '../../components/BlogKeyTakeaways';
-import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
+import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl, resolveBlogOgImage } from '../../../lib/seo';
 import { cleanupBlogHtml, extractAndStripAioSummary } from '../../../lib/blog-content-cleanup';
 import { enhanceBlogHtml } from '../../../lib/blog-article-enhance';
 import { getPostBySlug, getPublishedNavPosts, getPublishedPosts } from '../../../lib/posts';
@@ -220,7 +220,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     `${siteUrl}/blog/${post.slug}`
   );
 
-  const ogImage = post.ogImage || post.mainImage;
+  const ogImage = resolveBlogOgImage(post);
   const metadata = mergeSeoAgentMetadata(`/blog/${post.slug}`, {
     title,
     description,
@@ -238,20 +238,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       publishedTime: post.createdAt,
       modifiedTime: post.updatedAt,
       authors: [post.authorName],
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
+      images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [ogImage],
+      images: [ogImage.url],
     },
   });
   // Next metadata has no first-class preconnect field; the page also emits

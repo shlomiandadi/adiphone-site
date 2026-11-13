@@ -22,6 +22,45 @@ export const DEFAULT_OG_IMAGE = {
   alt: 'Top Webstak – בניית וקידום אתרים, מבית עדי פון תקשורת',
 } as const;
 
+type BlogOgImagePost = {
+  title?: string | null;
+  ogImage?: string | null;
+  mainImage?: string | null;
+};
+
+function nonEmptyImageUrl(value: string | null | undefined): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
+}
+
+/**
+ * og:image for a blog post: dedicated OG image, then hero, then the site default.
+ * URLs are returned as stored (absolute or relative), matching other page metadata.
+ */
+export function resolveBlogOgImage(post: BlogOgImagePost): {
+  url: string;
+  width: number;
+  height: number;
+  alt: string;
+} {
+  const chosen = nonEmptyImageUrl(post.ogImage) || nonEmptyImageUrl(post.mainImage);
+  if (chosen) {
+    return {
+      url: chosen,
+      width: DEFAULT_OG_IMAGE.width,
+      height: DEFAULT_OG_IMAGE.height,
+      alt: post.title || DEFAULT_OG_IMAGE.alt,
+    };
+  }
+  return {
+    url: DEFAULT_OG_IMAGE.url,
+    width: DEFAULT_OG_IMAGE.width,
+    height: DEFAULT_OG_IMAGE.height,
+    alt: DEFAULT_OG_IMAGE.alt,
+  };
+}
+
 export const AUTHOR_SHLOMI = {
   name: 'שלומי',
   url: 'https://www.linkedin.com/in/shlomi-malfuf-709961221/',

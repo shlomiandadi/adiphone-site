@@ -3,13 +3,11 @@ import type { Metadata, Viewport } from 'next';
 import { Heebo } from 'next/font/google';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { headers } from 'next/headers';
 import Breadcrumbs from './components/Breadcrumbs';
 import PageOffset from './components/PageOffset';
 import WowEffects from './components/WowEffects';
 import BreadcrumbSchema from './components/BreadcrumbSchema';
 import { BreadcrumbLeafProvider } from './components/BreadcrumbLeaf';
-import { resolveBreadcrumbLeafTitle } from '../lib/cms/breadcrumbLeaf';
 import FloatingButtons from './components/FloatingButtons';
 import CookieConsent from './components/CookieConsent';
 import DeferredTags from './components/DeferredTags';
@@ -94,13 +92,6 @@ export default async function RootLayout({
   }
   const gaId = cms.tracking.ga || GA4_MEASUREMENT_ID;
   const pixelId = cms.tracking.pixel || META_PIXEL_ID;
-  const pathname = headers().get('x-adiphone-pathname') || '/';
-  let breadcrumbLeafTitle: string | undefined;
-  try {
-    breadcrumbLeafTitle = await resolveBreadcrumbLeafTitle(pathname);
-  } catch (error) {
-    console.warn('Breadcrumb leaf title fallback:', error);
-  }
 
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
@@ -113,7 +104,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>
-        <BreadcrumbLeafProvider initialPath={pathname} initialTitle={breadcrumbLeafTitle}>
+        <BreadcrumbLeafProvider initialPath="/" initialTitle={undefined}>
         <BreadcrumbSchema />
         <script
           id="a11y-restore"
@@ -137,7 +128,7 @@ export default async function RootLayout({
         <Header items={cms.headerMenu} />
         <WowEffects />
         <PageOffset>
-          <div id="site-breadcrumbs" className="container mx-auto px-4">
+          <div id="site-breadcrumbs" className="container mx-auto min-w-0 max-w-full overflow-hidden px-4">
             <Breadcrumbs />
           </div>
         </PageOffset>

@@ -18,6 +18,7 @@ import { getPostBySlug, getPublishedNavPosts, getPublishedPosts } from '../../..
 import { adjacentBlogPosts } from '../../../lib/blogNav';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { SetBreadcrumbLeaf } from '../../components/BreadcrumbLeaf';
+import PageBreadcrumbJsonLd from '../../components/PageBreadcrumbJsonLd';
 import {
   isOptimizableImageUrl,
   isSeoAgentImage,
@@ -295,6 +296,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   return (
     <main className="pt-24">
       <SetBreadcrumbLeaf title={post.title} />
+      <PageBreadcrumbJsonLd pathname={`/blog/${post.slug}`} leafTitle={post.title} />
       {picture ? (
         <link rel="preconnect" href={SEO_AGENT_IMAGE_ORIGIN} crossOrigin="anonymous" />
       ) : null}

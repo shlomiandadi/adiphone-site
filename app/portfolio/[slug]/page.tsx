@@ -16,6 +16,7 @@ import PortfolioCard from '../../components/PortfolioCard';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { SetBreadcrumbLeaf } from '../../components/BreadcrumbLeaf';
+import PageBreadcrumbJsonLd from '../../components/PageBreadcrumbJsonLd';
 import {
   optimizeContentImages,
   responsiveAttributes,
@@ -175,6 +176,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         </>
       ) : null}
       <SetBreadcrumbLeaf title={project.name} />
+      <PageBreadcrumbJsonLd pathname={`/portfolio/${project.slug}`} leafTitle={project.name} />
       <SeoAgentPageExtras path={`/portfolio/${project.slug}`} />
       <CreativeWorkSchema
         name={project.name}

@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
-import { fallbackBreadcrumbItems, omitBreadcrumbList } from './breadcrumbFallback.ts';
+import {
+  fallbackBreadcrumbItems,
+  lookupBreadcrumbLeaf,
+  omitBreadcrumbList,
+  pageOwnsBreadcrumbJsonLd,
+} from './breadcrumbFallback.ts';
 
 describe('fallbackBreadcrumbItems', () => {
   test('home has no trail items (URL-only crumbs stay empty)', () => {
@@ -106,6 +111,29 @@ describe('visible trail matches the Hebrew names', () => {
   test('services/seo is שירותים then קידום אורגני', () => {
     const names = ['דף הבית', ...fallbackBreadcrumbItems('/services/seo').map((item) => item.title)];
     assert.deepEqual(names, ['דף הבית', 'שירותים', 'קידום אורגני']);
+  });
+});
+
+describe('pageOwnsBreadcrumbJsonLd', () => {
+  test('blog posts, category, tag, and portfolio pages own the list', () => {
+    assert.equal(pageOwnsBreadcrumbJsonLd('/blog/mh-zh-kydvm-avrgny'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/blog/category/seo'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/blog/tag/organic'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/portfolio/some-client'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/blog'), false);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/services/seo'), false);
+  });
+});
+
+describe('lookupBreadcrumbLeaf', () => {
+  test('returns the title for a blog path', () => {
+    assert.equal(
+      lookupBreadcrumbLeaf(
+        { '/blog/mh-zh-kydvm-avrgny': 'מה זה קידום אורגני (SEO) ולמה הוא קריטי לעסק שלכם?' },
+        '/blog/mh-zh-kydvm-avrgny'
+      ),
+      'מה זה קידום אורגני (SEO) ולמה הוא קריטי לעסק שלכם?'
+    );
   });
 });
 

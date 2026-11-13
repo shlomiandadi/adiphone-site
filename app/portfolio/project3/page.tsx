@@ -1,9 +1,11 @@
 import { SetBreadcrumbLeaf } from '../../components/BreadcrumbLeaf';
+import PageBreadcrumbJsonLd from '../../components/PageBreadcrumbJsonLd';
 
 export default function Project3() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <SetBreadcrumbLeaf title="פרויקט 3" />
+      <PageBreadcrumbJsonLd pathname="/portfolio/project3" leafTitle="פרויקט 3" />
       <div className="container mx-auto px-4 py-20">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">

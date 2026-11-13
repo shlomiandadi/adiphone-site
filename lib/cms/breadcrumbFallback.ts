@@ -93,6 +93,31 @@ export function omitBreadcrumbList(schema: unknown): unknown | null {
 }
 
 /** Visible breadcrumb items for a pathname. Home is rendered separately. */
+/** True when the page (not the root layout) owns the single BreadcrumbList. */
+export function pageOwnsBreadcrumbJsonLd(pathname: string): boolean {
+  const parts = pathname.split('/').filter(Boolean);
+  if (parts[0] === 'blog' && parts[1] === 'category' && parts[2]) return true;
+  if (parts[0] === 'blog' && parts[1] === 'tag' && parts[2]) return true;
+  if (parts[0] === 'blog' && parts.length === 2) return true;
+  if (parts[0] === 'portfolio' && parts.length === 2) return true;
+  return false;
+}
+
+export function lookupBreadcrumbLeaf(
+  leaves: Record<string, string> | undefined,
+  pathname: string
+): string | undefined {
+  if (!leaves) return undefined;
+  if (leaves[pathname]) return leaves[pathname];
+  try {
+    const decoded = decodeURIComponent(pathname);
+    if (decoded !== pathname && leaves[decoded]) return leaves[decoded];
+  } catch {
+    // ignore malformed percent-encoding
+  }
+  return undefined;
+}
+
 export function fallbackBreadcrumbItems(pathname: string, leafTitle?: string): CmsBreadcrumbItem[] {
   const paths = pathname.split('/').filter(Boolean);
   const items: CmsBreadcrumbItem[] = [];

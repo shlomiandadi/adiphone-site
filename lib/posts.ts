@@ -249,6 +249,33 @@ export async function getPostBySlug(slug: string) {
   }
 }
 
+export const getPublishedPostTitles = contentCache(
+  'published-post-titles',
+  [BLOG_CACHE_TAG],
+  async () => {
+    return prisma.post.findMany({
+      where: { published: true },
+      select: { slug: true, title: true },
+    });
+  }
+);
+
+export const getCategoryLeafRows = contentCache(
+  'category-leaf-rows',
+  [BLOG_CACHE_TAG],
+  async () => {
+    return prisma.category.findMany({ select: { slug: true, name: true } });
+  }
+);
+
+export const getTagLeafRows = contentCache(
+  'tag-leaf-rows',
+  [BLOG_CACHE_TAG],
+  async () => {
+    return prisma.tag.findMany({ select: { slug: true, name: true } });
+  }
+);
+
 export async function getTagLabel(value: string): Promise<string> {
   let decoded = value;
   try {

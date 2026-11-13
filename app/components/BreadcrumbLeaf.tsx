@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { usePathname } from 'next/navigation';
+import { lookupBreadcrumbLeaf } from '../../lib/cms/breadcrumbFallback';
 
 type Leaf = { path: string; title?: string };
 
@@ -18,17 +19,17 @@ const BreadcrumbLeafContext = createContext<{
 }>({ setLeaf: () => undefined });
 
 export function BreadcrumbLeafProvider({
-  initialPath,
-  initialTitle,
+  leaves,
   children,
 }: {
-  initialPath: string;
-  initialTitle?: string;
+  leaves?: Record<string, string>;
   children: ReactNode;
 }) {
   const pathname = usePathname() || '/';
-  const [leaf, setLeaf] = useState<Leaf>({ path: initialPath, title: initialTitle });
-  const leafTitle = leaf.path === pathname ? leaf.title : undefined;
+  const [leaf, setLeaf] = useState<Leaf>({ path: '', title: undefined });
+  const fromMap = lookupBreadcrumbLeaf(leaves, pathname);
+  const fromState = leaf.path === pathname ? leaf.title : undefined;
+  const leafTitle = fromState || fromMap;
   const value = useMemo(() => ({ leafTitle, setLeaf }), [leafTitle]);
 
   return (

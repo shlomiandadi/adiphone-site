@@ -7,6 +7,7 @@ import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { metadata as blogMetadata } from '../../metadata';
 import { getPostsByTagCached, getTagLabel } from '../../../../lib/posts';
 import { SetBreadcrumbLeaf } from '../../../components/BreadcrumbLeaf';
+import PageBreadcrumbJsonLd from '../../../components/PageBreadcrumbJsonLd';
 
 export const revalidate = 3600;
 
@@ -50,6 +51,7 @@ export default async function TagPage({ params }: Props) {
   return (
     <div className="container mx-auto px-4 py-8">
       <SetBreadcrumbLeaf title={tagLabel} />
+      <PageBreadcrumbJsonLd pathname={`/blog/tag/${params.tag}`} leafTitle={tagLabel} />
       <SeoAgentPageExtras path={`/blog/tag/${params.tag}`} />
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold mb-2">תוצאות עבור: {decodedTag}</h1>

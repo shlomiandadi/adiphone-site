@@ -8,6 +8,7 @@ import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { metadata as blogMetadata } from '../../metadata';
 import { getPostsByCategorySlugCached } from '../../../../lib/posts';
 import { SetBreadcrumbLeaf } from '../../../components/BreadcrumbLeaf';
+import PageBreadcrumbJsonLd from '../../../components/PageBreadcrumbJsonLd';
 
 export const revalidate = 3600;
 
@@ -56,6 +57,7 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <div className="container mx-auto px-4 py-8">
       <SetBreadcrumbLeaf title={title} />
+      <PageBreadcrumbJsonLd pathname={`/blog/category/${params.category}`} leafTitle={title} />
       <SeoAgentPageExtras path={`/blog/category/${params.category}`} />
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2">

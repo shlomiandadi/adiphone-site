@@ -8,6 +8,7 @@ import PageOffset from './components/PageOffset';
 import WowEffects from './components/WowEffects';
 import BreadcrumbSchema from './components/BreadcrumbSchema';
 import { BreadcrumbLeafProvider } from './components/BreadcrumbLeaf';
+import { loadBreadcrumbLeaves } from '../lib/cms/breadcrumbLeaf';
 import FloatingButtons from './components/FloatingButtons';
 import CookieConsent from './components/CookieConsent';
 import DeferredTags from './components/DeferredTags';
@@ -92,6 +93,12 @@ export default async function RootLayout({
   }
   const gaId = cms.tracking.ga || GA4_MEASUREMENT_ID;
   const pixelId = cms.tracking.pixel || META_PIXEL_ID;
+  let breadcrumbLeaves: Record<string, string> = {};
+  try {
+    breadcrumbLeaves = await loadBreadcrumbLeaves();
+  } catch (error) {
+    console.warn('Breadcrumb leaf map unavailable:', error);
+  }
 
   return (
     <html lang="he" dir="rtl" className={`scroll-smooth ${heebo.variable}`}>
@@ -104,7 +111,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${heebo.className} bg-white text-gray-900 min-h-screen flex flex-col antialiased selection:bg-blue-600/10 selection:text-blue-600`}>
-        <BreadcrumbLeafProvider initialPath="/" initialTitle={undefined}>
+        <BreadcrumbLeafProvider leaves={breadcrumbLeaves}>
         <BreadcrumbSchema />
         <script
           id="a11y-restore"

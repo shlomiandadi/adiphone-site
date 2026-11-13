@@ -12,7 +12,7 @@ import ServiceCtaBanner from '../../components/ServiceCtaBanner';
 import BlogPostToc from '../../components/BlogPostToc';
 import BlogKeyTakeaways from '../../components/BlogKeyTakeaways';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl } from '../../../lib/seo';
-import { cleanupBlogHtml } from '../../../lib/blog-content-cleanup';
+import { cleanupBlogHtml, extractAndStripAioSummary } from '../../../lib/blog-content-cleanup';
 import { enhanceBlogHtml } from '../../../lib/blog-article-enhance';
 import { getPostBySlug, getPublishedNavPosts, getPublishedPosts } from '../../../lib/posts';
 import { adjacentBlogPosts } from '../../../lib/blogNav';
@@ -284,8 +284,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     preloadHero(heroImage);
   }
   const { previousPost, nextPost } = adjacentBlogPosts(await getPublishedNavPosts(), post.slug);
+  const { html: contentWithoutSummary, takeaways } = extractAndStripAioSummary(post.content);
   const prepared = enhanceBlogHtml(
-    optimizeContentImages(demoteContentHeadings(cleanupBlogHtml(post.content, post.slug)))
+    optimizeContentImages(demoteContentHeadings(cleanupBlogHtml(contentWithoutSummary, post.slug)))
   );
   const override = BLOG_META_OVERRIDES[post.slug];
   const isAeoArticle = post.slug === AEO_BLOG_SLUG;
@@ -389,7 +390,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               <div className="min-w-0 flex-1">
                 <div className="mx-auto max-w-[42rem]">
                   <BlogPostToc headings={prepared.takeawayHeadings} variant="mobile" />
-                  <BlogKeyTakeaways headings={prepared.takeawayHeadings} />
+                  <BlogKeyTakeaways items={takeaways} />
                   {post.mainImage && (
                     <div className="mb-8">
                       <Image

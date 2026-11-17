@@ -19,7 +19,7 @@ const EXPECTED = {
 /** Current hardcoded titles. These are what the live pages render when no override applies. */
 const HARDCODED: Record<keyof typeof EXPECTED, Metadata> = {
   '/services/ecommerce': {
-    title: 'הקמת חנויות אינטרנטיות (Ecommerce) | Top Webstak | פתרונות מסחר מתקדמים',
+    title: 'בניית חנות אינטרנטית לעסקים | Top Webstak | פתרונות מסחר מתקדמים',
     description: 'רוצים למכור אונליין?',
     alternates: { canonical: 'https://adi-phone.co.il/services/ecommerce' },
   },

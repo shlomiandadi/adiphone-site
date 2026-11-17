@@ -1,22 +1,26 @@
 import { Metadata } from 'next';
 import { absoluteUrl } from '../../../lib/seo';
 
+const title = 'בניית חנות אינטרנטית לעסקים | Top Webstak | פתרונות מסחר מתקדמים';
+const description =
+  'בניית חנות אינטרנטית לעסקים: חנות אונליין ממירה, מאובטחת וקלה לניהול. מעיצוב ועד סליקה וקידום עם Top Webstak.';
+
 export const metadata: Metadata = {
-  title: 'הקמת חנויות אינטרנטיות (Ecommerce) | Top Webstak | פתרונות מסחר מתקדמים',
-  description: 'רוצים למכור אונליין? Top Webstak מתמחה בהקמת חנויות אינטרנטיות (איקומרס) ממירות, מאובטחות וקלות לניהול. מהקמת החנות ועד שיווק וקידום. התחילו למכור עוד היום!',
+  title,
+  description,
   alternates: {
     canonical: absoluteUrl('/services/ecommerce'),
   },
   openGraph: {
-    title: 'הקמת חנויות אינטרנטיות (Ecommerce) | Top Webstak | פתרונות מסחר מתקדמים',
-    description: 'רוצים למכור אונליין? Top Webstak מתמחה בהקמת חנויות אינטרנטיות (איקומרס) ממירות, מאובטחות וקלות לניהול. מהקמת החנות ועד שיווק וקידום. התחילו למכור עוד היום!',
+    title,
+    description,
     type: 'website',
     locale: 'he_IL',
     siteName: 'Top Webstak',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'הקמת חנויות אינטרנטיות (Ecommerce) | Top Webstak | פתרונות מסחר מתקדמים',
-    description: 'רוצים למכור אונליין? Top Webstak מתמחה בהקמת חנויות אינטרנטיות (איקומרס) ממירות, מאובטחות וקלות לניהול. מהקמת החנה ועד שיווק וקידום. התחילו למכור עוד היום!',
+    title,
+    description,
   },
 }; 

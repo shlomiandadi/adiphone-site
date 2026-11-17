@@ -5,7 +5,7 @@ import { FaBox, FaCreditCard, FaRobot, FaChartLine, FaMobileAlt, FaPaintBrush, F
 
 export default function EcommerceService() {
   const serviceData = {
-    title: "בניית חנות אינטרנטית (eCommerce) שממירה גולשים ללקוחות",
+    title: "בניית חנות אינטרנטית לעסקים",
     extraHeading: "שירותי הקמת חנות אינטרנט שמוכרת, מעיצוב ועד סליקה, משלוחים וקידום",
     pricingHeading: "כמה עולה חנות אינטרנט",
     subtitle: "אנחנו מקימים חנויות אונליין מהירות, מעוצבות ומותאמות למובייל, שקל לנהל וכיף לקנות בהן. אם יש לכם מוצרים מעולים, בואו נהפוך אותם למקור הכנסה דיגיטלי שעובד בשבילכם 24/7.",

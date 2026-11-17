@@ -81,7 +81,11 @@ function DetailRow({ link }: { link: FooterLinkView }) {
     <>
       {Icon ? <Icon className="ml-2" /> : null}
       {link.url ? (
-        <a href={link.url} className="hover:text-white transition-colors">
+        <a
+          href={link.url}
+          className="hover:text-white transition-colors"
+          aria-label={link.url.startsWith('mailto:') ? `שליחת דוא״ל אל ${link.title}` : undefined}
+        >
           {link.title}
         </a>
       ) : (

@@ -81,6 +81,7 @@ export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
   { title: '0509159951', url: 'tel:0509159951', icon: 'phone' },
   { title: 'adiphoneseo@gmail.com', url: 'mailto:adiphoneseo@gmail.com', icon: 'envelope' },
   { title: 'info@adi-phone.co.il', url: 'mailto:info@adi-phone.co.il', icon: 'envelope' },
+  { title: 'info@topwebstack.app', url: 'mailto:info@topwebstack.app', icon: 'envelope' },
   { title: 'זמיר 95, פרדס חנה', url: '', icon: 'map-marker' },
   {
     title: 'Facebook',

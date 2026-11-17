@@ -186,6 +186,13 @@ export default function AboutPage() {
               חייגו: 050-9159951
             </a>
             <a
+              href="mailto:info@topwebstack.app"
+              aria-label="שליחת דוא״ל אל info@topwebstack.app"
+              className="rounded-full border border-gray-300 px-6 py-3 font-semibold text-gray-800 transition-colors hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800"
+            >
+              info@topwebstack.app
+            </a>
+            <a
               href="https://www.facebook.com/profile.php?id=61578707397365"
               target="_blank"
               rel="noopener noreferrer"

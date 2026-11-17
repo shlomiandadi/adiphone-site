@@ -7,7 +7,8 @@ export const BUSINESS_ALTERNATE_NAME = 'עדי פון תקשורת';
 export const BUSINESS_PHONE = '+972-50-9159951';
 export const BUSINESS_EMAIL = 'adiphoneseo@gmail.com';
 export const BUSINESS_EMAIL_INFO = 'info@adi-phone.co.il';
-export const BUSINESS_EMAILS = [BUSINESS_EMAIL, BUSINESS_EMAIL_INFO] as const;
+export const BUSINESS_EMAIL_TOPWEBSTACK = 'info@topwebstack.app';
+export const BUSINESS_EMAILS = [BUSINESS_EMAIL, BUSINESS_EMAIL_INFO, BUSINESS_EMAIL_TOPWEBSTACK] as const;
 export const BUSINESS_STREET = 'זמיר 95';
 export const BUSINESS_LOCALITY = 'פרדס חנה-כרכור';
 

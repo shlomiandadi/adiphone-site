@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BUSINESS_EMAILS } from '../../../lib/local-business-schema';
 import { getSiteUrl, organizationLogo } from '../../../lib/seo';
 import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
@@ -82,7 +83,7 @@ export default async function SeoServicePage() {
       '@type': 'ProfessionalService',
       name: 'Top Webstak בנייה וקידום אתרים',
       telephone: '+972-50-9159951',
-      email: ['adiphoneseo@gmail.com', 'info@adi-phone.co.il'],
+      email: [...BUSINESS_EMAILS],
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'זמיר 95',

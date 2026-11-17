@@ -6,7 +6,7 @@ import LegalPageLayout, { LegalSection } from '../components/LegalPageLayout';
 const pageMetadata = {
   title: 'הצהרת נגישות',
   description:
-    'הצהרת הנגישות של אתר Top Webstak מבית עדי פון תקשורת: אמצעי הנגישות באתר, הוראות שימוש ודרכי פנייה בנושא נגישות.',
+    'הצהרת נגישות של אתר Top Webstak: כלי הנגישות באתר, ניווט במקלדת, שינוי גופן וניגודיות, והוראות פנייה אם נתקלתם בחסם באתר.',
   alternates: {
     canonical: '/accessibility-statement',
   },

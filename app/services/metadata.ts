@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: { absolute: 'שירותי בניית וקידום אתרים לעסקים | Top Webstak' },
-  description: 'גלו את כל השירותים הדיגיטליים שלנו: פיתוח אתרים, קידום SEO, בניית חנויות אונליין, פיתוח אפליקציות, עיצוב UI/UX, קמפיינים ממומנים ועוד. פתרונות מקצועיים להצלחת העסק שלכם.',
+  description: 'שירותי בניית וקידום אתרים לעסקים: פיתוח אתרים, SEO, חנויות אונליין, אפליקציות, עיצוב UI/UX וקמפיינים ממומנים בליווי Top Webstak.',
   keywords: 'שירותים, פיתוח אתרים, קידום אתרים, SEO, בניית חנויות, אפליקציות, עיצוב, שיווק דיגיטלי, Top Webstak',
   alternates: {
     canonical: '/services',

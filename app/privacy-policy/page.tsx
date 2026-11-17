@@ -5,7 +5,7 @@ import LegalPageLayout, { LegalSection } from '../components/LegalPageLayout';
 
 const pageMetadata = {
   title: 'מדיניות פרטיות | עדי פון תקשורת',
-  description: 'מדיניות פרטיות בהתאם לתיקון 13 לחוק הגנת הפרטיות: מטרות עיבוד, בסיס משפטי, עוגיות, זכויות משתמשים ופרטי קשר.',
+  description: 'מדיניות פרטיות של Top Webstak: איזה מידע נאסף באתר, מטרות עיבוד לפי תיקון 13 לחוק הגנת הפרטיות, עוגיות, זכויותיך ופרטי יצירת קשר.',
   alternates: {
     canonical: '/privacy-policy',
   },

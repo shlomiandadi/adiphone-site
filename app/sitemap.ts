@@ -9,6 +9,7 @@ export const revalidate = 3600;
 
 /** Slugs that 301 elsewhere — must not appear in sitemap. */
 const REDIRECTED_BLOG_SLUGS = new Set([
+  'aeo',
   'nyhvl-kmpyynym-mmvmnym',
   'bnyyt-atrym-prds-chnh',
   'bnyyt-atry-ayntrnt-bprds-chnh',

@@ -149,7 +149,7 @@ const INLINE_PAGES: Array<{ path: string; meta: Metadata }> = [
     meta: {
       title: 'מדיניות פרטיות | עדי פון תקשורת',
       description:
-        'מדיניות פרטיות בהתאם לתיקון 13 לחוק הגנת הפרטיות: מטרות עיבוד, בסיס משפטי, עוגיות, זכויות משתמשים ופרטי קשר.',
+        'מדיניות פרטיות של Top Webstak: איזה מידע נאסף באתר, מטרות עיבוד לפי תיקון 13 לחוק הגנת הפרטיות, עוגיות, זכויותיך ופרטי יצירת קשר.',
       alternates: { canonical: '/privacy-policy' },
     },
   },
@@ -165,7 +165,7 @@ const INLINE_PAGES: Array<{ path: string; meta: Metadata }> = [
     meta: {
       title: 'הצהרת נגישות',
       description:
-        'הצהרת הנגישות של אתר Top Webstak מבית עדי פון תקשורת: אמצעי הנגישות באתר, הוראות שימוש ודרכי פנייה בנושא נגישות.',
+        'הצהרת נגישות של אתר Top Webstak: כלי הנגישות באתר, ניווט במקלדת, שינוי גופן וניגודיות, והוראות פנייה אם נתקלתם בחסם באתר.',
       alternates: { canonical: '/accessibility-statement' },
       robots: { index: true, follow: true },
     },

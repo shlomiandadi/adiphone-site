@@ -1,27 +1,76 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
+import { ltrPaintRuns, splitOgTitleLines } from './og-text-runs';
+import type { OgRun } from './og-text-runs';
 
 export const serviceOgSize = { width: 1200, height: 630 };
 export const serviceOgContentType = 'image/png';
 
-type OgRun = { text: string; latin: boolean };
+/** Bump when OG PNG pixels change so link previews refetch (WhatsApp, Facebook). */
+export const SERVICE_OG_CACHE_VERSION = 12;
 
-/**
- * Satori draws glyphs left-to-right and does not apply the Unicode bidi
- * algorithm. Reverse each Hebrew token (leave Latin, digits, and punctuation
- * as-is) and reverse token order so the first Hebrew word lands on the right.
- */
-function displayRuns(text: string): OgRun[] {
-  const tokens = text.split(/\s+/).filter((token) => token.length > 0);
-  const shaped = tokens.map((token) => {
-    const hebrew = /[\u0590-\u05FF]/.test(token);
-    return {
-      text: hebrew ? token.split('').reverse().join('') : token,
-      latin: !hebrew,
-    };
-  });
-  return shaped.reverse();
+export function versionedServiceOgImagePath(routePath: string): string {
+  const base = routePath.replace(/\/$/, '');
+  return `${base}/opengraph-image?v=${SERVICE_OG_CACHE_VERSION}`;
+}
+
+const RUN_GAP = 14;
+
+function glueHebrewLetter(gluePrefix: string | undefined): string {
+  return gluePrefix?.replace(/-$/, '') ?? '';
+}
+
+function GluedLatinCluster({
+  run,
+  fontSize,
+  color,
+}: {
+  run: OgRun;
+  fontSize: number;
+  color: string;
+}) {
+  const words = run.text.includes(' ') ? run.text.split(/\s+/).filter(Boolean) : [run.text];
+  const letter = glueHebrewLetter(run.gluePrefix);
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        alignItems: 'baseline',
+        direction: 'ltr',
+      }}
+    >
+      {words.map((word, wordIndex) => (
+        <span
+          key={`${word}-${wordIndex}`}
+          style={{
+            fontFamily: 'HeeboLatin',
+            fontSize,
+            fontWeight: 700,
+            color,
+            marginLeft: wordIndex === 0 ? 0 : 10,
+          }}
+        >
+          {word}
+        </span>
+      ))}
+      <span
+        style={{
+          fontFamily: 'HeeboHebrew',
+          fontSize,
+          fontWeight: 700,
+          color,
+          direction: 'ltr',
+          unicodeBidi: 'isolate',
+        }}
+      >
+        {`-${letter}`}
+      </span>
+    </div>
+  );
 }
 
 function OgLine({
@@ -33,22 +82,70 @@ function OgLine({
   fontSize: number;
   color: string;
 }) {
+  const runs = ltrPaintRuns(text);
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'baseline', gap: 14 }}>
-      {displayRuns(text).map((run, index) => (
-        <div
-          key={index}
-          style={{
-            display: 'flex',
-            fontFamily: run.latin ? 'HeeboLatin' : 'HeeboHebrew',
-            fontSize,
-            fontWeight: 700,
-            color,
-          }}
-        >
-          {run.text}
-        </div>
-      ))}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        justifyContent: 'flex-end',
+        alignItems: 'baseline',
+        width: '100%',
+        maxWidth: '100%',
+        direction: 'ltr',
+        unicodeBidi: 'bidi-override',
+      }}
+    >
+      {runs.map((run, index) => {
+        const latinWords =
+          run.latin && !run.gluePrefix && run.text.includes(' ')
+            ? run.text.split(/\s+/).filter(Boolean)
+            : null;
+
+        return (
+          <div
+            key={`${run.text}-${index}`}
+            style={{
+              display: 'flex',
+              flexShrink: 0,
+              marginLeft: index === 0 ? 0 : RUN_GAP,
+              fontFamily: run.latin ? 'HeeboLatin' : 'HeeboHebrew',
+              fontSize,
+              fontWeight: 700,
+              color,
+              whiteSpace: 'nowrap',
+              direction: 'ltr',
+              unicodeBidi: 'embed',
+            }}
+          >
+            {run.gluePrefix ? (
+              <GluedLatinCluster run={run} fontSize={fontSize} color={color} />
+            ) : latinWords ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flexWrap: 'nowrap',
+                  direction: 'ltr',
+                }}
+              >
+                {latinWords.map((word, wordIndex) => (
+                  <span
+                    key={`${word}-${wordIndex}`}
+                    style={{ marginLeft: wordIndex === 0 ? 0 : 10 }}
+                  >
+                    {word}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              run.text
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -67,7 +164,9 @@ export async function serviceOgImage(title: string) {
     loadFonts(),
     readFile(join(process.cwd(), 'lib/og/brand-mark.png')),
   ]);
-  const titleSize = title.length > 22 ? 64 : 76;
+  const titleLines = splitOgTitleLines(title);
+  const longestLine = Math.max(...titleLines.map((line) => line.length));
+  const titleSize = titleLines.length > 1 ? 52 : longestLine > 26 ? 56 : longestLine > 22 ? 64 : 76;
   const markSrc = `data:image/png;base64,${mark.toString('base64')}`;
 
   return new ImageResponse(
@@ -99,8 +198,28 @@ export async function serviceOgImage(title: string) {
           />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-          <OgLine text={title} fontSize={titleSize} color="#ffffff" />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            width: '100%',
+            maxWidth: '100%',
+          }}
+        >
+          {titleLines.map((line, index) => (
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                width: '100%',
+                justifyContent: 'flex-end',
+                marginTop: index === 0 ? 0 : 10,
+              }}
+            >
+              <OgLine text={line} fontSize={titleSize} color="#ffffff" />
+            </div>
+          ))}
           <div style={{ display: 'flex', marginTop: 28 }}>
             <OgLine text="בנייה וקידום אתרים · עדי פון תקשורת" fontSize={30} color="#cbd5e1" />
           </div>

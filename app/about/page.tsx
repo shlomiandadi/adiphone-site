@@ -66,7 +66,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <Hero3D
         theme="about"
-        title="אודות החברה"
+        title="אודות Top Webstak | פרדס חנה"
         subtitle="מובילים את המהפכה הדיגיטלית כבר למעלה מ-15 שנה"
         align="center"
         ctas={[
@@ -184,6 +184,13 @@ export default function AboutPage() {
               className="rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-blue-700"
             >
               חייגו: 050-9159951
+            </a>
+            <a
+              href="mailto:info@topwebstack.app"
+              aria-label="שליחת דוא״ל אל info@topwebstack.app"
+              className="rounded-full border border-gray-300 px-6 py-3 font-semibold text-gray-800 transition-colors hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800"
+            >
+              info@topwebstack.app
             </a>
             <a
               href="https://www.facebook.com/profile.php?id=61578707397365"

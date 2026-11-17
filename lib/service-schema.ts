@@ -1,3 +1,4 @@
+import { BUSINESS_EMAILS } from './local-business-schema';
 import { absoluteUrl, organizationLogo } from './seo';
 import { ORGANIZATION_SAME_AS } from './social';
 
@@ -8,7 +9,7 @@ export const AGENCY_PROVIDER = {
   url: 'https://adi-phone.co.il',
   logo: organizationLogo('https://adi-phone.co.il'),
   telephone: '+972-50-9159951',
-  email: 'adiphoneseo@gmail.com',
+  email: [...BUSINESS_EMAILS],
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'זמיר 95',
@@ -81,7 +82,6 @@ export function buildServiceJsonLd({
 export const SERVICES_HUB_ITEMS = [
   { name: 'קידום אתרים', path: '/services/seo' },
   { name: 'בניית אתרים', path: '/services/web-development' },
-  { name: 'אתרי תדמית לעסקים', path: '/services/website-tadmit' },
   { name: 'בניית אתרי וורדפרס', path: '/services/wordpress' },
   { name: 'חנויות אינטרנט', path: '/services/ecommerce' },
   { name: 'פיתוח אפליקציות', path: '/services/mobile-apps' },

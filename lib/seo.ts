@@ -6,8 +6,9 @@ export const SERVICE_CANONICALS = {
   ppc: '/services/ppc',
   seo: '/services/seo',
   webDevelopment: '/services/web-development',
-  websiteTadmit: '/services/website-tadmit',
   aeoGeo: '/services/aeo-geo',
+  chatgptBusinessHub: '/services/chatgpt-business-hub',
+  chatgptAds: '/services/chatgpt-ads',
   ai: '/services/ai',
   mobileApps: '/services/mobile-apps',
   software: '/services/software-development',
@@ -20,6 +21,45 @@ export const DEFAULT_OG_IMAGE = {
   height: 630,
   alt: 'Top Webstak – בניית וקידום אתרים, מבית עדי פון תקשורת',
 } as const;
+
+type BlogOgImagePost = {
+  title?: string | null;
+  ogImage?: string | null;
+  mainImage?: string | null;
+};
+
+function nonEmptyImageUrl(value: string | null | undefined): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
+}
+
+/**
+ * og:image for a blog post: dedicated OG image, then hero, then the site default.
+ * URLs are returned as stored (absolute or relative), matching other page metadata.
+ */
+export function resolveBlogOgImage(post: BlogOgImagePost): {
+  url: string;
+  width: number;
+  height: number;
+  alt: string;
+} {
+  const chosen = nonEmptyImageUrl(post.ogImage) || nonEmptyImageUrl(post.mainImage);
+  if (chosen) {
+    return {
+      url: chosen,
+      width: DEFAULT_OG_IMAGE.width,
+      height: DEFAULT_OG_IMAGE.height,
+      alt: post.title || DEFAULT_OG_IMAGE.alt,
+    };
+  }
+  return {
+    url: DEFAULT_OG_IMAGE.url,
+    width: DEFAULT_OG_IMAGE.width,
+    height: DEFAULT_OG_IMAGE.height,
+    alt: DEFAULT_OG_IMAGE.alt,
+  };
+}
 
 export const AUTHOR_SHLOMI = {
   name: 'שלומי',
@@ -92,18 +132,22 @@ export const BLOG_META_OVERRIDES: Record<
     relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
   },
   'pytvch-tvknh': {
-    relatedService: SERVICE_CANONICALS.websiteTadmit,
+    relatedService: SERVICE_CANONICALS.webDevelopment,
     relatedLabel: 'אתרי תדמית לעסקים',
   },
   'pytvch-atrym-seo-shyvvk-dygytly': {
-    relatedService: SERVICE_CANONICALS.websiteTadmit,
+    relatedService: SERVICE_CANONICALS.webDevelopment,
     relatedLabel: 'אתרי תדמית לעסקים',
   },
   'kama-oleh-bniyat-atar-2026': {
-    relatedService: SERVICE_CANONICALS.websiteTadmit,
+    relatedService: SERVICE_CANONICALS.webDevelopment,
     relatedLabel: 'אתרי תדמית לעסקים',
   },
   'ai-bot-for-businesses': {
+    relatedService: SERVICE_CANONICALS.aeoGeo,
+    relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
+  },
+  'What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change': {
     relatedService: SERVICE_CANONICALS.aeoGeo,
     relatedLabel: 'קידום במנועי AI (AEO ו-GEO)',
   },

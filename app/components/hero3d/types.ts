@@ -20,7 +20,8 @@ export type HeroTheme =
   | 'contact'
   | 'portfolio'
   | 'blog'
-  | 'services';
+  | 'services'
+  | 'chatgpt-ads';
 
 export type HeroCta = {
   href: string;
@@ -31,8 +32,8 @@ export type HeroCta = {
 
 export type Hero3DProps = {
   theme: HeroTheme;
-  title: string;
-  subtitle?: string;
+  title: ReactNode;
+  subtitle?: React.ReactNode;
   eyebrow?: string;
   extraHeading?: string;
   extraHeadingAs?: 'h2' | 'p';

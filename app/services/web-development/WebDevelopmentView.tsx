@@ -1,12 +1,15 @@
 'use client';
 
 import ServiceLayout from '../../components/ServiceLayout';
+import GoogleReviews from '../../components/GoogleReviews';
 import Hero3D from '../../components/hero3d/Hero3D';
+import { WEB_DEVELOPMENT_SERVICE_PAGE_REVIEWS } from '../../../lib/reviews';
 import { FaLaptopCode, FaMobileAlt, FaTachometerAlt } from 'react-icons/fa';
 import { LOCAL_WEBSITE_PAGES } from '../../../lib/local-website-building';
 import type { WebsiteProjectCard } from '../../../lib/website-projects';
 
 const FALLBACK_IMAGE = '/images/portfolio/project1.svg';
+const HAIFA_LOCAL_PATH = '/services/bniyat-atarim-haifa';
 
 type Props = {
   projects: WebsiteProjectCard[];
@@ -54,11 +57,6 @@ export default function WebDevelopmentView({ projects }: Props) {
           href: '/services/web-development/accountants',
         },
         {
-          title: 'אתר תדמית',
-          description: 'עד 6–8 עמודים לעסק מקומי. פירוט בעמוד בניית אתר תדמית.',
-          href: '/services/website-tadmit',
-        },
-        {
           title: 'דף נחיתה',
           description: 'עמוד אחד ממוקד לקמפיין או לשירות בודד.',
           href: '/pricing',
@@ -84,13 +82,21 @@ export default function WebDevelopmentView({ projects }: Props) {
           <h2><strong>בניית אתרים: האתר שלכם הוא לא כרטיס ביקור – הוא המשרד, חלון הראווה והמוכרן הראשי שלכם</strong></h2>
           <p>בעידן הדיגיטלי, אתר אינטרנט הוא הרבה יותר מכתובת שמופיעה על כרטיס ביקור. הוא המרכז העצבי של כל הפעילות השיווקית והעסקית שלכם. זה המקום הראשון שלקוחות פוטנציאליים פוגשים אתכם, המקום בו הם לומדים עליכם, בונים אמון, ובסופו של דבר, מקבלים החלטה האם לעשות אתכם עסקים. אתר אינטרנט שלא בנוי כהלכה – אתר איטי, לא מאובטח, או שלא מותאם למובייל – לא רק שלא עוזר לעסק, הוא פוגע בו באופן אקטיבי.</p>
           <p>ב-Top Webstak, אנו ניגשים לכל פרויקט של בניית אתר כאל בניית נכס דיגיטלי אסטרטגי. אנו משלבים <a href="/services/ui-design"><strong>עיצוב UI/UX</strong></a> מרהיב עם הנדסה טכנולוגית בלתי מתפשרת, כדי ליצור אתרים שהם לא רק יפים למראה, אלא מהווים מכונה עסקית משומנת היטב.</p>
-          <p>אנחנו בונים אתרים לעסקים בכל אזור השרון והצפון, כולל {LOCAL_WEBSITE_PAGES.map((city, index) => (
-            <span key={city.path}>
-              {index > 0 ? (index === LOCAL_WEBSITE_PAGES.length - 1 ? ' ו' : ', ') : null}
-              <a href={city.path}>{`בניית אתרים ב${city.name}`}</a>
-            </span>
-          ))}
-          . לפירוט על אתר שמציג את העסק ומביא פניות ראו <a href="/services/website-tadmit">אתרי תדמית</a>. לעסקים במקצועות ספציפיים יש גם דפים על <a href="/services/web-development/lawyers">בניית אתר לעורך דין</a>, <a href="/services/web-development/clinics">בניית אתר לקליניקה</a> ו<a href="/services/web-development/accountants">בניית אתר לרואה חשבון</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.</p>
+          <p>
+            אנחנו בונים אתרים לעסקים בכל אזור השרון והצפון, כולל{' '}
+            {LOCAL_WEBSITE_PAGES.filter((city) => city.path !== HAIFA_LOCAL_PATH).map((city, index, arr) => (
+              <span key={city.path}>
+                {index > 0 ? (index === arr.length - 1 ? ' ו' : ', ') : null}
+                <a href={city.path}>{`בניית אתרים ב${city.name}`}</a>
+              </span>
+            ))}
+            . לעסקים בחיפה ובקריות יש עמוד ייעודי ל
+            <a href={HAIFA_LOCAL_PATH}>בניית אתרים בחיפה</a>
+            {' '}— פגישה בעיר או ליווי מרחוק מפרדס חנה.
+          </p>
+          <p>
+            לעסקים במקצועות ספציפיים יש גם דפים על <a href="/services/web-development/lawyers">בניית אתר לעורך דין</a>, <a href="/services/web-development/clinics">בניית אתר לקליניקה</a> ו<a href="/services/web-development/accountants">בניית אתר לרואה חשבון</a>. דוגמאות מהתיק: <a href="/portfolio/avora-home">AVORA</a>, <a href="/portfolio/top-aventa">Top Aventa</a> ו<a href="/portfolio/lev-bagan">לב בגן</a>.
+          </p>
           <h2><strong>מהו פיתוח אתרים מקצועי, ומה ההבדל בין אתר &quot;חובבני&quot; לאתר מנצח?</strong></h2>
           <p>בניית אתר היא תהליך הנדסי של הפיכת עיצוב גרפי למערכת חיה, פונקציונלית ואינטראקטיבית. בעוד שכל אחד יכול &quot;לגרור ולשחרר&quot; אלמנטים בפלטפורמה כזו או אחרת, פיתוח מקצועי מתמקד ביסודות הבלתי נראים שקובעים את הצלחת האתר:</p>
           <ul>
@@ -103,7 +109,7 @@ export default function WebDevelopmentView({ projects }: Props) {
           <h2><strong>סוגי האתרים שאנו בונים: פתרון לכל צורך ומטרה</strong></h2>
           <p>אנו מתאימים את הפתרון הטכנולוגי למטרה העסקית שלכם:</p>
           <ul>
-            <li><strong>אתרי תדמית:</strong> חלון הראווה הדיגיטלי שלכם. מטרתם היא להציג את המותג, השירותים והערכים שלכם בצורה מקצועית ומרשימה, ולייצר פניות ולידים איכותיים. פירוט בעמוד <a href="/services/website-tadmit"><strong>בניית אתר תדמית</strong></a>, ומחיר הפתיחה ב<a href="/pricing"><strong>מחירון בניית אתרים</strong></a>.</li>
+            <li><strong>אתרי תדמית:</strong> חלון הראווה הדיגיטלי שלכם. מטרתם היא להציג את המותג, השירותים והערכים שלכם בצורה מקצועית ומרשימה, ולייצר פניות ולידים איכותיים. מחיר הפתיחה ב<a href="/pricing"><strong>מחירון בניית אתרים</strong></a>.</li>
             <li><strong>אתרי קטלוג:</strong> פתרון מושלם לעסקים עם מגוון רחב של מוצרים, המעוניינים להציג אותם בצורה מסודרת ונוחה לחיפוש, גם אם המכירה עצמה לא מתבצעת אונליין.</li>
             <li><strong>פורטלים ותוכן:</strong> אתרים מורכבים המבוססים על תוכן רב, קהילות משתמשים, אינדקסים ומערכות חיפוש מתקדמות.</li>
             <li><strong>מערכות Web ייעודיות:</strong> כאשר האתר שלכם הוא למעשה <a href="/services/software-development"><strong>תוכנה</strong></a> שלמה (SaaS, פלטפורמה ייעודית), אנו מפתחים מערכות מורכבות מאפס.</li>
@@ -131,6 +137,82 @@ export default function WebDevelopmentView({ projects }: Props) {
           <p>כל אתר שאנו בונים מגיע מוכן להטמעה של כלי <a href="/services/analytics"><strong>אנליטיקס</strong></a>, כדי שתוכלו למדוד את הביצועים ולקבל החלטות מבוססות נתונים מהרגע הראשון.</p>
           <p><strong>האתר שלכם הוא הנכס הדיגיטלי החשוב ביותר שלכם. אל תתפשרו על פחות מהטוב ביותר.</strong></p>
           <p><strong>בין אם אתם צריכים לרענן אתר קיים או לבנות נוכחות דיגיטלית מאפס, צוות המפתחים של Top Webstak כאן כדי לבנות לכם אתר שתהיו גאים בו, והכי חשוב – אתר שעובד בשבילכם.</strong></p>
+        </>
+      )}
+      beforeFaq={(
+        <>
+        <section data-reveal className="bg-white px-4 py-16 dark:bg-gray-900">
+          <div className="container mx-auto max-w-3xl text-right text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">מהו אתר תדמית, ומה הוא לא</h2>
+            <p className="mb-5">
+              אתר תדמית הוא חלון הראווה הדיגיטלי של העסק. גולש שנכנס אליו צריך להבין בתוך דקה אם הוא במקום הנכון. לכן האתר בנוי מעמודים קצרים וברורים, לא ממאגר מאמרים ולא מקטלוג מוצרים. עמוד הבית אומר מה אתם עושים. עמוד השירותים מפרט. עמוד האודות מסביר מי עומד מאחורי העסק. עמוד יצירת הקשר נותן טלפון, וואטסאפ וטופס קצר.
+            </p>
+            <p className="mb-5">
+              זה לא דף נחיתה. דף נחיתה הוא עמוד אחד שמכוון לפעולה אחת, בדרך כלל לקמפיין ממומן. בניית אתר תדמית מתאימה כשיש כמה שירותים, קהל שבודק אתכם לפני שהוא מתקשר, ורצון שגוגל יוכל להציג עמוד נפרד לכל נושא. זה גם לא חנות. אין עגלה, אין מלאי ואין סליקה. אם המכירה עצמה צריכה לקרות באתר, השירות הנכון הוא{' '}
+              <a href="/services/ecommerce" className="font-semibold text-blue-700 underline dark:text-blue-400">חנות אונליין</a>
+              .
+            </p>
+            <p className="mb-5">
+              וזה לא אתר שנבנה &quot;על הדרך&quot; מתוך תבנית עמוסה. תבנית מוכנה מגיעה עם עשרות בלוקים שלא תשתמשו בהם, טעינה איטית בטלפון, ועיצוב שנראה כמו אתר של מישהו אחר. בבניית אתרי תדמית אנחנו מתחילים מהמסר של העסק, לא מהתבנית.
+            </p>
+            <h2 className="mb-4 mt-12 text-3xl font-bold text-gray-900 dark:text-white">בניית אתר תדמית מול אפשרויות אחרות</h2>
+            <p className="mb-5">
+              בניית אתרי תדמית היא חלק מבניית אתרים בכלל, לא תחליף לה. בעמוד הזה תמצאו גם קטלוג, פורטל ומערכת. ההחלטה הפשוטה: אם המטרה היא שיבינו את העסק ויתקשרו, אתר תדמית מספיק. אם המטרה היא למכור באתר, לעדכן מאות מוצרים, או לנהל תהליך פנימי – נגיד את זה בשיחה ולא נמתח אתר תדמית מעבר למה שהוא.
+            </p>
+            <p className="mb-5">
+              עיצוב הממשק יושב אצלנו בתוך הפרויקט, ואפשר גם להעמיק אותו כשירות{' '}
+              <a href="/services/ui-design" className="font-semibold text-blue-700 underline dark:text-blue-400">עיצוב UI/UX</a>
+              {' '}כשהמותג צריך שפה משלו. מהירות ואחסון נשענים על תשתית יציבה, לא על אחסון חינם שנרדם בשעות העומס.
+            </p>
+            <p className="mb-5">
+              אנחנו לא מבטיחים &quot;עמוד ראשון בגוגל&quot; בגלל שהאתר יפה. אתר תדמית טוב נותן לגוגל עמודים ברורים ולגולש סיבה להישאר. דירוג לוקח עבודה מתמשכת, תוכן ותחרות. מי שמבטיח מקום בגוגל לפני שראה את התחום, מוכר סיפור.
+            </p>
+            <h2 className="mb-4 mt-12 text-3xl font-bold text-gray-900 dark:text-white">מה כדאי להכין לפני השיחה</h2>
+            <p className="mb-5">
+              לא צריך מצגת. מספיק רשימת שירותים, אזור העבודה, וקישור לאתר הישן אם יש. אם יש לוגו וחמש תמונות אמיתיות מהעבודה, האפיון קצר יותר. אם אין תמונות, נגיד את זה מראש ולא נמלא את האתר בתמונות גנריות שנראות כמו כל אתר אחר.
+            </p>
+            <p className="mb-5">
+              כדאי גם להחליט מי מאשר טקסט ועיצוב. פרויקט שעובר בין שלושה אנשים בלי בעל החלטה נתקע, גם כשהבנייה עצמה פשוטה. בשיחה נשאל מי נמצא על הוואטסאפ ומי חותם על המבנה. ככה 14–21 הימים נשארים לוח זמנים, לא משאלה.
+            </p>
+          </div>
+        </section>
+        <section data-reveal className="bg-gray-50 px-4 py-16 dark:bg-gray-800">
+          <div className="container mx-auto max-w-3xl text-right">
+            <h2 className="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+              איך בוחרים חברה לבניית אתרים
+            </h2>
+            <p className="mb-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+              כשאתם משווים הצעות, כדאי לבדוק כמה דברים בסיסיים לפני שחותמים — בין אם מדובר בחברת בניית אתרים
+              {' '}גדולה או בחברה לבניית אתרים שמלווה אתכם באופן אישי.
+            </p>
+            <ul className="mb-6 list-disc space-y-3 pr-6 text-lg text-gray-800 dark:text-gray-200">
+              <li>
+                <strong>תיק עבודות אמיתי:</strong> דפים שעלו לאוויר, לא רק מוקאפים. אפשר לראות דוגמאות ב
+                <a href="/portfolio" className="font-semibold text-blue-700 underline dark:text-blue-400">
+                  תיק העבודות
+                </a>
+                .
+              </li>
+              <li>
+                <strong>ביקורות גוגל אמיתיות:</strong> דירוג וחוות דעת של לקוחות, לא ציטוטים ללא מקור. ראו את
+                {' '}
+                <a href="#google-reviews" className="font-semibold text-blue-700 underline dark:text-blue-400">
+                  הביקורות בעמוד הזה
+                </a>
+                .
+              </li>
+              <li>
+                <strong>מהירות ו-SEO מהיום הראשון:</strong> אתר שנטען מהר בנייד, עם בסיס טכני שאפשר להמשיך ממנו לקידום.
+              </li>
+              <li>
+                <strong>מחיר ותהליך ברורים:</strong> מה כלול, מה לוח הזמנים ומה קורה אחרי אישור ההצעה — בלי הפתעות באמצע.
+              </li>
+              <li>
+                <strong>ליווי אחרי ההשקה:</strong> הדרכה, תיקונים קטנים מהשקה ואפשרות לתחזוקה כשצריך — האתר לא נשאר לבד.
+              </li>
+            </ul>
+          </div>
+        </section>
         </>
       )}
       features={[
@@ -183,7 +265,7 @@ export default function WebDevelopmentView({ projects }: Props) {
         },
         {
           question: 'מה ההבדל בין בניית אתרים לבניית אתר תדמית?',
-          answer: 'בניית אתרים כוללת גם קטלוג, חנות ומערכת. בניית אתר תדמית היא האתר שמציג את העסק ומביא פניות, בלי מכירה אונליין. פירוט בעמוד בניית אתר תדמית.',
+          answer: 'בניית אתרים כוללת גם קטלוג, חנות ומערכת. בניית אתר תדמית היא האתר שמציג את העסק ומביא פניות, בלי מכירה אונליין. ההבדלים וההשוואה מפורטים בעמוד זה למעלה.',
         },
         {
           question: 'כמה עולה בניית אתר?',
@@ -204,6 +286,13 @@ export default function WebDevelopmentView({ projects }: Props) {
         description: project.description || '',
         link: `/portfolio/${project.slug}`,
       }))}
+      beforeCta={(
+        <section id="google-reviews" data-reveal className="scroll-mt-24 px-4 py-16">
+          <div className="container mx-auto max-w-5xl">
+            <GoogleReviews heading="מה הלקוחות אומרים" reviews={WEB_DEVELOPMENT_SERVICE_PAGE_REVIEWS} />
+          </div>
+        </section>
+      )}
     />
   );
 }

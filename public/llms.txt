@@ -7,7 +7,7 @@
 - שם: Top Webstak (מבית עדי פון תקשורת)
 - כתובת: זמיר 95, פרדס חנה-כרכור, ישראל
 - טלפון: +972-50-9159951
-- דוא"ל: adiphoneseo@gmail.com
+- דוא"ל: adiphoneseo@gmail.com, info@adi-phone.co.il, info@topwebstack.app
 - אזורי שירות: פרדס חנה-כרכור, חדרה, קיסריה, זכרון יעקב, בנימינה, אור עקיבא, נתניה, יוקנעם, עפולה, השרון, חיפה והקריות, הצפון (ובפריסה ארצית מרחוק)
 - שפה: עברית
 
@@ -20,13 +20,14 @@
 - [מחירון בניית אתרים](https://adi-phone.co.il/pricing): מחירי פתיחה שקופים
 
 ## שירותים
-- [בניית אתרים](https://adi-phone.co.il/services/web-development): אתרי תדמית, קטלוג ומערכות Web
-- [אתרי תדמית לעסקים](https://adi-phone.co.il/services/website-tadmit): מחירים, תהליך ודוגמאות לאתר תדמית, בלי חנות ובלי מערכת
+- [בניית אתרים](https://adi-phone.co.il/services/web-development): אתרי תדמית, קטלוג ומערכות Web — מחירים, תהליך ודוגמאות
 - [בניית אתרי וורדפרס](https://adi-phone.co.il/services/wordpress)
 - [חנויות אונליין (איקומרס)](https://adi-phone.co.il/services/ecommerce)
 - [קידום אתרים אורגני (SEO)](https://adi-phone.co.il/services/seo)
 - [קידום ממומן (PPC)](https://adi-phone.co.il/services/ppc)
 - [קידום במנועי AI – AEO ו-GEO](https://adi-phone.co.il/services/aeo-geo)
+- [עסק ב-ChatGPT Business Hub](https://adi-phone.co.il/services/chatgpt-business-hub): תביעת פרופיל, אימות וניהול Insights
+- [פרסום ממומן ב-ChatGPT](https://adi-phone.co.il/services/chatgpt-ads): הקמת חשבון Ads Manager, מודעות וניהול קמפיינים (תקציב מדיה ל-OpenAI בנפרד)
 - [פיתוח אפליקציות](https://adi-phone.co.il/services/mobile-apps)
 - [עיצוב UI/UX](https://adi-phone.co.il/services/ui-design)
 - [אנליטיקס וניתוח נתונים](https://adi-phone.co.il/services/analytics)
@@ -45,6 +46,11 @@
 - [בניית אתרים בבנימינה](https://adi-phone.co.il/services/bniyat-atarim-binyamina)
 - [בניית אתרים ביוקנעם](https://adi-phone.co.il/services/bniyat-atarim-yokneam)
 - [בניית אתרים בעפולה](https://adi-phone.co.il/services/bniyat-atarim-afula)
+
+## אתרים לפי תחום
+- [בניית אתר לעורך דין ולמשרדי עורכי דין](https://adi-phone.co.il/services/web-development/lawyers)
+- [בניית אתר לקליניקה ולמטפלים](https://adi-phone.co.il/services/web-development/clinics)
+- [בניית אתר לרואה חשבון ולהנהלת חשבונות](https://adi-phone.co.il/services/web-development/accountants)
 
 ## מחירי פתיחה ואזורי שירות
 - דף נחיתה: מ-2,500 ₪

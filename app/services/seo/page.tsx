@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import { BUSINESS_EMAILS } from '../../../lib/local-business-schema';
 import { getSiteUrl, organizationLogo } from '../../../lib/seo';
 import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
+import GoogleReviews from '../../components/GoogleReviews';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
+import { SEO_SERVICE_PAGE_REVIEWS } from '../../../lib/reviews';
 
 const PHONE_DISPLAY = '050-9159951';
 const PHONE_TEL = '+972509159951';
@@ -80,7 +83,7 @@ export default async function SeoServicePage() {
       '@type': 'ProfessionalService',
       name: 'Top Webstak בנייה וקידום אתרים',
       telephone: '+972-50-9159951',
-      email: 'adiphoneseo@gmail.com',
+      email: [...BUSINESS_EMAILS],
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'זמיר 95',
@@ -145,6 +148,34 @@ export default async function SeoServicePage() {
             . לחיפוש במנועי שיחה:{' '}
             <Link href="/services/aeo-geo" className="text-green-700 underline">
               קידום במנועי AI
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+
+      <section data-reveal className="px-4 py-16">
+        <div className="container mx-auto max-w-3xl text-right">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">איך לבחור חברה לקידום אורגני</h2>
+          <ul className="list-disc space-y-3 pr-6 text-lg text-gray-700">
+            <li>דיווח שקוף וקבוע — מה נעשה, מה השתנה, ומה היעדים להמשך (בלי הבטחות דירוג).</li>
+            <li>גישה משולבת: SEO טכני, תוכן איכותי וחיזוק סמכות — לא קיצורי דרך חד-פעמיים.</li>
+            <li>ניסיון בשוק הישראלי, בעברית ובקידום מקומי כשהעסק תלוי באזור גיאוגרפי.</li>
+            <li>יעדים מדידים: תנועה אורגנית, פניות והמרות — לא רק מיקום של ביטוי בודד.</li>
+            <li>התאמה לתחרות בתחום ולמשאבים של העסק, עם ציפיות ריאליות לטווח הארוך.</li>
+          </ul>
+          <p className="mt-6 text-lg leading-relaxed text-gray-700">
+            להעמקה:{' '}
+            <Link href="/blog/ayk-lbchvr-chbrt-kydvm-atrym" className="text-green-700 underline">
+              איך לבחור חברת קידום אתרים
+            </Link>
+            ,{' '}
+            <Link href="/blog/mh-zh-seo" className="text-green-700 underline">
+              מדריך SEO למתחילים
+            </Link>
+            {' '}ו{' '}
+            <Link href="/blog/seo-tips-google-ranking-guide" className="text-green-700 underline">
+              טיפים לקידום אתרים בגוגל
             </Link>
             .
           </p>
@@ -232,6 +263,13 @@ export default async function SeoServicePage() {
           <Link href="/services/aeo-geo" className="underline">קידום במנועי AI (AEO/GEO)</Link>
         </p>
       </section>
+
+      <section data-reveal className="px-4 py-16">
+        <div className="container mx-auto max-w-5xl">
+          <GoogleReviews heading="מה הלקוחות אומרים" reviews={SEO_SERVICE_PAGE_REVIEWS} />
+        </div>
+      </section>
+
       <ServiceCtaBanner serviceKey="seo" image={projectImage} imageAlt="פרויקט קידום אתרים" />
     </div>
   );

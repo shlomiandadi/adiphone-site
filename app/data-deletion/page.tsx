@@ -17,6 +17,8 @@ export const generateMetadata = createSeoAgentGenerateMetadata('/data-deletion',
 
 const DELETION_EMAIL = 'shlomiandadi@gmail.com';
 const DELETION_EMAIL_ALT = 'shlomimalfuf1@gmail.com';
+const DELETION_EMAIL_INFO = 'info@adi-phone.co.il';
+const DELETION_EMAIL_TOPWEBSTACK = 'info@topwebstack.app';
 const DELETION_EMAIL_SUBJECT = encodeURIComponent('בקשה למחיקת נתונים');
 
 const TOC = [
@@ -52,6 +54,18 @@ export default function DataDeletion() {
               {' '}או{' '}
               <a className="text-blue-700 hover:underline" href={`mailto:${DELETION_EMAIL_ALT}?subject=${DELETION_EMAIL_SUBJECT}`}>
                 {DELETION_EMAIL_ALT}
+              </a>
+              {' '}או{' '}
+              <a className="text-blue-700 hover:underline" href={`mailto:${DELETION_EMAIL_INFO}?subject=${DELETION_EMAIL_SUBJECT}`}>
+                {DELETION_EMAIL_INFO}
+              </a>
+              {' '}או{' '}
+              <a
+                className="text-blue-700 hover:underline"
+                href={`mailto:${DELETION_EMAIL_TOPWEBSTACK}?subject=${DELETION_EMAIL_SUBJECT}`}
+                aria-label="שליחת דוא״ל אל info@topwebstack.app"
+              >
+                {DELETION_EMAIL_TOPWEBSTACK}
               </a>
             </li>
             <li>

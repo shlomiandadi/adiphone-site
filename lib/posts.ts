@@ -249,6 +249,55 @@ export async function getPostBySlug(slug: string) {
   }
 }
 
+export const getPublishedPostTitles = contentCache(
+  'published-post-titles',
+  [BLOG_CACHE_TAG],
+  async () => {
+    return prisma.post.findMany({
+      where: { published: true },
+      select: { slug: true, title: true },
+    });
+  }
+);
+
+export const getCategoryLeafRows = contentCache(
+  'category-leaf-rows',
+  [BLOG_CACHE_TAG],
+  async () => {
+    return prisma.category.findMany({ select: { slug: true, name: true } });
+  }
+);
+
+export const getTagLeafRows = contentCache(
+  'tag-leaf-rows',
+  [BLOG_CACHE_TAG],
+  async () => {
+    return prisma.tag.findMany({ select: { slug: true, name: true } });
+  }
+);
+
+export async function getTagLabel(value: string): Promise<string> {
+  let decoded = value;
+  try {
+    decoded = decodeURIComponent(value);
+  } catch {
+    decoded = value;
+  }
+  try {
+    const tag = await prisma.tag.findFirst({
+      where: {
+        OR: [{ slug: decoded }, { name: decoded }, { slug: value }, { name: value }],
+      },
+      select: { name: true },
+    });
+    const name = tag?.name?.trim();
+    if (name) return name;
+  } catch {
+    // fall through to the decoded path segment
+  }
+  return decoded.replace(/-/g, ' ');
+}
+
 export async function getPostsByCategory(categorySlug: string) {
   const { posts } = await getPostsByCategorySlugCached(categorySlug);
   return posts;

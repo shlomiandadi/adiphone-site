@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BUSINESS_EMAILS } from '../../../lib/local-business-schema';
 import { getSiteUrl, organizationLogo } from '../../../lib/seo';
 import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
@@ -95,7 +96,7 @@ export default async function PpcServicePage() {
       '@type': 'ProfessionalService',
       name: 'Top Webstak בנייה וקידום אתרים',
       telephone: '+972-50-9159951',
-      email: 'adiphoneseo@gmail.com',
+      email: [...BUSINESS_EMAILS],
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'זמיר 95',
@@ -154,6 +155,19 @@ export default async function PpcServicePage() {
               איך לנהל קמפיין ממומן נכון
             </Link>
             .
+          </p>
+        </div>
+      </section>
+
+      <section data-reveal className="border-y border-orange-100 bg-orange-50 px-4 py-10">
+        <div className="container mx-auto max-w-3xl text-center">
+          <p className="text-lg text-gray-800">
+            מודעה מסומנת מתחת לתשובת ChatGPT היא ערוץ נפרד מגוגל Ads וממטא — לא אותו חשבון ולא אותה
+            מדידה. לפרסום ב-Ads Manager ראו{' '}
+            <Link href="/services/chatgpt-ads" className="font-semibold text-orange-700 underline">
+              פרסום ממומן ב-ChatGPT
+            </Link>
+            . תקציב המדיה נקבע בנפרד לכל פלטפורמה.
           </p>
         </div>
       </section>

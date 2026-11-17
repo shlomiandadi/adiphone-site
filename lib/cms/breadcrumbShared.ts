@@ -2,12 +2,20 @@ import { getSiteUrl } from '../seo';
 import {
   breadcrumbSegmentTitle,
   fallbackBreadcrumbItems,
+  lookupBreadcrumbLeaf,
   omitBreadcrumbList,
+  pageOwnsBreadcrumbJsonLd,
   type CmsBreadcrumbItem,
 } from './breadcrumbFallback';
 
 export type { CmsBreadcrumbItem };
-export { breadcrumbSegmentTitle, fallbackBreadcrumbItems, omitBreadcrumbList };
+export {
+  breadcrumbSegmentTitle,
+  fallbackBreadcrumbItems,
+  lookupBreadcrumbLeaf,
+  omitBreadcrumbList,
+  pageOwnsBreadcrumbJsonLd,
+};
 
 export function breadcrumbJsonLd(items: CmsBreadcrumbItem[]) {
   const siteUrl = getSiteUrl();

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BUSINESS_EMAILS } from '../../lib/local-business-schema';
 import { getSiteUrl, organizationLogo } from '../../lib/seo';
 import Hero3D from '../components/hero3d/Hero3D';
 import {
@@ -13,7 +14,7 @@ const FAQ = [
   {
     question: 'כמה עולה לבנות אתר?',
     answer:
-      'אצלנו המחיר ההתחלתי הוא 2,500 ₪ + מע״מ לדף נחיתה, 6,500 ₪ + מע״מ לאתר תדמית של עד 6–8 עמודים, 12,000 ₪ + מע״מ לחנות אונליין, ו-20,000 ₪ + מע״מ לפיתוח מערכת לפי אפיון. המחיר הסופי נקבע אחרי שיחה קצרה על ההיקף.',
+      'אצלנו המחיר ההתחלתי הוא 2,500 ₪ + מע״מ לדף נחיתה, 6,500 ₪ + מע״מ לאתר תדמית של עד 6–8 עמודים, 12,000 ₪ + מע״מ לחנות אונליין, ו-20,000 ₪ + מע״מ לפיתוח מותאם, מערכת או פורטל לפי אפיון. המחיר הסופי נקבע אחרי שיחה קצרה על ההיקף.',
   },
   {
     question: 'האם המחירים כוללים מע״מ?',
@@ -28,7 +29,7 @@ const FAQ = [
   {
     question: 'יש עלויות חודשיות חובה?',
     answer:
-      'בניית האתר היא תשלום חד-פעמי לפי ההצעה. אחסון מנוהל (50–150 ₪ לחודש) ותחזוקה (250–500 ₪ לחודש) הם שירותים נפרדים, לפי בחירה. קידום SEO/GEO חודשי ניתן לפי הצעת מחיר.',
+      'בניית האתר היא תשלום חד-פעמי לפי ההצעה. אחסון מנוהל (50–150 ₪ לחודש), תחזוקה בסיסית (250 ₪ לחודש) ותחזוקה מורחבת (500 ₪ לחודש) הם שירותים נפרדים, לפי בחירה. קידום SEO/GEO חודשי ניתן לפי הצעת מחיר.',
   },
   {
     question: 'אפשר להתחיל מדף נחיתה ולגדול אחר כך?',
@@ -95,7 +96,7 @@ export default function PricingPage() {
       '@type': 'ProfessionalService',
       name: 'Top Webstak בנייה וקידום אתרים',
       telephone: '+972-50-9159951',
-      email: 'adiphoneseo@gmail.com',
+      email: [...BUSINESS_EMAILS],
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'זמיר 95',
@@ -174,7 +175,7 @@ export default function PricingPage() {
               <strong>חנות אונליין</strong> — מ-12,000 ₪ + מע״מ
             </li>
             <li>
-              <strong>פיתוח מותאם / מערכת</strong> — מ-20,000 ₪ + מע״מ, לפי אפיון
+              <strong>פיתוח מותאם / מערכת / פורטל</strong> — מ-20,000 ₪ + מע״מ, לפי אפיון
             </li>
           </ul>
           <p className="text-lg leading-relaxed text-gray-700">

@@ -45,11 +45,12 @@ export const FOOTER_QUICK_LINKS: FooterLinkView[] = [
 
 export const FOOTER_SERVICE_LINKS: FooterLinkView[] = [
   { title: 'בניית אתרים', url: '/services/web-development' },
-  { title: 'אתרי תדמית לעסקים', url: '/services/website-tadmit' },
   { title: 'מחירון בניית אתרים', url: '/pricing' },
   { title: 'אתרי וורדפרס', url: '/services/wordpress' },
   { title: 'קידום אתרים SEO', url: '/services/seo' },
   { title: 'קידום במנועי AI (AEO/GEO)', url: '/services/aeo-geo' },
+  { title: 'עסק ב-ChatGPT', url: '/services/chatgpt-business-hub' },
+  { title: 'מודעות ב-ChatGPT', url: '/services/chatgpt-ads' },
   { title: 'קידום ממומן PPC', url: '/services/ppc' },
   { title: 'חנויות אונליין', url: '/services/ecommerce' },
   { title: 'פיתוח אפליקציות', url: '/services/mobile-apps' },
@@ -73,13 +74,14 @@ export const FOOTER_AREA_LINKS: FooterLinkView[] = [
   { title: 'בניית אתרים בבנימינה', url: '/services/bniyat-atarim-binyamina' },
   { title: 'בניית אתרים ביוקנעם', url: '/services/bniyat-atarim-yokneam' },
   { title: 'בניית אתרים בעפולה', url: '/services/bniyat-atarim-afula' },
-  { title: 'אתרי תדמית לעסקים', url: '/services/website-tadmit' },
   { title: 'קידום במנועי AI (AEO ו-GEO)', url: '/services/aeo-geo' },
 ];
 
 export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
   { title: '0509159951', url: 'tel:0509159951', icon: 'phone' },
   { title: 'adiphoneseo@gmail.com', url: 'mailto:adiphoneseo@gmail.com', icon: 'envelope' },
+  { title: 'info@adi-phone.co.il', url: 'mailto:info@adi-phone.co.il', icon: 'envelope' },
+  { title: 'info@topwebstack.app', url: 'mailto:info@topwebstack.app', icon: 'envelope' },
   { title: 'זמיר 95, פרדס חנה', url: '', icon: 'map-marker' },
   {
     title: 'Facebook',
@@ -116,6 +118,29 @@ export const FOOTER_CONTACT_LINKS: FooterLinkView[] = [
 const REQUIRED_SOCIAL_LINKS = FOOTER_CONTACT_LINKS.filter((link) =>
   ['facebook', 'instagram', 'linkedin', 'x'].includes(link.icon || '')
 );
+
+const REQUIRED_EMAIL_LINKS = FOOTER_CONTACT_LINKS.filter((link) => link.icon === 'envelope');
+
+/** Ensure CMS footers still list every public business email. */
+export function withRequiredContactEmails(data: FooterView): FooterView {
+  const index = data.columns.findIndex((column) => column.kind === 'contact');
+  if (index < 0) return data;
+  const column = data.columns[index];
+  const links = [...column.links];
+  for (const item of REQUIRED_EMAIL_LINKS) {
+    if (!links.some((link) => link.url === item.url)) {
+      const lastEmail = [...links].reverse().findIndex((link) => link.icon === 'envelope');
+      if (lastEmail >= 0) {
+        links.splice(links.length - lastEmail, 0, item);
+      } else {
+        links.unshift(item);
+      }
+    }
+  }
+  const columns = [...data.columns];
+  columns[index] = { ...column, links };
+  return { ...data, columns };
+}
 
 /** Ensure CMS footers still expose the verified public profiles. */
 export function withRequiredSocialLinks(data: FooterView): FooterView {
@@ -162,6 +187,43 @@ export function columnKind(title: string, links: FooterLinkView[]): FooterColumn
   }
   if (title === 'השירותים שלנו') return 'services';
   return 'links';
+}
+
+const REQUIRED_FOOTER_HUB_LINK: FooterLinkView = {
+  title: 'עסק ב-ChatGPT',
+  url: '/services/chatgpt-business-hub',
+};
+
+const REQUIRED_FOOTER_ADS_LINK: FooterLinkView = {
+  title: 'מודעות ב-ChatGPT',
+  url: '/services/chatgpt-ads',
+};
+
+/** Ensure CMS footers list new service links (e.g. after AEO/GEO). */
+export function withRequiredServiceLinks(data: FooterView): FooterView {
+  const index = data.columns.findIndex(
+    (column) => column.kind === 'services' || column.title === 'השירותים שלנו'
+  );
+  if (index < 0) return data;
+
+  const column = data.columns[index];
+  let links = [...column.links];
+
+  if (!links.some((link) => link.url === REQUIRED_FOOTER_HUB_LINK.url)) {
+    const aeoIndex = links.findIndex((link) => link.url === '/services/aeo-geo');
+    const insertAt = aeoIndex >= 0 ? aeoIndex + 1 : links.length;
+    links.splice(insertAt, 0, REQUIRED_FOOTER_HUB_LINK);
+  }
+
+  if (!links.some((link) => link.url === REQUIRED_FOOTER_ADS_LINK.url)) {
+    const hubIndex = links.findIndex((link) => link.url === REQUIRED_FOOTER_HUB_LINK.url);
+    const insertAt = hubIndex >= 0 ? hubIndex + 1 : links.length;
+    links.splice(insertAt, 0, REQUIRED_FOOTER_ADS_LINK);
+  }
+
+  const columns = [...data.columns];
+  columns[index] = { ...column, links };
+  return { ...data, columns };
 }
 
 export function withServiceAreaColumn(data: FooterView): FooterView {

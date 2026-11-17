@@ -44,6 +44,18 @@ const SERVICE_CTA_BY_KEY: Record<string, ServiceCtaCopy> = {
     whatsappText: 'שלום, אשמח לשיחת ייעוץ על קידום במנועי AI.',
     topic: 'seo',
   },
+  'chatgpt-business-hub': {
+    title: 'רוצים לבדוק אם אפשר לתבוע פרופיל ב-ChatGPT?',
+    text: 'שיחת ייעוץ של 15 דקות – בחינם. נבדוק זכאות ומה חסר לפני תביעה — בלי הבטחת המלצות.',
+    whatsappText: 'שלום, אשמח לשיחת ייעוץ על הקמת פרופיל ב-ChatGPT Business Hub.',
+    topic: 'seo',
+  },
+  'chatgpt-ads': {
+    title: 'רוצים לבדוק אם אפשר לפרסם ב-ChatGPT?',
+    text: 'שיחת ייעוץ של 15 דקות – בחינם. נבדוק זכאות וקטגוריה לפני הקמת חשבון — בלי הבטחת פניות.',
+    whatsappText: 'שלום, אשמח לשיחת ייעוץ על פרסום ממומן ב-ChatGPT.',
+    topic: 'seo',
+  },
   ai: {
     title: 'בוט AI שעונה ללקוחות באתר ובוואטסאפ',
     text: 'שיחת ייעוץ של 15 דקות – בחינם. נאפיין מה הבוט צריך לענות ומה לא.',
@@ -61,12 +73,6 @@ const SERVICE_CTA_BY_KEY: Record<string, ServiceCtaCopy> = {
     text: 'שיחת ייעוץ של 15 דקות – בחינם. נבין אם צריך אפליקציה, אתר, או משהו קטן יותר.',
     whatsappText: 'שלום, אשמח לשיחת ייעוץ על פיתוח אפליקציה.',
     topic: 'apps',
-  },
-  'website-tadmit': {
-    title: 'אתר תדמית מוכן תוך 14–21 יום',
-    text: 'שיחת ייעוץ של 15 דקות – בחינם. נבין את העסק ונחזור עם מבנה והצעה ברורה, בלי התחייבות.',
-    whatsappText: 'שלום, אשמח לקבוע שיחת ייעוץ לבניית אתר תדמית.',
-    topic: 'websites',
   },
   'software-development': {
     title: 'מערכת מותאמת לפי תהליך העסק – לא תבנית גנרית',
@@ -105,7 +111,6 @@ const PATH_TO_KEY: Record<string, string> = {
   '/services/web-development/lawyers': 'web-development',
   '/services/web-development/clinics': 'web-development',
   '/services/web-development/accountants': 'web-development',
-  '/services/website-tadmit': 'website-tadmit',
   '/services/wordpress': 'wordpress',
   '/services/ecommerce': 'ecommerce',
   '/services/seo': 'seo',
@@ -113,6 +118,8 @@ const PATH_TO_KEY: Record<string, string> = {
   '/services/ppc': 'ppc',
   '/services/paid-promotion': 'ppc',
   '/services/aeo-geo': 'aeo-geo',
+  '/services/chatgpt-business-hub': 'chatgpt-business-hub',
+  '/services/chatgpt-ads': 'chatgpt-ads',
   '/services/ai': 'ai',
   '/services/analytics': 'analytics',
   '/services/mobile-apps': 'mobile-apps',

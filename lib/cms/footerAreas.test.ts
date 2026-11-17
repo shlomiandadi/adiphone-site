@@ -5,17 +5,39 @@ import {
   FOOTER_CONTACT_LINKS,
   HARDCODED_FOOTER,
   withRequiredSocialLinks,
+  withRequiredServiceLinks,
   withServiceAreaColumn,
 } from './footerData.ts';
 import { SOCIAL_INSTAGRAM, SOCIAL_X } from '../social.ts';
 
+describe('withRequiredServiceLinks', () => {
+  test('injects ChatGPT after AEO/GEO in CMS footer services column', () => {
+    const merged = withRequiredServiceLinks({
+      ...HARDCODED_FOOTER,
+      columns: HARDCODED_FOOTER.columns.map((column) =>
+        column.kind === 'services'
+          ? {
+              ...column,
+              links: column.links.filter((link) => link.url !== '/services/chatgpt-business-hub'),
+            }
+          : column
+      ),
+    });
+    const column = merged.columns.find((item) => item.kind === 'services');
+    const urls = column?.links.map((link) => link.url) || [];
+    const aeo = urls.indexOf('/services/aeo-geo');
+    const hub = urls.indexOf('/services/chatgpt-business-hub');
+    const ads = urls.indexOf('/services/chatgpt-ads');
+    assert.ok(aeo >= 0 && hub === aeo + 1 && ads === hub + 1);
+  });
+});
+
 describe('withServiceAreaColumn', () => {
-  test('hardcoded footer already lists every city plus tadmit and aeo-geo', () => {
+  test('hardcoded footer already lists every city plus aeo-geo', () => {
     const urls = FOOTER_AREA_LINKS.map((link) => link.url);
     assert.ok(urls.includes('/services/bniyat-atarim-haifa'));
-    assert.ok(urls.includes('/services/website-tadmit'));
     assert.ok(urls.includes('/services/aeo-geo'));
-    assert.equal(urls.length, 12);
+    assert.equal(urls.length, 11);
   });
 
   test('injects the column when a CMS footer omitted it', () => {

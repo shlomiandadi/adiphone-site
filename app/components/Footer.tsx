@@ -3,11 +3,14 @@ import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import {
   footerCopyrightLine,
   HARDCODED_FOOTER,
+  withRequiredContactEmails,
+  withRequiredServiceLinks,
   withRequiredSocialLinks,
   withServiceAreaColumn,
   type FooterLinkView,
   type FooterView,
 } from '../../lib/cms/footerData';
+import { isolateLatinPhrases } from '../../lib/bidi';
 import BrandLogo from './BrandLogo';
 import BusinessDetails from './BusinessDetails';
 
@@ -78,7 +81,11 @@ function DetailRow({ link }: { link: FooterLinkView }) {
     <>
       {Icon ? <Icon className="ml-2" /> : null}
       {link.url ? (
-        <a href={link.url} className="hover:text-white transition-colors">
+        <a
+          href={link.url}
+          className="hover:text-white transition-colors"
+          aria-label={link.url.startsWith('mailto:') ? `שליחת דוא״ל אל ${link.title}` : undefined}
+        >
           {link.title}
         </a>
       ) : (
@@ -97,7 +104,7 @@ function LinkColumn({ title, links, services }: { title: string; links: FooterLi
         {links.map((link) => (
           <li key={link.id || `${link.title}-${link.url}`}>
             <Link href={link.url || '/'} prefetch={false} className="text-gray-400 hover:text-white transition-colors">
-              {link.title}
+              {isolateLatinPhrases(link.title)}
             </Link>
           </li>
         ))}
@@ -174,22 +181,6 @@ function FooterMarkup({ data }: { data: FooterView }) {
   );
 }
 
-function withWebsiteTadmit(data: FooterView): FooterView {
-  return {
-    ...data,
-    columns: data.columns.map((column) => {
-      if (column.kind !== 'services') return column;
-      if (column.links.some((link) => link.url === '/services/website-tadmit')) return column;
-      const links = [...column.links];
-      const index = links.findIndex((link) => link.url === '/services/web-development');
-      const item = { title: 'אתרי תדמית לעסקים', url: '/services/website-tadmit' };
-      if (index >= 0) links.splice(index + 1, 0, item);
-      else links.unshift(item);
-      return { ...column, links };
-    }),
-  };
-}
-
 function withDataDeletion(data: FooterView): FooterView {
   return {
     ...data,
@@ -223,8 +214,12 @@ function withTerms(data: FooterView): FooterView {
 export default function Footer({ cmsFooter }: { cmsFooter?: FooterView | null }) {
   return (
     <FooterMarkup
-      data={withRequiredSocialLinks(
-        withServiceAreaColumn(withTerms(withDataDeletion(withWebsiteTadmit(cmsFooter || HARDCODED_FOOTER))))
+      data={withRequiredContactEmails(
+        withRequiredSocialLinks(
+          withRequiredServiceLinks(
+            withServiceAreaColumn(withTerms(withDataDeletion(cmsFooter || HARDCODED_FOOTER)))
+          )
+        )
       )}
     />
   );

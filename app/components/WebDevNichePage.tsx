@@ -159,6 +159,28 @@ export default function WebDevNichePage({ content }: Props) {
           </div>
         </section>
 
+        {content.pricingSection ? (
+          <section className="bg-gray-50 px-4 py-16" aria-labelledby="niche-pricing">
+            <div className="container mx-auto max-w-3xl">
+              <h2 id="niche-pricing" className="mb-6 text-3xl font-bold text-gray-900">
+                {content.pricingSection.title}
+              </h2>
+              <ul className="mb-6 list-disc space-y-2 pr-6 text-lg text-gray-800">
+                {content.pricingSection.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="text-lg text-gray-700">
+                לכל חבילות בניית האתרים, תחזוקה ואחסון:{' '}
+                <Link href="/pricing" className="font-semibold text-blue-700 underline underline-offset-2">
+                  מחירון בניית אתרים
+                </Link>
+                .
+              </p>
+            </div>
+          </section>
+        ) : null}
+
         <section className="bg-gray-50 px-4 py-16" aria-labelledby="niche-faq">
           <div className="container mx-auto max-w-3xl">
             <h2 id="niche-faq" className="mb-10 text-center text-3xl font-bold text-gray-900">

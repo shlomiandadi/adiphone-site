@@ -6,7 +6,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { FaTimes, FaSearch, FaTag, FaHome, FaCode, FaMobile, FaGlobe, FaChartLine, FaEnvelope, FaBars, FaUsers, FaBlog, FaShoppingCart, FaPaintBrush } from 'react-icons/fa';
 import React from 'react';
 import SearchResult from './SearchResult';
-import { navigation, promotions, type NavigationItem } from './navigation-data';
+import { promotions, type NavigationItem } from './navigation-data';
+import { withRequiredHeaderMenu } from '../../lib/cms/headerMenu';
 import { IconType } from 'react-icons';
 import BrandLogo from './BrandLogo';
 import { bootHeroLogo } from './logo3d/bootHeroLogo';
@@ -38,26 +39,8 @@ function getIcon(iconName: string | undefined) {
   return iconMap[iconName || ''] || FaCode;
 }
 
-const WEBSITE_TADMIT_LINK = {
-  name: 'אתרי תדמית לעסקים',
-  href: '/services/website-tadmit',
-  icon: 'globe',
-  description: 'אתר תדמית שמציג את העסק ומביא פניות',
-};
-
-function withWebsiteTadmit(items: NavigationItem[]): NavigationItem[] {
-  return items.map((item) => {
-    if (!item.submenu?.some((child) => child.href === '/services/web-development')) return item;
-    if (item.submenu.some((child) => child.href === WEBSITE_TADMIT_LINK.href)) return item;
-    const submenu = [...item.submenu];
-    const index = submenu.findIndex((child) => child.href === '/services/web-development');
-    submenu.splice(index + 1, 0, WEBSITE_TADMIT_LINK);
-    return { ...item, submenu };
-  });
-}
-
 export default function ClientHeader({ items }: { items?: NavigationItem[] | null }) {
-  const navItems = withWebsiteTadmit(items && items.length > 0 ? items : navigation);
+  const navItems = withRequiredHeaderMenu(items);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
@@ -315,7 +298,7 @@ export default function ClientHeader({ items }: { items?: NavigationItem[] | nul
           <div className="max-w-7xl mx-auto">
             <div className="marquee-container">
               <div className="marquee-content">
-                {promotions.map((promo, index) => (
+                {[...promotions, ...promotions].map((promo, index) => (
                   <span key={index}>
                     <FaTag />
                     {promo}

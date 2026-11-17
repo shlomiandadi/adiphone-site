@@ -43,14 +43,6 @@ export default function ServicesPage() {
       features: ["אתר תדמית", "דף נחיתה", "חנות אונליין", "וורדפרס"]
     },
     {
-      title: "אתרי תדמית לעסקים",
-      description: "אתר שמציג את העסק, השירותים והדרך לפנות – בלי חנות ובלי מערכת",
-      icon: <FaCode className="w-8 h-8 text-blue-600" />,
-      image: "/images/services/web-development.svg",
-      link: "/services/website-tadmit",
-      features: ["עד 6–8 עמודים", "מותאם לנייד", "פנייה בוואטסאפ", "ניהול תוכן"]
-    },
-    {
       title: "קידום אתרים",
       description: "קידום אורגני מקצועי שמביא תוצאות אמיתיות",
       icon: <FaSearch className="w-8 h-8 text-blue-600" />,
@@ -129,6 +121,32 @@ export default function ServicesPage() {
       image: "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?w=800",
       link: "/services/aeo-geo",
       features: ["מחקר שאלות", "תוכן בפורמט תשובה", "נתונים מובנים", "חיזוק זהות העסק"]
+    },
+    {
+      title: "עסק ב-ChatGPT (Business Hub)",
+      description: "תביעת הפרופיל, אימות וניהול Insights ב-ChatGPT Business Hub",
+      icon: <FaBrain className="w-8 h-8 text-blue-600" />,
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
+      link: "/services/chatgpt-business-hub",
+      features: [
+        "תביעת הפרופיל ואימות",
+        "עדכון פרטים וקטגוריה",
+        "מעקב אחרי אזכורים וקליקים",
+        "חיבור לקידום במנועי AI",
+      ],
+    },
+    {
+      title: "מודעות ב-ChatGPT",
+      description: "פרסום ממומן ב-ChatGPT Ads Manager: הקמת חשבון, מודעות, מדידה וניהול קמפיינים",
+      icon: <FaBrain className="w-8 h-8 text-blue-600" />,
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
+      link: "/services/chatgpt-ads",
+      features: [
+        "בדיקת זכאות ומדיניות",
+        "הקמת חשבון ובעלות אצלכם",
+        "רמזי הקשר וקריאייטיב",
+        "אופטימיזציה ודיווח",
+      ],
     },
     {
       title: "שירותי ענן",
@@ -256,10 +274,6 @@ export default function ServicesPage() {
           ))}
         </ul>
         <p className="mt-8 text-center text-lg text-gray-700 dark:text-gray-300">
-          <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline">
-            אתר תדמית לעסק
-          </Link>
-          {' · '}
           <Link href="/services/aeo-geo" className="font-semibold text-blue-700 underline">
             הופעה בתשובות של ChatGPT ו-Gemini
           </Link>

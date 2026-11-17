@@ -1,5 +1,5 @@
 import { hasPageOverride } from './override.ts';
-import { normalizeSeoAgentPath } from './paths.ts';
+import { isSeoAgentProtectedPath, normalizeSeoAgentPath } from './paths.ts';
 import type {
   SeoAgentApplyPayload,
   SeoAgentFaqItem,
@@ -10,6 +10,7 @@ import type {
 
 const APPLY_ACTIONS = new Set([
   'apply',
+  'apply_change',
   'upsert',
   'update',
   'set',
@@ -158,10 +159,15 @@ export function isSeoAgentArticlePayload(payload: unknown): boolean {
 function upsertPage(
   state: SeoAgentStoreState,
   touched: Set<string>,
+  skippedProtected: Set<string>,
   rawPath: string | null | undefined,
   override: SeoAgentPageOverride
 ) {
   const path = normalizeSeoAgentPath(rawPath);
+  if (isSeoAgentProtectedPath(path)) {
+    skippedProtected.add(path);
+    return;
+  }
   if (!hasPageOverride(override)) return;
   state.pages[path] = { ...(state.pages[path] || {}), ...override };
   touched.add(path);
@@ -170,7 +176,13 @@ function upsertPage(
 export function reduceSeoAgentState(
   current: SeoAgentStoreState,
   payload: SeoAgentApplyPayload
-): { state: SeoAgentStoreState; touched: string[]; redirectsUpdated: boolean; llmsUpdated: boolean } {
+): {
+  state: SeoAgentStoreState;
+  touched: string[];
+  skippedProtected: string[];
+  redirectsUpdated: boolean;
+  llmsUpdated: boolean;
+} {
   const action = String(payload.action || payload.type || 'apply').toLowerCase();
   const state: SeoAgentStoreState = {
     pages: { ...(current.pages || {}) },
@@ -178,35 +190,50 @@ export function reduceSeoAgentState(
     llms: current.llms || '',
   };
   const touched = new Set<string>();
+  const skippedProtected = new Set<string>();
   let llmsUpdated = false;
   let redirectsUpdated = false;
 
   if (action === 'delete' || action === 'remove') {
     const path = normalizeSeoAgentPath(payload.path || payload.url);
-    delete state.pages[path];
-    touched.add(path);
+    if (isSeoAgentProtectedPath(path)) {
+      skippedProtected.add(path);
+    } else {
+      delete state.pages[path];
+      touched.add(path);
+    }
   }
 
   const singlePath = payload.path || payload.url || payload.override?.path || payload.override?.url;
   if (singlePath && action !== 'redirects' && action !== 'llms' && action !== 'revalidate') {
-    upsertPage(state, touched, singlePath, pageFromPayload({ ...payload, ...(payload.override || {}) }));
+    upsertPage(
+      state,
+      touched,
+      skippedProtected,
+      singlePath,
+      pageFromPayload({ ...payload, ...(payload.override || {}) })
+    );
   }
 
   if (payload.overrides) {
     for (const [rawPath, value] of Object.entries(payload.overrides)) {
       const path = normalizeSeoAgentPath(rawPath);
+      if (isSeoAgentProtectedPath(path)) {
+        skippedProtected.add(path);
+        continue;
+      }
       if (!value) {
         delete state.pages[path];
         touched.add(path);
         continue;
       }
-      upsertPage(state, touched, path, pageFromPayload(value));
+      upsertPage(state, touched, skippedProtected, path, pageFromPayload(value));
     }
   }
 
   if (Array.isArray(payload.pages)) {
     for (const page of payload.pages) {
-      upsertPage(state, touched, page.path || page.url, pageFromPayload(page));
+      upsertPage(state, touched, skippedProtected, page.path || page.url, pageFromPayload(page));
     }
   }
 
@@ -230,6 +257,7 @@ export function reduceSeoAgentState(
   return {
     state,
     touched: Array.from(touched),
+    skippedProtected: Array.from(skippedProtected),
     redirectsUpdated,
     llmsUpdated,
   };

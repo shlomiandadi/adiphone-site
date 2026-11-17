@@ -6,7 +6,7 @@ import LegalPageLayout, { LegalSection } from '../components/LegalPageLayout';
 const pageMetadata = {
   title: 'הצהרת נגישות',
   description:
-    'הצהרת הנגישות של אתר Top Webstak מבית עדי פון תקשורת: אמצעי הנגישות באתר, הוראות שימוש ודרכי פנייה בנושא נגישות.',
+    'הצהרת נגישות של אתר Top Webstak: כלי הנגישות באתר, ניווט במקלדת, שינוי גופן וניגודיות, והוראות פנייה אם נתקלתם בחסם באתר.',
   alternates: {
     canonical: '/accessibility-statement',
   },
@@ -71,7 +71,7 @@ export default function AccessibilityStatement() {
             אם נתקלתם בבעיה כלשהי בנגישות האתר, נשמח שתעדכנו אותנו ונפעל לתקנה בהקדם האפשרי.
           </p>
           <ul className="list-disc pr-6 text-gray-700">
-            <li>דוא"ל: <a href="mailto:shlomiandadi@gmail.com" className="text-blue-600 hover:underline">shlomiandadi@gmail.com</a></li>
+            <li>דוא"ל: <a href="mailto:shlomiandadi@gmail.com" className="text-blue-600 hover:underline">shlomiandadi@gmail.com</a> או <a href="mailto:info@adi-phone.co.il" className="text-blue-600 hover:underline">info@adi-phone.co.il</a> או <a href="mailto:info@topwebstack.app" className="text-blue-600 hover:underline" aria-label="שליחת דוא״ל אל info@topwebstack.app">info@topwebstack.app</a></li>
             <li>טלפון: <a href="tel:0509159951" className="text-blue-600 hover:underline">050-9159951</a></li>
           </ul>
         </LegalSection>

@@ -226,6 +226,12 @@ export async function POST(request: NextRequest) {
 
     if (isSeoAgentApplyPayload(payload)) {
       const result = await applySeoAgentPayload(payload);
+      if (!result.success) {
+        return NextResponse.json(
+          { error: result.skipped, paths: result.paths },
+          { status: 403 }
+        );
+      }
       return NextResponse.json(result);
     }
 

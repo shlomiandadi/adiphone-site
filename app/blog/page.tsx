@@ -107,7 +107,7 @@ export default async function Blog({
                 בניית אתרים
               </Link>
               {' '}ו{' '}
-              <Link href="/services/website-tadmit" className="font-semibold text-blue-700 underline">
+              <Link href="/services/web-development" className="font-semibold text-blue-700 underline">
                 בניית אתר תדמית
               </Link>
               .

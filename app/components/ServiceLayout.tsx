@@ -84,6 +84,14 @@ interface ServiceLayoutProps {
   extraHeadingAs?: 'h2' | 'p';
   /** Override the shared pricing-block heading on this service page only. */
   pricingHeading?: string;
+  /** Override intro copy in the shared pricing block (e.g. software pages). */
+  pricingIntro?: string;
+  /** Hide links to /pricing in the shared pricing block footer. */
+  pricingOmitWebsitePriceList?: boolean;
+  /** Optional content immediately above the shared service CTA banner. */
+  beforeCta?: React.ReactNode;
+  /** Optional block inserted before the FAQ section (e.g. buyer guide). */
+  beforeFaq?: React.ReactNode;
   /** Replace the shared website-packages teaser with a page-specific pricing section. */
   pricingContent?: React.ReactNode;
   /** Deprecated: placeholder testimonials were removed. Kept optional for back-compat. */
@@ -176,7 +184,11 @@ export default function ServiceLayout({
   extraHeading,
   extraHeadingAs,
   pricingHeading,
+  pricingIntro,
+  pricingOmitWebsitePriceList,
   pricingContent,
+  beforeCta,
+  beforeFaq,
 }: ServiceLayoutProps) {
   const motionInitial = disableMotionHide ? false : 'hidden';
   const [topicPortfolio, setTopicPortfolio] = useState(portfolioTopic ? [] : portfolio);
@@ -579,6 +591,8 @@ export default function ServiceLayout({
       </section>
       )}
 
+      {beforeFaq}
+
       {/* FAQ Section */}
       <section data-reveal className="bg-white px-4 py-16 dark:bg-gray-900">
         <div className="container mx-auto max-w-4xl">
@@ -619,8 +633,15 @@ export default function ServiceLayout({
       {pricingContent
         ? pricingContent
         : serviceType && !hidePricing && (
-            <ServicePricing serviceType={serviceType} heading={pricingHeading} />
+            <ServicePricing
+              serviceType={serviceType}
+              heading={pricingHeading}
+              intro={pricingIntro}
+              omitWebsitePriceList={pricingOmitWebsitePriceList}
+            />
           )}
+
+      {beforeCta}
 
       <ServiceCtaBanner
         serviceKey={servicePath || serviceType}

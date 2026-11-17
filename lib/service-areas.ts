@@ -71,11 +71,6 @@ export const KEY_CITY_HREFS = [
 
 export const EXTRA_SERVICE_AREA_LINKS: readonly ServiceAreaLink[] = [
   {
-    href: '/services/website-tadmit',
-    name: 'אתרי תדמית לעסקים',
-    blurb: 'אתר תדמית שמציג את העסק ומביא פניות.',
-  },
-  {
     href: '/services/aeo-geo',
     name: 'קידום במנועי AI (AEO ו-GEO)',
     blurb: 'הופעה בתשובות של ChatGPT ו-Gemini.',

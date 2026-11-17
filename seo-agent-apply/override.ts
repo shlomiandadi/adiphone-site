@@ -1,6 +1,19 @@
 import type { Metadata } from 'next';
 import { applyCmsTitle } from '../lib/cms/seoMerge.ts';
+import { isSeoAgentProtectedPath, normalizeSeoAgentPath } from './paths.ts';
 import type { SeoAgentPageOverride } from './types';
+
+/** Stale store rows for protected paths must never reach metadata or FAQ/schema extras. */
+export function resolveSeoAgentPageOverride(
+  path: string,
+  pages: Record<string, SeoAgentPageOverride | undefined>
+): SeoAgentPageOverride | null {
+  const normalized = normalizeSeoAgentPath(path);
+  if (isSeoAgentProtectedPath(normalized)) return null;
+  const override = pages[normalized] || pages[path];
+  if (!override || !hasPageOverride(override)) return null;
+  return override;
+}
 
 export function hasPageOverride(override: SeoAgentPageOverride | null | undefined): boolean {
   if (!override) return false;

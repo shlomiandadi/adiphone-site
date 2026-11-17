@@ -106,16 +106,22 @@ export const navigation: NavigationItem[] = [
         description: "שהעסק יופיע בתשובות של מנועי AI"
       },
       {
+        name: "עסק ב-ChatGPT",
+        href: "/services/chatgpt-business-hub",
+        icon: "code",
+        description: "תביעת הפרופיל, עדכון פרטים ומעקב אחרי אזכורים וקליקים"
+      },
+      {
+        name: "מודעות ב-ChatGPT",
+        href: "/services/chatgpt-ads",
+        icon: "code",
+        description: "הקמת חשבון, מודעות ומדידה ב-ChatGPT Ads Manager"
+      },
+      {
         name: "בניית אתרים",
         href: "/services/web-development",
         icon: "globe",
         description: "פיתוח אתרי תדמית ומערכות Web"
-      },
-      {
-        name: "אתרי תדמית לעסקים",
-        href: "/services/website-tadmit",
-        icon: "globe",
-        description: "אתר תדמית שמציג את העסק ומביא פניות"
       },
       {
         name: "מחירון בניית אתרים",

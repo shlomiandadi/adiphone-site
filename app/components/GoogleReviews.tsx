@@ -2,10 +2,11 @@ import {
   CONTACT_PAGE_REVIEWS,
   GOOGLE_MAPS_REVIEWS_URL,
   GOOGLE_RATING,
+  type SiteReview,
 } from '../../lib/reviews';
 
 type Props = {
-  reviews?: typeof CONTACT_PAGE_REVIEWS;
+  reviews?: readonly SiteReview[];
   heading?: string;
 };
 

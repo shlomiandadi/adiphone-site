@@ -1,9 +1,6 @@
-import type { BlogHeading } from '../../lib/blog-article-enhance';
-
-/** Shown only when enough H2s exist to list as section takeaways — no invented copy. */
-export default function BlogKeyTakeaways({ headings }: { headings: BlogHeading[] }) {
-  if (headings.length < 3) return null;
-  const items = headings.slice(0, 6);
+/** Answer sentences from the article aio-summary. Hidden when the post has none. */
+export default function BlogKeyTakeaways({ items }: { items: string[] }) {
+  if (!items.length) return null;
 
   return (
     <aside
@@ -12,15 +9,13 @@ export default function BlogKeyTakeaways({ headings }: { headings: BlogHeading[]
     >
       <p className="mb-3 text-sm font-bold tracking-wide text-[#02336E]">נקודות עיקריות</p>
       <ul className="space-y-2">
-        {items.map((heading) => (
-          <li key={heading.id} className="flex items-start gap-2 text-gray-800">
+        {items.map((item) => (
+          <li key={item} className="flex items-start gap-2 text-gray-800">
             <span
-              className="mt-1 inline-block h-2.5 w-2.5 flex-shrink-0 rounded-full bg-[#22DEFB]"
+              className="mt-1.5 inline-block h-2.5 w-2.5 flex-shrink-0 rounded-full bg-[#22DEFB]"
               aria-hidden
             />
-            <a href={`#${heading.id}`} className="font-medium text-[#02336E] hover:underline">
-              {heading.text}
-            </a>
+            <span className="font-medium leading-relaxed text-[#02336E]">{item}</span>
           </li>
         ))}
       </ul>

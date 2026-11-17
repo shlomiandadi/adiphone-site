@@ -8,17 +8,18 @@ Top Webstak היא סוכנות דיגיטל מבית עדי פון תקשורת
 
 פרטי יצירת קשר:
 - טלפון: +972-50-9159951
-- דוא"ל: adiphoneseo@gmail.com
+- דוא"ל: adiphoneseo@gmail.com, info@adi-phone.co.il, info@topwebstack.app
 - כתובת: זמיר 95, פרדס חנה-כרכור, ישראל
 
 ## שירותים (תיאור)
-- בניית אתרים: אתרי תדמית, קטלוג ומערכות Web, מהירים, מאובטחים ומותאמים לנייד. https://adi-phone.co.il/services/web-development
-- אתרי תדמית לעסקים: מחירים, תהליך ודוגמאות לאתר תדמית, בלי חנות ובלי מערכת. https://adi-phone.co.il/services/website-tadmit
+- בניית אתרים: אתרי תדמית, קטלוג ומערכות Web, מהירים, מאובטחים ומותאמים לנייד — מחירים, תהליך ודוגמאות. https://adi-phone.co.il/services/web-development
 - בניית אתרי וורדפרס: אתרים על מערכת וורדפרס עם ממשק ניהול נוח. https://adi-phone.co.il/services/wordpress
 - חנויות אונליין (איקומרס): חנויות למכירה אונליין עם ניהול מוצרים וסליקה. https://adi-phone.co.il/services/ecommerce
 - קידום אתרים אורגני (SEO): שיפור הדירוג בתוצאות החיפוש הטבעיות של גוגל. https://adi-phone.co.il/services/seo
 - קידום ממומן (PPC): ניהול קמפיינים בגוגל וברשתות החברתיות. https://adi-phone.co.il/services/ppc
 - קידום במנועי AI (AEO / GEO): אופטימיזציה להופעה בתשובות של מנועי AI כמו ChatGPT, Google AI Overviews ו-Perplexity. https://adi-phone.co.il/services/aeo-geo
+- ChatGPT Business Hub: תביעת פרופיל עסקי, אימות וניהול Insights ב-ChatGPT. https://adi-phone.co.il/services/chatgpt-business-hub
+- ChatGPT Ads: פרסום ממומן ב-ChatGPT — Ads Manager, מודעות ומדידה. https://adi-phone.co.il/services/chatgpt-ads
 - פיתוח אפליקציות: אפליקציות לאנדרואיד ול-iOS. https://adi-phone.co.il/services/mobile-apps
 - עיצוב UI/UX: עיצוב חוויית משתמש וממשק. https://adi-phone.co.il/services/ui-design
 - אנליטיקס: איסוף וניתוח נתונים לקבלת החלטות. https://adi-phone.co.il/services/analytics
@@ -31,4 +32,4 @@ Top Webstak היא סוכנות דיגיטל מבית עדי פון תקשורת
 
 ## הערות לשימוש
 - המידע באתר הוא בעברית.
-- לפרטים מדויקים, הצעות מחיר וזמינות יש ליצור קשר בטלפון +972-50-9159951 או בדוא"ל adiphoneseo@gmail.com.
+- לפרטים מדויקים, הצעות מחיר וזמינות יש ליצור קשר בטלפון +972-50-9159951 או בדוא"ל adiphoneseo@gmail.com או info@adi-phone.co.il או info@topwebstack.app.

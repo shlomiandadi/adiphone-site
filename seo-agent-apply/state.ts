@@ -2,7 +2,7 @@ import { contentCache, SEO_AGENT_CACHE_TAG } from '../lib/contentCache';
 import { readDbState, writeDbState } from './db';
 import { readSeoAgentBlobState as readBlobState, writeSeoAgentBlobState as writeBlobState } from './store';
 import type { SeoAgentPageOverride, SeoAgentStoreState } from './types';
-import { hasPageOverride } from './override';
+import { hasPageOverride, resolveSeoAgentPageOverride } from './override';
 
 const EMPTY: SeoAgentStoreState = { pages: {}, redirects: [], llms: '' };
 
@@ -66,11 +66,11 @@ export async function writeSeoAgentState(state: SeoAgentStoreState): Promise<voi
   }
 }
 
+export { resolveSeoAgentPageOverride };
+
 export async function getSeoAgentPageOverride(path: string): Promise<SeoAgentPageOverride | null> {
   const state = await readSeoAgentState();
-  const override = state.pages[path];
-  if (!override || !hasPageOverride(override)) return null;
-  return override;
+  return resolveSeoAgentPageOverride(path, state.pages);
 }
 
 export async function getSeoAgentLlmsAddition(): Promise<string> {

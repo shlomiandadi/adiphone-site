@@ -46,6 +46,9 @@ export default function Contact() {
                     <p className="text-gray-600 dark:text-gray-300">
                       <a href="mailto:info@adi-phone.co.il" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">info@adi-phone.co.il</a>
                     </p>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      <a href="mailto:info@topwebstack.app" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors" aria-label="שליחת דוא״ל אל info@topwebstack.app">info@topwebstack.app</a>
+                    </p>
                   </div>
                 </div>
 

@@ -1,5 +1,6 @@
 import { metadata as aboutMetadata, viewport as aboutViewport } from './metadata';
 import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
+import { BUSINESS_EMAILS } from '../../lib/local-business-schema';
 import { GOOGLE_MAPS_REVIEWS_URL } from '../../lib/reviews';
 import { PERSON_SAME_AS, SOCIAL_FACEBOOK, SOCIAL_INSTAGRAM, SOCIAL_LINKEDIN } from '../../lib/social';
 
@@ -21,7 +22,7 @@ const organizationSchema = {
     width: 1024,
     height: 1024,
   },
-  email: ['adiphoneseo@gmail.com', 'info@adi-phone.co.il'],
+  email: [...BUSINESS_EMAILS],
   telephone: '+972-50-9159951',
   address: {
     '@type': 'PostalAddress',

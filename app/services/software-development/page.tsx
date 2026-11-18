@@ -4,7 +4,7 @@ import ServiceLayout from '../../components/ServiceLayout';
 import { FaCode, FaMobileAlt, FaShieldAlt } from 'react-icons/fa';
 
 const SOFTWARE_PRICING_INTRO =
-  'מחיר פתיחה מאושר, לא כולל מע״מ. המחיר הסופי נקבע לפי היקף הפרויקט.';
+  'מחיר פתיחה מאושר. המחיר הסופי נקבע לפי היקף הפרויקט.';
 
 const softwareDevelopmentContent = `
 <h2>פיתוח תוכנה מתקדם</h2>

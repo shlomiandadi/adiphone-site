@@ -14,12 +14,7 @@ const FAQ = [
   {
     question: 'כמה עולה לבנות אתר?',
     answer:
-      'אצלנו המחיר ההתחלתי הוא 2,500 ₪ + מע״מ לדף נחיתה, 6,500 ₪ + מע״מ לאתר תדמית של עד 6–8 עמודים, 12,000 ₪ + מע״מ לחנות אונליין, ו-20,000 ₪ + מע״מ לפיתוח מותאם, מערכת או פורטל לפי אפיון. המחיר הסופי נקבע אחרי שיחה קצרה על ההיקף.',
-  },
-  {
-    question: 'האם המחירים כוללים מע״מ?',
-    answer:
-      'לא. כל המחירים בעמוד הזה אינם כוללים מע״מ, ומצוינים כמחירי פתיחה + מע״מ.',
+      'אצלנו המחיר ההתחלתי הוא 2,500 ₪ לדף נחיתה, 6,500 ₪ לאתר תדמית של עד 6–8 עמודים, 12,000 ₪ לחנות אונליין, ו-20,000 ₪ לפיתוח מותאם, מערכת או פורטל לפי אפיון. המחיר הסופי נקבע אחרי שיחה קצרה על ההיקף.',
   },
   {
     question: 'מה כלול במחיר ומה לא?',
@@ -52,7 +47,7 @@ const COMPARISON_ROWS: { feature: string; values: string[] }[] = [
   { feature: 'SEO טכני', values: ['בסיס', 'כן, כולל LocalBusiness ו-FAQ', 'כן, כולל SEO למוצרים', 'לפי אפיון'] },
   { feature: 'מוכנות לחיפוש AI / GEO', values: ['—', 'כן', 'כן', 'לפי אפיון'] },
   { feature: 'סליקה ישראלית ומשלוחים', values: ['—', '—', 'כן', 'לפי אפיון'] },
-  { feature: 'מחיר התחלתי + מע״מ', values: ['מ-2,500 ₪', 'מ-6,500 ₪', 'מ-12,000 ₪', 'מ-20,000 ₪'] },
+  { feature: 'מחיר התחלתי', values: ['מ-2,500 ₪', 'מ-6,500 ₪', 'מ-12,000 ₪', 'מ-20,000 ₪'] },
 ];
 
 const PRICE_FACTORS = [
@@ -74,7 +69,7 @@ const PRICE_FACTORS = [
   },
   {
     title: 'מי כותב את הטקסטים',
-    text: 'אם תעבירו תוכן מוכן, העלות נשארת בחבילה. כתיבה על ידינו היא 250–400 ₪ לעמוד + מע״מ.',
+    text: 'אם תעבירו תוכן מוכן, העלות נשארת בחבילה. כתיבה על ידינו היא 250–400 ₪ לעמוד.',
   },
   {
     title: 'לוח זמנים',
@@ -113,12 +108,10 @@ export default function PricingPage() {
       url: pageUrl,
       price: String(pkg.startingPrice),
       priceCurrency: 'ILS',
-      valueAddedTaxIncluded: false,
       priceSpecification: {
         '@type': 'PriceSpecification',
         price: String(pkg.startingPrice),
         priceCurrency: 'ILS',
-        valueAddedTaxIncluded: false,
       },
     })),
   };
@@ -150,7 +143,7 @@ export default function PricingPage() {
       <Hero3D
         theme="pricing"
         title="מחירון בניית אתרים"
-        subtitle="תשובה ישירה לשאלה כמה עולה לבנות אתר? המחירים למטה הם מחירי פתיחה, לא כוללים מע״מ, ומתאימים לעסקים קטנים ובינוניים בישראל."
+        subtitle="תשובה ישירה לשאלה כמה עולה לבנות אתר? המחירים למטה הם מחירי פתיחה, ומתאימים לעסקים קטנים ובינוניים בישראל."
         align="center"
         ctas={[
           { href: '/contact', label: 'קבלו הצעת מחיר' },
@@ -162,20 +155,20 @@ export default function PricingPage() {
         <div className="container mx-auto max-w-3xl text-right">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">כמה עולה לבנות אתר?</h2>
           <p className="mb-4 text-lg leading-relaxed text-gray-700">
-            ב-Top Webstak, מבית עדי פון תקשורת בפרדס חנה, בניית אתר מתחילה במחירים האלה + מע״מ:
+            ב-Top Webstak, מבית עדי פון תקשורת בפרדס חנה, בניית אתר מתחילה במחירים האלה:
           </p>
           <ul className="mb-6 list-disc space-y-2 pr-6 text-lg text-gray-800">
             <li>
-              <strong>דף נחיתה</strong> — מ-2,500 ₪ + מע״מ
+              <strong>דף נחיתה</strong> — מ-2,500 ₪
             </li>
             <li>
-              <strong>אתר תדמית</strong> עד 6–8 עמודים ב-Next.js או בוורדפרס — מ-6,500 ₪ + מע״מ
+              <strong>אתר תדמית</strong> עד 6–8 עמודים ב-Next.js או בוורדפרס — מ-6,500 ₪
             </li>
             <li>
-              <strong>חנות אונליין</strong> — מ-12,000 ₪ + מע״מ
+              <strong>חנות אונליין</strong> — מ-12,000 ₪
             </li>
             <li>
-              <strong>פיתוח מותאם / מערכת / פורטל</strong> — מ-20,000 ₪ + מע״מ, לפי אפיון
+              <strong>פיתוח מותאם / מערכת / פורטל</strong> — מ-20,000 ₪, לפי אפיון
             </li>
           </ul>
           <p className="text-lg leading-relaxed text-gray-700">
@@ -205,7 +198,7 @@ export default function PricingPage() {
                 )}
                 <h3 className="mb-2 text-2xl font-bold text-gray-900">{pkg.name}</h3>
                 <p className="mb-1 text-3xl font-bold text-blue-700">
-                  {pkg.priceLabel} <span className="text-base font-medium text-gray-600">+ מע״מ</span>
+                  {pkg.priceLabel}
                 </p>
                 <p className="mb-6 text-gray-600">{pkg.summary}</p>
                 <ul className="mb-6 flex-1 space-y-2 text-gray-700">
@@ -341,7 +334,7 @@ export default function PricingPage() {
         <div className="container mx-auto max-w-4xl">
           <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">עלויות שוטפות ותוספות</h2>
           <p className="mx-auto mb-10 max-w-3xl text-center text-lg text-gray-700">
-            בניית האתר היא עלות חד-פעמית. אלה השירותים הנפרדים שאפשר להוסיף – גם הם + מע״מ:
+            בניית האתר היא עלות חד-פעמית. אלה השירותים הנפרדים שאפשר להוסיף:
           </p>
           <div className="overflow-hidden rounded-2xl ring-1 ring-gray-100">
             <table className="min-w-full text-right">
@@ -356,7 +349,7 @@ export default function PricingPage() {
                 {PRICING_ADDONS.map((addon, index) => (
                   <tr key={addon.name} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                     <td className="px-4 py-3 font-medium text-gray-900">{addon.name}</td>
-                    <td className="px-4 py-3 text-gray-800">{addon.priceLabel} + מע״מ</td>
+                    <td className="px-4 py-3 text-gray-800">{addon.priceLabel}</td>
                     <td className="px-4 py-3 text-gray-600">{addon.detail}</td>
                   </tr>
                 ))}

@@ -423,14 +423,13 @@ export default function ChatGptAdsPage() {
         <div className="container mx-auto max-w-5xl">
           <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">מחירים</h2>
           <p className="mx-auto mb-6 max-w-2xl text-center text-lg text-gray-700">
-            מחירי השירות + מע״מ. תקציב המדיה משולם ישירות ל-OpenAI (מינימום רשמי 60 ₪ ליום בחשבון
+            מחירי השירות. תקציב המדיה משולם ישירות ל-OpenAI (מינימום רשמי 60 ₪ ליום בחשבון
             שקלי). אחרי בדיקת זכאות ואפיון קצר נאשר את חבילת הניהול המתאימה.
           </p>
           <article className="mx-auto mb-10 max-w-xl rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
             <h3 className="mb-2 text-2xl font-bold text-gray-900">הקמה חד-פעמית</h3>
             <p className="mb-1 text-3xl font-bold text-blue-700">
-              {SETUP_PRICE.toLocaleString('he-IL')} ₪{' '}
-              <span className="text-base font-medium text-gray-600">+ מע״מ</span>
+              {SETUP_PRICE.toLocaleString('he-IL')} ₪
             </p>
             <p className="mb-4 text-gray-600">
               בדיקת זכאות, הקמת חשבון, חיוב ומדידה, מודעות ראשונות ורמזי הקשר.
@@ -457,7 +456,7 @@ export default function ChatGptAdsPage() {
                 <p className="mb-3 text-sm text-gray-600">{pkg.summary}</p>
                 <p className="mb-4 text-3xl font-bold text-blue-700">
                   {pkg.price.toLocaleString('he-IL')} ₪{' '}
-                  <span className="text-base font-medium text-gray-600">לחודש + מע״מ</span>
+                  <span className="text-base font-medium text-gray-600">לחודש</span>
                 </p>
                 <ul className="flex-1 space-y-3">
                   {pkg.includes.map((line) => (

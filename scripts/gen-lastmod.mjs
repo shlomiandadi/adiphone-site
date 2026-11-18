@@ -27,9 +27,34 @@ const LOCAL_PAGES = [
   '/services/bniyat-atarim-afula',
 ];
 
+const FAQ_TOPICS = [
+  'aeo-geo',
+  'ai-bots',
+  'chatgpt-ads',
+  'chatgpt-business-hub',
+  'ecommerce',
+  'general',
+  'glossary',
+  'landing-page',
+  'local-areas',
+  'local-seo',
+  'mobile-apps',
+  'objections',
+  'ownership-hosting-security',
+  'ppc',
+  'pricing',
+  'sentry-guard',
+  'seo',
+  'social',
+  'ui-software-analytics-cloud',
+  'verticals',
+  'web-development',
+];
+
 const EXTRA_FILES = {
   '': ['app/page.tsx', 'app/components/HomeSchema.tsx', 'app/components/HomeFAQ.tsx'],
   '/pricing': ['lib/pricing.ts'],
+  '/faq': ['data/faq/index.json', 'lib/faq.ts', 'app/components/FaqAccordion.tsx'],
   '/blog/kama-oleh-bniyat-atar-2026': [
     'app/blog/kama-oleh-bniyat-atar-2026/article.ts',
     'lib/pricing.ts',
@@ -38,6 +63,15 @@ const EXTRA_FILES = {
 
 for (const path of LOCAL_PAGES) {
   EXTRA_FILES[path] = ['app/components/LocalWebsiteBuildingPage.tsx'];
+}
+
+for (const topic of FAQ_TOPICS) {
+  EXTRA_FILES[`/faq/${topic}`] = [
+    `data/faq/${topic}.json`,
+    'app/faq/[topic]/page.tsx',
+    'lib/faq.ts',
+    'app/components/FaqAccordion.tsx',
+  ];
 }
 
 const ROUTES = [
@@ -50,6 +84,8 @@ const ROUTES = [
   '/pricing',
   '/privacy-policy',
   '/accessibility-statement',
+  '/faq',
+  ...FAQ_TOPICS.map((topic) => `/faq/${topic}`),
   '/services/ai',
   '/services/analytics',
   '/services/cloud',

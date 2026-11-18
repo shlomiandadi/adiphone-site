@@ -14,8 +14,10 @@ const lastmodFile = JSON.parse(
 ) as StaticLastmodMap;
 
 describe('static sitemap lastmod', () => {
-  test('covers the 37 indexable static routes', () => {
-    assert.equal(STATIC_ROUTES.length, 37);
+  test('covers the indexable static routes including the FAQ hub', () => {
+    assert.ok(STATIC_ROUTES.includes('/faq'));
+    assert.ok(STATIC_ROUTES.includes('/faq/seo'));
+    assert.equal(STATIC_ROUTES.length, new Set(STATIC_ROUTES).size);
   });
 
   test('uses the per-route git map and never a single CMS date', () => {

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { metadata as blogMetadata } from '../../metadata';
+import { blogTagCanonicalPath } from '../../../../lib/blogTagUrl';
 import { getPostsByTagCached, getTagLabel } from '../../../../lib/posts';
 import { SetBreadcrumbLeaf } from '../../../components/BreadcrumbLeaf';
 import PageBreadcrumbJsonLd from '../../../components/PageBreadcrumbJsonLd';
@@ -38,11 +39,27 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  return mergeSeoAgentMetadata(`/blog/tag/${params.tag}`, blogMetadata);
+  const canonicalPath = blogTagCanonicalPath(params.tag);
+  const merged = await mergeSeoAgentMetadata(canonicalPath, {
+    ...blogMetadata,
+    robots: { index: false, follow: true },
+    alternates: { canonical: canonicalPath },
+  });
+  // Tag archives stay noindex,follow with a self-canonical on the hyphen URL,
+  // even if CMS / SEO-agent rows try to change robots or canonical.
+  return {
+    ...merged,
+    robots: { index: false, follow: true },
+    alternates: {
+      ...merged.alternates,
+      canonical: canonicalPath,
+    },
+  };
 }
 
 export default async function TagPage({ params }: Props) {
   const decodedTag = decodeURIComponent(params.tag);
+  const canonicalPath = blogTagCanonicalPath(params.tag);
   const [posts, tagLabel] = await Promise.all([
     getPostsByTagCached(decodedTag),
     getTagLabel(params.tag),
@@ -51,10 +68,10 @@ export default async function TagPage({ params }: Props) {
   return (
     <div className="container mx-auto px-4 py-8">
       <SetBreadcrumbLeaf title={tagLabel} />
-      <PageBreadcrumbJsonLd pathname={`/blog/tag/${params.tag}`} leafTitle={tagLabel} />
-      <SeoAgentPageExtras path={`/blog/tag/${params.tag}`} />
+      <PageBreadcrumbJsonLd pathname={canonicalPath} leafTitle={tagLabel} />
+      <SeoAgentPageExtras path={canonicalPath} />
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-2">תוצאות עבור: {decodedTag}</h1>
+        <h1 className="text-4xl font-bold mb-2">תוצאות עבור: {tagLabel}</h1>
         <p className="text-gray-600">נמצאו {posts.length} פוסטים</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

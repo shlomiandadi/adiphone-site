@@ -4,6 +4,7 @@ import {
   footerCopyrightLine,
   HARDCODED_FOOTER,
   withRequiredContactEmails,
+  withRequiredFaqLink,
   withRequiredServiceLinks,
   withRequiredSocialLinks,
   withServiceAreaColumn,
@@ -216,8 +217,10 @@ export default function Footer({ cmsFooter }: { cmsFooter?: FooterView | null })
     <FooterMarkup
       data={withRequiredContactEmails(
         withRequiredSocialLinks(
-          withRequiredServiceLinks(
-            withServiceAreaColumn(withTerms(withDataDeletion(cmsFooter || HARDCODED_FOOTER)))
+          withRequiredFaqLink(
+            withRequiredServiceLinks(
+              withServiceAreaColumn(withTerms(withDataDeletion(cmsFooter || HARDCODED_FOOTER)))
+            )
           )
         )
       )}

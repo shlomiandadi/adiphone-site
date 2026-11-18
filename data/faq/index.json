@@ -1,0 +1,110 @@
+{
+  "topics": [
+    {
+      "topic": "aeo-geo",
+      "titleHe": "קידום במנועי AI (AEO/GEO)",
+      "count": 19
+    },
+    {
+      "topic": "ai-bots",
+      "titleHe": "בינה מלאכותית, בוטים ואוטומציה",
+      "count": 19
+    },
+    {
+      "topic": "chatgpt-ads",
+      "titleHe": "פרסום ממומן ב-ChatGPT",
+      "count": 16
+    },
+    {
+      "topic": "chatgpt-business-hub",
+      "titleHe": "פרופיל עסקי ב-ChatGPT (Business Hub)",
+      "count": 23
+    },
+    {
+      "topic": "ecommerce",
+      "titleHe": "חנות אינטרנטית",
+      "count": 24
+    },
+    {
+      "topic": "general",
+      "titleHe": "מי אנחנו, יצירת קשר ואמון",
+      "count": 33
+    },
+    {
+      "topic": "glossary",
+      "titleHe": "מילון מונחים",
+      "count": 32
+    },
+    {
+      "topic": "landing-page",
+      "titleHe": "דף נחיתה",
+      "count": 12
+    },
+    {
+      "topic": "local-areas",
+      "titleHe": "בניית אתרים לפי אזור",
+      "count": 37
+    },
+    {
+      "topic": "local-seo",
+      "titleHe": "קידום מקומי וגוגל העסק שלי",
+      "count": 12
+    },
+    {
+      "topic": "mobile-apps",
+      "titleHe": "פיתוח אפליקציות",
+      "count": 22
+    },
+    {
+      "topic": "objections",
+      "titleHe": "חששות, התנגדויות והשוואות",
+      "count": 20
+    },
+    {
+      "topic": "ownership-hosting-security",
+      "titleHe": "בעלות, דומיין, אחסון, אבטחה, נגישות ופרטיות",
+      "count": 28
+    },
+    {
+      "topic": "ppc",
+      "titleHe": "קמפיינים ממומנים: גוגל, פייסבוק ואינסטגרם",
+      "count": 25
+    },
+    {
+      "topic": "pricing",
+      "titleHe": "מחירים ועלויות",
+      "count": 24
+    },
+    {
+      "topic": "sentry-guard",
+      "titleHe": "אפליקציית Sentry Guard לרכב",
+      "count": 5
+    },
+    {
+      "topic": "seo",
+      "titleHe": "קידום אתרים אורגני (SEO)",
+      "count": 34
+    },
+    {
+      "topic": "social",
+      "titleHe": "סושיאל ורשתות חברתיות",
+      "count": 7
+    },
+    {
+      "topic": "ui-software-analytics-cloud",
+      "titleHe": "עיצוב UI/UX, פיתוח מערכות, אנליטיקס וענן",
+      "count": 23
+    },
+    {
+      "topic": "verticals",
+      "titleHe": "אתרים לפי תחום עסק",
+      "count": 33
+    },
+    {
+      "topic": "web-development",
+      "titleHe": "בניית אתרים, אתר תדמית ווורדפרס",
+      "count": 57
+    }
+  ],
+  "total": 505
+}

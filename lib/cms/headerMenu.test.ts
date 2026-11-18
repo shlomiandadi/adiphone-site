@@ -45,4 +45,16 @@ describe('withRequiredHeaderMenu', () => {
       1
     );
   });
+
+  test('injects FAQ hub after pricing', () => {
+    const cmsMenu: NavigationItem[] = [
+      { name: 'מחירון', href: '/pricing' },
+      { name: 'צור קשר', href: '/contact' },
+    ];
+    const merged = withRequiredHeaderMenu(cmsMenu);
+    assert.deepEqual(
+      merged.map((item) => item.href),
+      ['/pricing', '/faq', '/contact']
+    );
+  });
 });

@@ -18,6 +18,22 @@ describe('fallbackBreadcrumbItems', () => {
     ]);
   });
 
+  test('faq hub uses שאלות נפוצות', () => {
+    assert.deepEqual(fallbackBreadcrumbItems('/faq'), [
+      { url: '/faq', title: 'שאלות נפוצות', isActive: true },
+    ]);
+  });
+
+  test('faq topic leaf title replaces the slug', () => {
+    assert.deepEqual(
+      fallbackBreadcrumbItems('/faq/seo', 'קידום אתרים אורגני (SEO)'),
+      [
+        { url: '/faq', title: 'שאלות נפוצות', isActive: false },
+        { url: '/faq/seo', title: 'קידום אתרים אורגני (SEO)', isActive: true },
+      ]
+    );
+  });
+
   test('nested service path uses Hebrew names, not capitalized slugs', () => {
     assert.deepEqual(fallbackBreadcrumbItems('/services/seo'), [
       { url: '/services', title: 'שירותים', isActive: false },
@@ -120,6 +136,8 @@ describe('pageOwnsBreadcrumbJsonLd', () => {
     assert.equal(pageOwnsBreadcrumbJsonLd('/blog/category/seo'), true);
     assert.equal(pageOwnsBreadcrumbJsonLd('/blog/tag/organic'), true);
     assert.equal(pageOwnsBreadcrumbJsonLd('/portfolio/some-client'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/faq/seo'), true);
+    assert.equal(pageOwnsBreadcrumbJsonLd('/faq'), false);
     assert.equal(pageOwnsBreadcrumbJsonLd('/blog'), false);
     assert.equal(pageOwnsBreadcrumbJsonLd('/services/seo'), false);
   });

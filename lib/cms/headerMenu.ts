@@ -24,8 +24,23 @@ function servicesSubmenu(item: NavigationItem): NavigationItem['submenu'] | unde
   return undefined;
 }
 
+const FAQ_NAV_LINK: NavigationItem = {
+  name: 'שאלות נפוצות',
+  href: '/faq',
+  icon: 'blog',
+};
+
+function withFaqNavItem(items: NavigationItem[]): NavigationItem[] {
+  if (items.some((item) => item.href === FAQ_NAV_LINK.href)) return items;
+  const next = [...items];
+  const pricingIndex = next.findIndex((item) => item.href === '/pricing');
+  const insertAt = pricingIndex >= 0 ? pricingIndex + 1 : next.length;
+  next.splice(insertAt, 0, FAQ_NAV_LINK);
+  return next;
+}
+
 export function withRequiredHeaderMenu(items: NavigationItem[] | null | undefined): NavigationItem[] {
-  const base = items && items.length > 0 ? items : navigation;
+  const base = withFaqNavItem(items && items.length > 0 ? items : navigation);
 
   return base.map((item) => {
     const submenu = servicesSubmenu(item);

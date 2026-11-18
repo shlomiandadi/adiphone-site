@@ -39,6 +39,7 @@ export const FOOTER_QUICK_LINKS: FooterLinkView[] = [
   { title: 'אודות', url: '/about' },
   { title: 'צור קשר', url: '/contact' },
   { title: 'מחירון', url: '/pricing' },
+  { title: 'שאלות נפוצות', url: '/faq' },
   { title: 'מדיניות פרטיות', url: '/privacy-policy' },
   { title: 'הצהרת נגישות', url: '/accessibility-statement' },
 ];
@@ -189,6 +190,11 @@ export function columnKind(title: string, links: FooterLinkView[]): FooterColumn
   return 'links';
 }
 
+const REQUIRED_FAQ_LINK: FooterLinkView = {
+  title: 'שאלות נפוצות',
+  url: '/faq',
+};
+
 const REQUIRED_FOOTER_HUB_LINK: FooterLinkView = {
   title: 'עסק ב-ChatGPT',
   url: '/services/chatgpt-business-hub',
@@ -198,6 +204,24 @@ const REQUIRED_FOOTER_ADS_LINK: FooterLinkView = {
   title: 'מודעות ב-ChatGPT',
   url: '/services/chatgpt-ads',
 };
+
+/** Ensure CMS quick links include the FAQ hub. */
+export function withRequiredFaqLink(data: FooterView): FooterView {
+  const index = data.columns.findIndex(
+    (column) => column.kind === 'links' && column.title === 'קישורים מהירים'
+  );
+  const fallbackIndex = index >= 0 ? index : data.columns.findIndex((column) => column.kind === 'links');
+  if (fallbackIndex < 0) return data;
+  const column = data.columns[fallbackIndex];
+  if (column.links.some((link) => link.url === REQUIRED_FAQ_LINK.url)) return data;
+  const links = [...column.links];
+  const pricingIndex = links.findIndex((link) => link.url === '/pricing');
+  const insertAt = pricingIndex >= 0 ? pricingIndex + 1 : links.length;
+  links.splice(insertAt, 0, REQUIRED_FAQ_LINK);
+  const columns = [...data.columns];
+  columns[fallbackIndex] = { ...column, links };
+  return { ...data, columns };
+}
 
 /** Ensure CMS footers list new service links (e.g. after AEO/GEO). */
 export function withRequiredServiceLinks(data: FooterView): FooterView {

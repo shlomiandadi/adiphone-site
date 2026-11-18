@@ -197,6 +197,11 @@ export const navigation: NavigationItem[] = [
     icon: "chart-line"
   },
   {
+    name: "שאלות נפוצות",
+    href: "/faq",
+    icon: "blog"
+  },
+  {
     name: "אזורי שירות",
     href: "/services/bniyat-atarim-pardes-hana",
     icon: "globe",

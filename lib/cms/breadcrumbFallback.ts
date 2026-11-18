@@ -16,6 +16,7 @@ const SEGMENT_TITLES: Record<string, string> = {
   category: 'קטגוריה',
   tag: 'תגית',
   pricing: 'מחירון',
+  faq: 'שאלות נפוצות',
   contact: 'צור קשר',
   'privacy-policy': 'מדיניות פרטיות',
   'accessibility-statement': 'הצהרת נגישות',
@@ -100,6 +101,7 @@ export function pageOwnsBreadcrumbJsonLd(pathname: string): boolean {
   if (parts[0] === 'blog' && parts[1] === 'tag' && parts[2]) return true;
   if (parts[0] === 'blog' && parts.length === 2) return true;
   if (parts[0] === 'portfolio' && parts.length === 2) return true;
+  if (parts[0] === 'faq' && parts.length === 2) return true;
   return false;
 }
 

@@ -4,11 +4,31 @@ import {
   FOOTER_AREA_LINKS,
   FOOTER_CONTACT_LINKS,
   HARDCODED_FOOTER,
+  withRequiredFaqLink,
   withRequiredSocialLinks,
   withRequiredServiceLinks,
   withServiceAreaColumn,
 } from './footerData.ts';
 import { SOCIAL_INSTAGRAM, SOCIAL_X } from '../social.ts';
+
+describe('withRequiredFaqLink', () => {
+  test('injects FAQ into quick links when CMS omitted it', () => {
+    const merged = withRequiredFaqLink({
+      ...HARDCODED_FOOTER,
+      columns: HARDCODED_FOOTER.columns.map((column) =>
+        column.title === 'קישורים מהירים'
+          ? {
+              ...column,
+              links: column.links.filter((link) => link.url !== '/faq'),
+            }
+          : column
+      ),
+    });
+    const column = merged.columns.find((item) => item.title === 'קישורים מהירים');
+    const urls = column?.links.map((link) => link.url) || [];
+    assert.ok(urls.includes('/faq'));
+  });
+});
 
 describe('withRequiredServiceLinks', () => {
   test('injects ChatGPT after AEO/GEO in CMS footer services column', () => {

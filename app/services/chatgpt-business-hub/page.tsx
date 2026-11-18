@@ -252,13 +252,13 @@ export default function ChatGptBusinessHubPage() {
         <div className="container mx-auto max-w-4xl">
           <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">מחירים</h2>
           <p className="mx-auto mb-10 max-w-2xl text-center text-lg text-gray-700">
-            מחירי פתיחה + מע״מ. אחרי בדיקת זכאות ושיחת אפיון קצרה תקבלו הצעה מדויקת להיקף שלכם.
+            מחירי פתיחה. אחרי בדיקת זכאות ושיחת אפיון קצרה תקבלו הצעה מדויקת להיקף שלכם.
           </p>
           <div className="grid gap-6 md:grid-cols-2">
             <article className="flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
               <h3 className="mb-2 text-2xl font-bold text-gray-900">הקמת פרופיל (חד-פעמי)</h3>
               <p className="mb-1 text-3xl font-bold text-blue-700">
-                מ-2,500 ₪ <span className="text-base font-medium text-gray-600">+ מע״מ</span>
+                מ-2,500 ₪
               </p>
               <p className="mb-4 text-gray-600">
                 תביעה, אימות, בניית פרופיל, חיבור פיד אם זמין והגדרת גישה ל-Insights.
@@ -275,7 +275,7 @@ export default function ChatGptBusinessHubPage() {
             <article className="flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
               <h3 className="mb-2 text-2xl font-bold text-gray-900">ניהול שוטף</h3>
               <p className="mb-1 text-3xl font-bold text-blue-700">
-                250 ₪ לחודש <span className="text-base font-medium text-gray-600">+ מע״מ</span>
+                250 ₪ לחודש
               </p>
               <p className="mb-4 text-gray-600">מעקב Insights, עדכוני פרטים בפרופיל ודוח תקופתי.</p>
               <ul className="flex-1 space-y-3">

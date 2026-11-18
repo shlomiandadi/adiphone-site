@@ -3,6 +3,7 @@ import prisma from '../prisma';
 import { normalizeCanonicalUrl } from '../seo';
 import { cmsCache } from './cache';
 import { cmsRead, isCmsEnabled } from './enabled';
+import { stripVatWording } from '../stripVatWording';
 import {
   applyCmsTitle,
   exactPathKeys,
@@ -48,13 +49,13 @@ export async function mergeCmsMetadata(path: string, base: Metadata): Promise<Me
   const next: Metadata = { ...base };
   if (seo) {
     if (nonEmpty(seo.title)) {
-      const title = applyCmsTitle(base, seo.title);
+      const title = applyCmsTitle(base, stripVatWording(seo.title));
       if (JSON.stringify(title ?? null) !== JSON.stringify(base.title ?? null)) {
         next.title = title;
       }
     }
     if (nonEmpty(seo.description) && seo.description !== (base.description || '')) {
-      next.description = seo.description;
+      next.description = stripVatWording(seo.description);
     }
     if (nonEmpty(seo.keywords) && metadataKeywords(base) && seo.keywords !== metadataKeywords(base)) {
       next.keywords = seo.keywords;
@@ -64,9 +65,12 @@ export async function mergeCmsMetadata(path: string, base: Metadata): Promise<Me
     }
 
     const openGraph = mergeOpenGraph(base, {
-      title: seo.ogTitle && seo.ogTitle !== metadataTitle(base) ? seo.ogTitle : null,
+      title:
+        seo.ogTitle && seo.ogTitle !== metadataTitle(base) ? stripVatWording(seo.ogTitle) : null,
       description:
-        seo.ogDescription && seo.ogDescription !== (base.description || '') ? seo.ogDescription : null,
+        seo.ogDescription && seo.ogDescription !== (base.description || '')
+          ? stripVatWording(seo.ogDescription)
+          : null,
       image: seo.ogImage,
     });
     if (openGraph) next.openGraph = openGraph;

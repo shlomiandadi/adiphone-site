@@ -45,7 +45,7 @@ function PackageCard({ pkg }: { pkg: PricingPackage }) {
       )}
       <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">{pkg.name}</h3>
       <p className="mb-1 text-3xl font-bold text-blue-700">
-        {pkg.priceLabel} <span className="text-base font-medium text-gray-600 dark:text-gray-400">+ מע״מ</span>
+        {pkg.priceLabel}
       </p>
       <p className="mb-6 text-gray-600 dark:text-gray-400">{pkg.summary}</p>
       <ul className="mb-8 flex-1 space-y-3">
@@ -96,7 +96,7 @@ export default function ServicePricing({
   const plans = packagesForService(serviceType);
   const blockHeading = heading || 'מחירון בניית אתרים';
   const defaultIntroWithPlans =
-    'מחירי פתיחה מאושרים, לא כוללים מע״מ. הפירוט המלא, תוספות והשוואת חבילות נמצאים ב';
+    'מחירי פתיחה מאושרים. הפירוט המלא, תוספות והשוואת חבילות נמצאים ב';
 
   return (
     <section className="bg-gradient-to-b from-gray-50 to-white px-4 py-16 dark:from-gray-900 dark:to-gray-800">

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { applyCmsTitle } from '../lib/cms/seoMerge.ts';
+import { stripVatWording } from '../lib/stripVatWording.ts';
 import { isSeoAgentProtectedPath, normalizeSeoAgentPath } from './paths.ts';
 import type { SeoAgentPageOverride } from './types';
 
@@ -48,11 +49,11 @@ export function applySeoAgentOverride(
   const title = override.title?.trim();
 
   if (title) {
-    next.title = applyCmsTitle(base, title);
+    next.title = applyCmsTitle(base, stripVatWording(title));
   }
 
   if (override.description?.trim()) {
-    next.description = override.description.trim();
+    next.description = stripVatWording(override.description.trim());
   }
 
   if (override.keywords?.trim()) {
@@ -66,8 +67,16 @@ export function applySeoAgentOverride(
     };
   }
 
-  const ogTitle = override.ogTitle?.trim() || title;
-  const ogDescription = override.ogDescription?.trim() || override.description?.trim();
+  const ogTitle = override.ogTitle?.trim()
+    ? stripVatWording(override.ogTitle.trim())
+    : title
+      ? stripVatWording(title)
+      : undefined;
+  const ogDescription = override.ogDescription?.trim()
+    ? stripVatWording(override.ogDescription.trim())
+    : override.description?.trim()
+      ? stripVatWording(override.description.trim())
+      : undefined;
   if (ogTitle || ogDescription || override.ogImage) {
     const baseOg = base.openGraph && typeof base.openGraph === 'object' ? base.openGraph : {};
     next.openGraph = {

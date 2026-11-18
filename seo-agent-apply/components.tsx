@@ -1,4 +1,5 @@
 import { omitBreadcrumbList } from '../lib/cms/breadcrumbShared';
+import { stripVatFromUnknown, stripVatWording } from '../lib/stripVatWording';
 import { getSeoAgentPageOverride } from './state';
 
 function parseSchemaMarkup(value: string): unknown | null {
@@ -19,8 +20,11 @@ export async function SeoAgentPageExtras({ path }: { path: string }) {
 
   const parsed = override.schemaMarkup ? parseSchemaMarkup(override.schemaMarkup) : null;
   // Every page already emits one Hebrew BreadcrumbList from the layout.
-  const schema = omitBreadcrumbList(parsed);
-  const faq = override.faq || [];
+  const schema = stripVatFromUnknown(omitBreadcrumbList(parsed));
+  const faq = (override.faq || []).map((item) => ({
+    question: stripVatWording(item.question),
+    answer: stripVatWording(item.answer),
+  }));
 
   if (!schema && faq.length === 0) return null;
 

@@ -14,6 +14,7 @@ import { buildServiceJsonLd, servicePathForType } from '../../lib/service-schema
 import { matchesPortfolioTopic, type PortfolioTopic, type PublishedProject } from '../../lib/website-projects';
 import { getServiceCta } from '../../lib/service-cta';
 import ServiceCtaBanner from './ServiceCtaBanner';
+import FaqTopicMoreLink from './FaqTopicMoreLink';
 
 export type ServiceOfferLink = {
   title: string;
@@ -626,6 +627,7 @@ export default function ServiceLayout({
               </motion.div>
             ))}
           </motion.div>
+          <FaqTopicMoreLink serviceType={serviceType} servicePath={servicePath} />
         </div>
       </section>
 

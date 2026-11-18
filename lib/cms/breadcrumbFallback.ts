@@ -120,6 +120,17 @@ export function lookupBreadcrumbLeaf(
   return undefined;
 }
 
+/** Google BreadcrumbList: name on ListItem, item as an absolute URL string. */
+export function breadcrumbListElements(items: CmsBreadcrumbItem[], siteUrl: string) {
+  const origin = siteUrl.replace(/\/$/, '');
+  return items.map((item, index) => ({
+    '@type': 'ListItem' as const,
+    position: index + 1,
+    name: item.title,
+    item: item.url === '/' ? origin : `${origin}${item.url}`,
+  }));
+}
+
 export function fallbackBreadcrumbItems(pathname: string, leafTitle?: string): CmsBreadcrumbItem[] {
   const paths = pathname.split('/').filter(Boolean);
   const items: CmsBreadcrumbItem[] = [];

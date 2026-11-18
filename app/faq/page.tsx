@@ -24,7 +24,7 @@ export default function FaqIndexPage() {
   const topics = loadFaqIndexWithDescriptions();
 
   return (
-    <main className="bg-gray-50">
+    <div className="bg-gray-50">
       <section className="bg-gradient-to-b from-white to-gray-50 px-4 pb-10 pt-8">
         <div className="container mx-auto max-w-5xl">
           <h1 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">שאלות נפוצות</h1>
@@ -62,6 +62,6 @@ export default function FaqIndexPage() {
           ))}
         </div>
       </section>
-    </main>
+    </div>
   );
 }

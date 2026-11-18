@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { SetBreadcrumbLeaf } from '../../components/BreadcrumbLeaf';
 import FaqAccordion from '../../components/FaqAccordion';
 import PageBreadcrumbJsonLd from '../../components/PageBreadcrumbJsonLd';
 import {
@@ -54,7 +55,8 @@ export default function FaqTopicPage({ params }: PageProps) {
   const schema = faqPageJsonLd(data.items);
 
   return (
-    <main className="bg-gray-50">
+    <div className="bg-gray-50">
+      <SetBreadcrumbLeaf title={data.titleHe} />
       <PageBreadcrumbJsonLd pathname={pathname} leafTitle={data.titleHe} />
       <script
         type="application/ld+json"
@@ -119,6 +121,6 @@ export default function FaqTopicPage({ params }: PageProps) {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

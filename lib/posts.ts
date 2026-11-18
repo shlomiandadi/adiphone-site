@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { decodeTagParam, hyphenatedTagSlug } from './blogTagUrl';
 import type { BlogNavPost } from './blogNav';
 import {
   BLOG_CACHE_TAG,
@@ -85,14 +86,17 @@ export const getPostsByTagCached = contentCache(
   'posts-by-tag',
   [BLOG_CACHE_TAG],
   async (decodedTag: string) => {
+    const hyphen = hyphenatedTagSlug(decodedTag);
+    const spaced = decodeTagParam(decodedTag).trim().replace(/-/g, ' ');
+    const variants = Array.from(new Set([decodedTag, hyphen, spaced].filter(Boolean)));
     const posts = await prisma.post.findMany({
       where: {
         published: true,
-        OR: [
-          { tags: { has: decodedTag } },
-          { postTags: { some: { tag: { slug: decodedTag } } } },
-          { postTags: { some: { tag: { name: decodedTag } } } },
-        ],
+        OR: variants.flatMap((value) => [
+          { tags: { has: value } },
+          { postTags: { some: { tag: { slug: value } } } },
+          { postTags: { some: { tag: { name: value } } } },
+        ]),
       },
       select: POST_LIST_SELECT,
       orderBy: { createdAt: 'desc' },

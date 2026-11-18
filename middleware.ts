@@ -1,8 +1,16 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { blogTagSpaceRedirectPath } from './lib/blogTagUrl';
 import { applySeoAgentRedirects } from './seo-agent-apply/middleware';
 
 export async function middleware(request: NextRequest) {
+  const tagRedirectPath = blogTagSpaceRedirectPath(request.nextUrl.pathname);
+  if (tagRedirectPath) {
+    const destination = request.nextUrl.clone();
+    destination.pathname = tagRedirectPath;
+    return NextResponse.redirect(destination, 301);
+  }
+
   const seoRedirect = await applySeoAgentRedirects(request);
   if (seoRedirect) return seoRedirect;
 

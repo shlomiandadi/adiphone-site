@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 import type { MetadataRoute } from 'next';
+import { isBlogTagPath } from './blogTagUrl.ts';
 import { mergeRequiredSitemapUrls, REQUIRED_SITEMAP_PATHS } from './sitemapRequired.ts';
 
 describe('mergeRequiredSitemapUrls', () => {
@@ -28,5 +29,10 @@ describe('mergeRequiredSitemapUrls', () => {
     assert.equal(aeo?.lastModified?.toISOString(), '2026-10-27T11:55:14.000Z');
     const seo = merged.find((entry) => entry.url.endsWith('/blog/mh-zh-seo'));
     assert.equal(seo?.lastModified?.toISOString(), '2026-10-27T12:28:21.000Z');
+  });
+
+  test('blog tag archives are never treated as sitemap URLs', () => {
+    assert.equal(isBlogTagPath('/blog/tag/organic-seo'), true);
+    assert.equal(isBlogTagPath('/blog/mh-zh-seo'), false);
   });
 });

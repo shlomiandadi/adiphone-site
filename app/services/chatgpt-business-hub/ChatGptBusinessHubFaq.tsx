@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { isolateLatinPhrases } from '../../../lib/bidi';
 import { FAQ } from './content';
+import FaqTopicMoreLink from '../../components/FaqTopicMoreLink';
 
 export default function ChatGptBusinessHubFaq() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -46,6 +47,7 @@ export default function ChatGptBusinessHubFaq() {
             );
           })}
         </div>
+        <FaqTopicMoreLink servicePath="/services/chatgpt-business-hub" />
       </div>
     </section>
   );

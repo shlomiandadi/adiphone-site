@@ -4,6 +4,7 @@ import { getSiteUrl, organizationLogo } from '../../../lib/seo';
 import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
+import FaqTopicMoreLink from '../../components/FaqTopicMoreLink';
 
 const PHONE_DISPLAY = '050-9159951';
 const PHONE_TEL = '+972509159951';
@@ -327,6 +328,7 @@ export default async function PpcServicePage() {
               </div>
             ))}
           </div>
+          <FaqTopicMoreLink servicePath="/services/ppc" />
         </div>
       </section>
 

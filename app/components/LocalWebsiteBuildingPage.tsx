@@ -5,6 +5,7 @@ import { getPublishedPortfolioProjects } from '../../lib/website-projects';
 import { getServiceCta } from '../../lib/service-cta';
 import Hero3D from './hero3d/Hero3D';
 import ServiceCtaBanner from './ServiceCtaBanner';
+import FaqTopicMoreLink from './FaqTopicMoreLink';
 import Testimonials from './Testimonials';
 import PortfolioCard from './PortfolioCard';
 import { FeatureCardIcon } from './icons';
@@ -382,6 +383,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
               </div>
             ))}
           </div>
+          <FaqTopicMoreLink servicePath={content.path} />
           <p className="mt-8 text-center text-lg text-gray-700">
             למחירי פתיחה לדף נחיתה, אתר תדמית, חנות ומערכת:{' '}
             <Link href="/pricing" className="font-semibold text-blue-700 underline">

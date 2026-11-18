@@ -3,6 +3,7 @@ import { PHONE_DISPLAY, PHONE_TEL } from '../../lib/local-website-building';
 import { LEGAL_TRADE_NAME, buildNicheJsonLd, type WebDevNicheContent } from '../../lib/web-dev-niches';
 import NicheHero from './niche-hero/NicheHero';
 import ServiceCtaBanner from './ServiceCtaBanner';
+import FaqTopicMoreLink from './FaqTopicMoreLink';
 
 type Props = {
   content: WebDevNicheContent;
@@ -194,6 +195,7 @@ export default function WebDevNichePage({ content }: Props) {
                 </article>
               ))}
             </div>
+            <FaqTopicMoreLink servicePath={content.path} />
           </div>
         </section>
 

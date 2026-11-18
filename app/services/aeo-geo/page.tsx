@@ -4,6 +4,7 @@ import { getSiteUrl, organizationLogo } from '../../../lib/seo';
 import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
+import FaqTopicMoreLink from '../../components/FaqTopicMoreLink';
 import { AEO_BLOG_HREF, EXAMPLES, FAQ, PROCESS, WHATS_INCLUDED } from './content';
 
 const PHONE_DISPLAY = '050-9159951';
@@ -214,6 +215,7 @@ export default async function AeoGeoPage() {
               </article>
             ))}
           </div>
+          <FaqTopicMoreLink servicePath="/services/aeo-geo" />
         </div>
       </section>
 

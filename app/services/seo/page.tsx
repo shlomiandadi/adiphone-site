@@ -5,6 +5,7 @@ import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
 import GoogleReviews from '../../components/GoogleReviews';
 import ServiceCtaBanner from '../../components/ServiceCtaBanner';
+import FaqTopicMoreLink from '../../components/FaqTopicMoreLink';
 import { SEO_SERVICE_PAGE_REVIEWS } from '../../../lib/reviews';
 
 const PHONE_DISPLAY = '050-9159951';
@@ -253,6 +254,7 @@ export default async function SeoServicePage() {
               </div>
             ))}
           </div>
+          <FaqTopicMoreLink servicePath="/services/seo" />
         </div>
       </section>
 

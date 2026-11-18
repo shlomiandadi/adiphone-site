@@ -1,3 +1,4 @@
+import { FAQ_TOPICS } from '../faq';
 import { getPublishedPortfolioList } from '../portfolioPublic';
 import {
   getCategoryLeafRows,
@@ -69,6 +70,10 @@ export async function resolveBreadcrumbLeafTitle(pathname: string): Promise<stri
     }
   }
 
+  if (parts[0] === 'faq' && parts.length === 2) {
+    return FAQ_TOPICS.find((topic) => topic.topic === parts[1])?.titleHe;
+  }
+
   if (parts[0] === 'portfolio' && parts.length === 2) {
     if (PORTFOLIO_STATIC_TITLES[parts[1]]) return PORTFOLIO_STATIC_TITLES[parts[1]];
     try {
@@ -92,6 +97,9 @@ export async function loadBreadcrumbLeaves(): Promise<Record<string, string>> {
     '/portfolio/project2': PORTFOLIO_STATIC_TITLES.project2,
     '/portfolio/project3': PORTFOLIO_STATIC_TITLES.project3,
   };
+  FAQ_TOPICS.forEach((topic) => {
+    leaves[`/faq/${topic.topic}`] = topic.titleHe;
+  });
   try {
     const [posts, categories, tags, projects] = await Promise.all([
       getPublishedPostTitles(),

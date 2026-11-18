@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 import {
+  breadcrumbListElements,
   fallbackBreadcrumbItems,
   lookupBreadcrumbLeaf,
   omitBreadcrumbList,
@@ -120,6 +121,39 @@ describe('BreadcrumbList names follow the visible trail', () => {
     const trail = fallbackBreadcrumbItems('/blog/mh-zh-kydvm-avrgny', 'מה זה קידום אורגני?');
     const names = ['דף הבית', ...trail.map((item) => item.title)];
     assert.deepEqual(names, ['דף הבית', 'בלוג', 'מה זה קידום אורגני?']);
+  });
+
+  test('FAQ topic leaf title replaces the generic pricing slug label', () => {
+    const trail = fallbackBreadcrumbItems('/faq/pricing', 'מחירים ועלויות');
+    const names = ['דף הבית', ...trail.map((item) => item.title)];
+    assert.deepEqual(names, ['דף הבית', 'שאלות נפוצות', 'מחירים ועלויות']);
+  });
+});
+
+describe('breadcrumbJsonLd ListItem shape', () => {
+  test('puts name on ListItem and item as a URL string', () => {
+    const trail = fallbackBreadcrumbItems('/faq/pricing', 'מחירים ועלויות');
+    const items = [{ url: '/', title: 'דף הבית' }, ...trail];
+    assert.deepEqual(breadcrumbListElements(items, 'https://adi-phone.co.il'), [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'דף הבית',
+        item: 'https://adi-phone.co.il',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'שאלות נפוצות',
+        item: 'https://adi-phone.co.il/faq',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: 'מחירים ועלויות',
+        item: 'https://adi-phone.co.il/faq/pricing',
+      },
+    ]);
   });
 });
 

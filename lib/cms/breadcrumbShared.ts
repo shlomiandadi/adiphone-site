@@ -1,5 +1,6 @@
 import { getSiteUrl } from '../seo';
 import {
+  breadcrumbListElements,
   breadcrumbSegmentTitle,
   fallbackBreadcrumbItems,
   lookupBreadcrumbLeaf,
@@ -18,18 +19,10 @@ export {
 };
 
 export function breadcrumbJsonLd(items: CmsBreadcrumbItem[]) {
-  const siteUrl = getSiteUrl();
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      item: {
-        '@id': item.url === '/' ? siteUrl : `${siteUrl}${item.url}`,
-        name: item.title,
-      },
-    })),
+    itemListElement: breadcrumbListElements(items, getSiteUrl()),
   };
 }
 

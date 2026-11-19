@@ -12,6 +12,7 @@ import {
   readConsentFlags,
   resolveMetaPixelId,
   shouldLoadAhrefs,
+  shouldLoadGa4,
   shouldLoadMetaPixel,
 } from '../../lib/thirdPartyTags';
 
@@ -39,6 +40,8 @@ function injectScript(src: string) {
 function loadGa4(gaId: string) {
   if (window.__TW_TAGS_LOADED) return;
   window.__TW_TAGS_LOADED = true;
+
+  if (!gaId || !shouldLoadGa4(window.location.hostname)) return;
 
   window.dataLayer = window.dataLayer || [];
   if (!window.gtag) {

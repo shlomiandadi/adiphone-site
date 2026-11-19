@@ -3,7 +3,9 @@ const nextConfig = {
   env: {
     API_URL: process.env.NODE_ENV === 'production' 
       ? 'https://api.adi-phone.co.il' 
-      : 'http://localhost:8000'
+      : 'http://localhost:8000',
+    // Netlify sets CONTEXT=production | deploy-preview | branch-deploy | dev.
+    NEXT_PUBLIC_NETLIFY_CONTEXT: process.env.CONTEXT || process.env.NEXT_PUBLIC_NETLIFY_CONTEXT || '',
   },
   images: {
     // Delivery is handled by lib/imageLoader.ts (Cloudinary f_auto/q_auto/c_limit

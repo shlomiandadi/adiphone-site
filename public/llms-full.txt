@@ -30,6 +30,30 @@ Top Webstak היא סוכנות דיגיטל מבית עדי פון תקשורת
 ## אזורי שירות
 פרדס חנה-כרכור, חדרה, קיסריה, זכרון יעקב, בנימינה, חריש, עמק חפר וחיפה; וכן בפריסה ארצית מרחוק.
 
+## שאלות נפוצות
+- שאלות נפוצות: מרכז שאלות ותשובות על בניית אתרים, קידום אורגני, ממומן, AI, מחירים, אחסון ואמון. https://adi-phone.co.il/faq
+- קידום במנועי AI (AEO/GEO): שאלות ותשובות על קידום ב-ChatGPT, ב-Gemini ובמנועי AI (AEO/GEO). https://adi-phone.co.il/faq/aeo-geo
+- בינה מלאכותית, בוטים ואוטומציה: שאלות ותשובות על בוטים, אוטומציה ופתרונות AI לעסקים. https://adi-phone.co.il/faq/ai-bots
+- פרסום ממומן ב-ChatGPT: שאלות ותשובות על פרסום ממומן וקמפיינים ב-ChatGPT Ads. https://adi-phone.co.il/faq/chatgpt-ads
+- פרופיל עסקי ב-ChatGPT (Business Hub): שאלות ותשובות על פרופיל עסקי ב-ChatGPT Business Hub. https://adi-phone.co.il/faq/chatgpt-business-hub
+- חנות אינטרנטית: שאלות ותשובות על בניית חנות אונליין וסחר אלקטרוני. https://adi-phone.co.il/faq/ecommerce
+- מי אנחנו, יצירת קשר ואמון: שאלות ותשובות על Top Webstak, יצירת קשר ואמון בעסק. https://adi-phone.co.il/faq/general
+- מילון מונחים: הסברים קצרים למונחים נפוצים באתרים, בקידום ובשיווק דיגיטלי. https://adi-phone.co.il/faq/glossary
+- דף נחיתה: שאלות ותשובות על בניית דפי נחיתה שממירים פניות. https://adi-phone.co.il/faq/landing-page
+- בניית אתרים לפי אזור: שאלות ותשובות על בניית אתרים באזורי השרון, חיפה והסביבה. https://adi-phone.co.il/faq/local-areas
+- קידום מקומי וגוגל העסק שלי: שאלות ותשובות על קידום מקומי ופרופיל העסק בגוגל. https://adi-phone.co.il/faq/local-seo
+- פיתוח אפליקציות: שאלות ותשובות על פיתוח אפליקציות לנייד ולעסקים. https://adi-phone.co.il/faq/mobile-apps
+- חששות, התנגדויות והשוואות: תשובות לחששות נפוצים ולהשוואות מול אפשרויות אחרות. https://adi-phone.co.il/faq/objections
+- בעלות, דומיין, אחסון, אבטחה, נגישות ופרטיות: שאלות ותשובות על בעלות באתר, דומיין, אחסון, אבטחה, נגישות ופרטיות. https://adi-phone.co.il/faq/ownership-hosting-security
+- קמפיינים ממומנים: גוגל, פייסבוק ואינסטגרם: שאלות ותשובות על פרסום ממומן בגוגל, בפייסבוק ובאינסטגרם. https://adi-phone.co.il/faq/ppc
+- מחירים ועלויות: שאלות ותשובות על מחירי בניית אתרים, תחזוקה ושירותים נלווים. https://adi-phone.co.il/faq/pricing
+- אפליקציית Sentry Guard לרכב: שאלות ותשובות על אפליקציית Sentry Guard לרכב. https://adi-phone.co.il/faq/sentry-guard
+- קידום אתרים אורגני (SEO): שאלות ותשובות על קידום אתרים אורגני בגוגל (SEO). https://adi-phone.co.il/faq/seo
+- סושיאל ורשתות חברתיות: שאלות ותשובות על ניהול וקידום ברשתות חברתיות. https://adi-phone.co.il/faq/social
+- עיצוב UI/UX, פיתוח מערכות, אנליטיקס וענן: שאלות ותשובות על עיצוב ממשק, פיתוח מערכות, אנליטיקס ושירותי ענן. https://adi-phone.co.il/faq/ui-software-analytics-cloud
+- אתרים לפי תחום עסק: שאלות ותשובות על אתרים לעורכי דין, קליניקות, רואי חשבון ותחומים נוספים. https://adi-phone.co.il/faq/verticals
+- בניית אתרים, אתר תדמית ווורדפרס: שאלות ותשובות על בניית אתרים, אתרי תדמית ואתרי וורדפרס. https://adi-phone.co.il/faq/web-development
+
 ## הערות לשימוש
 - המידע באתר הוא בעברית.
 - לפרטים מדויקים, הצעות מחיר וזמינות יש ליצור קשר בטלפון +972-50-9159951 או בדוא"ל adiphoneseo@gmail.com או info@adi-phone.co.il או info@topwebstack.app.

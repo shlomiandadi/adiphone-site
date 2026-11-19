@@ -49,6 +49,24 @@ export function isProductionHostname(hostname: string | null | undefined): boole
   return PRODUCTION_HOSTS.has(normalized);
 }
 
+/** True only when this build was produced on Netlify CONTEXT=production. */
+export function isNetlifyProductionContext(
+  context: string | null | undefined = process.env.NEXT_PUBLIC_NETLIFY_CONTEXT
+): boolean {
+  return (context || '').trim() === 'production';
+}
+
+/**
+ * Load GA4 gtag.js only on a production Netlify build of adi-phone.co.il.
+ * Preview/branch/localhost builds skip the script even if the hostname matches.
+ */
+export function shouldLoadGa4(
+  hostname: string | null | undefined,
+  context: string | null | undefined = process.env.NEXT_PUBLIC_NETLIFY_CONTEXT
+): boolean {
+  return isNetlifyProductionContext(context) && isProductionHostname(hostname);
+}
+
 export function shouldLoadMetaPixel(hostname: string, consent: ConsentFlags): boolean {
   return consent.marketing === true && isProductionHostname(hostname);
 }

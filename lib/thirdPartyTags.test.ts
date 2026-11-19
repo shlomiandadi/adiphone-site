@@ -18,6 +18,7 @@ import {
   resolveMetaPixelId,
   serializeMetaLeadRecord,
   shouldLoadAhrefs,
+  shouldLoadGa4,
   shouldLoadMetaPixel,
 } from './thirdPartyTags.ts';
 
@@ -68,6 +69,18 @@ test('production host allowlist', () => {
   assert.equal(isProductionHostname('adi-phone.co.il.evil.com'), false);
   assert.equal(isProductionHostname('not-adi-phone.co.il'), false);
   assert.equal(isProductionHostname(''), false);
+});
+
+test('GA4 loads only on production Netlify context and production host', () => {
+  assert.equal(shouldLoadGa4(PROD, 'production'), true);
+  assert.equal(shouldLoadGa4(WWW, 'production'), true);
+  assert.equal(shouldLoadGa4('localhost', 'production'), false);
+  assert.equal(shouldLoadGa4('127.0.0.1', 'production'), false);
+  assert.equal(shouldLoadGa4(PROD, 'deploy-preview'), false);
+  assert.equal(shouldLoadGa4(PROD, 'branch-deploy'), false);
+  assert.equal(shouldLoadGa4(PROD, 'dev'), false);
+  assert.equal(shouldLoadGa4(PROD, ''), false);
+  assert.equal(shouldLoadGa4('deploy-preview-12--adi-phone.netlify.app', 'production'), false);
 });
 
 test('consent x hostname gating', () => {

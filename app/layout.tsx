@@ -19,7 +19,7 @@ import {
 } from './components/DeferredWidgets';
 import TopStrip from './components/TopStrip';
 import { FALLBACK_LAYOUT_CMS, getLayoutCms } from '../lib/cms/layoutData';
-import { META_PIXEL_ID } from '../lib/thirdPartyTags';
+import { isNetlifyProductionContext, META_PIXEL_ID } from '../lib/thirdPartyTags';
 import { GA4_MEASUREMENT_ID } from '../lib/tracking';
 
 const heebo = Heebo({ 
@@ -93,6 +93,7 @@ export default async function RootLayout({
   }
   const gaId = cms.tracking.ga || GA4_MEASUREMENT_ID;
   const pixelId = cms.tracking.pixel || META_PIXEL_ID;
+  const loadGaBootstrap = isNetlifyProductionContext();
   let breadcrumbLeaves: Record<string, string> = {};
   try {
     breadcrumbLeaves = await loadBreadcrumbLeaves();
@@ -106,7 +107,9 @@ export default async function RootLayout({
         <script
           id="consent-bootstrap"
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{if(document.cookie.indexOf('cookie_consent_v1=')!==-1){document.documentElement.classList.add('has-consent');}}catch(e){}})();window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'denied','security_storage':'granted'});`,
+            __html: loadGaBootstrap
+              ? `(function(){try{if(document.cookie.indexOf('cookie_consent_v1=')!==-1){document.documentElement.classList.add('has-consent');}}catch(e){}})();window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'denied','security_storage':'granted'});`
+              : `(function(){try{if(document.cookie.indexOf('cookie_consent_v1=')!==-1){document.documentElement.classList.add('has-consent');}}catch(e){}})();`,
           }}
         />
       </head>

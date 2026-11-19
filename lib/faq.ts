@@ -1,5 +1,25 @@
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import faqIndex from '../data/faq/index.json' with { type: 'json' };
+import aeoGeo from '../data/faq/aeo-geo.json' with { type: 'json' };
+import aiBots from '../data/faq/ai-bots.json' with { type: 'json' };
+import chatgptAds from '../data/faq/chatgpt-ads.json' with { type: 'json' };
+import chatgptBusinessHub from '../data/faq/chatgpt-business-hub.json' with { type: 'json' };
+import ecommerce from '../data/faq/ecommerce.json' with { type: 'json' };
+import general from '../data/faq/general.json' with { type: 'json' };
+import glossary from '../data/faq/glossary.json' with { type: 'json' };
+import landingPage from '../data/faq/landing-page.json' with { type: 'json' };
+import localAreas from '../data/faq/local-areas.json' with { type: 'json' };
+import localSeo from '../data/faq/local-seo.json' with { type: 'json' };
+import mobileApps from '../data/faq/mobile-apps.json' with { type: 'json' };
+import objections from '../data/faq/objections.json' with { type: 'json' };
+import ownershipHostingSecurity from '../data/faq/ownership-hosting-security.json' with { type: 'json' };
+import ppc from '../data/faq/ppc.json' with { type: 'json' };
+import pricing from '../data/faq/pricing.json' with { type: 'json' };
+import sentryGuard from '../data/faq/sentry-guard.json' with { type: 'json' };
+import seo from '../data/faq/seo.json' with { type: 'json' };
+import social from '../data/faq/social.json' with { type: 'json' };
+import uiSoftwareAnalyticsCloud from '../data/faq/ui-software-analytics-cloud.json' with { type: 'json' };
+import verticals from '../data/faq/verticals.json' with { type: 'json' };
+import webDevelopment from '../data/faq/web-development.json' with { type: 'json' };
 
 export type FaqIndexTopic = {
   topic: string;
@@ -31,13 +51,36 @@ type FaqIndexFile = {
   total: number;
 };
 
-const faqDir = join(process.cwd(), 'data/faq');
+/**
+ * Static JSON imports so Netlify/Next traces the files into the server bundle.
+ * process.cwd() + readFileSync fails at runtime on Netlify (data/faq is not in
+ * the function bundle), which 404s /faq/[topic] when dynamicParams is false.
+ */
+const TOPIC_FILES: Record<string, FaqTopicFile> = {
+  'aeo-geo': aeoGeo as FaqTopicFile,
+  'ai-bots': aiBots as FaqTopicFile,
+  'chatgpt-ads': chatgptAds as FaqTopicFile,
+  'chatgpt-business-hub': chatgptBusinessHub as FaqTopicFile,
+  ecommerce: ecommerce as FaqTopicFile,
+  general: general as FaqTopicFile,
+  glossary: glossary as FaqTopicFile,
+  'landing-page': landingPage as FaqTopicFile,
+  'local-areas': localAreas as FaqTopicFile,
+  'local-seo': localSeo as FaqTopicFile,
+  'mobile-apps': mobileApps as FaqTopicFile,
+  objections: objections as FaqTopicFile,
+  'ownership-hosting-security': ownershipHostingSecurity as FaqTopicFile,
+  ppc: ppc as FaqTopicFile,
+  pricing: pricing as FaqTopicFile,
+  'sentry-guard': sentryGuard as FaqTopicFile,
+  seo: seo as FaqTopicFile,
+  social: social as FaqTopicFile,
+  'ui-software-analytics-cloud': uiSoftwareAnalyticsCloud as FaqTopicFile,
+  verticals: verticals as FaqTopicFile,
+  'web-development': webDevelopment as FaqTopicFile,
+};
 
-function readFaqJson<T>(fileName: string): T {
-  return JSON.parse(readFileSync(join(faqDir, fileName), 'utf8')) as T;
-}
-
-const indexData = readFaqJson<FaqIndexFile>('index.json');
+const indexData = faqIndex as FaqIndexFile;
 
 export const FAQ_TOPICS: FaqIndexTopic[] = indexData.topics;
 export const FAQ_TOTAL = indexData.total;
@@ -59,7 +102,7 @@ export function getFaqTopicTitle(slug: string): string | undefined {
 
 export function getFaqTopic(slug: string): FaqTopicFile | null {
   if (!isFaqTopic(slug)) return null;
-  const data = readFaqJson<FaqTopicFile>(`${slug}.json`);
+  const data = TOPIC_FILES[slug];
   if (!data || data.topic !== slug || !Array.isArray(data.items)) return null;
   return data;
 }

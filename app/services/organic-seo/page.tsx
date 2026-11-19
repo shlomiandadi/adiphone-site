@@ -20,7 +20,9 @@ export default function OrganicSeoPage() {
             <a href="/blog/mh-zh-seo">מדריך SEO למתחילים</a>
             {' '}ו{' '}
             <a href="/blog/ayk-lbchvr-chbrt-kydvm-atrym">איך לבחור חברת קידום אתרים</a>
-            . לחיפוש במנועי שיחה:{' '}
+            . לסקירת{' '}
+            <a href="/services/seo">שירותי SEO</a>
+            {' '}המלאים שלנו, ולחיפוש במנועי שיחה:{' '}
             <a href="/services/aeo-geo">קידום במנועי AI</a>.
           </p>
         </>

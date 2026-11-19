@@ -113,8 +113,8 @@ export default async function SeoServicePage() {
 
       <Hero3D
         theme="seo"
-        title="קידום אתרים ושירותי SEO לעסקים"
-        subtitle="שירותי SEO וקידום אורגני מקצועי שמביאים לעסק שלכם תנועה איכותית ולקוחות מגוגל – לאורך זמן."
+        title="קידום אתרים מקצועי ושירותי SEO לעסקים"
+        subtitle="שירותי SEO מקצועיים שמביאים לעסק שלכם תנועה איכותית ולקוחות מגוגל – לאורך זמן."
         align="center"
         ctas={[
           { href: `tel:${PHONE_TEL}`, label: `חייגו: ${PHONE_DISPLAY}` },
@@ -126,11 +126,16 @@ export default async function SeoServicePage() {
       <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
           <div className="rounded-xl border-r-4 border-green-600 bg-green-50 p-6">
-            <h2 className="mb-3 text-2xl font-bold text-gray-900">מה זה קידום אתרים?</h2>
+            <h2 className="mb-3 text-2xl font-bold text-gray-900">מה זה שירותי SEO?</h2>
             <p className="text-lg leading-relaxed text-gray-800">
-              קידום אתרים אורגני (SEO) הוא תהליך של שיפור האתר והתוכן כדי שהעסק יופיע גבוה יותר
-              בתוצאות החיפוש הטבעיות של גוגל. בניגוד לקידום ממומן, התנועה האורגנית ממשיכה להגיע
-              לאורך זמן גם מבלי לשלם על כל קליק.
+              Top Webstak היא חברה לקידום אתרים שעובדת עם עסקים על שירותי SEO מקצועיים — מחקר,
+              אופטימיזציה טכנית, תוכן ומדידה. שירותי SEO הם תהליך של שיפור האתר והתוכן כדי שהעסק
+              יופיע גבוה יותר בתוצאות החיפוש. בניגוד לקידום ממומן, התנועה ממשיכה להגיע לאורך זמן
+              גם מבלי לשלם על כל קליק. לפירוט על{' '}
+              <Link href="/services/organic-seo" className="text-green-700 underline">
+                קידום אורגני
+              </Link>
+              {' '}בגוגל ראו את עמוד השירות הייעודי.
             </p>
           </div>
           <p className="mt-6 text-lg leading-relaxed text-gray-700">
@@ -157,7 +162,7 @@ export default async function SeoServicePage() {
 
       <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-3xl text-right">
-          <h2 className="mb-4 text-3xl font-bold text-gray-900">איך לבחור חברה לקידום אורגני</h2>
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">איך לבחור חברה לשירותי SEO</h2>
           <ul className="list-disc space-y-3 pr-6 text-lg text-gray-700">
             <li>דיווח שקוף וקבוע — מה נעשה, מה השתנה, ומה היעדים להמשך (בלי הבטחות דירוג).</li>
             <li>גישה משולבת: SEO טכני, תוכן איכותי וחיזוק סמכות — לא קיצורי דרך חד-פעמיים.</li>

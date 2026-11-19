@@ -37,8 +37,15 @@ export type FaqTopicFile = {
   topic: string;
   titleHe: string;
   descriptionHe: string;
+  /** Optional unique meta description; falls back to descriptionHe. */
+  metaDescriptionHe?: string;
   items: FaqItem[];
 };
+
+export function faqMetaDescription(data: Pick<FaqTopicFile, 'descriptionHe' | 'metaDescriptionHe'>): string {
+  const meta = data.metaDescriptionHe?.trim();
+  return meta || data.descriptionHe;
+}
 
 export type FaqRelatedLink = {
   href: string;

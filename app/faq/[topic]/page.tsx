@@ -6,6 +6,7 @@ import FaqAccordion from '../../components/FaqAccordion';
 import PageBreadcrumbJsonLd from '../../components/PageBreadcrumbJsonLd';
 import {
   FAQ_TOPIC_SLUGS,
+  faqMetaDescription,
   faqPageJsonLd,
   getFaqTopic,
   relatedPagesForTopic,
@@ -29,19 +30,23 @@ export function generateMetadata({ params }: PageProps): Metadata {
     return { title: 'שאלות נפוצות' };
   }
   const path = `https://adi-phone.co.il/faq/${data.topic}`;
+  const description = faqMetaDescription(data);
   return {
     title: `${data.titleHe} — שאלות נפוצות`,
-    description: data.descriptionHe,
+    description,
     alternates: {
       canonical: path,
     },
     openGraph: {
       title: `${data.titleHe} — שאלות נפוצות | Top Webstak`,
-      description: data.descriptionHe,
+      description,
       url: path,
       type: 'website',
       locale: 'he_IL',
       siteName: 'Top Webstak',
+    },
+    twitter: {
+      description,
     },
   };
 }

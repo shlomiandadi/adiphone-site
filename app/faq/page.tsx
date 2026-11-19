@@ -2,21 +2,25 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { FAQ_TOTAL, loadFaqIndexWithDescriptions } from '../../lib/faq';
 
+const FAQ_HUB_META_DESCRIPTION =
+  'תשובות בעברית: כמה עולה אתר תדמית, מה זה SEO, ומה זה AEO במנועי AI. 505 שאלות על בניית אתרים, מחירים, אחסון, אמון ויצירת קשר.';
+
 export const metadata: Metadata = {
   title: 'שאלות נפוצות על בניית אתרים, SEO וקידום דיגיטלי',
-  description:
-    'מרכז שאלות ותשובות של Top Webstak: בניית אתרים, קידום אורגני, ממומן, AI, מחירים, אחסון ואמון. מאות תשובות בעברית.',
+  description: FAQ_HUB_META_DESCRIPTION,
   alternates: {
     canonical: 'https://adi-phone.co.il/faq',
   },
   openGraph: {
     title: 'שאלות נפוצות | Top Webstak',
-    description:
-      'כל השאלות הנפוצות על בניית אתרים, קידום בגוגל, קמפיינים ממומנים וקידום במנועי AI — במקום אחד.',
+    description: FAQ_HUB_META_DESCRIPTION,
     url: 'https://adi-phone.co.il/faq',
     type: 'website',
     locale: 'he_IL',
     siteName: 'Top Webstak',
+  },
+  twitter: {
+    description: FAQ_HUB_META_DESCRIPTION,
   },
 };
 

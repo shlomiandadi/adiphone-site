@@ -4,6 +4,7 @@ import { describe, test } from 'node:test';
 import {
   FAQ_TOPICS,
   FAQ_TOTAL,
+  faqMetaDescription,
   faqPageJsonLd,
   faqSitemapPaths,
   getFaqTopic,
@@ -69,5 +70,27 @@ describe('faq data', () => {
     assert.match(source, /from '\.\.\/data\/faq\/seo\.json' with \{ type: 'json' \}/);
     assert.equal(/from ['"]node:fs['"]/.test(source), false);
     assert.equal(/from ['"]fs['"]/.test(source), false);
+  });
+
+  test('every topic has a unique metaDescriptionHe in the 120–155 range', () => {
+    const metas = FAQ_TOPICS.map((topic) => {
+      const file = getFaqTopic(topic.topic);
+      assert.ok(file, topic.topic);
+      const meta = file!.metaDescriptionHe?.trim() ?? '';
+      assert.ok(meta.length >= 120, `${topic.topic} too short: ${meta.length}`);
+      assert.ok(meta.length <= 155, `${topic.topic} too long: ${meta.length}`);
+      assert.notEqual(meta, file!.descriptionHe);
+      assert.notEqual(meta, file!.titleHe);
+      return meta;
+    });
+    assert.equal(new Set(metas).size, metas.length);
+  });
+
+  test('faqMetaDescription falls back to descriptionHe', () => {
+    assert.equal(faqMetaDescription({ descriptionHe: 'intro' }), 'intro');
+    assert.equal(
+      faqMetaDescription({ descriptionHe: 'intro', metaDescriptionHe: '  meta  ' }),
+      'meta'
+    );
   });
 });

@@ -52,6 +52,30 @@
 - [בניית אתר לקליניקה ולמטפלים](https://adi-phone.co.il/services/web-development/clinics)
 - [בניית אתר לרואה חשבון ולהנהלת חשבונות](https://adi-phone.co.il/services/web-development/accountants)
 
+## שאלות נפוצות
+- [שאלות נפוצות](https://adi-phone.co.il/faq): מרכז שאלות ותשובות על בניית אתרים, קידום אורגני, ממומן, AI, מחירים, אחסון ואמון
+- [קידום במנועי AI (AEO/GEO)](https://adi-phone.co.il/faq/aeo-geo): שאלות ותשובות על קידום ב-ChatGPT, ב-Gemini ובמנועי AI (AEO/GEO).
+- [בינה מלאכותית, בוטים ואוטומציה](https://adi-phone.co.il/faq/ai-bots): שאלות ותשובות על בוטים, אוטומציה ופתרונות AI לעסקים.
+- [פרסום ממומן ב-ChatGPT](https://adi-phone.co.il/faq/chatgpt-ads): שאלות ותשובות על פרסום ממומן וקמפיינים ב-ChatGPT Ads.
+- [פרופיל עסקי ב-ChatGPT (Business Hub)](https://adi-phone.co.il/faq/chatgpt-business-hub): שאלות ותשובות על פרופיל עסקי ב-ChatGPT Business Hub.
+- [חנות אינטרנטית](https://adi-phone.co.il/faq/ecommerce): שאלות ותשובות על בניית חנות אונליין וסחר אלקטרוני.
+- [מי אנחנו, יצירת קשר ואמון](https://adi-phone.co.il/faq/general): שאלות ותשובות על Top Webstak, יצירת קשר ואמון בעסק.
+- [מילון מונחים](https://adi-phone.co.il/faq/glossary): הסברים קצרים למונחים נפוצים באתרים, בקידום ובשיווק דיגיטלי.
+- [דף נחיתה](https://adi-phone.co.il/faq/landing-page): שאלות ותשובות על בניית דפי נחיתה שממירים פניות.
+- [בניית אתרים לפי אזור](https://adi-phone.co.il/faq/local-areas): שאלות ותשובות על בניית אתרים באזורי השרון, חיפה והסביבה.
+- [קידום מקומי וגוגל העסק שלי](https://adi-phone.co.il/faq/local-seo): שאלות ותשובות על קידום מקומי ופרופיל העסק בגוגל.
+- [פיתוח אפליקציות](https://adi-phone.co.il/faq/mobile-apps): שאלות ותשובות על פיתוח אפליקציות לנייד ולעסקים.
+- [חששות, התנגדויות והשוואות](https://adi-phone.co.il/faq/objections): תשובות לחששות נפוצים ולהשוואות מול אפשרויות אחרות.
+- [בעלות, דומיין, אחסון, אבטחה, נגישות ופרטיות](https://adi-phone.co.il/faq/ownership-hosting-security): שאלות ותשובות על בעלות באתר, דומיין, אחסון, אבטחה, נגישות ופרטיות.
+- [קמפיינים ממומנים: גוגל, פייסבוק ואינסטגרם](https://adi-phone.co.il/faq/ppc): שאלות ותשובות על פרסום ממומן בגוגל, בפייסבוק ובאינסטגרם.
+- [מחירים ועלויות](https://adi-phone.co.il/faq/pricing): שאלות ותשובות על מחירי בניית אתרים, תחזוקה ושירותים נלווים.
+- [אפליקציית Sentry Guard לרכב](https://adi-phone.co.il/faq/sentry-guard): שאלות ותשובות על אפליקציית Sentry Guard לרכב.
+- [קידום אתרים אורגני (SEO)](https://adi-phone.co.il/faq/seo): שאלות ותשובות על קידום אתרים אורגני בגוגל (SEO).
+- [סושיאל ורשתות חברתיות](https://adi-phone.co.il/faq/social): שאלות ותשובות על ניהול וקידום ברשתות חברתיות.
+- [עיצוב UI/UX, פיתוח מערכות, אנליטיקס וענן](https://adi-phone.co.il/faq/ui-software-analytics-cloud): שאלות ותשובות על עיצוב ממשק, פיתוח מערכות, אנליטיקס ושירותי ענן.
+- [אתרים לפי תחום עסק](https://adi-phone.co.il/faq/verticals): שאלות ותשובות על אתרים לעורכי דין, קליניקות, רואי חשבון ותחומים נוספים.
+- [בניית אתרים, אתר תדמית ווורדפרס](https://adi-phone.co.il/faq/web-development): שאלות ותשובות על בניית אתרים, אתרי תדמית ואתרי וורדפרס.
+
 ## מחירי פתיחה ואזורי שירות
 - דף נחיתה: מ-2,500 ₪
 - אתר תדמית: מ-6,500 ₪

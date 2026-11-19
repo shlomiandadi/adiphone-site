@@ -12,6 +12,7 @@ import {
   siblingTopics,
 } from '../../../lib/faq';
 
+export const dynamic = 'force-static';
 export const dynamicParams = false;
 
 type PageProps = {

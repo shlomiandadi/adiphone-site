@@ -35,6 +35,10 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['react-icons/fa', 'react-icons/si', 'framer-motion'],
+    outputFileTracingIncludes: {
+      '/faq': ['./data/faq/**/*'],
+      '/faq/[topic]': ['./data/faq/**/*'],
+    },
   },
   compiler: {
     styledComponents: true,

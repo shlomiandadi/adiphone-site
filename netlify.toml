@@ -22,7 +22,7 @@
   # own server handler with bundler "none". Re-bundling drops prerendered HTML
   # that bot requests need after they bypass the Durable cache.
   external_node_modules = ["@prisma/client", "prisma"]
-  included_files = ["prisma/**", "seo-agent-apply/base-llms.txt"]
+  included_files = ["prisma/**", "seo-agent-apply/base-llms.txt", "data/faq/**"]
 
 # Weekly contact-lead retention (Contact rows older than 12 months).
 [functions."lead-retention-cleanup"]

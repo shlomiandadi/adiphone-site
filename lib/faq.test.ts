@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { describe, test } from 'node:test';
 import {
   FAQ_TOPICS,
@@ -51,5 +52,22 @@ describe('faq data', () => {
     assert.equal(paths[0], '/faq');
     assert.equal(paths.length, 22);
     assert.ok(paths.includes('/faq/web-development'));
+  });
+
+  test('every indexed topic loads from the bundled JSON map', () => {
+    for (const topic of FAQ_TOPICS) {
+      const file = getFaqTopic(topic.topic);
+      assert.ok(file, topic.topic);
+      assert.equal(file!.topic, topic.topic);
+      assert.equal(file!.items.length, topic.count);
+    }
+    assert.equal(getFaqTopic('not-a-topic'), null);
+  });
+
+  test('faq loader uses static JSON imports, not filesystem reads', () => {
+    const source = readFileSync(new URL('./faq.ts', import.meta.url), 'utf8');
+    assert.match(source, /from '\.\.\/data\/faq\/seo\.json' with \{ type: 'json' \}/);
+    assert.equal(/from ['"]node:fs['"]/.test(source), false);
+    assert.equal(/from ['"]fs['"]/.test(source), false);
   });
 });

@@ -41,7 +41,7 @@ export function DeferredAccessibilityBar() {
 }
 
 export function DeferredAnalyticsTracker() {
-  return <AfterIdle timeout={4500} Component={AnalyticsTracker} />;
+  return <AnalyticsTracker />;
 }
 
 export function DeferredChatbotWidget() {

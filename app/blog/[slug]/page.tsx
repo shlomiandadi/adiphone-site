@@ -14,6 +14,7 @@ import BlogKeyTakeaways from '../../components/BlogKeyTakeaways';
 import { BLOG_META_OVERRIDES, getSiteUrl, normalizeCanonicalUrl, resolveBlogOgImage } from '../../../lib/seo';
 import { cleanupBlogHtml, extractAndStripAioSummary } from '../../../lib/blog-content-cleanup';
 import { enhanceBlogHtml } from '../../../lib/blog-article-enhance';
+import { isRedirectedBlogSlug } from '../../../lib/blogAliasMap';
 import { getPostBySlug, getPublishedNavPosts, getPublishedPosts } from '../../../lib/posts';
 import { adjacentBlogPosts } from '../../../lib/blogNav';
 import { mergeSeoAgentMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
@@ -36,7 +37,9 @@ export async function generateStaticParams() {
   if (!process.env.DATABASE_URL) return [];
   try {
     const posts = await getPublishedPosts();
-    return posts.map((post) => ({ slug: post.slug }));
+    return posts
+      .filter((post) => !isRedirectedBlogSlug(post.slug))
+      .map((post) => ({ slug: post.slug }));
   } catch (error) {
     console.error('generateStaticParams (blog) failed:', error);
     return [];
@@ -202,6 +205,9 @@ async function getBlogPost(slug: string) {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  if (isRedirectedBlogSlug(params.slug)) {
+    return { title: 'פוסט לא נמצא | Top Webstak' };
+  }
   const post = await getBlogPost(params.slug);
   
   if (!post) {
@@ -253,6 +259,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
+  if (isRedirectedBlogSlug(params.slug)) {
+    notFound();
+  }
   const post = await getBlogPost(params.slug);
 
   if (!post) {

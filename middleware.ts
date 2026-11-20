@@ -1,9 +1,17 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { blogTagSpaceRedirectPath } from './lib/blogTagUrl';
+import { lookupAliasDestination } from './lib/blogAliasMap';
 import { applySeoAgentRedirects } from './seo-agent-apply/middleware';
 
 export async function middleware(request: NextRequest) {
+  const aliasTo = lookupAliasDestination(request.nextUrl.pathname);
+  if (aliasTo) {
+    const destination = request.nextUrl.clone();
+    destination.pathname = aliasTo;
+    return NextResponse.redirect(destination, 301);
+  }
+
   const tagRedirectPath = blogTagSpaceRedirectPath(request.nextUrl.pathname);
   if (tagRedirectPath) {
     const destination = request.nextUrl.clone();

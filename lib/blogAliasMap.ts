@@ -1,9 +1,9 @@
-export type PermanentRedirect = {
+export type AliasRule = {
   source: string;
   destination: string;
 };
 
-export const PERMANENT_REDIRECTS: PermanentRedirect[] = [
+export const BLOG_ALIAS_RULES: AliasRule[] = [
   {
     "source": "/services/organic-seo",
     "destination": "/services/seo"
@@ -228,7 +228,7 @@ export const PERMANENT_REDIRECTS: PermanentRedirect[] = [
     "source": "/portfolio/project3",
     "destination": "/portfolio"
   }
-] as PermanentRedirect[];
+] as AliasRule[];
 
 const KEEP_BLOG_SLUGS = new Set([
   'mh-zh-seo',
@@ -241,7 +241,7 @@ const KEEP_BLOG_SLUGS = new Set([
   'What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change',
 ]);
 
-export function normalizeRedirectPath(pathname: string): string {
+export function normalizeAliasPath(pathname: string): string {
   let path = pathname || '/';
   try {
     path = decodeURIComponent(path);
@@ -253,34 +253,25 @@ export function normalizeRedirectPath(pathname: string): string {
   return path || '/';
 }
 
-const REDIRECT_BY_SOURCE = new Map(
-  PERMANENT_REDIRECTS.map((rule) => [normalizeRedirectPath(rule.source), rule.destination])
+const ALIAS_BY_SOURCE = new Map(
+  BLOG_ALIAS_RULES.map((rule) => [normalizeAliasPath(rule.source), rule.destination])
 );
 
-export function lookupPermanentRedirect(pathname: string): string | null {
-  const path = normalizeRedirectPath(pathname);
-  return REDIRECT_BY_SOURCE.get(path) ?? null;
+export function lookupAliasDestination(pathname: string): string | null {
+  return ALIAS_BY_SOURCE.get(normalizeAliasPath(pathname)) ?? null;
 }
 
 export function isRedirectedBlogSlug(slug: string): boolean {
-  return lookupPermanentRedirect(`/blog/${slug}`) !== null;
+  return lookupAliasDestination(`/blog/${slug}`) !== null;
 }
 
-export const REDIRECTED_BLOG_SLUGS: string[] = PERMANENT_REDIRECTS.filter((rule) =>
+export const REDIRECTED_BLOG_SLUGS: string[] = BLOG_ALIAS_RULES.filter((rule) =>
   rule.source.startsWith('/blog/')
 ).map((rule) => rule.source.slice('/blog/'.length));
 
 export const REDIRECTED_BLOG_SLUG_SET = new Set(REDIRECTED_BLOG_SLUGS);
 
-export function nextPermanentRedirectRules() {
-  return PERMANENT_REDIRECTS.map((rule) => ({
-    source: rule.source,
-    destination: rule.destination,
-    permanent: true,
-  }));
-}
-
-export function assertKeepersNotRedirected() {
+export function assertKeepersNotAliased() {
   for (const slug of KEEP_BLOG_SLUGS) {
     if (isRedirectedBlogSlug(slug)) {
       throw new Error(`Keeper slug must not redirect: ${slug}`);

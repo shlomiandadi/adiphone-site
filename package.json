@@ -21,8 +21,7 @@
     "check-categories": "node scripts/check-categories.js",
     "fix-http-canonicals": "node scripts/fix-http-canonicals.js",
     "compare-live": "node scripts/compare-live.mjs",
-    "sync-netlify-redirects": "node scripts/sync-netlify-redirects.mjs",
-    "check-redirects": "node scripts/check-redirects.mjs"
+    "check-redirects": "node scripts/check-alias-301s.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

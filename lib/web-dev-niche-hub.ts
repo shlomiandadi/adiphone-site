@@ -1,5 +1,3 @@
-import { ACCOUNTANTS_NICHE, CLINICS_NICHE, LAWYERS_NICHE } from './web-dev-niches.ts';
-
 export type WebDevNicheHubCard = {
   href: string;
   name: string;
@@ -7,24 +5,24 @@ export type WebDevNicheHubCard = {
   icon: 'briefcase' | 'clinic' | 'calculator';
 };
 
-/** Profession labels requested for discovery cards; benefits are existing page subtitles. */
+/** Keep in sync with `subtitle` on each page in `web-dev-niches.ts` (do not import that module here — it pulls ~30KB of copy into the homepage bundle). */
 export const WEB_DEV_NICHE_HUB_CARDS: WebDevNicheHubCard[] = [
   {
-    href: LAWYERS_NICHE.path,
+    href: '/services/web-development/lawyers',
     name: 'עורכי דין',
-    benefit: LAWYERS_NICHE.subtitle,
+    benefit: 'אתר שמציג תחומי עיסוק, דרך פנייה ברורה ומבנה שמתאים לקריאה בנייד.',
     icon: 'briefcase',
   },
   {
-    href: CLINICS_NICHE.path,
+    href: '/services/web-development/clinics',
     name: 'קליניקות ומטפלים',
-    benefit: CLINICS_NICHE.subtitle,
+    benefit: 'אתר מהיר בנייד, עם טיפולים ברורים ודרך פשוטה לקבוע תור.',
     icon: 'clinic',
   },
   {
-    href: ACCOUNTANTS_NICHE.path,
+    href: '/services/web-development/accountants',
     name: 'רואי חשבון',
-    benefit: ACCOUNTANTS_NICHE.subtitle,
+    benefit: 'אתר שמסביר שירותי המשרד ומאפשר פנייה מסודרת, בלי לאסוף מסמכים רגישים בטופס הפתוח.',
     icon: 'calculator',
   },
 ];

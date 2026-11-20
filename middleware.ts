@@ -1,9 +1,17 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { blogTagSpaceRedirectPath } from './lib/blogTagUrl';
+import { lookupPermanentRedirect } from './lib/permanentRedirects';
 import { applySeoAgentRedirects } from './seo-agent-apply/middleware';
 
 export async function middleware(request: NextRequest) {
+  const permanentTo = lookupPermanentRedirect(request.nextUrl.pathname);
+  if (permanentTo) {
+    const destination = request.nextUrl.clone();
+    destination.pathname = permanentTo;
+    return NextResponse.redirect(destination, 301);
+  }
+
   const tagRedirectPath = blogTagSpaceRedirectPath(request.nextUrl.pathname);
   if (tagRedirectPath) {
     const destination = request.nextUrl.clone();

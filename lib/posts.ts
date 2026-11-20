@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { decodeTagParam, hyphenatedTagSlug } from './blogTagUrl';
+import { REDIRECTED_BLOG_SLUGS } from './permanentRedirects';
 import type { BlogNavPost } from './blogNav';
 import {
   BLOG_CACHE_TAG,
@@ -13,12 +14,17 @@ const prisma = new PrismaClient();
 
 export const BLOG_POSTS_PER_PAGE = 6;
 
+const publishedVisibleWhere = {
+  published: true as const,
+  slug: { notIn: REDIRECTED_BLOG_SLUGS },
+};
+
 const getPublishedPostSlugsUncached = contentCache(
   'published-post-slugs',
   [BLOG_CACHE_TAG],
   async (limit?: number) => {
     return prisma.post.findMany({
-      where: { published: true },
+      where: publishedVisibleWhere,
       orderBy: { createdAt: 'desc' },
       take: limit,
       select: { slug: true },
@@ -37,7 +43,7 @@ const getPublishedNavPostsCached = contentCache(
   [BLOG_CACHE_TAG],
   async () => {
     return prisma.post.findMany({
-      where: { published: true },
+      where: publishedVisibleWhere,
       orderBy: { createdAt: 'desc' },
       take: NAV_POST_LIMIT,
       select: {
@@ -53,7 +59,7 @@ const getPublishedPostsPageCached = contentCache(
   'published-posts-page',
   [BLOG_CACHE_TAG],
   async (safePage: number, limit: number) => {
-    const where = { published: true as const };
+    const where = publishedVisibleWhere;
     const [posts, total] = await Promise.all([
       prisma.post.findMany({
         where,
@@ -92,6 +98,7 @@ export const getPostsByTagCached = contentCache(
     const posts = await prisma.post.findMany({
       where: {
         published: true,
+        slug: { notIn: REDIRECTED_BLOG_SLUGS },
         OR: variants.flatMap((value) => [
           { tags: { has: value } },
           { postTags: { some: { tag: { slug: value } } } },
@@ -118,6 +125,7 @@ export const getPostsByCategorySlugCached = contentCache(
       where: {
         categoryId: categoryRecord.id,
         published: true,
+        slug: { notIn: REDIRECTED_BLOG_SLUGS },
       },
       select: POST_LIST_SELECT,
       orderBy: { createdAt: 'desc' },
@@ -138,11 +146,13 @@ function navCategoryName(category: unknown) {
 async function fallbackNavPosts(): Promise<BlogNavPost[]> {
   const data = await fetchFallbackJson(`/api/posts?limit=${NAV_POST_LIMIT}&fields=nav`);
   const rows = Array.isArray(data?.posts) ? data.posts : [];
-  return rows.map((post: { title?: string; slug?: string; category?: unknown }) => ({
-    title: String(post.title || ''),
-    slug: String(post.slug || ''),
-    category: navCategoryName(post.category) || 'כללי',
-  }));
+  return rows
+    .filter((post: { slug?: string }) => !REDIRECTED_BLOG_SLUGS.includes(String(post.slug || '')))
+    .map((post: { title?: string; slug?: string; category?: unknown }) => ({
+      title: String(post.title || ''),
+      slug: String(post.slug || ''),
+      category: navCategoryName(post.category) || 'כללי',
+    }));
 }
 
 /** Titles and slugs only, same 100-post window the nav used to fetch in the browser. */
@@ -183,7 +193,9 @@ async function fetchFallbackJson(path: string) {
 
 async function fallbackPublishedPostsPage(page: number, limit: number) {
   const data = await fetchFallbackJson(`/api/posts?page=${page}&limit=${limit}`);
-  const rows = Array.isArray(data?.posts) ? data.posts : [];
+  const rows = (Array.isArray(data?.posts) ? data.posts : []).filter(
+    (post: Record<string, unknown>) => !REDIRECTED_BLOG_SLUGS.includes(String(post.slug || ''))
+  );
   return {
     posts: rows.map((post: Record<string, unknown>) => ({
       ...post,
@@ -258,7 +270,7 @@ export const getPublishedPostTitles = contentCache(
   [BLOG_CACHE_TAG],
   async () => {
     return prisma.post.findMany({
-      where: { published: true },
+      where: publishedVisibleWhere,
       select: { slug: true, title: true },
     });
   }

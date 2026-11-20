@@ -122,23 +122,11 @@ const nextConfig = {
     const { PERMANENT_REDIRECTS: permanentRedirects } = await import(
       './lib/permanent-redirects-data.js'
     );
-    return permanentRedirects.flatMap((rule) => {
-      const entries = [
-        {
-          source: rule.source,
-          destination: rule.destination,
-          permanent: true,
-        },
-      ];
-      if (!rule.source.endsWith('/')) {
-        entries.push({
-          source: `${rule.source}/`,
-          destination: rule.destination,
-          permanent: true,
-        });
-      }
-      return entries;
-    });
+    return permanentRedirects.map((rule) => ({
+      source: rule.source,
+      destination: rule.destination,
+      permanent: true,
+    }));
   },
 }
 

@@ -50,23 +50,11 @@ export const REDIRECTED_BLOG_SLUGS: string[] = PERMANENT_REDIRECTS.filter((rule)
 export const REDIRECTED_BLOG_SLUG_SET = new Set(REDIRECTED_BLOG_SLUGS);
 
 export function nextPermanentRedirectRules() {
-  return PERMANENT_REDIRECTS.flatMap((rule) => {
-    const entries = [
-      {
-        source: rule.source,
-        destination: rule.destination,
-        permanent: true,
-      },
-    ];
-    if (!rule.source.endsWith('/')) {
-      entries.push({
-        source: `${rule.source}/`,
-        destination: rule.destination,
-        permanent: true,
-      });
-    }
-    return entries;
-  });
+  return PERMANENT_REDIRECTS.map((rule) => ({
+    source: rule.source,
+    destination: rule.destination,
+    permanent: true,
+  }));
 }
 
 export function assertKeepersNotRedirected() {

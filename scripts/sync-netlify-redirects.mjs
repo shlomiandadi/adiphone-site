@@ -12,17 +12,12 @@ const BEGIN = '# BEGIN PERMANENT_REDIRECTS';
 const END = '# END PERMANENT_REDIRECTS';
 
 function blockFor(rule) {
-  const sources = rule.source.endsWith('/') ? [rule.source] : [rule.source, `${rule.source}/`];
-  return sources
-    .map(
-      (from) => `[[redirects]]
-  from = ${JSON.stringify(from)}
+  return `[[redirects]]
+  from = ${JSON.stringify(rule.source)}
   to = ${JSON.stringify(rule.destination)}
   status = 301
   force = true
-`
-    )
-    .join('\n');
+`;
 }
 
 const generated = `${BEGIN}

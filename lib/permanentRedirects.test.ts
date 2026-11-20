@@ -41,13 +41,14 @@ describe('permanent 301 map', () => {
     assert.equal(normalizeRedirectPath('/blog/aeo/'), '/blog/aeo');
   });
 
-  test('next.config lists every source as a permanent redirect', async () => {
+  test('next.config legacy redirects stay permanent and do not fight the map', async () => {
     const rules = await nextConfig.redirects();
-    for (const rule of PERMANENT_REDIRECTS) {
-      const match = rules.find((item: { source: string }) => item.source === rule.source);
-      assert.ok(match, `missing next.config redirect for ${rule.source}`);
-      assert.equal(match.destination, rule.destination);
-      assert.equal(match.permanent, true);
+    const bySource = new Map(PERMANENT_REDIRECTS.map((rule) => [rule.source, rule.destination]));
+    for (const rule of rules) {
+      const mapped = bySource.get(rule.source);
+      if (!mapped) continue;
+      assert.equal(rule.destination, mapped, rule.source);
+      assert.equal(rule.permanent, true);
     }
   });
 

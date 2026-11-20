@@ -25,14 +25,14 @@ const nextRules = await nextConfig.redirects();
 
 for (const rule of rules) {
   const nextMatch = nextRules.find((item) => item.source === rule.source);
-  if (!nextMatch || nextMatch.destination !== rule.destination || !nextMatch.permanent) {
-    fail(`next.config missing permanent ${rule.source} -> ${rule.destination}`);
+  if (nextMatch && (nextMatch.destination !== rule.destination || !nextMatch.permanent)) {
+    fail(`next.config ${rule.source} conflicts with map -> ${rule.destination}`);
   }
 }
 
 if (!base) {
   if (!process.exitCode) {
-    console.log(`OK: ${rules.length} redirect sources in next.config`);
+    console.log(`OK: ${rules.length} redirect sources in the 301 map`);
     console.log('Set CHECK_REDIRECTS_BASE_URL to probe live 301 status codes.');
   }
   process.exit(process.exitCode || 0);

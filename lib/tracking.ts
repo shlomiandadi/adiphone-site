@@ -430,11 +430,7 @@ function shouldSkipDuplicateContactClick(key: string) {
   const previous = recentContactClicks.get(key) || 0;
   if (now - previous < CONTACT_CLICK_DEDUPE_MS) return true;
   recentContactClicks.set(key, now);
-  if (recentContactClicks.size > 40) {
-    for (const [storedKey, at] of recentContactClicks) {
-      if (now - at >= CONTACT_CLICK_DEDUPE_MS) recentContactClicks.delete(storedKey);
-    }
-  }
+  if (recentContactClicks.size > 40) recentContactClicks.clear();
   return false;
 }
 

@@ -230,17 +230,6 @@ export const BLOG_ALIAS_RULES: AliasRule[] = [
   }
 ] as AliasRule[];
 
-const KEEP_BLOG_SLUGS = new Set([
-  'mh-zh-seo',
-  'seo-tkny',
-  'mh-zh-kydvm-avrgny',
-  'pytvch-aplyktsyvt-hrbh-yvtr-mkvd',
-  'pytvch-aplyktsyvt-hybrydyvt',
-  'ptrvnvt-bann',
-  'shyvvk-dygytly-ai',
-  'What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change',
-]);
-
 export function normalizeAliasPath(pathname: string): string {
   let path = pathname || '/';
   try {
@@ -270,11 +259,3 @@ export const REDIRECTED_BLOG_SLUGS: string[] = BLOG_ALIAS_RULES.filter((rule) =>
 ).map((rule) => rule.source.slice('/blog/'.length));
 
 export const REDIRECTED_BLOG_SLUG_SET = new Set(REDIRECTED_BLOG_SLUGS);
-
-export function assertKeepersNotAliased() {
-  for (const slug of KEEP_BLOG_SLUGS) {
-    if (isRedirectedBlogSlug(slug)) {
-      throw new Error(`Keeper slug must not redirect: ${slug}`);
-    }
-  }
-}

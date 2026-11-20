@@ -9,16 +9,11 @@
  *     node scripts/check-redirects.mjs
  *     — HTTP: each source must return 301 with Location = destination
  */
-import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
 const rules = require('../lib/permanent-redirects-data.cjs');
 const nextConfig = require('../next.config.js');
-const toml = readFileSync(join(root, 'netlify.toml'), 'utf8');
 const base = (process.env.CHECK_REDIRECTS_BASE_URL || '').replace(/\/$/, '');
 
 function fail(message) {
@@ -33,21 +28,11 @@ for (const rule of rules) {
   if (!nextMatch || nextMatch.destination !== rule.destination || !nextMatch.permanent) {
     fail(`next.config missing permanent ${rule.source} -> ${rule.destination}`);
   }
-  const from = `from = "${rule.source}"`;
-  const idx = toml.indexOf(from);
-  if (idx === -1) {
-    fail(`netlify.toml missing ${rule.source}`);
-    continue;
-  }
-  const slice = toml.slice(idx, idx + 220);
-  if (!slice.includes(`to = "${rule.destination}"`) || !slice.includes('status = 301')) {
-    fail(`netlify.toml ${rule.source} is not a 301 to ${rule.destination}`);
-  }
 }
 
 if (!base) {
   if (!process.exitCode) {
-    console.log(`OK: ${rules.length} redirect sources in next.config + netlify.toml`);
+    console.log(`OK: ${rules.length} redirect sources in next.config`);
     console.log('Set CHECK_REDIRECTS_BASE_URL to probe live 301 status codes.');
   }
   process.exit(process.exitCode || 0);

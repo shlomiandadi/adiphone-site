@@ -206,7 +206,7 @@
 
 [[redirects]]
   from = "/blog/kyshvrym-mhyrym"
-  to = "/blog/mh-zh-kydvm-avrgny"
+  to = "/blog/seo-tips-google-ranking-guide"
   status = 301
   force = true
 
@@ -278,7 +278,7 @@
 
 [[redirects]]
   from = "/blog/kydvm-atrym-laskym-ktnym"
-  to = "/blog/mh-zh-kydvm-avrgny"
+  to = "/blog/seo-tips-google-ranking-guide"
   status = 301
   force = true
 
@@ -375,73 +375,6 @@
 [[redirects]]
   from = "/blog/svknvt-kydvm-atrym"
   to = "/services/seo"
-  status = 301
-  force = true
-
-
-[[redirects]]
-  from = "/blog/aeo"
-  to = "/blog/What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/bnyyt-atr-ayntrnt-chyph"
-  to = "/services/bniyat-atarim-haifa"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/kydvm-atrym-bmnvay-chypvsh"
-  to = "/blog/mh-zh-kydvm-avrgny"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/kydvm-atrym-avrgny"
-  to = "/blog/mh-zh-kydvm-avrgny"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/seo-tips-google-ranking-guide"
-  to = "/blog/mh-zh-kydvm-avrgny"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/pytvch-aplyktsyvt-laskym"
-  to = "/blog/pytvch-aplyktsyvt-hrbh-yvtr-mkvd"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/shyrvty-ann-laskym"
-  to = "/blog/ptrvnvt-bann"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/shyvvk-dygytly-laskym"
-  to = "/blog/shyvvk-dygytly-ai"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/tyk-abvdvt"
-  to = "/portfolio"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/ptrvnvt-cloud-abtchh-v-devops"
-  to = "/services/cloud"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/pytvch-atrym-seo-shyvvk-dygytly"
-  to = "/services"
   status = 301
   force = true
 

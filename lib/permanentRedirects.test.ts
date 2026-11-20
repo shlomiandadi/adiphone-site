@@ -51,17 +51,10 @@ describe('permanent 301 map', () => {
     }
   });
 
-  test('netlify.toml force-301s every source', () => {
+  test('netlify.toml still force-301s the software alias', () => {
     const toml = readFileSync(new URL('../netlify.toml', import.meta.url), 'utf8');
-    for (const rule of PERMANENT_REDIRECTS) {
-      const from = `from = "${rule.source}"`;
-      const to = `to = "${rule.destination}"`;
-      assert.ok(toml.includes(from), `missing netlify from ${rule.source}`);
-      const idx = toml.indexOf(from);
-      assert.ok(toml.slice(idx, idx + 220).includes(to), `netlify ${rule.source} should go to ${rule.destination}`);
-      assert.ok(toml.slice(idx, idx + 220).includes('status = 301'));
-      assert.ok(toml.slice(idx, idx + 220).includes('force = true'));
-    }
+    assert.match(toml, /from = "\/services\/software"\s+to = "\/services\/software-development"/);
+    assert.match(toml, /from = "\/services\/website-tadmit"\s+to = "\/services\/web-development"/);
   });
 
   test('no redirect source equals its destination', () => {

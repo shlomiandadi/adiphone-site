@@ -15,8 +15,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const { PERMANENT_REDIRECTS: rules } = await import('../lib/permanent-redirects-data.js');
 const require = createRequire(import.meta.url);
+const rules = require('../lib/permanent-redirects-data.cjs');
 const nextConfig = require('../next.config.js');
 const toml = readFileSync(join(root, 'netlify.toml'), 'utf8');
 const base = (process.env.CHECK_REDIRECTS_BASE_URL || '').replace(/\/$/, '');

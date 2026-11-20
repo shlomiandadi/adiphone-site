@@ -1,11 +1,11 @@
-import { PERMANENT_REDIRECTS as REDIRECT_ROWS } from './permanent-redirects-data.js';
+import REDIRECT_ROWS from './permanent-redirects-data.cjs';
 
 export type PermanentRedirect = {
   source: string;
   destination: string;
 };
 
-export const PERMANENT_REDIRECTS: PermanentRedirect[] = REDIRECT_ROWS;
+export const PERMANENT_REDIRECTS: PermanentRedirect[] = REDIRECT_ROWS as PermanentRedirect[];
 
 const KEEP_BLOG_SLUGS = new Set([
   'mh-zh-seo',

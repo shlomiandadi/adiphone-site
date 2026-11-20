@@ -105,10 +105,7 @@
   status = 301
   force = true
 
-# BEGIN PERMANENT_REDIRECTS
-# Generated from lib/permanent-redirects.json — do not edit by hand.
-# force = true so Netlify does not shadow these with existing Next pages.
-
+# Duplicate / thin service stubs → primary URLs (Ahrefs cannibalization + orphans)
 [[redirects]]
   from = "/services/organic-seo"
   to = "/services/seo"
@@ -151,12 +148,7 @@
   status = 301
   force = true
 
-[[redirects]]
-  from = "/blog/aeo"
-  to = "/blog/What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change"
-  status = 301
-  force = true
-
+# Pardes Hanna location posts → consolidated local service page
 [[redirects]]
   from = "/blog/bnyyt-atrym-prds-chnh"
   to = "/services/bniyat-atarim-pardes-hana"
@@ -170,11 +162,24 @@
   force = true
 
 [[redirects]]
-  from = "/blog/bnyyt-atr-ayntrnt-chyph"
-  to = "/services/bniyat-atarim-haifa"
+  from = "/portfolio/project1"
+  to = "/portfolio"
   status = 301
   force = true
 
+[[redirects]]
+  from = "/portfolio/project2"
+  to = "/portfolio"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/portfolio/project3"
+  to = "/portfolio"
+  status = 301
+  force = true
+
+# Blog cleanup: merged/deleted posts → canonical targets (content plan)
 [[redirects]]
   from = "/blog/building-websites-for-businesses"
   to = "/blog/bnyyt-atrym-laskym-ktnym"
@@ -373,6 +378,19 @@
   status = 301
   force = true
 
+
+[[redirects]]
+  from = "/blog/aeo"
+  to = "/blog/What-is-AEO-Answer-Engine-Optimization-and-Why-Does-It-Change"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/bnyyt-atr-ayntrnt-chyph"
+  to = "/services/bniyat-atarim-haifa"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/blog/kydvm-atrym-bmnvay-chypvsh"
   to = "/blog/mh-zh-kydvm-avrgny"
@@ -427,24 +445,6 @@
   status = 301
   force = true
 
-[[redirects]]
-  from = "/portfolio/project1"
-  to = "/portfolio"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/portfolio/project2"
-  to = "/portfolio"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/portfolio/project3"
-  to = "/portfolio"
-  status = 301
-  force = true
-# END PERMANENT_REDIRECTS
 
 [dev]
   framework = "nextjs"

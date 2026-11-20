@@ -116,16 +116,9 @@ const nextConfig = {
     ];
   },
   // Next.js `permanent: true` is 308. Live 301s are middleware + netlify.toml
-  // force rules from lib/permanent-redirects-data.js (existing pages shadow
-  // next.config redirects on Netlify).
+  // force rules. Existing App Router pages shadow next.config on Netlify.
   async redirects() {
-    const fs = require('fs');
-    const path = require('path');
-    const raw = fs
-      .readFileSync(path.join(__dirname, 'lib/permanent-redirects-data.js'), 'utf8')
-      .replace(/^export const PERMANENT_REDIRECTS = /, '')
-      .replace(/;\s*$/, '');
-    const permanentRedirects = JSON.parse(raw);
+    const permanentRedirects = require('./lib/permanent-redirects-data.cjs');
     return permanentRedirects.map((rule) => ({
       source: rule.source,
       destination: rule.destination,

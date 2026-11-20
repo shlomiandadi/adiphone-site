@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const { PERMANENT_REDIRECTS: rules } = await import('../lib/permanent-redirects-data.js');
+const rules = createRequire(import.meta.url)('../lib/permanent-redirects-data.cjs');
 const tomlPath = join(root, 'netlify.toml');
 const toml = readFileSync(tomlPath, 'utf8');
 

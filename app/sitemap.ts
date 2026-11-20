@@ -5,12 +5,49 @@ import { resolveStaticLastModified, STATIC_ROUTES } from '../lib/staticLastmod';
 import { mergeRequiredSitemapUrls } from '../lib/sitemapRequired';
 import { isBlogTagPath } from '../lib/blogTagUrl';
 import { getSiteUrl } from '../lib/seo';
-import { REDIRECTED_BLOG_SLUG_SET } from '../lib/permanentRedirects';
 
 export const revalidate = 3600;
 
 /** Slugs that 301 elsewhere — must not appear in sitemap. */
-const REDIRECTED_BLOG_SLUGS = REDIRECTED_BLOG_SLUG_SET
+const REDIRECTED_BLOG_SLUGS = new Set([
+  'aeo',
+  'nyhvl-kmpyynym-mmvmnym',
+  'bnyyt-atrym-prds-chnh',
+  'bnyyt-atry-ayntrnt-bprds-chnh',
+  'building-websites-for-businesses',
+  'kmpyynym-mmvmnym',
+  'kydvm-mmvmn-ppc',
+  'top-webstack',
+  'kyshvrym-mhyrym',
+  'ptrvnvt-ai-mtkdmym',
+  'thlyk-habvdh-shlnv',
+  'ady-pvn-tkshvrt',
+  'mvknym-lhtchyl',
+  'htknvlvgyvt-shlnv',
+  'hchzvn-shlnv',
+  'shyrvty-ann',
+  'avdvt-hchbrh',
+  'bnyyh-vkydvm-atrym-mktsvayym',
+  'hshyrvtym-shlnv',
+  'ai-laskym-ktnym',
+  'kydvm-atrym-laskym-ktnym',
+  'pytvch-aplyktsyvt',
+  'ptrvnvt-mschr-mtkdmym',
+  'hytrvnvt-shlnv',
+  'anlytyks-vmdydh',
+  'htsvvt-shlnv',
+  '3-hvravt-shymvsh',
+  'bnyyt-atry-vvrdprs',
+  'kydvm-atrym',
+  '3-mkvrvt-hmyda',
+  'hprvyktym-shlnv',
+  'kblt-hchltvt-mbvssvt-dath',
+  'atrym-vprvyktym-mvtslchym',
+  'tknvn-hgyrh-n',
+  'hvpkym-rayvn-lmtsyavt',
+  'bnyyt-atrym-ktnym',
+  'svknvt-kydvm-atrym',
+]);
 
 function isExcluded(path: string, excludes: string[]) {
   return excludes.some((rule) => {

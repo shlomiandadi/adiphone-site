@@ -193,7 +193,7 @@ const nextConfig = {
       },
       {
         source: '/blog/kyshvrym-mhyrym',
-        destination: '/blog/mh-zh-kydvm-avrgny',
+        destination: '/blog/seo-tips-google-ranking-guide',
         permanent: true,
       },
       {
@@ -253,7 +253,7 @@ const nextConfig = {
       },
       {
         source: '/blog/kydvm-atrym-laskym-ktnym',
-        destination: '/blog/mh-zh-kydvm-avrgny',
+        destination: '/blog/seo-tips-google-ranking-guide',
         permanent: true,
       },
       {

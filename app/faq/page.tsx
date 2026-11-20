@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { FAQ_TOTAL, loadFaqIndexWithDescriptions } from '../../lib/faq';
 
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 const FAQ_HUB_META_DESCRIPTION =
   'תשובות בעברית: כמה עולה אתר תדמית, מה זה SEO, ומה זה AEO במנועי AI. 505 שאלות על בניית אתרים, מחירים, אחסון, אמון ויצירת קשר.';
 

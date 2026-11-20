@@ -5,7 +5,7 @@ import { SetBreadcrumbLeaf } from '../../components/BreadcrumbLeaf';
 import FaqAccordion from '../../components/FaqAccordion';
 import PageBreadcrumbJsonLd from '../../components/PageBreadcrumbJsonLd';
 import {
-  FAQ_TOPIC_SLUGS,
+  FAQ_FILE_SLUGS,
   faqMetaDescription,
   faqPageJsonLd,
   getFaqTopic,
@@ -15,13 +15,14 @@ import {
 
 export const dynamic = 'force-static';
 export const dynamicParams = false;
+export const revalidate = false;
 
 type PageProps = {
   params: { topic: string };
 };
 
 export function generateStaticParams() {
-  return FAQ_TOPIC_SLUGS.map((topic) => ({ topic }));
+  return FAQ_FILE_SLUGS.map((topic) => ({ topic }));
 }
 
 export function generateMetadata({ params }: PageProps): Metadata {

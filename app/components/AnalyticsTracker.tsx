@@ -4,13 +4,11 @@ import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   applyStoredConsent,
+  bindContactLinkTracking,
   flushMetaLead,
   inferCtaLocation,
   injectAttributionFields,
-  isMailtoHref,
   isMainCta,
-  isTelHref,
-  isWhatsAppHref,
   persistAttribution,
   trackEvent,
   trackPageView,
@@ -38,26 +36,6 @@ function handleDelegatedClick(event: MouseEvent) {
     clickable.closest('[data-package-name]')?.getAttribute('data-package-name') ||
     undefined;
   const label = linkLabel(clickable);
-
-  if (href && isTelHref(href)) {
-    trackEvent('phone_click', {
-      link_url: href,
-      cta_location: location,
-      link_text: label,
-    });
-  } else if (href && isWhatsAppHref(href)) {
-    trackEvent('whatsapp_click', {
-      link_url: href,
-      cta_location: location,
-      link_text: label,
-    });
-  } else if (href && isMailtoHref(href)) {
-    trackEvent('email_click', {
-      link_url: href,
-      cta_location: location,
-      link_text: label,
-    });
-  }
 
   if (packageName) {
     trackEvent('pricing_package_click', {
@@ -92,11 +70,13 @@ export default function AnalyticsTracker() {
   useEffect(() => {
     applyStoredConsent();
     persistAttribution();
+    const unbindContact = bindContactLinkTracking(document);
     document.addEventListener('click', handleDelegatedClick, true);
     const observer = new MutationObserver(syncFormFields);
     observer.observe(document.body, { childList: true, subtree: true });
     syncFormFields();
     return () => {
+      unbindContact();
       document.removeEventListener('click', handleDelegatedClick, true);
       observer.disconnect();
     };

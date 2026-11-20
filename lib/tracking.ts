@@ -1,3 +1,4 @@
+import { resolveContactClickEvent } from './contactClicks';
 import {
   META_LEAD_STATE_KEY,
   beginMetaLead,
@@ -12,6 +13,14 @@ import {
   shouldTrackManualPageView,
   type MetaLeadRecord,
 } from './thirdPartyTags';
+
+export {
+  isMailtoHref,
+  isTelHref,
+  isWhatsAppHref,
+  resolveContactClickEvent,
+  type ContactClickEventName,
+} from './contactClicks';
 
 export const GA4_MEASUREMENT_ID = 'G-QMC63HG6SD';
 
@@ -402,6 +411,66 @@ export function trackEvent(name: string, params: TrackingParams = {}) {
   if (isMetaContactEvent(name)) trackMetaContact();
 }
 
+function resolveAnchorHref(anchor: HTMLAnchorElement | HTMLAreaElement) {
+  return (anchor.getAttribute('href') || ('href' in anchor ? anchor.href : '') || '').trim();
+}
+
+export function findClickAnchor(target: EventTarget | null): HTMLAnchorElement | HTMLAreaElement | null {
+  if (!(target instanceof Element)) return null;
+  const node = target.closest('a[href], area[href]');
+  if (node instanceof HTMLAnchorElement || node instanceof HTMLAreaElement) return node;
+  return null;
+}
+
+const recentContactClicks = new Map<string, number>();
+const CONTACT_CLICK_DEDUPE_MS = 1500;
+
+function shouldSkipDuplicateContactClick(key: string) {
+  const now = Date.now();
+  const previous = recentContactClicks.get(key) || 0;
+  if (now - previous < CONTACT_CLICK_DEDUPE_MS) return true;
+  recentContactClicks.set(key, now);
+  if (recentContactClicks.size > 40) recentContactClicks.clear();
+  return false;
+}
+
+/**
+ * Capture-phase, passive listeners so tel: / WhatsApp / mailto clicks still
+ * send a GA4 beacon when the browser opens a new tab or the WhatsApp app.
+ * Does not call preventDefault. Preview/localhost stay silent because gtag is
+ * not bootstrapped there (shouldLoadGa4).
+ */
+export function bindContactLinkTracking(root: Document | HTMLElement = document): () => void {
+  const onInteract = (event: Event) => {
+    const anchor = findClickAnchor(event.target);
+    if (!anchor) return;
+    const href = resolveAnchorHref(anchor);
+    const name = resolveContactClickEvent(href);
+    if (!name) return;
+    const key = `${name}:${href}`;
+    if (shouldSkipDuplicateContactClick(key)) return;
+    const linkLocation = inferCtaLocation(anchor);
+    const label = (anchor.getAttribute('aria-label') || anchor.textContent || '').replace(/\s+/g, ' ').trim();
+    trackEvent(name, {
+      link_url: href,
+      page_path: isBrowser() ? window.location.pathname : undefined,
+      link_location: linkLocation,
+      cta_location: linkLocation,
+      link_text: label,
+    });
+  };
+
+  const types: Array<keyof HTMLElementEventMap> = ['pointerdown', 'click', 'auxclick'];
+  for (const type of types) {
+    root.addEventListener(type, onInteract, { capture: true, passive: true });
+  }
+  return () => {
+    for (const type of types) {
+      root.removeEventListener(type, onInteract, true);
+    }
+  };
+}
+
 export function trackGenerateLead(formName: string, extra: TrackingParams = {}, metaEventId?: string) {
   trackEvent('generate_lead', { form_name: formName, ...extra });
   trackMetaLead(metaEventId);
@@ -417,17 +486,6 @@ export function trackPageView() {
   });
 }
 
-export function isWhatsAppHref(href: string) {
-  return /wa\.me|api\.whatsapp\.com|web\.whatsapp\.com|whatsapp\.com\/send/i.test(href);
-}
-
-export function isTelHref(href: string) {
-  return href.toLowerCase().startsWith('tel:');
-}
-
-export function isMailtoHref(href: string) {
-  return href.toLowerCase().startsWith('mailto:');
-}
 
 export function isMainCta(el: Element, label: string) {
   if (el.closest('[data-cta="true"], [data-cta="cta"]')) return true;

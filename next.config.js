@@ -119,9 +119,13 @@ const nextConfig = {
   // force rules from lib/permanent-redirects-data.js (existing pages shadow
   // next.config redirects on Netlify).
   async redirects() {
-    const { PERMANENT_REDIRECTS: permanentRedirects } = await import(
-      './lib/permanent-redirects-data.js'
-    );
+    const fs = require('fs');
+    const path = require('path');
+    const raw = fs
+      .readFileSync(path.join(__dirname, 'lib/permanent-redirects-data.js'), 'utf8')
+      .replace(/^export const PERMANENT_REDIRECTS = /, '')
+      .replace(/;\s*$/, '');
+    const permanentRedirects = JSON.parse(raw);
     return permanentRedirects.map((rule) => ({
       source: rule.source,
       destination: rule.destination,

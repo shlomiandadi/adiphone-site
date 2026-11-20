@@ -58,42 +58,55 @@ type FaqIndexFile = {
   total: number;
 };
 
+function unwrapJsonModule<T extends object>(mod: T | { default: T } | null | undefined): T | null {
+  if (!mod || typeof mod !== 'object') return null;
+  if ('default' in mod) {
+    const inner = (mod as { default: T }).default;
+    if (inner && typeof inner === 'object' && !('topic' in mod) && !('topics' in mod)) {
+      return inner;
+    }
+  }
+  return mod as T;
+}
+
 /**
  * Static JSON imports so Netlify/Next traces the files into the server bundle.
  * process.cwd() + readFileSync fails at runtime on Netlify (data/faq is not in
  * the function bundle), which 404s /faq/[topic] when dynamicParams is false.
  */
 const TOPIC_FILES: Record<string, FaqTopicFile> = {
-  'aeo-geo': aeoGeo as FaqTopicFile,
-  'ai-bots': aiBots as FaqTopicFile,
-  'chatgpt-ads': chatgptAds as FaqTopicFile,
-  'chatgpt-business-hub': chatgptBusinessHub as FaqTopicFile,
-  ecommerce: ecommerce as FaqTopicFile,
-  general: general as FaqTopicFile,
-  glossary: glossary as FaqTopicFile,
-  'landing-page': landingPage as FaqTopicFile,
-  'local-areas': localAreas as FaqTopicFile,
-  'local-seo': localSeo as FaqTopicFile,
-  'mobile-apps': mobileApps as FaqTopicFile,
-  objections: objections as FaqTopicFile,
-  'ownership-hosting-security': ownershipHostingSecurity as FaqTopicFile,
-  ppc: ppc as FaqTopicFile,
-  pricing: pricing as FaqTopicFile,
-  'sentry-guard': sentryGuard as FaqTopicFile,
-  seo: seo as FaqTopicFile,
-  social: social as FaqTopicFile,
-  'ui-software-analytics-cloud': uiSoftwareAnalyticsCloud as FaqTopicFile,
-  verticals: verticals as FaqTopicFile,
-  'web-development': webDevelopment as FaqTopicFile,
+  'aeo-geo': unwrapJsonModule(aeoGeo as FaqTopicFile)!,
+  'ai-bots': unwrapJsonModule(aiBots as FaqTopicFile)!,
+  'chatgpt-ads': unwrapJsonModule(chatgptAds as FaqTopicFile)!,
+  'chatgpt-business-hub': unwrapJsonModule(chatgptBusinessHub as FaqTopicFile)!,
+  ecommerce: unwrapJsonModule(ecommerce as FaqTopicFile)!,
+  general: unwrapJsonModule(general as FaqTopicFile)!,
+  glossary: unwrapJsonModule(glossary as FaqTopicFile)!,
+  'landing-page': unwrapJsonModule(landingPage as FaqTopicFile)!,
+  'local-areas': unwrapJsonModule(localAreas as FaqTopicFile)!,
+  'local-seo': unwrapJsonModule(localSeo as FaqTopicFile)!,
+  'mobile-apps': unwrapJsonModule(mobileApps as FaqTopicFile)!,
+  objections: unwrapJsonModule(objections as FaqTopicFile)!,
+  'ownership-hosting-security': unwrapJsonModule(ownershipHostingSecurity as FaqTopicFile)!,
+  ppc: unwrapJsonModule(ppc as FaqTopicFile)!,
+  pricing: unwrapJsonModule(pricing as FaqTopicFile)!,
+  'sentry-guard': unwrapJsonModule(sentryGuard as FaqTopicFile)!,
+  seo: unwrapJsonModule(seo as FaqTopicFile)!,
+  social: unwrapJsonModule(social as FaqTopicFile)!,
+  'ui-software-analytics-cloud': unwrapJsonModule(uiSoftwareAnalyticsCloud as FaqTopicFile)!,
+  verticals: unwrapJsonModule(verticals as FaqTopicFile)!,
+  'web-development': unwrapJsonModule(webDevelopment as FaqTopicFile)!,
 };
 
-const indexData = faqIndex as FaqIndexFile;
+const indexData = unwrapJsonModule(faqIndex as FaqIndexFile)!;
 
 export const FAQ_TOPICS: FaqIndexTopic[] = indexData.topics;
 export const FAQ_TOTAL = indexData.total;
+/** Slugs from bundled topic JSON files — used by generateStaticParams. */
+export const FAQ_FILE_SLUGS = Object.keys(TOPIC_FILES);
 export const FAQ_TOPIC_SLUGS = FAQ_TOPICS.map((topic) => topic.topic);
 
-const topicSet = new Set(FAQ_TOPIC_SLUGS);
+const topicSet = new Set(FAQ_FILE_SLUGS);
 
 export function isFaqTopic(slug: string): boolean {
   return topicSet.has(slug);
@@ -108,7 +121,7 @@ export function getFaqTopicTitle(slug: string): string | undefined {
 }
 
 export function getFaqTopic(slug: string): FaqTopicFile | null {
-  if (!isFaqTopic(slug)) return null;
+  if (typeof slug !== 'string' || !slug) return null;
   const data = TOPIC_FILES[slug];
   if (!data || data.topic !== slug || !Array.isArray(data.items)) return null;
   return data;

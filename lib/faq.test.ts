@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { describe, test } from 'node:test';
 import {
+  FAQ_FILE_SLUGS,
   FAQ_TOPICS,
   FAQ_TOTAL,
   faqMetaDescription,
@@ -92,5 +93,22 @@ describe('faq data', () => {
       faqMetaDescription({ descriptionHe: 'intro', metaDescriptionHe: '  meta  ' }),
       'meta'
     );
+  });
+
+  test('static params cover all 21 bundled topic files and match the index', () => {
+    assert.equal(FAQ_FILE_SLUGS.length, 21);
+    assert.deepEqual([...FAQ_FILE_SLUGS].sort(), [...FAQ_TOPICS.map((t) => t.topic)].sort());
+  });
+
+  test('FAQ topic and hub pages opt out of ISR', () => {
+    const topicPage = readFileSync(new URL('../app/faq/[topic]/page.tsx', import.meta.url), 'utf8');
+    const hubPage = readFileSync(new URL('../app/faq/page.tsx', import.meta.url), 'utf8');
+    const layout = readFileSync(new URL('../app/faq/layout.tsx', import.meta.url), 'utf8');
+    for (const source of [topicPage, hubPage, layout]) {
+      assert.match(source, /export const dynamic = 'force-static'/);
+      assert.match(source, /export const revalidate = false/);
+    }
+    assert.match(topicPage, /export const dynamicParams = false/);
+    assert.match(topicPage, /FAQ_FILE_SLUGS/);
   });
 });

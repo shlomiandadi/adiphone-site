@@ -2,7 +2,7 @@ import { metadata as aboutMetadata, viewport as aboutViewport } from './metadata
 import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
 import { BUSINESS_EMAILS } from '../../lib/local-business-schema';
 import { GOOGLE_MAPS_REVIEWS_URL } from '../../lib/reviews';
-import { PERSON_SAME_AS, SOCIAL_FACEBOOK, SOCIAL_INSTAGRAM, SOCIAL_LINKEDIN } from '../../lib/social';
+import { ORGANIZATION_SAME_AS, PERSON_SAME_AS } from '../../lib/social';
 
 export const generateMetadata = createSeoAgentGenerateMetadata('/about', aboutMetadata);
 export const viewport = aboutViewport;
@@ -32,9 +32,7 @@ const organizationSchema = {
   },
   sameAs: [
     GOOGLE_MAPS_REVIEWS_URL,
-    SOCIAL_FACEBOOK,
-    SOCIAL_INSTAGRAM,
-    SOCIAL_LINKEDIN,
+    ...ORGANIZATION_SAME_AS,
   ],
 };
 

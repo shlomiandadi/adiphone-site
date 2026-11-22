@@ -5,14 +5,15 @@ import {
   PERSON_SAME_AS,
   organizationSameAs,
   SOCIAL_FACEBOOK,
+  SOCIAL_GOODFIRMS,
   SOCIAL_INSTAGRAM,
   SOCIAL_LINKEDIN,
   SOCIAL_X,
 } from './social.ts';
 
 describe('verified social profiles', () => {
-  test('organization sameAs is Facebook and Instagram only', () => {
-    assert.deepEqual([...ORGANIZATION_SAME_AS], [SOCIAL_FACEBOOK, SOCIAL_INSTAGRAM]);
+  test('organization sameAs is Facebook, Instagram, and GoodFirms', () => {
+    assert.deepEqual([...ORGANIZATION_SAME_AS], [SOCIAL_FACEBOOK, SOCIAL_INSTAGRAM, SOCIAL_GOODFIRMS]);
     assert.ok(!(ORGANIZATION_SAME_AS as readonly string[]).includes(SOCIAL_LINKEDIN));
     assert.ok(!(ORGANIZATION_SAME_AS as readonly string[]).includes(SOCIAL_X));
   });
@@ -31,6 +32,6 @@ describe('verified social profiles', () => {
     assert.ok(merged.includes(maps));
     assert.ok(!merged.includes(SOCIAL_LINKEDIN));
     assert.ok(!merged.includes(SOCIAL_X));
-    assert.equal(merged.length, 3);
+    assert.equal(merged.length, 4);
   });
 });

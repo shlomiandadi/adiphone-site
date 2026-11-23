@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getSiteUrl, organizationLogo } from '../../lib/seo';
-import { buildLocalBusinessJsonLd } from '../../lib/local-business-schema';
+import { BUSINESS_ALTERNATE_NAMES, buildLocalBusinessJsonLd } from '../../lib/local-business-schema';
 import { getPublishedPortfolioProjects } from '../../lib/website-projects';
 import { getServiceCta } from '../../lib/service-cta';
 import Hero3D from './hero3d/Hero3D';
@@ -65,6 +65,7 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
     provider: {
       '@type': 'ProfessionalService',
       name: PROVIDER_NAME,
+      alternateName: [...BUSINESS_ALTERNATE_NAMES],
       telephone: '+972-50-9159951',
       email: [...PROVIDER_EMAILS],
       address: {

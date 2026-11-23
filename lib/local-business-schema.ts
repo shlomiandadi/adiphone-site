@@ -4,6 +4,9 @@ import { organizationSameAs } from './social';
 
 export const BUSINESS_NAME = 'Top Webstak בנייה וקידום אתרים';
 export const BUSINESS_ALTERNATE_NAME = 'עדי פון תקשורת';
+/** Structured-data spelling variant; visible brand remains Top Webstak. */
+export const BUSINESS_NAME_VARIANT = 'Top WebStack';
+export const BUSINESS_ALTERNATE_NAMES = [BUSINESS_ALTERNATE_NAME, BUSINESS_NAME_VARIANT] as const;
 export const BUSINESS_PHONE = '+972-50-9159951';
 export const BUSINESS_EMAIL = 'adiphoneseo@gmail.com';
 export const BUSINESS_EMAIL_INFO = 'info@adi-phone.co.il';
@@ -56,7 +59,7 @@ export function buildLocalBusinessJsonLd(options: BuildOptions = {}) {
     '@context': 'https://schema.org',
     '@type': ['LocalBusiness', 'ProfessionalService'],
     name: BUSINESS_NAME,
-    alternateName: BUSINESS_ALTERNATE_NAME,
+    alternateName: [...BUSINESS_ALTERNATE_NAMES],
     url: pageUrl,
     logo: organizationLogo(siteUrl),
     telephone: BUSINESS_PHONE,

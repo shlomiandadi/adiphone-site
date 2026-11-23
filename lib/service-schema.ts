@@ -1,11 +1,11 @@
-import { BUSINESS_EMAILS } from './local-business-schema';
+import { BUSINESS_ALTERNATE_NAMES, BUSINESS_EMAILS } from './local-business-schema';
 import { absoluteUrl, organizationLogo } from './seo';
 import { ORGANIZATION_SAME_AS } from './social';
 
 export const AGENCY_PROVIDER = {
   '@type': 'ProfessionalService',
   name: 'Top Webstak בנייה וקידום אתרים',
-  alternateName: 'עדי פון תקשורת',
+  alternateName: [...BUSINESS_ALTERNATE_NAMES],
   url: 'https://adi-phone.co.il',
   logo: organizationLogo('https://adi-phone.co.il'),
   telephone: '+972-50-9159951',

@@ -26,6 +26,7 @@ export default function BlogSchema({ posts }: BlogSchemaProps) {
     "publisher": {
       "@type": "Organization",
       "name": "Top Webstak",
+      "alternateName": ["עדי פון תקשורת", "Top WebStack"],
       "url": "https://adi-phone.co.il",
       "logo": organizationLogo(),
       "sameAs": [...ORGANIZATION_SAME_AS]
@@ -44,6 +45,7 @@ export default function BlogSchema({ posts }: BlogSchemaProps) {
       "publisher": {
         "@type": "Organization",
         "name": "Top Webstak",
+        "alternateName": ["עדי פון תקשורת", "Top WebStack"],
         "url": "https://adi-phone.co.il",
         "logo": organizationLogo(),
         "sameAs": [...ORGANIZATION_SAME_AS]

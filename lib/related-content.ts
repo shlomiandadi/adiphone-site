@@ -103,6 +103,7 @@ export const PORTFOLIO_RELATED_SERVICE: Record<string, PortfolioRelated> = {
   'shaer-finance': { serviceHref: '/services/web-development', serviceLabel: 'אתר תדמית' },
   'work-accidents': { serviceHref: '/services/web-development', serviceLabel: 'אתר תדמית' },
   'topwebstack-landing': { serviceHref: '/services/web-development', serviceLabel: 'דף נחיתה' },
+  'leads-wa-system': { serviceHref: '/services/software-development', serviceLabel: 'פיתוח תוכנה' },
 };
 
 export const FEATURED_HOME_PORTFOLIO: RelatedLink[] = [

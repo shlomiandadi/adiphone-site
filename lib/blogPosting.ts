@@ -29,6 +29,7 @@ export const BLOG_AUTHOR = {
   worksFor: {
     '@type': 'Organization' as const,
     name: 'Top Webstak',
+    alternateName: ['עדי פון תקשורת', 'Top WebStack'],
   },
 };
 
@@ -58,6 +59,7 @@ export function buildBlogPostingSchema(post: BlogPostingInput) {
     publisher: {
       '@type': 'Organization',
       name: 'Top Webstak',
+      alternateName: ['עדי פון תקשורת', 'Top WebStack'],
       url: base,
       logo: publisherLogo(base),
       sameAs: [...ORGANIZATION_SAME_AS],

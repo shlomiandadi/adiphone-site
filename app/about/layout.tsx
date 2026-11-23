@@ -1,6 +1,6 @@
 import { metadata as aboutMetadata, viewport as aboutViewport } from './metadata';
 import { createSeoAgentGenerateMetadata, SeoAgentPageExtras } from '@/seo-agent-apply';
-import { BUSINESS_EMAILS } from '../../lib/local-business-schema';
+import { BUSINESS_ALTERNATE_NAMES, BUSINESS_EMAILS } from '../../lib/local-business-schema';
 import { GOOGLE_MAPS_REVIEWS_URL } from '../../lib/reviews';
 import { ORGANIZATION_SAME_AS, PERSON_SAME_AS } from '../../lib/social';
 
@@ -14,7 +14,7 @@ const organizationSchema = {
   '@type': 'Organization',
   '@id': ORGANIZATION_ID,
   name: 'Top Webstak',
-  alternateName: 'עדי פון תקשורת',
+  alternateName: [...BUSINESS_ALTERNATE_NAMES],
   url: 'https://adi-phone.co.il',
   logo: {
     '@type': 'ImageObject',

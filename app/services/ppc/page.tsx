@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BUSINESS_EMAILS } from '../../../lib/local-business-schema';
+import { BUSINESS_ALTERNATE_NAMES, BUSINESS_EMAILS } from '../../../lib/local-business-schema';
 import { getSiteUrl, organizationLogo } from '../../../lib/seo';
 import { getPublishedPortfolioProjects } from '../../../lib/website-projects';
 import Hero3D from '../../components/hero3d/Hero3D';
@@ -96,6 +96,7 @@ export default async function PpcServicePage() {
     provider: {
       '@type': 'ProfessionalService',
       name: 'Top Webstak בנייה וקידום אתרים',
+      alternateName: [...BUSINESS_ALTERNATE_NAMES],
       telephone: '+972-50-9159951',
       email: [...BUSINESS_EMAILS],
       address: {

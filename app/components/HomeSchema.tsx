@@ -1,5 +1,5 @@
 import { homeFaqItems } from '../data/homeFaq';
-import { BUSINESS_EMAILS } from '../../lib/local-business-schema';
+import { BUSINESS_ALTERNATE_NAMES, BUSINESS_EMAILS, BUSINESS_NAME_VARIANT } from '../../lib/local-business-schema';
 import { organizationLogo } from '../../lib/seo';
 import { organizationSameAs } from '../../lib/social';
 
@@ -15,6 +15,7 @@ export default function HomeSchema() {
       '@context': 'https://schema.org',
       '@type': 'DigitalMarketingAgency',
       name: 'Top Webstak בנייה וקידום אתרים',
+      alternateName: [...BUSINESS_ALTERNATE_NAMES],
       url: siteUrl,
       logo: organizationLogo(siteUrl),
       description,
@@ -24,7 +25,7 @@ export default function HomeSchema() {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'עדי פון תקשורת',
-      alternateName: 'Top Webstak בנייה וקידום אתרים',
+      alternateName: ['Top Webstak בנייה וקידום אתרים', BUSINESS_NAME_VARIANT],
       url: siteUrl,
       logo: organizationLogo(siteUrl),
       email: [...BUSINESS_EMAILS],
@@ -36,13 +37,14 @@ export default function HomeSchema() {
       '@type': 'WebSite',
       url: siteUrl,
       name: 'Top Webstak בנייה וקידום אתרים',
+      alternateName: BUSINESS_NAME_VARIANT,
       description,
     },
     {
       '@context': 'https://schema.org',
       '@type': ['LocalBusiness', 'ProfessionalService'],
       name: 'Top Webstak בנייה וקידום אתרים',
-      alternateName: 'עדי פון תקשורת',
+      alternateName: [...BUSINESS_ALTERNATE_NAMES],
       description,
       url: siteUrl,
       logo: organizationLogo(siteUrl),

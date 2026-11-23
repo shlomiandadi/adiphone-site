@@ -4,7 +4,7 @@ const AREA_SERVED = ['השרון', 'הצפון', 'IL'];
 const PROVIDER = {
   '@type': 'ProfessionalService',
   name: 'Top Webstak בנייה וקידום אתרים',
-  alternateName: 'עדי פון תקשורת',
+  alternateName: ['עדי פון תקשורת', 'Top WebStack'],
   url: SITE_URL,
 };
 

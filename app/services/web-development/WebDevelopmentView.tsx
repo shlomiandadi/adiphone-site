@@ -10,6 +10,7 @@ import type { WebsiteProjectCard } from '../../../lib/website-projects';
 
 const FALLBACK_IMAGE = '/images/portfolio/project1.svg';
 const HAIFA_LOCAL_PATH = '/services/bniyat-atarim-haifa';
+const PARDES_HANA_LOCAL_PATH = '/services/bniyat-atarim-pardes-hana';
 
 type Props = {
   projects: WebsiteProjectCard[];
@@ -87,7 +88,11 @@ export default function WebDevelopmentView({ projects }: Props) {
             {LOCAL_WEBSITE_PAGES.filter((city) => city.path !== HAIFA_LOCAL_PATH).map((city, index, arr) => (
               <span key={city.path}>
                 {index > 0 ? (index === arr.length - 1 ? ' ו' : ', ') : null}
-                <a href={city.path}>{`בניית אתרים ב${city.name}`}</a>
+                <a href={city.path}>
+                  {city.path === PARDES_HANA_LOCAL_PATH
+                    ? 'בניית וקידום אתרים בפרדס חנה'
+                    : `בניית אתרים ב${city.name}`}
+                </a>
               </span>
             ))}
             . לעסקים בחיפה ובקריות יש עמוד ייעודי ל

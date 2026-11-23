@@ -356,18 +356,28 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
             <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.extraSection.title}</h2>
             {content.extraSection.paragraphs.map((paragraph) => (
               <p key={paragraph.slice(0, 48)} className="mb-4 text-lg leading-relaxed text-gray-700">
-                {paragraph}
+                {paragraph.split(/(\[[^\]]+\]\([^)]+\))/g).map((part, index) => {
+                  const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+                  if (!match) return part;
+                  return (
+                    <Link key={`${match[2]}-${index}`} href={match[2]} className="font-semibold text-blue-700 underline">
+                      {match[1]}
+                    </Link>
+                  );
+                })}
               </p>
             ))}
-            <ul className="space-y-2">
-              {content.extraSection.links.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-lg font-semibold text-blue-700 underline">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {content.extraSection.links.length > 0 && (
+              <ul className="space-y-2">
+                {content.extraSection.links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="text-lg font-semibold text-blue-700 underline">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </section>
       )}

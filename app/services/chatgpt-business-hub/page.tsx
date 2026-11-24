@@ -7,6 +7,7 @@ import {
   FaComments,
   FaHeadset,
   FaIdCard,
+  FaRobot,
   FaShieldAlt,
   FaStore,
   FaUserCheck,
@@ -230,9 +231,10 @@ export default function ChatGptBusinessHubPage() {
             אתר ברור, ומותגים שכבר מופיעים בתשובות ChatGPT ורוצים לנהל פרטים ומדידה.
           </p>
           <p className="mb-4 text-lg text-gray-700">
-            <strong>כדאי לבדוק לפני שמתחילים:</strong> עסק מקומי בלבד — לפי OpenAI, חנויות ומסעדות מקומיות
-            יכולות כרגע לתבוע רק רשומה קיימת בארצות הברית. מי שמחפש Business Agent (נציג AI בתוך ChatGPT)
-            — היכולת פתוחה כיום רק לעסקי מסחר ושירות מקוון זכאים <strong>בארצות הברית</strong>, לא בישראל.
+            <strong>כדאי לבדוק לפני שמתחילים:</strong> עסק פיזי מקומי — לפי OpenAI, חנויות רחוב ומסעדות
+            יכולות כרגע לתבוע רק רשומה קיימת בארצות הברית. חנויות אונליין ועסקי שירות מקוון מחוץ לארצות
+            הברית יכולים עכשיו, בהדרגה, לתבוע פרופיל ולפרסם סוכן AI בתוך ChatGPT — בכפוף לזכאות ולאישור של
+            OpenAI. תמיכה רשמית בעברית בתוך ChatGPT לא אושרה.
           </p>
           <p className="text-lg text-gray-700">
             אנחנו בודקים זכאות מול החשבון והמדיניות העדכנית של OpenAI לפני תביעה. לא כל בקשה מאושרת.
@@ -263,7 +265,7 @@ export default function ChatGptBusinessHubPage() {
             </Link>
             ,{' '}
             <Link href="/services/ecommerce" className="text-blue-700 underline">
-              בניית חנות
+              בניית חנות מוכנה לקניות של סוכני AI
             </Link>{' '}
             ו
             <Link href="/services/web-development" className="text-blue-700 underline">
@@ -323,7 +325,7 @@ export default function ChatGptBusinessHubPage() {
           <p className="mx-auto mb-10 max-w-2xl text-center text-lg text-gray-700">
             מחירי פתיחה. אחרי בדיקת זכאות ושיחת אפיון קצרה תקבלו הצעה מדויקת להיקף שלכם.
           </p>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <article className="flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
               <h3 className="mb-2 text-2xl font-bold text-gray-900">הקמת פרופיל (חד-פעמי)</h3>
               <p className="mb-1 text-3xl font-bold text-blue-700">
@@ -355,6 +357,45 @@ export default function ChatGptBusinessHubPage() {
                   </li>
                 ))}
               </ul>
+            </article>
+            <article className="flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
+              <div className="mb-3 flex items-center gap-3">
+                <FaRobot className="h-8 w-8 text-blue-600" aria-hidden />
+                <h3 className="text-2xl font-bold text-gray-900">הקמת סוכן ChatGPT לחנות אונליין</h3>
+              </div>
+              <p className="mb-4 text-gray-600">
+                לחנויות אונליין ולעסקי שירות מקוון זכאים. אחרי בדיקת זכאות ושיחת אפיון קצרה תקבלו הצעה
+                מדויקת להיקף שלכם. בלי הבטחת המלצות או מכירות.
+              </p>
+              <ul className="flex-1 space-y-3">
+                {[
+                  'תביעת פרופיל העסק ב-Business Hub',
+                  'פיד מוצרים עם מחירים ומלאי',
+                  'הגדרת הסוכן בתוך ChatGPT',
+                  'מעקב Insights',
+                ].map((line) => (
+                  <li key={line} className="flex items-start gap-3">
+                    <FaCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" aria-hidden />
+                    <span className="text-gray-700">{line}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-center font-semibold text-white hover:bg-blue-700"
+                >
+                  שיחת ייעוץ של 15 דקות
+                </Link>
+                <a
+                  href={WHATSAPP_HREF}
+                  className="inline-flex items-center justify-center rounded-lg border border-blue-600 px-4 py-2.5 text-center font-semibold text-blue-700 hover:bg-blue-50"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  וואטסאפ: {PHONE_DISPLAY}
+                </a>
+              </div>
             </article>
           </div>
           <p className="mt-8 text-center text-gray-700">

@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import {
+  FaCalendarCheck,
   FaChartLine,
   FaCheck,
   FaClipboardCheck,
+  FaComments,
+  FaHeadset,
   FaIdCard,
   FaShieldAlt,
   FaStore,
   FaUserCheck,
+  FaWhatsapp,
 } from 'react-icons/fa';
 import { isolateLatinPhrases } from '../../../lib/bidi';
 import { getSiteUrl } from '../../../lib/seo';
@@ -59,24 +63,58 @@ const WHAT_WE_DO = [
   },
 ];
 
-const PROCESS = [
+const SETUP_STEPS = [
   {
-    title: 'אבחון זכאות',
+    title: 'אפיון ותכנון',
     description:
-      'שיחת היכרות קצרה, בדיקה אם העסק יכול לתבוע פרופיל היום, ומה ChatGPT כבר אומר עליכם ועל הקטגוריה.',
+      'שיחת היכרות קצרה: מה העסק מוכר, מאיפה מגיעים לידים, ואיך עונים היום באתר, בוואטסאפ ובטלפון. בודקים אם אפשר לתבוע פרופיל ב-Business Hub עכשיו, ומה ChatGPT כבר אומר על הקטגוריה. ממפים חיבורים נדרשים — דומיין, טופס, CRM או וואטסאפ — בלי להרחיב מעבר למה שצריך להשקה.',
   },
   {
-    title: 'תביעה ואימות',
-    description: 'פתיחת Business Hub, אימות בעלות, וליווי הלקוח באימות הזהות ב-Persona.',
-  },
-  {
-    title: 'הקמת הפרופיל',
-    description: 'עדכון הפרטים, חיבור פיד אם רלוונטי וזמין, והגדרת גישה לצוות.',
-  },
-  {
-    title: 'ניהול ומדידה',
+    title: 'חיבור ואימות',
     description:
-      'מעקב שוטף אחרי Insights, עדכון פרטים כשצריך, ודוח תקופתי. אם הנתונים ריקים — זה יכול להיות סף דיווח, לא בהכרח אפס פעילות.',
+      'פותחים את ה-Business Hub, מאמתים בעלות (כולל רשומת DNS אם צריך) ומלווים את בעל העסק באימות זהות ב-Persona. מחברים את הכתובת של האתר הקיים, ומוודאים שדפי יצירת קשר ומדיניות נגישים. אם סוכם פיד מוצרים, Shopify או העברת ליד לוואטסאפ — מגדירים את זה בשלב הזה.',
+  },
+  {
+    title: 'בניית הפרופיל והתהליך',
+    description:
+      'כותבים תיאור, קטגוריה ומדיניות בעברית שמתאימים לאתר ולשפה של הלקוחות. מגדירים גישת צוות ל-Insights. אם נדרש תהליך מענה — תסריט קצר לליד, לשירות או לקביעת פגישה — מנסחים אותו מול התהליך האמיתי של העסק, לא כתבנית כללית.',
+  },
+  {
+    title: 'בדיקות לפני עלייה',
+    description:
+      'בודקים שהאימות עבר, שהקישורים בפרופיל מגיעים לדף הנכון, ושטופס או וואטסאפ עובדים בנייד. עוברים על תרחישים בעברית: פנייה חדשה, שאלה על שעות, בקשת פגישה. מתקנים ניסוח או חיבור לפני שמעבירים לכם את הגישה.',
+  },
+  {
+    title: 'השקה וליווי',
+    description:
+      'מוסרים את הפרופיל ואת הרשאות הצוות, מסבירים מה רואים ב-Insights ומה לא, ומתעדים מה לעדכן כשהעסק משתנה. ניהול שוטף הוא אופציונלי: מעקב, עדכוני פרטים ודוח תקופתי. בלי ניהול — הפרופיל והגישה נשארים אצלכם.',
+  },
+];
+
+const USE_CASES = [
+  {
+    title: 'מענה ללידים',
+    description:
+      'ליד מהאתר או משיחה ב-ChatGPT צריך להגיע מהר לטופס, לוואטסאפ או למייל העסקי. מגדירים לאן הפנייה נופלת ומה נשלח חזרה ללקוח — בלי להבטיח ש-ChatGPT יביא יותר פניות רק בגלל הפרופיל.',
+    icon: FaComments,
+  },
+  {
+    title: 'שירות לקוחות',
+    description:
+      'שאלות חוזרות על שעות, משלוח, החזרה או היקף שירות מקבלות ניסוח אחיד בפרופיל ובדפי האתר. כך מי ששואל ב-ChatGPT או באתר מקבל את אותם פרטים שהעסק אישר, לא ניחוש ממקור ישן.',
+    icon: FaHeadset,
+  },
+  {
+    title: 'קביעת תורים ופגישות',
+    description:
+      'קליניקה, משרד או יועץ יכולים לחבר קישור לקביעת תור, טופס או וואטסאפ עם שעות קבלה. הפרופיל מפנה לאותו מסלול שכבר עובד אצלכם — לא יומן חדש שחייבים לאמץ.',
+    icon: FaCalendarCheck,
+  },
+  {
+    title: 'חיבור לאתר, ל-CRM ולוואטסאפ',
+    description:
+      'מאמתים את הדומיין, מקשרים לדפי שירות קיימים, ומעבירים ליד לוואטסאפ או למערכת שכבר בשימוש כשזה חלק מההיקף. לא מחליפים CRM בלי צורך, ולא בונים אתר מחדש רק כדי לתבוע את הפרופיל.',
+    icon: FaWhatsapp,
   },
 ];
 
@@ -143,13 +181,18 @@ export default function ChatGptBusinessHubPage() {
             את מה שמופיע שם. OpenAI פתחה בבטא את Business Hub — הלוח שבו תובעים את הפרופיל, מעדכנים
             פרטים ורואים נתוני Insights על אזכורים וקליקים.
           </p>
+          <p className="mb-6 text-lg leading-relaxed text-gray-700">
+            לעסק ישראלי זה אומר דבר מעשי: אפשר לאמת בעלות, לכתוב תיאור בעברית, לקשר לאתר הקיים ולראות
+            סיכומי אזכורים — בלי מנוי צוות ובלי חשבון מודעות. זה לא מחליף אתר ברור, טופס פנייה או מענה
+            בוואטסאפ. זה שכבה שמנהלת איך העסק מוצג בתוך ChatGPT, לצד הערוצים שכבר עובדים אצלכם.
+          </p>
           <p className="text-lg leading-relaxed text-gray-700">
             ב-Top Webstak, מבית עדי פון תקשורת, אנחנו מלווים את ההקמה ואת הניהול השוטף — כולל אימות,
-            כתיבת הפרופיל וחיבור ל
+            כתיבת הפרופיל, בדיקות בעברית וחיבור ל
             <Link href="/services/aeo-geo" className="text-blue-700 underline">
               אופטימיזציה של האתר לתשובות AI
             </Link>
-            .
+            . השירות מיועד לעסק עם אתר, לא למי שמחפש קיצור דרך בלי נוכחות דיגיטלית.
           </p>
           <p className="mt-6 text-sm text-gray-500">Top Webstak אינה קשורה ל-OpenAI.</p>
         </div>
@@ -233,15 +276,41 @@ export default function ChatGptBusinessHubPage() {
 
       <section data-reveal className="px-4 py-16">
         <div className="container mx-auto max-w-5xl">
-          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">תהליך העבודה</h2>
-          <div className="grid gap-6 md:grid-cols-4">
-            {PROCESS.map((step, index) => (
-              <div key={step.title} className="rounded-xl bg-gray-50 p-6 text-center shadow-sm">
-                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
+          <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">שלבי הקמה</h2>
+          <p className="mx-auto mb-10 max-w-3xl text-center text-lg text-gray-700">
+            כך Top Webstak מתכננים, מחברים, בודקים ומשיקים פרופיל ב-ChatGPT Business Hub ותהליך עבודה
+            מתאים לעסק בישראל. כל שלב תלוי בזכאות ובאישור של OpenAI; לא מתחילים תביעה לפני בדיקה.
+          </p>
+          <ol className="mx-auto max-w-3xl space-y-6">
+            {SETUP_STEPS.map((step, index) => (
+              <li key={step.title} className="flex gap-4 rounded-xl bg-gray-50 p-6 text-right shadow-sm">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
                   {index + 1}
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-gray-900">{step.title}</h3>
-                <p className="text-sm text-gray-600">{step.description}</p>
+                <div>
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">{step.title}</h3>
+                  <p className="leading-relaxed text-gray-600">{step.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section data-reveal className="bg-gray-50 px-4 py-16">
+        <div className="container mx-auto max-w-5xl">
+          <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">למי זה מתאים ומה מקבלים בפועל</h2>
+          <p className="mx-auto mb-10 max-w-3xl text-center text-lg text-gray-700">
+            מתאים בעיקר לעסק עם אתר שרוצה לנהל איך הוא מופיע ב-ChatGPT, ולחבר את הפנייה חזרה לתהליך
+            שכבר קיים. לא מתאים כתחליף לאתר, ולא מבטיח המלצות או מכירות. ארבע הדוגמאות למטה הן שימושים
+            נפוצים — ההיקף המדויק נקבע באפיון.
+          </p>
+          <div className="grid gap-6 md:grid-cols-2">
+            {USE_CASES.map((item) => (
+              <div key={item.title} className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+                <item.icon className="mb-3 h-8 w-8 text-blue-600" aria-hidden />
+                <h3 className="mb-2 text-xl font-semibold text-gray-900">{item.title}</h3>
+                <p className="leading-relaxed text-gray-600">{item.description}</p>
               </div>
             ))}
           </div>

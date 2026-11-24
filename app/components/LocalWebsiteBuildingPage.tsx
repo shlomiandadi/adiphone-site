@@ -28,6 +28,46 @@ type Props = {
   content: LocalCityContent;
 };
 
+function ExtraSectionBlock({
+  section,
+  muted,
+}: {
+  section: NonNullable<LocalCityContent['extraSection']>;
+  muted?: boolean;
+}) {
+  return (
+    <section data-reveal className={`${muted ? 'bg-gray-50' : 'bg-blue-50'} px-4 py-16`}>
+      <div className="container mx-auto max-w-3xl text-right">
+        <h2 className="mb-4 text-3xl font-bold text-gray-900">{section.title}</h2>
+        {section.paragraphs.map((paragraph) => (
+          <p key={paragraph.slice(0, 48)} className="mb-4 text-lg leading-relaxed text-gray-700">
+            {paragraph.split(/(\[[^\]]+\]\([^)]+\))/g).map((part, index) => {
+              const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+              if (!match) return part;
+              return (
+                <Link key={`${match[2]}-${index}`} href={match[2]} className="font-semibold text-blue-700 underline">
+                  {match[1]}
+                </Link>
+              );
+            })}
+          </p>
+        ))}
+        {section.links.length > 0 && (
+          <ul className="space-y-2">
+            {section.links.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="text-lg font-semibold text-blue-700 underline">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function HighlightedParagraph({ text, className = '' }: { text: string; className?: string }) {
   const match = text.match(/^(.+?[.!?…])(\s+[\s\S]*)?$/);
   const lead = match?.[1] ?? text;
@@ -357,36 +397,14 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
         </div>
       </section>
 
+      {(content.extraSections ?? []).map((section, index) => (
+        <ExtraSectionBlock key={section.title} section={section} muted={index % 2 === 1} />
+      ))}
       {content.extraSection && (
-        <section data-reveal className="bg-blue-50 px-4 py-16">
-          <div className="container mx-auto max-w-3xl text-right">
-            <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.extraSection.title}</h2>
-            {content.extraSection.paragraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 48)} className="mb-4 text-lg leading-relaxed text-gray-700">
-                {paragraph.split(/(\[[^\]]+\]\([^)]+\))/g).map((part, index) => {
-                  const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-                  if (!match) return part;
-                  return (
-                    <Link key={`${match[2]}-${index}`} href={match[2]} className="font-semibold text-blue-700 underline">
-                      {match[1]}
-                    </Link>
-                  );
-                })}
-              </p>
-            ))}
-            {content.extraSection.links.length > 0 && (
-              <ul className="space-y-2">
-                {content.extraSection.links.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href} className="text-lg font-semibold text-blue-700 underline">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </section>
+        <ExtraSectionBlock
+          section={content.extraSection}
+          muted={(content.extraSections?.length ?? 0) % 2 === 1}
+        />
       )}
 
       <section data-reveal className="px-4 py-16">

@@ -82,6 +82,12 @@ export type LocalCityContent = {
     paragraphs: string[];
     links: { href: string; label: string }[];
   };
+  /** Additional H2 blocks, used only when a city page needs more than one extra section. */
+  extraSections?: {
+    title: string;
+    paragraphs: string[];
+    links: { href: string; label: string }[];
+  }[];
   neighborhoods?: {
     title?: string;
     places: string[];

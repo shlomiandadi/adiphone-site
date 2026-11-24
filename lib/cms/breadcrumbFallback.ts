@@ -18,6 +18,7 @@ const SEGMENT_TITLES: Record<string, string> = {
   pricing: 'מחירון',
   faq: 'שאלות נפוצות',
   contact: 'צור קשר',
+  check: 'בדיקת אתר חינם',
   'privacy-policy': 'מדיניות פרטיות',
   'accessibility-statement': 'הצהרת נגישות',
   terms: 'תנאי שימוש',

@@ -38,12 +38,42 @@ describe('buildBlogPostingSchema', () => {
 });
 
 describe('whatsappHrefForPath', () => {
-  test('pricing article prefills the price-list message and other pages stay bare', () => {
+  test('pricing article prefills the price-list message', () => {
     assert.equal(
       whatsappHrefForPath(PRICING_ARTICLE_PATH),
       whatsappUrl(PRICING_ARTICLE_WHATSAPP_TEXT)
     );
-    assert.equal(whatsappHrefForPath('/pricing'), 'https://wa.me/972509159951');
     assert.match(PRICING_ARTICLE_WHATSAPP_TEXT, /^היי, ראיתי את המחירון באתר ואשמח לקבל הצעת מחיר ל/);
+  });
+
+  test('money and service pages prefill Hebrew WhatsApp copy', () => {
+    assert.equal(
+      whatsappHrefForPath('/pricing'),
+      whatsappUrl('שלום שלומי, ראיתי את המחירון באתר ואשמח להצעת מחיר')
+    );
+    assert.equal(
+      whatsappHrefForPath('/services/web-development'),
+      whatsappUrl('שלום שלומי, אשמח לקבל הצעת מחיר לבניית אתר')
+    );
+    assert.equal(
+      whatsappHrefForPath('/services/bniyat-atarim-pardes-hana'),
+      whatsappUrl('שלום שלומי, מחפש בניית אתר באזור פרדס חנה ואשמח לשיחת ייעוץ')
+    );
+    assert.equal(
+      whatsappHrefForPath('/services/seo'),
+      whatsappUrl('שלום שלומי, אשמח לשמוע על קידום אתרים אורגני')
+    );
+    assert.equal(
+      whatsappHrefForPath('/services/ecommerce'),
+      whatsappUrl('שלום שלומי, אשמח להצעת מחיר לחנות אינטרנטית')
+    );
+    assert.equal(
+      whatsappHrefForPath('/services/ppc'),
+      whatsappUrl('שלום שלומי, אשמח לשמוע על קידום ממומן בגוגל')
+    );
+    assert.equal(
+      whatsappHrefForPath('/'),
+      whatsappUrl('שלום שלומי, אשמח לשיחת ייעוץ והצעת מחיר לבניית אתר')
+    );
   });
 });

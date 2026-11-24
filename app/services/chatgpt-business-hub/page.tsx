@@ -18,7 +18,7 @@ import { FAQ } from './content';
 const PHONE_DISPLAY = '050-9159951';
 const PHONE_TEL = '+972509159951';
 const WHATSAPP_HREF =
-  'https://wa.me/972509159951?text=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%9F%20%D7%91%D7%A9%D7%99%D7%A8%D7%95%D7%AA%20ChatGPT%20Business%20Hub';
+  'https://wa.me/972509159951?text=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%A9%D7%99%D7%A8%D7%95%D7%AA%20ChatGPT%20Business%20Hub';
 
 const WHAT_WE_DO = [
   {

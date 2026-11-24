@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { BUSINESS_ALTERNATE_NAMES, BUSINESS_EMAILS } from '../../lib/local-business-schema';
 import { getSiteUrl, organizationLogo } from '../../lib/seo';
 import Hero3D from '../components/hero3d/Hero3D';
+import LeadFormSection from '../components/LeadFormSection';
 import {
   PHONE_DISPLAY,
   PHONE_TEL,
@@ -414,6 +415,8 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
+
+      <LeadFormSection formName="pricing_page" />
 
       <section data-reveal className="bg-blue-700 px-4 py-16 text-white">
         <div className="container mx-auto max-w-3xl text-center">

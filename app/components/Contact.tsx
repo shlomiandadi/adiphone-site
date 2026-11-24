@@ -84,7 +84,7 @@ export default function Contact() {
                 <a href="https://www.facebook.com/profile.php?id=61578707397365" className="w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-colors" target="_blank" rel="noopener noreferrer" aria-label="פייסבוק">
                   <FaFacebook className="text-white text-xl" aria-hidden="true" />
                 </a>
-                <a href="https://wa.me/972509159951?text=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%9F%20%D7%91%D7%A9%D7%99%D7%A8%D7%95%D7%AA%20%D7%91%D7%A0%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%D7%99%D7%9D%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%A9%D7%AA%D7%97%D7%96%D7%A8%D7%95%20%D7%90%D7%9C%D7%99" className="w-12 h-12 bg-green-600 hover:bg-green-700 rounded-lg flex items-center justify-center transition-colors" target="_blank" rel="noopener noreferrer" aria-label="וואטסאפ">
+                <a href="https://wa.me/972509159951?text=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%A9%D7%99%D7%A8%D7%95%D7%AA%20%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%D7%99%D7%9D%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%A9%D7%AA%D7%97%D7%96%D7%A8%D7%95%20%D7%90%D7%9C%D7%99" className="w-12 h-12 bg-green-600 hover:bg-green-700 rounded-lg flex items-center justify-center transition-colors" target="_blank" rel="noopener noreferrer" aria-label="וואטסאפ">
                   <FaWhatsapp className="text-white text-xl" aria-hidden="true" />
                 </a>
                 <a href="https://www.linkedin.com/in/shlomi-malfuf-709961221/" className="w-12 h-12 bg-blue-700 hover:bg-blue-800 rounded-lg flex items-center justify-center transition-colors" target="_blank" rel="noopener noreferrer" aria-label="לינקדאין">
@@ -96,6 +96,9 @@ export default function Contact() {
 
           <div className="lg:col-span-2 h-full">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 h-full">
+              <p className="mb-6 text-center text-base font-medium text-gray-700 dark:text-gray-300">
+                מענה תוך שעתיים בשעות הפעילות
+              </p>
               <LeadForm formName="homepage_contact" />
             </div>
           </div>

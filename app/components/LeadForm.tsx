@@ -189,7 +189,7 @@ export default function LeadForm({ formName, className = '', compact = false }: 
       </div>
 
       <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-        ללא התחייבות · 500+ לקוחות מרוצים · ⭐ ביקורות גוגל
+        ללא התחייבות · דירוג 5.0 מ-25 ביקורות בגוגל
       </p>
     </form>
   );

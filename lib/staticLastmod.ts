@@ -5,6 +5,7 @@ export const STATIC_ROUTES = [
   '/portfolio',
   '/blog',
   '/contact',
+  '/check',
   '/pricing',
   '/faq',
   '/faq/aeo-geo',

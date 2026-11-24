@@ -81,6 +81,7 @@ const ROUTES = [
   '/portfolio',
   '/blog',
   '/contact',
+  '/check',
   '/pricing',
   '/privacy-policy',
   '/accessibility-statement',

@@ -95,6 +95,7 @@ const SERVICE_NAMES: Record<string, string> = {
   '/services/bniyat-atarim-yokneam': 'בניית אתרים ביוקנעם',
   '/services/bniyat-atarim-afula': 'בניית אתרים בעפולה',
   '/blog/kama-oleh-bniyat-atar-2026': 'כמה עולה בניית אתר ב-2026',
+  '/check': 'בדיקת אתר חינם',
 };
 
 const CTA_LABELS = [

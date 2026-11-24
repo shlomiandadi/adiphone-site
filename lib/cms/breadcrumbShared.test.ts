@@ -19,6 +19,12 @@ describe('fallbackBreadcrumbItems', () => {
     ]);
   });
 
+  test('check landing uses בדיקת אתר חינם', () => {
+    assert.deepEqual(fallbackBreadcrumbItems('/check'), [
+      { url: '/check', title: 'בדיקת אתר חינם', isActive: true },
+    ]);
+  });
+
   test('faq hub uses שאלות נפוצות', () => {
     assert.deepEqual(fallbackBreadcrumbItems('/faq'), [
       { url: '/faq', title: 'שאלות נפוצות', isActive: true },

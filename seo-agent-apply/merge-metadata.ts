@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { mergeCmsMetadata } from '../lib/cms/seo';
-import { absoluteUrl } from '../lib/seo';
+import { absoluteUrl, completeOpenGraph } from '../lib/seo';
 import {
   SERVICE_OG_CACHE_VERSION,
   versionedServiceOgImagePath,
@@ -81,7 +81,7 @@ export async function mergeSeoAgentMetadata(path: string, base: Metadata): Promi
   // Agent overrides win over CMS and hardcoded metadata. Title-only payloads
   // leave canonical and other omitted fields untouched.
   const merged = override ? applySeoAgentOverride(withCms, override) : withCms;
-  return withVersionedServiceOgImage(path, merged);
+  return completeOpenGraph(path, withVersionedServiceOgImage(path, merged));
 }
 
 export function createSeoAgentGenerateMetadata(path: string, base: Metadata) {

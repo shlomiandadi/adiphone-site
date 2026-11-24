@@ -21,7 +21,8 @@
     "check-categories": "node scripts/check-categories.js",
     "fix-http-canonicals": "node scripts/fix-http-canonicals.js",
     "compare-live": "node scripts/compare-live.mjs",
-    "check-redirects": "node scripts/check-alias-301s.mjs"
+    "check-redirects": "node scripts/check-alias-301s.mjs",
+    "smoke:faq": "node scripts/smoke-faq-live.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

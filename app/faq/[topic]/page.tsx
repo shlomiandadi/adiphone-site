@@ -8,10 +8,11 @@ import {
   FAQ_FILE_SLUGS,
   faqMetaDescription,
   faqPageJsonLd,
-  getFaqTopic,
+  requireFaqTopic,
   relatedPagesForTopic,
   siblingTopics,
 } from '../../../lib/faq';
+import { DEFAULT_OG_IMAGE } from '../../../lib/seo';
 
 export const dynamic = 'force-static';
 export const dynamicParams = false;
@@ -26,10 +27,10 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: PageProps): Metadata {
-  const data = getFaqTopic(params.topic);
-  if (!data) {
+  if (!FAQ_FILE_SLUGS.includes(params.topic)) {
     return { title: 'שאלות נפוצות' };
   }
+  const data = requireFaqTopic(params.topic);
   const path = `https://adi-phone.co.il/faq/${data.topic}`;
   const description = faqMetaDescription(data);
   return {
@@ -45,6 +46,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
       type: 'website',
       locale: 'he_IL',
       siteName: 'Top Webstak',
+      images: [DEFAULT_OG_IMAGE],
     },
     twitter: {
       description,
@@ -53,8 +55,9 @@ export function generateMetadata({ params }: PageProps): Metadata {
 }
 
 export default function FaqTopicPage({ params }: PageProps) {
-  const data = getFaqTopic(params.topic);
-  if (!data) notFound();
+  // Known slugs must not call notFound(): Netlify Durable caches that 404.
+  if (!FAQ_FILE_SLUGS.includes(params.topic)) notFound();
+  const data = requireFaqTopic(params.topic);
 
   const related = relatedPagesForTopic(data.topic);
   const siblings = siblingTopics(data.topic, 3);

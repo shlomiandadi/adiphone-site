@@ -59,14 +59,20 @@ type FaqIndexFile = {
 };
 
 function unwrapJsonModule<T extends object>(mod: T | { default: T } | null | undefined): T | null {
-  if (!mod || typeof mod !== 'object') return null;
-  if ('default' in mod) {
-    const inner = (mod as { default: T }).default;
-    if (inner && typeof inner === 'object' && !('topic' in mod) && !('topics' in mod)) {
-      return inner;
+  let current: unknown = mod;
+  for (let i = 0; i < 3; i += 1) {
+    if (!current || typeof current !== 'object') return null;
+    const record = current as Record<string, unknown>;
+    const looksLikeTopic = 'topic' in record && 'items' in record;
+    const looksLikeIndex = 'topics' in record;
+    if ('default' in record && !looksLikeTopic && !looksLikeIndex) {
+      current = record.default;
+      continue;
     }
+    break;
   }
-  return mod as T;
+  if (!current || typeof current !== 'object') return null;
+  return current as T;
 }
 
 /**
@@ -125,6 +131,48 @@ export function getFaqTopic(slug: string): FaqTopicFile | null {
   const data = TOPIC_FILES[slug];
   if (!data || data.topic !== slug || !Array.isArray(data.items)) return null;
   return data;
+}
+
+/**
+ * Known topic slugs must never become a 404: Netlify Durable caches that
+ * notFound() and the live /faq/[topic] pages stay broken after ISR.
+ * Unknown slugs still return null so the page can call notFound().
+ */
+export function requireFaqTopic(slug: string): FaqTopicFile {
+  const data = getFaqTopic(slug);
+  if (data) return data;
+  if (topicSet.has(slug) || FAQ_FILE_SLUGS.includes(slug)) {
+    throw new Error(`FAQ topic bundle missing for known slug "${slug}"`);
+  }
+  throw new Error(`Unknown FAQ topic slug "${slug}"`);
+}
+
+const FEATURED_FAQ_IDS = [
+  'q-000',
+  'q-001',
+  'q-034',
+  'q-035',
+  'q-061',
+  'q-063',
+  'q-257',
+  'q-258',
+] as const;
+
+/** Visible featured Q&As for the /faq hub (and matching FAQPage JSON-LD). */
+export function featuredFaqItems(): FaqItem[] {
+  const byId = new Map<string, FaqItem>();
+  for (const slug of FAQ_FILE_SLUGS) {
+    const topic = getFaqTopic(slug);
+    if (!topic) continue;
+    for (const item of topic.items) {
+      byId.set(item.id, item);
+    }
+  }
+  return FEATURED_FAQ_IDS.map((id) => {
+    const item = byId.get(id);
+    if (!item) throw new Error(`Featured FAQ item missing: ${id}`);
+    return item;
+  });
 }
 
 const RELATED_BY_TOPIC: Record<string, FaqRelatedLink[]> = {

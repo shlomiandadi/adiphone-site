@@ -7,7 +7,7 @@ import LegalPageLayout, { LegalSection } from '../components/LegalPageLayout';
 
 const pageMetadata = {
   title: 'מחיקת נתוני משתמש | עדי פון תקשורת',
-  description: 'כיצד לבקש מחיקה של פרטים אישיים שנאספו דרך טפסי לידים בפייסבוק ובאינסטגרם או דרך טפסי האתר.',
+  description: 'איך לבקש מחיקה של פרטים אישיים שנאספו בטפסי לידים בפייסבוק ובאינסטגרם או בטפסי האתר של Top Webstak, ומה קורה אחרי שהבקשה מתקבלת אצלנו לטיפול.',
   alternates: {
     canonical: '/data-deletion',
   },

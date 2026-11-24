@@ -2,6 +2,7 @@
 
 import ServiceLayout from '../../components/ServiceLayout';
 import GoogleReviews from '../../components/GoogleReviews';
+import LeadFormSection from '../../components/LeadFormSection';
 import Hero3D from '../../components/hero3d/Hero3D';
 import { WEB_DEVELOPMENT_SERVICE_PAGE_REVIEWS } from '../../../lib/reviews';
 import { FaLaptopCode, FaMobileAlt, FaTachometerAlt } from 'react-icons/fa';
@@ -296,11 +297,14 @@ export default function WebDevelopmentView({ projects }: Props) {
         link: `/portfolio/${project.slug}`,
       }))}
       beforeCta={(
-        <section id="google-reviews" data-reveal className="scroll-mt-24 px-4 py-16">
-          <div className="container mx-auto max-w-5xl">
-            <GoogleReviews heading="מה הלקוחות אומרים" reviews={WEB_DEVELOPMENT_SERVICE_PAGE_REVIEWS} />
-          </div>
-        </section>
+        <>
+          <section id="google-reviews" data-reveal className="scroll-mt-24 px-4 py-16">
+            <div className="container mx-auto max-w-5xl">
+              <GoogleReviews heading="מה הלקוחות אומרים" reviews={WEB_DEVELOPMENT_SERVICE_PAGE_REVIEWS} />
+            </div>
+          </section>
+          <LeadFormSection formName="web_development_page" />
+        </>
       )}
     />
   );

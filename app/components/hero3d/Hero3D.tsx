@@ -94,6 +94,7 @@ export default function Hero3D({
   theme,
   title,
   subtitle,
+  priceLine,
   eyebrow,
   extraHeading,
   extraHeadingAs = 'h2',
@@ -158,6 +159,11 @@ export default function Hero3D({
             <h1 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl">{title}</h1>
             {extraHeading ? (
               <ExtraTag className="mb-4 text-2xl font-bold text-white md:text-3xl">{extraHeading}</ExtraTag>
+            ) : null}
+            {priceLine ? (
+              <p className="mb-4 text-sm font-medium leading-snug text-sky-200 md:text-base">
+                {priceLine}
+              </p>
             ) : null}
             {subtitle ? <p className="mb-8 text-xl text-white/90 md:text-2xl">{subtitle}</p> : null}
             {children}

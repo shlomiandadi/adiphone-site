@@ -40,6 +40,7 @@ export default function Home() {
           mark={<HeroLogoMark />}
           title="בניית וקידום אתרים לעסקים – Top Webstak"
           extraHeading="סוכנות דיגיטל מפרדס חנה, מבית עדי פון תקשורת"
+          priceLine="דף נחיתה מ-2,500 ₪ · אתר תדמית מ-6,500 ₪ · מענה תוך שעתיים"
           subtitle="אנחנו מספקים לעסקים בניית אתרים, קידום בגוגל (SEO), קמפיינים ממומנים וקידום במנועי AI"
           ctas={[{ href: '/contact', label: 'צור קשר' }]}
         />

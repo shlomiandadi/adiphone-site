@@ -34,6 +34,8 @@ export type Hero3DProps = {
   theme: HeroTheme;
   title: ReactNode;
   subtitle?: React.ReactNode;
+  /** Compact starting-price / response-time line under the H1. Not a heading. */
+  priceLine?: string;
   eyebrow?: string;
   extraHeading?: string;
   extraHeadingAs?: 'h2' | 'p';

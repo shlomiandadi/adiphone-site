@@ -4,6 +4,7 @@ import { BUSINESS_ALTERNATE_NAMES, buildLocalBusinessJsonLd } from '../../lib/lo
 import { getPublishedPortfolioProjects } from '../../lib/website-projects';
 import { getServiceCta } from '../../lib/service-cta';
 import Hero3D from './hero3d/Hero3D';
+import LeadFormSection from './LeadFormSection';
 import ServiceCtaBanner from './ServiceCtaBanner';
 import FaqTopicMoreLink from './FaqTopicMoreLink';
 import Testimonials from './Testimonials';
@@ -110,6 +111,11 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
       <Hero3D
         theme="local"
         title={h1}
+        priceLine={
+          content.path === '/services/bniyat-atarim-pardes-hana'
+            ? 'דף נחיתה מ-2,500 ₪ · אתר תדמית מ-6,500 ₪ · מענה תוך שעתיים'
+            : undefined
+        }
         subtitle={content.heroLead}
         cityName={content.cityName}
         align="center"
@@ -422,6 +428,9 @@ export default async function LocalWebsiteBuildingPage({ content }: Props) {
         image={projectImage}
         imageAlt={`פרויקט אתר לעסק באזור ${content.cityName}`}
       />
+      {content.path === '/services/bniyat-atarim-pardes-hana' ? (
+        <LeadFormSection formName="pardes_hana_page" />
+      ) : null}
     </div>
   );
 }

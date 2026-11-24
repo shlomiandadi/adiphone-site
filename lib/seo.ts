@@ -225,8 +225,9 @@ export function completeOpenGraph(path: string, meta: Metadata): Metadata {
     og.url = pageUrl;
   }
 
-  if (!og.type) {
-    og.type = path === '/' || !path.startsWith('/blog/') ? 'website' : 'article';
+  if (!('type' in og) || !og.type) {
+    (og as { type?: string }).type =
+      path === '/' || !path.startsWith('/blog/') ? 'website' : 'article';
   }
 
   const hasImages = Array.isArray(og.images)

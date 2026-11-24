@@ -8,8 +8,10 @@ import {
   faqMetaDescription,
   faqPageJsonLd,
   faqSitemapPaths,
+  featuredFaqItems,
   getFaqTopic,
   isFaqTopic,
+  requireFaqTopic,
   siblingTopics,
 } from './faq.ts';
 
@@ -110,5 +112,26 @@ describe('faq data', () => {
     }
     assert.match(topicPage, /export const dynamicParams = false/);
     assert.match(topicPage, /FAQ_FILE_SLUGS/);
+    assert.match(topicPage, /requireFaqTopic/);
+    assert.match(topicPage, /Known slugs must not call notFound/);
+  });
+
+  test('requireFaqTopic returns every bundled slug and throws on unknown', () => {
+    for (const slug of FAQ_FILE_SLUGS) {
+      assert.equal(requireFaqTopic(slug).topic, slug);
+    }
+    assert.throws(() => requireFaqTopic('not-a-topic'));
+  });
+
+  test('featured FAQ items are 8 unique visible questions', () => {
+    const featured = featuredFaqItems();
+    assert.equal(featured.length, 8);
+    assert.equal(new Set(featured.map((item) => item.id)).size, 8);
+    for (const item of featured) {
+      assert.ok(item.question.trim());
+      assert.ok(item.answer.trim());
+    }
+    const schema = faqPageJsonLd(featured);
+    assert.equal(schema.mainEntity.length, 8);
   });
 });

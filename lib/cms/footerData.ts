@@ -40,6 +40,7 @@ export const FOOTER_QUICK_LINKS: FooterLinkView[] = [
   { title: 'צור קשר', url: '/contact' },
   { title: 'מחירון', url: '/pricing' },
   { title: 'שאלות נפוצות', url: '/faq' },
+  { title: 'בדיקת אתר חינם', url: '/check' },
   { title: 'מדיניות פרטיות', url: '/privacy-policy' },
   { title: 'הצהרת נגישות', url: '/accessibility-statement' },
 ];
@@ -218,6 +219,30 @@ export function withRequiredFaqLink(data: FooterView): FooterView {
   const pricingIndex = links.findIndex((link) => link.url === '/pricing');
   const insertAt = pricingIndex >= 0 ? pricingIndex + 1 : links.length;
   links.splice(insertAt, 0, REQUIRED_FAQ_LINK);
+  const columns = [...data.columns];
+  columns[fallbackIndex] = { ...column, links };
+  return { ...data, columns };
+}
+
+const REQUIRED_CHECK_LINK: FooterLinkView = {
+  title: 'בדיקת אתר חינם',
+  url: '/check',
+};
+
+/** Ensure CMS quick links include the free site-check landing page. */
+export function withRequiredCheckLink(data: FooterView): FooterView {
+  const index = data.columns.findIndex(
+    (column) => column.kind === 'links' && column.title === 'קישורים מהירים'
+  );
+  const fallbackIndex = index >= 0 ? index : data.columns.findIndex((column) => column.kind === 'links');
+  if (fallbackIndex < 0) return data;
+  const column = data.columns[fallbackIndex];
+  if (column.links.some((link) => link.url === REQUIRED_CHECK_LINK.url)) return data;
+  const links = [...column.links];
+  const faqIndex = links.findIndex((link) => link.url === '/faq');
+  const pricingIndex = links.findIndex((link) => link.url === '/pricing');
+  const insertAt = faqIndex >= 0 ? faqIndex + 1 : pricingIndex >= 0 ? pricingIndex + 1 : links.length;
+  links.splice(insertAt, 0, REQUIRED_CHECK_LINK);
   const columns = [...data.columns];
   columns[fallbackIndex] = { ...column, links };
   return { ...data, columns };

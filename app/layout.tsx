@@ -55,7 +55,6 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'he_IL',
     siteName: 'Top Webstak',
-    url: baseUrl,
     images: [
       {
         url: '/images/og-default.png',

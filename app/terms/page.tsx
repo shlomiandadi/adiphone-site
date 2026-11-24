@@ -1,15 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { completeOpenGraph } from '@/lib/seo';
 import LegalPageLayout, { LegalSection } from '../components/LegalPageLayout';
 
-export const metadata: Metadata = {
+const TERMS_META_DESCRIPTION =
+  'תנאי השימוש באתר Top Webstak מבית עדי פון תקשורת: כללי שימוש בשירותי בניית אתרים, קידום אורגני ופרסום ממומן, ומה חשוב לדעת לפני פנייה או הזמנת שירות.';
+
+export const metadata: Metadata = completeOpenGraph('/terms', {
   title: 'תנאי שימוש | עדי פון תקשורת',
-  description: 'תנאי השימוש באתר ובשירותי Top Webstak מבית עדי פון תקשורת.',
+  description: TERMS_META_DESCRIPTION,
   alternates: {
     canonical: '/terms',
   },
-};
+});
 
 const CONTACT_EMAIL = 'shlomiandadi@gmail.com';
 const CONTACT_EMAIL_ALT = 'shlomimalfuf1@gmail.com';

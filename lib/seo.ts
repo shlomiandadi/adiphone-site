@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 const DEFAULT_SITE_URL = 'https://adi-phone.co.il';
 
 /** Primary service URLs that own money keywords (avoid blog cannibalization). */
@@ -205,4 +206,43 @@ export function absoluteUrl(path: string): string {
   const siteUrl = getSiteUrl();
   if (path.startsWith('http')) return normalizeCanonicalUrl(path, path);
   return `${siteUrl}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
+/**
+ * Fill missing Open Graph url/type/image so pages do not inherit the homepage
+ * og:url from the root layout, and so service/portfolio/hub pages are complete.
+ * Existing images and an already-correct url are left untouched.
+ */
+export function completeOpenGraph(path: string, meta: Metadata): Metadata {
+  const pageUrl = normalizeCanonicalUrl(null, path);
+  const homeUrl = getSiteUrl();
+  const og =
+    meta.openGraph && typeof meta.openGraph === 'object' ? { ...meta.openGraph } : {};
+
+  const currentUrl = typeof og.url === 'string' ? og.url.replace(/\/$/, '') : '';
+  const inheritsHome = Boolean(currentUrl) && currentUrl === homeUrl && path !== '/';
+  if (!currentUrl || inheritsHome) {
+    og.url = pageUrl;
+  }
+
+  if (!('type' in og) || !og.type) {
+    (og as { type?: string }).type =
+      path === '/' || !path.startsWith('/blog/') ? 'website' : 'article';
+  }
+
+  const hasImages = Array.isArray(og.images)
+    ? og.images.length > 0
+    : Boolean(og.images);
+  if (!hasImages) {
+    og.images = [
+      {
+        url: DEFAULT_OG_IMAGE.url,
+        width: DEFAULT_OG_IMAGE.width,
+        height: DEFAULT_OG_IMAGE.height,
+        alt: DEFAULT_OG_IMAGE.alt,
+      },
+    ];
+  }
+
+  return { ...meta, openGraph: og };
 }

@@ -5,6 +5,7 @@ import {
   FOOTER_CONTACT_LINKS,
   HARDCODED_FOOTER,
   withRequiredFaqLink,
+  withRequiredCheckLink,
   withRequiredSocialLinks,
   withRequiredServiceLinks,
   withServiceAreaColumn,
@@ -27,6 +28,30 @@ describe('withRequiredFaqLink', () => {
     const column = merged.columns.find((item) => item.title === 'קישורים מהירים');
     const urls = column?.links.map((link) => link.url) || [];
     assert.ok(urls.includes('/faq'));
+  });
+});
+
+
+describe('withRequiredCheckLink', () => {
+  test('injects /check after FAQ in quick links when CMS omitted it', () => {
+    const merged = withRequiredCheckLink({
+      ...HARDCODED_FOOTER,
+      columns: HARDCODED_FOOTER.columns.map((column) =>
+        column.title === 'קישורים מהירים'
+          ? {
+              ...column,
+              links: column.links.filter((link) => link.url !== '/check'),
+            }
+          : column
+      ),
+    });
+    const column = merged.columns.find((item) => item.title === 'קישורים מהירים');
+    const urls = column?.links.map((link) => link.url) || [];
+    assert.ok(urls.includes('/check'));
+    const faq = urls.indexOf('/faq');
+    const check = urls.indexOf('/check');
+    assert.ok(faq >= 0);
+    assert.equal(check, faq + 1);
   });
 });
 

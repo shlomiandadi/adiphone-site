@@ -96,6 +96,21 @@ export const haifaContent: LocalCityContent = {
     href: '/portfolio',
     label: 'לתיק העבודות',
   },
+  extraSections: [
+    {
+      title: 'בניית אתרים בצפון',
+      paragraphs: [
+        'מחיפה Top Webstak מלווים עסקים גם מחוץ למטרופולין: קליניקות, משרדים, חנויות ובעלי מקצוע שפועלים ביקנעם, בעפולה, בזכרון יעקב ובחדרה. האתר צריך לציין איפה אתם עובדים באמת — לא שפה ארצית כללית — ולתת דרך ברורה לפנות בוואטסאפ או בטופס. המשרד בפרדס חנה; העבודה נעשית בזום, בטלפון או בפגישה באזור.',
+        'לכל יישוב יש עמוד שירות נפרד, עם הקשר מקומי ולא העתק של עמוד חיפה. אפשר לקרוא על [בניית אתרים ביקנעם](/services/bniyat-atarim-yokneam), [בניית אתרים בעפולה](/services/bniyat-atarim-afula), [בניית אתרים בזכרון יעקב](/services/bniyat-atarim-zichron-yaakov) ו[בניית אתרים בחדרה](/services/bniyat-atarim-hadera). אם אתם משרתים כמה ערים בצפון — נרשום באתר רק את האזורים שבהם אתם באמת מגיעים ללקוח.',
+      ],
+      links: [
+        { href: '/services/bniyat-atarim-yokneam', label: 'בניית אתרים ביקנעם' },
+        { href: '/services/bniyat-atarim-afula', label: 'בניית אתרים בעפולה' },
+        { href: '/services/bniyat-atarim-zichron-yaakov', label: 'בניית אתרים בזכרון יעקב' },
+        { href: '/services/bniyat-atarim-hadera', label: 'בניית אתרים בחדרה' },
+      ],
+    },
+  ],
   extraSection: {
     title: 'מדריך לעסקים בחיפה ובקריות',
     paragraphs: [

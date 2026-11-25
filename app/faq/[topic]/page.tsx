@@ -5,9 +5,11 @@ import { SetBreadcrumbLeaf } from '../../components/BreadcrumbLeaf';
 import FaqAccordion from '../../components/FaqAccordion';
 import PageBreadcrumbJsonLd from '../../components/PageBreadcrumbJsonLd';
 import {
-  FAQ_FILE_SLUGS,
+  KNOWN_FAQ_SLUGS,
   faqMetaDescription,
   faqPageJsonLd,
+  isFaqTopic,
+  normalizeFaqTopicParam,
   requireFaqTopic,
   relatedPagesForTopic,
   siblingTopics,
@@ -15,7 +17,9 @@ import {
 import { DEFAULT_OG_IMAGE } from '../../../lib/seo';
 
 export const dynamic = 'force-static';
-export const dynamicParams = false;
+// true: if the Netlify handler drops the prerender manifest, known slugs still render 200.
+// false 404s every /faq/[topic] after ISR even when the page HTML was built (PR 155 regression).
+export const dynamicParams = true;
 export const revalidate = false;
 
 type PageProps = {
@@ -23,14 +27,15 @@ type PageProps = {
 };
 
 export function generateStaticParams() {
-  return FAQ_FILE_SLUGS.map((topic) => ({ topic }));
+  return KNOWN_FAQ_SLUGS.map((topic) => ({ topic }));
 }
 
 export function generateMetadata({ params }: PageProps): Metadata {
-  if (!FAQ_FILE_SLUGS.includes(params.topic)) {
+  const slug = normalizeFaqTopicParam(params.topic);
+  if (!isFaqTopic(slug)) {
     return { title: 'שאלות נפוצות' };
   }
-  const data = requireFaqTopic(params.topic);
+  const data = requireFaqTopic(slug);
   const path = `https://adi-phone.co.il/faq/${data.topic}`;
   const description = faqMetaDescription(data);
   return {
@@ -55,9 +60,10 @@ export function generateMetadata({ params }: PageProps): Metadata {
 }
 
 export default function FaqTopicPage({ params }: PageProps) {
+  const slug = normalizeFaqTopicParam(params.topic);
   // Known slugs must not call notFound(): Netlify Durable caches that 404.
-  if (!FAQ_FILE_SLUGS.includes(params.topic)) notFound();
-  const data = requireFaqTopic(params.topic);
+  if (!isFaqTopic(slug)) notFound();
+  const data = requireFaqTopic(slug);
 
   const related = relatedPagesForTopic(data.topic);
   const siblings = siblingTopics(data.topic, 3);

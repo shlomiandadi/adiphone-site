@@ -111,11 +111,20 @@ export const FAQ_TOTAL = indexData.total;
 /** Slugs from bundled topic JSON files — used by generateStaticParams. */
 export const FAQ_FILE_SLUGS = Object.keys(TOPIC_FILES);
 export const FAQ_TOPIC_SLUGS = FAQ_TOPICS.map((topic) => topic.topic);
+/** Index JSON + bundled files — used so a runtime-empty Object.keys map cannot 404 known URLs. */
+export const KNOWN_FAQ_SLUGS = Array.from(new Set([...FAQ_FILE_SLUGS, ...FAQ_TOPIC_SLUGS]));
 
-const topicSet = new Set(FAQ_FILE_SLUGS);
+const topicSet = new Set(KNOWN_FAQ_SLUGS);
 
 export function isFaqTopic(slug: string): boolean {
   return topicSet.has(slug);
+}
+
+/** Netlify/OpenNext may pass [topic] as a one-item array. */
+export function normalizeFaqTopicParam(topic: unknown): string {
+  if (typeof topic === 'string') return topic;
+  if (Array.isArray(topic) && typeof topic[0] === 'string') return topic[0];
+  return '';
 }
 
 export function getFaqIndexTopics(): FaqIndexTopic[] {

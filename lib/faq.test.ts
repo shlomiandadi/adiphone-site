@@ -4,13 +4,16 @@ import { describe, test } from 'node:test';
 import {
   FAQ_FILE_SLUGS,
   FAQ_TOPICS,
+  FAQ_TOPIC_SLUGS,
   FAQ_TOTAL,
+  KNOWN_FAQ_SLUGS,
   faqMetaDescription,
   faqPageJsonLd,
   faqSitemapPaths,
   featuredFaqItems,
   getFaqTopic,
   isFaqTopic,
+  normalizeFaqTopicParam,
   requireFaqTopic,
   siblingTopics,
 } from './faq.ts';
@@ -100,6 +103,24 @@ describe('faq data', () => {
   test('static params cover all 21 bundled topic files and match the index', () => {
     assert.equal(FAQ_FILE_SLUGS.length, 21);
     assert.deepEqual([...FAQ_FILE_SLUGS].sort(), [...FAQ_TOPICS.map((t) => t.topic)].sort());
+    assert.deepEqual([...KNOWN_FAQ_SLUGS].sort(), [...FAQ_TOPIC_SLUGS].sort());
+  });
+
+  test('every FAQ data slug resolves to a topic file', () => {
+    const fromDisk = JSON.parse(
+      readFileSync(new URL('../data/faq/index.json', import.meta.url), 'utf8')
+    ) as { topics: { topic: string }[] };
+    const slugs = fromDisk.topics.map((topic) => topic.topic);
+    assert.equal(slugs.length, 21);
+    for (const slug of slugs) {
+      assert.equal(isFaqTopic(slug), true, slug);
+      const file = getFaqTopic(slug);
+      assert.ok(file, slug);
+      assert.equal(file!.topic, slug);
+      assert.equal(requireFaqTopic(slug).topic, slug);
+    }
+    assert.equal(normalizeFaqTopicParam(['seo']), 'seo');
+    assert.equal(normalizeFaqTopicParam('pricing'), 'pricing');
   });
 
   test('FAQ topic and hub pages opt out of ISR', () => {
@@ -110,10 +131,11 @@ describe('faq data', () => {
       assert.match(source, /export const dynamic = 'force-static'/);
       assert.match(source, /export const revalidate = false/);
     }
-    assert.match(topicPage, /export const dynamicParams = false/);
-    assert.match(topicPage, /FAQ_FILE_SLUGS/);
+    assert.match(topicPage, /export const dynamicParams = true/);
+    assert.match(topicPage, /KNOWN_FAQ_SLUGS/);
     assert.match(topicPage, /requireFaqTopic/);
     assert.match(topicPage, /Known slugs must not call notFound/);
+    assert.match(topicPage, /if \(!isFaqTopic\(slug\)\) notFound\(\)/);
   });
 
   test('requireFaqTopic returns every bundled slug and throws on unknown', () => {

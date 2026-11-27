@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-afula',
-  title: 'בניית אתרים בעפולה ובעמק יזרעאל | Top Webstak – 050-9159951',
+  title: 'בניית אתרים בעפולה ובעמק יזרעאל | Top Webstak',
   description:
     'בניית אתרים בעפולה ובעמק יזרעאל: אתרי תדמית, חנויות ווורדפרס. סוכנות מפרדס חנה – ליווי מרחוק ופגישה כשצריך. לייעוץ: 050-9159951.',
   keywords:

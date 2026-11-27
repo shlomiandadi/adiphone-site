@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-binyamina',
-  title: 'בניית אתרים בבנימינה לעסקים | Top Webstak – 050-9159951',
+  title: 'בניית אתרים בבנימינה לעסקים | Top Webstak',
   description:
     'בניית אתרים בבנימינה ובגבעת עדה: יקבים, אירוח, קליניקות וחנויות. סוכנות מפרדס חנה – פגישה קרובה או ליווי מרחוק. לייעוץ: 050-9159951.',
   keywords:

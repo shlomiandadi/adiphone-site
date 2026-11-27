@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-or-akiva',
-  title: 'בניית אתרים באור עקיבא לעסקים | Top Webstak – 050-9159951',
+  title: 'בניית אתרים באור עקיבא לעסקים | Top Webstak',
   description:
     'בניית אתרים באור עקיבא, בין חדרה לקיסריה: אתרי תדמית, חנויות ווורדפרס. סוכנות מפרדס חנה – פגישה קרובה או ליווי מרחוק. לייעוץ: 050-9159951.',
   keywords:

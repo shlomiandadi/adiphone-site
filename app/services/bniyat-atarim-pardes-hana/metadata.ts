@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-pardes-hana',
-  title: 'בניית אתרים בפרדס חנה לעסקים | Top Webstak – 050-9159951',
+  title: 'בניית אתרים בפרדס חנה לעסקים | Top Webstak',
   description:
     'בניית אתרים בפרדס חנה: אתרי תדמית וחנויות אונליין מהירים, מותאמים לנייד וידידותיים לגוגל. סוכנות מקומית. ייעוץ: 050-9159951.',
   keywords:

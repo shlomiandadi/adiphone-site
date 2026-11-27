@@ -121,6 +121,11 @@ export const LOCAL_WEBSITE_PAGES: readonly LocalCityLink[] = [
 
 export const LOCAL_WEBSITE_PAGE_PATHS = LOCAL_WEBSITE_PAGES.map((page) => page.path);
 
+export function isLocalWebsiteBuildingPath(path: string): boolean {
+  const normalized = path.length > 1 ? path.replace(/\/+$/, '') : path;
+  return LOCAL_WEBSITE_PAGE_PATHS.includes(normalized as (typeof LOCAL_WEBSITE_PAGE_PATHS)[number]);
+}
+
 export function buildLocalCityMetadata({
   path,
   title,
@@ -137,20 +142,25 @@ export function buildLocalCityMetadata({
   ogDescription?: string;
 }): Metadata {
   const canonical = absoluteUrl(path);
+  const socialTitle = ogTitle || title;
   return {
-    title,
+    title: { absolute: title },
     description,
     keywords,
     alternates: {
       canonical,
     },
     openGraph: {
-      title: ogTitle || title,
+      title: socialTitle,
       description: ogDescription || description,
       url: canonical,
       type: 'website',
       locale: 'he_IL',
       siteName: 'Top Webstak',
+    },
+    twitter: {
+      title: socialTitle,
+      description: ogDescription || description,
     },
   };
 }

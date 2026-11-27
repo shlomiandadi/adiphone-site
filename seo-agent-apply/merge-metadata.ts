@@ -7,6 +7,8 @@ import {
 } from '../lib/og/service-og-image';
 import { applySeoAgentOverride } from './override';
 import { getSeoAgentPageOverride } from './state';
+import { isLocalWebsiteBuildingPath } from '../lib/local-website-building';
+import { withoutPhoneInLocalTitles } from '../lib/strip-title-phone';
 
 export { applySeoAgentOverride } from './override';
 
@@ -81,7 +83,8 @@ export async function mergeSeoAgentMetadata(path: string, base: Metadata): Promi
   // Agent overrides win over CMS and hardcoded metadata. Title-only payloads
   // leave canonical and other omitted fields untouched.
   const merged = override ? applySeoAgentOverride(withCms, override) : withCms;
-  return completeOpenGraph(path, withVersionedServiceOgImage(path, merged));
+  const withOg = completeOpenGraph(path, withVersionedServiceOgImage(path, merged));
+  return isLocalWebsiteBuildingPath(path) ? withoutPhoneInLocalTitles(withOg) : withOg;
 }
 
 export function createSeoAgentGenerateMetadata(path: string, base: Metadata) {

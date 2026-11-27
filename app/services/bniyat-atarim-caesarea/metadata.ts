@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-caesarea',
-  title: 'בניית אתרים בקיסריה לעסקים | Top Webstak – 050-9159951',
+  title: 'בניית אתרים בקיסריה לעסקים | Top Webstak',
   description:
     'בניית אתרים בקיסריה: לעסקים בנמל, לתושבים ולחברות בפארק התעשיות. אתרי תדמית, חנויות ווורדפרס. מפרדס חנה – פגישה או מרחוק. 050-9159951.',
   keywords:

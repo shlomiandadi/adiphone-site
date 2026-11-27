@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-yokneam',
-  title: 'בניית אתרים ביוקנעם לחברות ולעסקים | Top Webstak – 050-9159951',
+  title: 'בניית אתרים ביוקנעם לחברות ולעסקים | Top Webstak',
   description:
     'בניית אתרים ביוקנעם עילית ובפארק התעשייה: אתרי תדמית, דפי מוצר ומערכות. סוכנות מפרדס חנה – זום או פגישה. לייעוץ: 050-9159951.',
   keywords:

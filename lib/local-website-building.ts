@@ -121,6 +121,11 @@ export const LOCAL_WEBSITE_PAGES: readonly LocalCityLink[] = [
 
 export const LOCAL_WEBSITE_PAGE_PATHS = LOCAL_WEBSITE_PAGES.map((page) => page.path);
 
+export function isLocalWebsiteBuildingPath(path: string): boolean {
+  const normalized = path.length > 1 ? path.replace(/\/+$/, '') : path;
+  return LOCAL_WEBSITE_PAGE_PATHS.includes(normalized as (typeof LOCAL_WEBSITE_PAGE_PATHS)[number]);
+}
+
 export function buildLocalCityMetadata({
   path,
   title,

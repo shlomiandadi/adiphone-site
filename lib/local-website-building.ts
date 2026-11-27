@@ -137,20 +137,25 @@ export function buildLocalCityMetadata({
   ogDescription?: string;
 }): Metadata {
   const canonical = absoluteUrl(path);
+  const socialTitle = ogTitle || title;
   return {
-    title,
+    title: { absolute: title },
     description,
     keywords,
     alternates: {
       canonical,
     },
     openGraph: {
-      title: ogTitle || title,
+      title: socialTitle,
       description: ogDescription || description,
       url: canonical,
       type: 'website',
       locale: 'he_IL',
       siteName: 'Top Webstak',
+    },
+    twitter: {
+      title: socialTitle,
+      description: ogDescription || description,
     },
   };
 }

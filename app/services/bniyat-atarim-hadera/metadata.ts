@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-hadera',
-  title: 'בניית אתרים בחדרה לעסקים | Top Webstak – 050-9159951',
+  title: 'בניית אתרים בחדרה לעסקים | Top Webstak',
   description:
     'בניית אתרים בחדרה, בגבעת אולגה ובאזור התעשייה: אתרי תדמית, חנויות ווורדפרס. סוכנות מפרדס חנה – פגישה בעיר או ליווי מרחוק. לייעוץ: 050-9159951.',
   keywords:

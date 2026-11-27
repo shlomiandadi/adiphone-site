@@ -217,6 +217,57 @@ export default async function SeoServicePage() {
         </div>
       </section>
 
+      <section data-reveal className="bg-gray-50 px-4 py-16">
+        <div className="container mx-auto max-w-5xl">
+          <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">
+            קידום אתרים לעסקים בצפון, בשרון ובמרכז
+          </h2>
+          <p className="mx-auto mb-10 max-w-3xl text-center text-lg leading-relaxed text-gray-700">
+            Top Webstak עובדת מפרדס חנה עם עסקים בצפון, בשרון ובמרכז: מחקר מקומי, נוכחות בגוגל
+            ומפות, ותוכן שמדבר על אזור השירות האמיתי. לכל יישוב יש עמוד שירות נפרד — לא העתק של
+            אותו טקסט עם שם עיר אחר.
+          </p>
+          <div className="grid gap-6 md:grid-cols-2">
+            <Link
+              href="/services/bniyat-atarim-haifa"
+              className="rounded-xl border border-gray-100 bg-white p-6 text-right shadow-sm transition-shadow hover:shadow-md"
+            >
+              <h3 className="mb-2 text-xl font-semibold text-gray-900">בניית אתרים בחיפה והקריות</h3>
+              <p className="text-gray-600">
+                לעסקים בכרמל, בהדר, בנמל ובקריות — אתר ברור ואזור שירות מדויק, כבסיס לקידום מקומי.
+              </p>
+            </Link>
+            <Link
+              href="/services/bniyat-atarim-hadera"
+              className="rounded-xl border border-gray-100 bg-white p-6 text-right shadow-sm transition-shadow hover:shadow-md"
+            >
+              <h3 className="mb-2 text-xl font-semibold text-gray-900">בניית אתרים בחדרה וגבעת אולגה</h3>
+              <p className="text-gray-600">
+                בעלי מקצוע, קליניקות ומשרדים בחדרה ובאזור התעשייה — נוכחות מקומית שאפשר לקדם בגוגל.
+              </p>
+            </Link>
+            <Link
+              href="/services/bniyat-atarim-pardes-hana"
+              className="rounded-xl border border-gray-100 bg-white p-6 text-right shadow-sm transition-shadow hover:shadow-md"
+            >
+              <h3 className="mb-2 text-xl font-semibold text-gray-900">בניית אתרים בפרדס חנה-כרכור</h3>
+              <p className="text-gray-600">
+                הסוכנות יושבת כאן. אתר לעסק מקומי, עם פרופיל גוגל ועמודי שירות שמדברים על היישוב.
+              </p>
+            </Link>
+            <Link
+              href="/services/bniyat-atarim-afula"
+              className="rounded-xl border border-gray-100 bg-white p-6 text-right shadow-sm transition-shadow hover:shadow-md"
+            >
+              <h3 className="mb-2 text-xl font-semibold text-gray-900">בניית אתרים בעפולה ובעמק</h3>
+              <p className="text-gray-600">
+                עסקים בעפולה ובעמק יזרעאל — ליווי מרחוק מפרדס חנה, ואתר שמתאים לחיפוש באזור.
+              </p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Process */}
       <section data-reveal className="bg-gray-50 px-4 py-16">
         <div className="container mx-auto max-w-5xl">

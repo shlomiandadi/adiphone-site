@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-netanya',
-  title: 'בניית אתרים בנתניה לעסקים | Top Webstak – 050-9159951',
+  title: 'בניית אתרים בנתניה לעסקים | Top Webstak',
   description:
     'בניית אתרים בנתניה, בפולג ובאייר פורט סיטי: אתרי תדמית, חנויות ווורדפרס. סוכנות מפרדס חנה – פגישה בעיר או ליווי מרחוק. לייעוץ: 050-9159951.',
   keywords:

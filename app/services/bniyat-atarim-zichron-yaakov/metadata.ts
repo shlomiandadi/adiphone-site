@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-zichron-yaakov',
-  title: 'בניית אתרים בזכרון יעקב לעסקים | Top Webstak – 050-9159951',
+  title: 'בניית אתרים בזכרון יעקב לעסקים | Top Webstak',
   description:
     'בניית אתרים בזכרון יעקב: יקבים, מסעדות, צימרים, בוטיקים ונותני שירות. עיצוב ייחודי וליווי מפרדס חנה – בפגישה או מרחוק. 050-9159951.',
   keywords:

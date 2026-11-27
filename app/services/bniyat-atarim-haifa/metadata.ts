@@ -2,7 +2,7 @@ import { buildLocalCityMetadata, localCityViewport } from '../../../lib/local-we
 
 export const metadata = buildLocalCityMetadata({
   path: '/services/bniyat-atarim-haifa',
-  title: 'בניית אתרים בחיפה לעסקים | Top Webstak – 050-9159951',
+  title: 'בניית אתרים בחיפה לעסקים | Top Webstak',
   description:
     'בניית אתרים בחיפה ובקריות: אתרי תדמית, חנויות ומערכות. סוכנות מפרדס חנה – פגישה בעיר או ליווי מרחוק. לייעוץ: 050-9159951.',
   keywords:
